@@ -1,11 +1,11 @@
-/*
+﻿/*
  Navicat Premium Data Transfer
 
  Source Server         : summerunreal
  Source Server Type    : MySQL
  Source Server Version : 50642
  Source Host           : localhost:3306
- Source Schema         : searchstreet
+ Source Schema         : search_street
 
  Target Server Type    : MySQL
  Target Server Version : 50642

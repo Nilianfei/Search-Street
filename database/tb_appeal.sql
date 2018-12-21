@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 50642
  Source Host           : localhost:3306
- Source Schema         : searchstreet
+ Source Schema         : search_street
 
  Target Server Type    : MySQL
  Target Server Version : 50642
  File Encoding         : 65001
 
- Date: 21/12/2018 20:52:14
+ Date: 21/12/2018 21:22:40
 */
 
 SET NAMES utf8mb4;
