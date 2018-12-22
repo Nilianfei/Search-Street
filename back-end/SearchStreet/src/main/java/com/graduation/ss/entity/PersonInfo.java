@@ -10,7 +10,7 @@ public class PersonInfo {
 	private String sex;
 	private Integer age;
 	private String phone;
-	private Integer souCoin;
+	private Long souCoin;
 	//0普通用户，1管理员
 	private Integer userType;
 	private String email;
@@ -61,10 +61,10 @@ public class PersonInfo {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public Integer getSouCoin() {
+	public Long getSouCoin() {
 		return souCoin;
 	}
-	public void setSouCoin(Integer souCoin) {
+	public void setSouCoin(Long souCoin) {
 		this.souCoin = souCoin;
 	}
 	public Integer getUserType() {

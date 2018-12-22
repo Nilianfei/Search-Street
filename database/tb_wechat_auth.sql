@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50723
 File Encoding         : 65001
 
-Date: 2018-12-20 11:53:04
+Date: 2018-12-22 10:50:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,5 @@ CREATE TABLE `tb_wechat_auth` (
   `open_id` varchar(1024) NOT NULL,
   `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`wechat_auth_id`),
-  UNIQUE KEY `uk_wechat_profile` (`open_id`),
-  KEY `fk_wechatauth_profile` (`user_id`),
-  CONSTRAINT `fk_wechatauth_profile` FOREIGN KEY (`user_id`) REFERENCES `tb_person_info` (`user_id`)
+  UNIQUE KEY `uk_wechat_profile` (`open_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

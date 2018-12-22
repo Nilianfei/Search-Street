@@ -8,7 +8,7 @@ public class LocalAuth {
 	private String passWord;
 	private Date createTime;
 	private Date lastEditTime;
-	private PersonInfo personInfo;
+	private Long userId;
 	
 	public Long getLocalAuthId() {
 		return localAuthId;
@@ -40,10 +40,10 @@ public class LocalAuth {
 	public void setLastEditTime(Date lastEditTime) {
 		this.lastEditTime = lastEditTime;
 	}
-	public PersonInfo getPersonInfo() {
-		return personInfo;
+	public Long getUserId() {
+		return userId;
 	}
-	public void setPersonInfo(PersonInfo personInfo) {
-		this.personInfo = personInfo;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 }

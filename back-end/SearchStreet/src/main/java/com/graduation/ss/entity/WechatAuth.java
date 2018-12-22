@@ -6,7 +6,7 @@ public class WechatAuth {
 	private Long wechatAuthId;
 	private String openId;
 	private Date createTime;
-	private PersonInfo personInfo;
+	private Long userId;
 	
 	public Long getWechatAuthId() {
 		return wechatAuthId;
@@ -26,10 +26,10 @@ public class WechatAuth {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public PersonInfo getPersonInfo() {
-		return personInfo;
+	public Long getUserId() {
+		return userId;
 	}
-	public void setPersonInfo(PersonInfo personInfo) {
-		this.personInfo = personInfo;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 }

@@ -2,10 +2,12 @@ package com.graduation.ss.entity;
 
 public class ShopComment {
 	private Long shopCommentId;
-	private Shop shop;
-	private PersonInfo personInfo;
+	private Long shopId;
+	private Long userId;
 	private String commentContent;
+	//服务分
 	private Integer serviceRating;
+	//星级评分
 	private Integer starRating;
 	
 	public Long getShopCommentId() {
@@ -14,17 +16,18 @@ public class ShopComment {
 	public void setShopCommentId(Long shopCommentId) {
 		this.shopCommentId = shopCommentId;
 	}
-	public Shop getShop() {
-		return shop;
+	
+	public Long getShopId() {
+		return shopId;
 	}
-	public void setShop(Shop shop) {
-		this.shop = shop;
+	public void setShopId(Long shopId) {
+		this.shopId = shopId;
 	}
-	public PersonInfo getPersonInfo() {
-		return personInfo;
+	public Long getUserId() {
+		return userId;
 	}
-	public void setPersonInfo(PersonInfo personInfo) {
-		this.personInfo = personInfo;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	public String getCommentContent() {
 		return commentContent;

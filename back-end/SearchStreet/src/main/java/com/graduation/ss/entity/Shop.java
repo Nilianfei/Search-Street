@@ -26,7 +26,7 @@ public class Shop {
 	private String businessScope;
 	private Date createTime;
 	private Date lastEditTime;
-	private PersonInfo personInfo;
+	private Long userId;
 	
 	public Long getShopId() {
 		return shopId;
@@ -154,10 +154,11 @@ public class Shop {
 	public void setLastEditTime(Date lastEditTime) {
 		this.lastEditTime = lastEditTime;
 	}
-	public PersonInfo getPersonInfo() {
-		return personInfo;
+	public Long getUserId() {
+		return userId;
 	}
-	public void setPersonInfo(PersonInfo personInfo) {
-		this.personInfo = personInfo;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
+	
 }

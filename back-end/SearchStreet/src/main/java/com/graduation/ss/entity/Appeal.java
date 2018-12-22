@@ -1,5 +1,7 @@
 package com.graduation.ss.entity;
 
+import java.util.Date;
+
 public class Appeal {
 
 		/**
@@ -188,8 +190,4 @@ public class Appeal {
 			this.endTime = endTime;
 		}
 
-		@Override
-		public String toString() {
-
-		}
 }
