@@ -1,5 +1,6 @@
 package com.graduation.ss.entity;
 
+import java.sql.Time;
 import java.util.Date;
 
 public class Shop {
@@ -16,8 +17,8 @@ public class Shop {
 	private String shopMoreInfo;
 	//1:是移动商铺，0：不是移动商铺
 	private Integer isMobile;
-	private Date openTime;
-	private Date closeTime;
+	private Time openTime;
+	private Time closeTime;
 	private String profileImg;
 	private Float coordinateX;
 	private Float coordinateY;
@@ -100,16 +101,17 @@ public class Shop {
 	public void setIsMobile(Integer isMobile) {
 		this.isMobile = isMobile;
 	}
-	public Date getOpenTime() {
+	
+	public Time getOpenTime() {
 		return openTime;
 	}
-	public void setOpenTime(Date openTime) {
+	public void setOpenTime(Time openTime) {
 		this.openTime = openTime;
 	}
-	public Date getCloseTime() {
+	public Time getCloseTime() {
 		return closeTime;
 	}
-	public void setCloseTime(Date closeTime) {
+	public void setCloseTime(Time closeTime) {
 		this.closeTime = closeTime;
 	}
 	public String getProfileImg() {
