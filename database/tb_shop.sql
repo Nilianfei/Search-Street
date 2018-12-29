@@ -1,17 +1,17 @@
 /*
- Navicat Premium Data Transfer
+ Navicat MySQL Data Transfer
 
- Source Server         : summerunreal
+ Source Server         : root
  Source Server Type    : MySQL
- Source Server Version : 50642
+ Source Server Version : 50723
  Source Host           : localhost:3306
  Source Schema         : search_street
 
  Target Server Type    : MySQL
- Target Server Version : 50642
+ Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 21/12/2018 21:24:10
+ Date: 29/12/2018 16:20:30
 */
 
 SET NAMES utf8mb4;
@@ -35,8 +35,8 @@ CREATE TABLE `tb_shop`  (
   `full_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `shop_more_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `is_mobile` int(2) NOT NULL DEFAULT 1,
-  `open_time` datetime(0) NULL DEFAULT NULL,
-  `close_time` datetime(0) NULL DEFAULT NULL,
+  `open_time` time(0) NULL DEFAULT NULL,
+  `close_time` time(0) NULL DEFAULT NULL,
   `profile_img` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `coordinate_x` float NOT NULL,
   `coordinate_y` float NOT NULL,
@@ -45,6 +45,6 @@ CREATE TABLE `tb_shop`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `last_edit_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`shop_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
