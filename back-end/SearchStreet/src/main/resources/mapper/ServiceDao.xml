@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.ss.dao.ServiceDao">
+	<select id="queryServiceList" resultType="com.graduation.ss.entity.Service">
+		SELECT
+		service_id,shop_id,service_name,service_price,service_desc,service_content,service_img
+		FROM
+		tb_service 
+		<where>
+			<if test="serviceCondition.serviceName != null">
+				and service_name like '%${serviceCondition.serviceName}%'
+			</if>
+			<if
+				test="serviceCondition.shopId != null">
+				and shop_id = #{serviceCondition.shopId}
+			</if> 
+		</where>
+		LIMIT #{rowIndex},#{pageSize};
+	</select>
+	<select id="queryServiceCount" resultType="int">
+		SELECT
+		count(1)
+		FROM
+		tb_service t
+		<where>
+				<if test="serviceCondition.serviceName != null">
+				and service_name like '%${serviceCondition.serviceName}%'
+			</if>
+ 			<if
+				test="serviceCondition.shopId != null">
+				and shop_id = #{serviceCondition.shopId}
+			</if> 
+		</where>
+	</select>
+	<insert id="insertService" parameterType="com.graduation.ss.entity.Service"
+		useGeneratedKeys="true" keyProperty="serviceId" keyColumn="service_id">
+		INSERT
+		INTO
+		tb_service(shop_id,service_name,service_price,
+		service_desc,service_content,service_img)
+		VALUES
+		(#{shopId},#{serviceName},#{servicePrice},
+		#{serviceDesc},#{serviceContent},#{serviceImg})
+	</insert>
+	<insert id="insertServiceInfo" parameterType="java.util.List"
+		useGeneratedKeys="true" keyProperty="serviceId" keyColumn="service_id">
+		INSERT
+		INTO 
+		tb_service(shop_id,service_name,service_price,service_desc,service_content,service_img)
+		VALUES
+		<foreach collection="list" item="serviceInfoDTO" index="index"
+			separator=",">
+			(
+			#{serviceInfoDTO.shopId},
+			#{serviceInfoDTO.serviceName},
+			#{serviceInfoDTO.servicePrice},
+			#{serviceInfoDTO.serviceDesc},
+			#{serviceInfoDTO.serviceContent},
+			#{serviceInfoDTO.serviceImg}
+			)
+		</foreach>
+	</insert>
+	
+	<update id="updateService" parameterType="com.graduation.ss.entity.Service">
+		update tb_service 
+		<set>
+            <if test="shopId != null">shop_id=#{shopId},</if>
+			<if test="serviceName != null">service_name=#{serviceName},</if>
+			<if test="servicePrice != null">service_price=#{servicePrice},</if>
+			<if test="serviceDesc != null">service_desc=#{serviceDesc},</if>
+			<if test="serviceContent!=null">service_content=#{serviceContent},</if>
+			<if test="serviceImg != null">service_img=#{serviceImg},</if>	
+		</set>
+		where service_id=#{serviceId}
+	</update>
+	<delete id="deleteService">
+        delete from tb_service where service_id=#{serviceId}
+    </delete>
+	<select id="queryByServiceId" resultType="com.graduation.ss.entity.Service" parameterType="Long">
+		SELECT
+		service_id,shop_id,service_name,service_price,service_desc,service_content,service_img
+		FROM
+		tb_service 
+		WHERE
+		service_id=#{serviceId}
+	</select>
+	<select id="queryByShopId" resultType="com.graduation.ss.entity.Service" parameterType="Long">
+		SELECT
+		service_id,shop_id,service_name,service_price,service_desc,service_content,service_img
+		FROM
+		tb_service 
+		WHERE
+		shop_id=#{shopId}
+	</select>
+</mapper>
