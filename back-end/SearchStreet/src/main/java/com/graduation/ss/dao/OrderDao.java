@@ -20,7 +20,7 @@ public interface OrderDao {
 	 *            返回的条数
 	 * @return
 	 */
-	/*TODO:比较日期大小（Create_Time)不准确，仍需更改
+	/*TODO:比较日期大小（Over_Time)不准确，仍需更改
 	 */
 	public List<OrderInfo> queryOrderList(@Param("orderCondition")OrderInfo orderCondition, @Param("rowIndex") int rowIndex,
 			@Param("pageSize") int pageSize);
