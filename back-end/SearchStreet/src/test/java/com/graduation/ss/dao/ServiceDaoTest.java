@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.graduation.ss.entity.Service;
+import com.graduation.ss.entity.ServiceInfo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,97 +23,107 @@ public class ServiceDaoTest {
 	@Test
 	@Ignore
 	public void testQueryServiceListAndCount() {
-		Service serviceCondition = new Service();
+		ServiceInfo serviceCondition2 = new ServiceInfo();
 		
-		serviceCondition.setShopId(1L);
-		List<Service> serviceList = serviceDao.queryServiceList(serviceCondition, 0, 4);
-		int count = serviceDao.queryServiceCount(serviceCondition);
-		System.out.println("服务列表-shopid的大小：" + serviceList.size());
+		serviceCondition2.setShopId(7L);
+		List<ServiceInfo> serviceInfoList = serviceDao.queryServiceList(serviceCondition2, 0, 4);
+		int count = serviceDao.queryServiceCount(serviceCondition2);
+		System.out.println("服务列表-shopid的大小：" + serviceInfoList.size());
 		System.out.println("服务总数-shopid：" + count);	
+		serviceInfoList.clear();
+		serviceCondition2.setServicePrice(2L);
+		serviceInfoList = serviceDao.queryServiceList(serviceCondition2, 0, 3);
+		count = serviceDao.queryServiceCount(serviceCondition2);
+		System.out.println("服务列表-price的大小：" + serviceInfoList.size());
+		System.out.println("服务总数-price：" + count);
+		serviceInfoList.clear();
 		
-		serviceCondition.setServiceName("测试服务名称");
-		serviceList = serviceDao.queryServiceList(serviceCondition, 0, 3);
+	
+		ServiceInfo serviceCondition = new ServiceInfo();
+		serviceCondition.setServiceName("测试服务名");
+		serviceInfoList = serviceDao.queryServiceList(serviceCondition, 0, 8);
 		count = serviceDao.queryServiceCount(serviceCondition);
-		System.out.println("服务列表-name的大小：" + serviceList.size());
+		System.out.println("服务列表-name的大小：" + serviceInfoList.size());
 		System.out.println("服务总数-name：" + count);
-		
+		for(int i=0;i<serviceInfoList.size();i++)
+			System.out.println("servicename: "+serviceInfoList.get(i).getServiceName());
 	}
 	@Test
 	@Ignore
 	public void testInsertService() {
-		Service service = new Service();
-		service.setShopId(1L);
-		service.setServiceName("测试服务");
-		service.setServicePrice(1L);
-		service.setServiceDesc("测试服务");
-		service.setServiceContent("测试服务");
-		service.setServiceImg("测试服务");
-		int effectedNum = serviceDao.insertService(service);
+		ServiceInfo serviceInfo = new ServiceInfo();
+		serviceInfo.setShopId(6L);
+		serviceInfo.setServiceName("test");
+		serviceInfo.setServicePrice(2L);
+		serviceInfo.setServiceDesc("test");
+		serviceInfo.setServiceContent("test");
+		serviceInfo.setServiceImg("test");
+		int effectedNum = serviceDao.insertService(serviceInfo);
 		assertEquals(1, effectedNum);
 	}
 	@Test
 	@Ignore
 	public void testInsertServiceInfo() {
-		List<Service>serviceList=new ArrayList<Service>();
-		Service service2 = new Service();
-		service2.setShopId(2L);
-		service2.setServiceName("test2");
-		service2.setServicePrice(1L);
-		service2.setServiceDesc("test2");
-		service2.setServiceContent("test2");
-		service2.setServiceImg("test2");
-		serviceList.add(service2);
-		Service service3 = new Service();
-		service3.setShopId(3L);
-		service3.setServiceName("test3");
-		service3.setServicePrice(1L);
-		service3.setServiceDesc("test3");
-		service3.setServiceContent("test3");
-		service3.setServiceImg("test3");
-		serviceList.add(service3);
-		Service service4 = new Service();
-		service4.setShopId(1L);
-		service4.setServiceName("测试服务内容");
-		service4.setServicePrice(1L);
-		service4.setServiceDesc("测试服务内容");
-		service4.setServiceContent("测试服务内容");
-		service4.setServiceImg("测试服务内容");
-		serviceList.add(service4);
-		int effectedNum = serviceDao.insertServiceInfo(serviceList);
+		List<ServiceInfo>serviceInfoList=new ArrayList<ServiceInfo>();
+		ServiceInfo serviceInfo2 = new ServiceInfo();
+		serviceInfo2.setShopId(5L);
+		serviceInfo2.setServiceName("2测试服务名称");
+		serviceInfo2.setServicePrice(1L);
+		serviceInfo2.setServiceDesc("2测试服务名称");
+		serviceInfo2.setServiceContent("2测试服务名称");
+		serviceInfo2.setServiceImg("2测试服务名称");
+		serviceInfoList.add(serviceInfo2);
+		ServiceInfo serviceInfo3 = new ServiceInfo();
+		serviceInfo3.setShopId(6L);
+		serviceInfo3.setServiceName("A测试服务名称");
+		serviceInfo3.setServicePrice(1L);
+		serviceInfo3.setServiceDesc("A测试服务名称");
+		serviceInfo3.setServiceContent("A测试服务名称");
+		serviceInfo3.setServiceImg("A测试服务名称");
+		serviceInfoList.add(serviceInfo3);
+		ServiceInfo serviceInfo4 = new ServiceInfo();
+		serviceInfo4.setShopId(7L);
+		serviceInfo4.setServiceName("aa测试服务名称");
+		serviceInfo4.setServicePrice(1L);
+		serviceInfo4.setServiceDesc("aa测试服务名称");
+		serviceInfo4.setServiceContent("aa测试服务名称");
+		serviceInfo4.setServiceImg("aa测试服务名称");
+		serviceInfoList.add(serviceInfo4);
+		int effectedNum = serviceDao.insertServiceInfo(serviceInfoList);
 		assertEquals(3, effectedNum);
 	}
 	@Test
 	@Ignore
 	public void testUpdateService() {
-		Service service = new Service();
-		service.setServiceId(1L);
-		service.setServiceContent("测试内容");
-		service.setServiceDesc("测试描述");
-		int effectedNum = serviceDao.updateService(service);
+		ServiceInfo serviceInfo = new ServiceInfo();
+		serviceInfo.setServiceId(1L);
+		serviceInfo.setServiceContent("测试内容");
+		serviceInfo.setServiceDesc("测试描述");
+		int effectedNum = serviceDao.updateService(serviceInfo);
 		assertEquals(1, effectedNum);
 	}
 	
 	@Test
 	@Ignore
 	public void testQueryByServiceId() {
-		long serviceId = 1;
-		Service service = serviceDao.queryByServiceId(serviceId);
-		System.out.println("servicecontent: "+service.getServiceContent());
+		long serviceId = 1L;
+		ServiceInfo serviceInfo = serviceDao.queryByServiceId(serviceId);
+		System.out.println("servicecontent: "+serviceInfo.getServiceContent());
 	}
 	@Test
 	@Ignore
 	public void testQueryByShopId() {
-		long shopId = 1;
-		List<Service>serviceList=serviceDao.queryByShopId(shopId);
-		for(int i=0;i<serviceList.size();i++)
-		System.out.println("servicecontent: "+serviceList.get(i).getServiceContent());
+		long shopId = 1L;
+		List<ServiceInfo>serviceInfoList=serviceDao.queryByShopId(shopId);
+		for(int i=0;i<serviceInfoList.size();i++)
+		System.out.println("servicecontent: "+serviceInfoList.get(i).getServiceContent());
 	}
 	@Test
 	@Ignore
 	public void testDeleteService() {
-		Service service = new Service();
-		service.setServiceId(2L);
-		int effectedNum = serviceDao.deleteService(service);
+		ServiceInfo serviceInfo = new ServiceInfo();
+		serviceInfo.setServiceId(2L);
+		int effectedNum = serviceDao.deleteService(serviceInfo);
 		assertEquals(1, effectedNum);
 	}
 }

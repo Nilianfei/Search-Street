@@ -1,6 +1,6 @@
 package com.graduation.ss.entity;
 
-public class Service {
+public class ServiceInfo {
 
 	/**
 	 * 服务id 主键

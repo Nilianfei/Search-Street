@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.graduation.ss.entity.Service;;
+import com.graduation.ss.entity.ServiceInfo;;
 
 public interface ServiceDao{
 	/**
-	 * 分页查询服务，可输入的条件有：服务名（模糊），店铺id
+	 * 分页查询服务，可输入的条件有：服务名（模糊），店铺id，服务价格
 	 * 
 	 * @param serviceCondition
 	 * @param rowIndex
@@ -17,7 +17,7 @@ public interface ServiceDao{
 	 *            返回的条数
 	 * @return
 	 */
-	public List<Service> queryServiceList(@Param("serviceCondition")Service serviceCondition, @Param("rowIndex") int rowIndex,
+	public List<ServiceInfo> queryServiceList(@Param("serviceCondition")ServiceInfo serviceCondition, @Param("rowIndex") int rowIndex,
 			@Param("pageSize") int pageSize);
 
 	/**
@@ -26,43 +26,43 @@ public interface ServiceDao{
 	 * @param serviceCondition
 	 * @return
 	 */
-	public int queryServiceCount(@Param("serviceCondition")Service serviceCondition);
+	public int queryServiceCount(@Param("serviceCondition")ServiceInfo serviceCondition);
 	/**
-	 * 通过service id查询店铺
+	 * 通过service id查询服务
 	 * @param serviceId
 	 * @return
 	 */
-	public Service queryByServiceId(long serviceId);
+	public ServiceInfo queryByServiceId(long serviceId);
 	/**
-	 * 通过shop id查询店铺
+	 * 通过shop id查询服务
 	 * @param shopId
 	 * @return
 	 */
-	public List<Service> queryByShopId(long shopId);
+	public List<ServiceInfo> queryByShopId(long shopId);
 	/**
 	 * 添加服务
-	 * @param service
+	 * @param serviceInfo
 	 * @return
 	 */
-	public int  insertService(Service service);
+	public int  insertService(ServiceInfo serviceInfo);
 	/**
 	 * 批量添加服务
-	 * @param service
+	 * @param serviceInfo
 	 * @return
 	 */
-	public int  insertServiceInfo(List<Service> serviceList);
+	public int  insertServiceInfo(List<ServiceInfo> serviceList);
 	
 	/**
-	 * 更新店铺信息
-	 * @param service
+	 * 更新服务信息
+	 * @param serviceInfo
 	 * @return
 	 */
-	public int updateService(Service service);
+	public int updateService(ServiceInfo serviceInfo);
 
 	/**
-	 * 删除店铺信息
-	 * @param service
+	 * 删除服务信息
+	 * @param serviceInfo
 	 * @return
 	 */
-	public int deleteService(Service service);
+	public int deleteService(ServiceInfo serviceInfo);
 }

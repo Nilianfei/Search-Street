@@ -1,8 +1,9 @@
 package com.graduation.ss.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class Order {
+public class OrderInfo {
 
 	/**
 	 * 订单id 主键
@@ -24,8 +25,8 @@ public class Order {
 	 * 
 	 */
 	private Integer orderStatus;
-	private Date createTime;
-	private Date overTime;
+	private LocalDateTime createTime;
+	private LocalDateTime overTime;
 	public Long getOrderId() {
 		return orderId;
 	}
@@ -56,16 +57,16 @@ public class Order {
 	public void setOrderStatus(Integer orderStatus) {
 		this.orderStatus = orderStatus;
 	}
-	public Date getCreateTime() {
+	public LocalDateTime getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(LocalDateTime createTime) {
 		this.createTime = createTime;
 	}
-	public Date getOverTime() {
+	public LocalDateTime getOverTime() {
 		return overTime;
 	}
-	public void setOverTime(Date overTime) {
+	public void setOverTime(LocalDateTime overTime) {
 		this.overTime = overTime;
 	}
 	

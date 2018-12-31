@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.ss.dao.OrderDao">
+	<select id="queryOrderList" resultType="com.graduation.ss.entity.OrderInfo">
+		SELECT
+		order_id,service_id,user_id,service_count,order_status,create_time,over_time
+		FROM
+		tb_order 
+		<where>
+			<if test="orderCondition.orderStatus != null">
+				and order_status= #{orderCondition.orderStatus}
+			</if>
+			<if
+				test="orderCondition.userId != null">
+				and user_id = #{orderCondition.userId}
+			</if> 
+			<if
+				test="orderCondition.serviceId != null">
+				and service_id = #{orderCondition.serviceId}
+			</if> 
+			<if test="orderCondition.createTime != null">
+			    and DATE_FORMAT(create_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.createTime},'%Y %m %d')
+		   </if>
+			<if test="orderCondition.overTime != null">
+			    and DATE_FORMAT(over_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.overTime},'%Y %m %d')
+		</if>
+		</where>
+		ORDER BY order_id DESC
+		LIMIT #{rowIndex},#{pageSize};
+	</select>
+	<select id="queryOrderCount" resultType="int">
+		SELECT
+		count(1)
+		FROM
+		tb_order t
+		<where>
+			<if test="orderCondition.orderStatus != null">
+				and order_status= #{orderCondition.orderStatus}
+			</if>
+			<if
+				test="orderCondition.userId != null">
+				and user_id = #{orderCondition.userId}
+			</if> 
+			<if
+				test="orderCondition.serviceId != null">
+				and service_id = #{orderCondition.serviceId}
+			</if> 
+			<if test="orderCondition.createTime != null">
+			    and DATE_FORMAT(create_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.createTime},'%Y %m %d')
+		   </if>
+			<if test="orderCondition.overTime != null">
+			    and DATE_FORMAT(over_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.overTime},'%Y %m %d')
+		</if>
+		</where>
+	</select>
+	<insert id="insertOrder" parameterType="com.graduation.ss.entity.OrderInfo"
+		useGeneratedKeys="true" keyProperty="orderId" keyColumn="order_id">
+		INSERT
+		INTO
+		tb_order(service_id,user_id,service_count,order_status,create_time,over_time)
+		VALUES
+		(#{serviceId},#{userId},#{serviceCount},#{orderStatus},#{createTime},#{overTime})
+	</insert>
+	<insert id="insertOrderInfo" parameterType="java.util.List"
+		useGeneratedKeys="true" keyProperty="orderId" keyColumn="order_id">
+		INSERT
+		INTO 
+		tb_order(service_id,user_id,service_count,order_status,create_time,over_time)
+		VALUES
+		<foreach collection="list" item="orderInfoDTO" index="index"
+			separator=",">
+			(
+			#{orderInfoDTO.serviceId},
+			#{orderInfoDTO.userId},
+			#{orderInfoDTO.serviceCount},
+			#{orderInfoDTO.orderStatus},
+			#{orderInfoDTO.createTime},
+			#{orderInfoDTO.overTime}
+			)
+		</foreach>
+	</insert>
+	
+	<update id="updateOrder" parameterType="com.graduation.ss.entity.OrderInfo">
+		update tb_order 
+		<set>
+            <if test="serviceId!= null">service_id=#{serviceId},</if>
+			<if test="userId != null">user_id=#{userId},</if>
+			<if test="serviceCount != null">service_count=#{serviceCount},</if>
+			<if test="orderStatus != null">order_status=#{orderStatus},</if>
+			<if test="createTime!=null">create_time=#{createTime},</if>
+			<if test="overTime!= null">over_time=#{overTime}</if>	
+		</set>
+		where order_id=#{orderId}
+	</update>
+	<delete id="deleteOrder">
+        delete from tb_order where order_id=#{orderId}
+    </delete>
+	<select id="queryByOrderId" resultType="com.graduation.ss.entity.OrderInfo" parameterType="Long">
+		SELECT
+		service_id,user_id,service_count,order_status,create_time,over_time
+		FROM
+		tb_order 
+		WHERE
+		order_id=#{orderId}
+	</select>
+</mapper>
