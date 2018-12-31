@@ -15,8 +15,18 @@ public class PathUtil {
 		return basePath;
 	}
 
-	public static String getShopImagePath(long shopId) {
-		String imagePath = "/upload/images/item/shop/" + shopId + "/";
+	public static String getShopImgPath(long shopId) {
+		String imagePath = "/upload/images/item/shop/shopImg/" + shopId + "/";
+		return imagePath.replace("/", seperator);
+	}
+	
+	public static String getShopBusinessLicenseImgPath(long shopId) {
+		String imagePath = "/upload/images/item/shop/businessLicenseImg/" + shopId + "/";
+		return imagePath.replace("/", seperator);
+	}
+	
+	public static String getShopProfileImgPath(long shopId) {
+		String imagePath = "/upload/images/item/shop/profileImg/" + shopId + "/";
 		return imagePath.replace("/", seperator);
 	}
 }

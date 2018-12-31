@@ -6,8 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -15,7 +13,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.graduation.ss.dto.ImageHolder;
 
 import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Positions;
 
 public class ImageUtil {
 	private static String basePath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
@@ -64,11 +61,9 @@ public class ImageUtil {
 		File dest = new File(PathUtil.getImgBasePath() + relativeAddr);
 		logger.debug("current complete addr is :" + PathUtil.getImgBasePath() + relativeAddr);
 		logger.debug("basePath is :" + basePath);
-		// 调用Thumbnails生成带有水印的图片
+		// 调用Thumbnails生成缩略图200x200的图片
 		try {
-			Thumbnails.of(thumbnail.getImage()).size(200, 200)
-					.watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f)
-					.outputQuality(0.8f).toFile(dest);
+			Thumbnails.of(thumbnail.getImage()).size(200, 200).outputQuality(0.8f).toFile(dest);
 		} catch (IOException e) {
 			logger.error(e.toString());
 			throw new RuntimeException("创建缩略图失败：" + e.toString());
@@ -97,11 +92,9 @@ public class ImageUtil {
 		// 获取文件要保存到的目标路径
 		File dest = new File(PathUtil.getImgBasePath() + relativeAddr);
 		logger.debug("current complete addr is :" + PathUtil.getImgBasePath() + relativeAddr);
-		// 调用Thumbnails生成带有水印的图片
+		// 调用Thumbnails生成缩略图337x640的图片
 		try {
-			Thumbnails.of(thumbnail.getImage()).size(337, 640)
-					.watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f)
-					.outputQuality(0.9f).toFile(dest);
+			Thumbnails.of(thumbnail.getImage()).size(337, 640).outputQuality(0.9f).toFile(dest);
 		} catch (IOException e) {
 			logger.error(e.toString());
 			throw new RuntimeException("创建缩图片失败：" + e.toString());
@@ -124,6 +117,10 @@ public class ImageUtil {
 		}
 	}
 
+	public static void main(String[] args) throws IOException {
+		Thumbnails.of(new File("C:/Users/Al/Pictures/test.png")).size(200, 200)
+				.outputQuality(0.8f).toFile("C:/Users/Al/Pictures/testnew.png");
+	}
 	/**
 	 * 获取输入文件流的扩展名
 	 * 
@@ -144,12 +141,6 @@ public class ImageUtil {
 		int rannum = r.nextInt(89999) + 10000;
 		String nowTimeStr = sDateFormat.format(new Date());
 		return nowTimeStr + rannum;
-	}
-
-	public static void main(String[] args) throws IOException {
-		Thumbnails.of(new File("/Users/baidu/work/image/xiaohuangren.jpg")).size(200, 200)
-				.watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f)
-				.outputQuality(0.8f).toFile("/Users/baidu/work/image/xiaohuangrennew.jpg");
 	}
 
 	/**

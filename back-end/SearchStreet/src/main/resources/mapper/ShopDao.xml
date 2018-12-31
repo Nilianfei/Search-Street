@@ -72,11 +72,11 @@
 		INTO
 		tb_shop(shop_name,shop_img,business_license_img,business_license_code,phone,province,city,district,
 		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,coordinate_x,coordinate_y,
-		business_scope,create_time,last_edit_time,user_id)
+		business_scope,create_time,last_edit_time,user_id,enable_status)
 		VALUES
 		(#{shopName},#{shopImg},#{businessLicenseImg},#{businessLicenseCode},#{phone},#{province},#{city},
 		#{district},#{fullAddress},#{shopMoreInfo},#{isMobile},#{openTime},#{closeTime},#{profileImg},#{coordinateX},
-		#{coordinateY},#{businessScope},#{createTime},#{lastEditTime},#{userId})
+		#{coordinateY},#{businessScope},#{createTime},#{lastEditTime},#{userId},#{enableStatus})
 	</insert>
 	<update id="updateShop" parameterType="com.graduation.ss.entity.Shop">
 		update tb_shop
