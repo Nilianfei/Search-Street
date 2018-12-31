@@ -11,7 +11,7 @@
  Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 29/12/2018 16:20:30
+ Date: 31/12/2018 17:56:08
 */
 
 SET NAMES utf8mb4;
@@ -37,7 +37,7 @@ CREATE TABLE `tb_shop`  (
   `is_mobile` int(2) NOT NULL DEFAULT 1,
   `open_time` time(0) NULL DEFAULT NULL,
   `close_time` time(0) NULL DEFAULT NULL,
-  `profile_img` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `profile_img` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `coordinate_x` float NOT NULL,
   `coordinate_y` float NOT NULL,
   `enable_status` int(2) NOT NULL DEFAULT 0,
@@ -45,6 +45,6 @@ CREATE TABLE `tb_shop`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `last_edit_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`shop_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
