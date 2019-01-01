@@ -110,17 +110,30 @@ public class ShopServiceImpl implements ShopService {
 			if (effectedNum <= 0) {
 				throw new ShopOperationException("店铺创建失败");
 			} else {
-				if (profileImg.getImage() == null){
-					throw new ShopOperationException("店铺头像为空");
-				}
-				if (shopImg.getImage() != null || businessLicenseImg.getImage() != null) {
-					// 存储图片
-					try {
-						addShopImg(shop, shopImg);
-						addBusinessLicenseImg(shop, businessLicenseImg);
-						addProfileImg(shop, profileImg);
-					} catch (Exception e) {
-						throw new ShopOperationException("addShopImg error:" + e.getMessage());
+				if (shopImg.getImage() != null || businessLicenseImg.getImage() != null || profileImg.getImage() != null) {
+					if (shopImg.getImage() != null){
+						// 存储shopImg图片
+						try {
+							addShopImg(shop, shopImg);
+						} catch (Exception e) {
+							throw new ShopOperationException("addShopImg error:" + e.getMessage());
+						}
+					}
+					if (businessLicenseImg.getImage() != null){
+						// 存储businessLicenseImg图片
+						try {
+							addBusinessLicenseImg(shop, businessLicenseImg);
+						} catch (Exception e) {
+							throw new ShopOperationException("addBusinessLicenseImg error:" + e.getMessage());
+						}
+					}
+					if (profileImg.getImage() != null){
+						// 存储businessLicenseImg图片
+						try {
+							addProfileImg(shop, profileImg);
+						} catch (Exception e) {
+							throw new ShopOperationException("addProfileImg error:" + e.getMessage());
+						}
 					}
 					// 更新店铺的图片地址
 					effectedNum = shopDao.updateShop(shop);

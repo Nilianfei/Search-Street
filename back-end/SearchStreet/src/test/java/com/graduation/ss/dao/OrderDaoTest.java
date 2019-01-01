@@ -8,12 +8,8 @@ package com.graduation.ss.dao;
 
 import static org.junit.Assert.*;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Ignore;
@@ -77,7 +73,7 @@ public class OrderDaoTest {
 		orderInfoList.clear();
 		
 		OrderInfo orderCondition4 = new OrderInfo();
-		orderCondition3.setOverTime(LocalDateTime.now());
+		orderCondition4.setOverTime(LocalDateTime.now());
 		orderInfoList = orderDao.queryOrderList(orderCondition4, 0, 8);
 		count = orderDao.queryOrderCount(orderCondition4);
 		System.out.println("LOCALDATETIME: "+LocalDateTime.now());

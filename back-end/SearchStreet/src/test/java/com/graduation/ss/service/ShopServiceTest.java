@@ -29,6 +29,7 @@ public class ShopServiceTest {
 	private ShopService shopService;
 	
 	@Test
+	@Ignore
 	public void testGetShopList() {
 		Shop shopCondition = new Shop();
 		shopCondition.setProvince("测试省份1");
@@ -56,7 +57,6 @@ public class ShopServiceTest {
 		System.out.println("新的营业执照照片地址为：" + shopExecution.getShop().getBusinessLicenseImg());
 	}
 	@Test
-	@Ignore
 	public void testAddShop() throws ShopOperationException, FileNotFoundException {
 		Shop shop = new Shop();
 		shop.setBusinessLicenseCode("test");
