@@ -39,24 +39,24 @@ public class ShopServiceTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testModifyShop() throws ShopOperationException, FileNotFoundException {
 		Shop shop = new Shop();
-		shop.setShopId(1L);
+		shop.setShopId(2L);
 		shop.setShopName("修改后的店铺名称");
 		File shopImg = new File("C:/Users/Al/Pictures/test.png");
 		InputStream is = new FileInputStream(shopImg);
 		ImageHolder shopImageHolder = new ImageHolder(shopImg.getName(), is);
-		InputStream is1 = new FileInputStream(shopImg);
+		/*InputStream is1 = new FileInputStream(shopImg);
 		ImageHolder shopImageHolder1 = new ImageHolder(shopImg.getName(), is1);
 		InputStream is2 = new FileInputStream(shopImg);
-		ImageHolder shopImageHolder2 = new ImageHolder(shopImg.getName(), is2);
-		ShopExecution shopExecution = shopService.modifyShop(shop, shopImageHolder, shopImageHolder1, shopImageHolder2);
+		ImageHolder shopImageHolder2 = new ImageHolder(shopImg.getName(), is2);*/
+		ShopExecution shopExecution = shopService.modifyShop(shop, shopImageHolder, null, null);
 		System.out.println("新的店铺图片地址为：" + shopExecution.getShop().getShopImg());
 		System.out.println("新的头像地址为：" + shopExecution.getShop().getProfileImg());
 		System.out.println("新的营业执照照片地址为：" + shopExecution.getShop().getBusinessLicenseImg());
 	}
 	@Test
+	@Ignore
 	public void testAddShop() throws ShopOperationException, FileNotFoundException {
 		Shop shop = new Shop();
 		shop.setBusinessLicenseCode("test");
@@ -82,9 +82,7 @@ public class ShopServiceTest {
 		ImageHolder shopImageHolder = new ImageHolder(shopImg.getName(), is);
 		InputStream is1 = new FileInputStream(shopImg);
 		ImageHolder shopImageHolder1 = new ImageHolder(shopImg.getName(), is1);
-		InputStream is2 = new FileInputStream(shopImg);
-		ImageHolder shopImageHolder2 = new ImageHolder(shopImg.getName(), is2);
-		ShopExecution se = shopService.addShop(shop, shopImageHolder, shopImageHolder1, shopImageHolder2 );
+		ShopExecution se = shopService.addShop(shop, shopImageHolder, shopImageHolder1, null );
 		assertEquals(ShopStateEnum.CHECK.getState(), se.getState());
 	}
 }

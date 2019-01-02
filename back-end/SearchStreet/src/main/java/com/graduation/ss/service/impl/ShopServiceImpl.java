@@ -56,21 +56,21 @@ public class ShopServiceImpl implements ShopService {
 			// 1.判断是否需要处理图片
 			try {
 				Shop tempShop = shopDao.queryByShopId(shop.getShopId());
-				if (shopImg.getImage() != null && shopImg.getImageName() != null
+				if (shopImg != null && shopImg.getImage() != null && shopImg.getImageName() != null
 						&& !"".equals(shopImg.getImageName())) {
 					if (tempShop.getShopImg() != null) {
 						ImageUtil.deleteFileOrPath(tempShop.getShopImg());
 					}
 					addShopImg(shop, shopImg);
 				}
-				if (businessLicenseImg.getImage() != null && businessLicenseImg.getImageName() != null
+				if (businessLicenseImg != null && businessLicenseImg.getImage() != null && businessLicenseImg.getImageName() != null
 						&& !"".equals(businessLicenseImg.getImageName())) {
 					if(tempShop.getBusinessLicenseImg() != null) {
 						ImageUtil.deleteFileOrPath(tempShop.getBusinessLicenseImg());
 					}
 					addBusinessLicenseImg(shop, businessLicenseImg);
 				}
-				if (profileImg.getImage() != null && profileImg.getImageName() != null
+				if (profileImg != null && profileImg.getImage() != null && profileImg.getImageName() != null
 						&& !"".equals(profileImg.getImageName())) {
 					if(tempShop.getProfileImg() != null) {
 						ImageUtil.deleteFileOrPath(tempShop.getProfileImg());
@@ -110,8 +110,9 @@ public class ShopServiceImpl implements ShopService {
 			if (effectedNum <= 0) {
 				throw new ShopOperationException("店铺创建失败");
 			} else {
-				if (shopImg.getImage() != null || businessLicenseImg.getImage() != null || profileImg.getImage() != null) {
-					if (shopImg.getImage() != null){
+				if (shopImg != null || businessLicenseImg != null || profileImg != null) {
+					if (shopImg != null && shopImg.getImage() != null && shopImg.getImageName() != null
+							&& !"".equals(shopImg.getImageName())){
 						// 存储shopImg图片
 						try {
 							addShopImg(shop, shopImg);
@@ -119,7 +120,8 @@ public class ShopServiceImpl implements ShopService {
 							throw new ShopOperationException("addShopImg error:" + e.getMessage());
 						}
 					}
-					if (businessLicenseImg.getImage() != null){
+					if (businessLicenseImg != null && businessLicenseImg.getImage() != null && businessLicenseImg.getImageName() != null
+							&& !"".equals(businessLicenseImg.getImageName())){
 						// 存储businessLicenseImg图片
 						try {
 							addBusinessLicenseImg(shop, businessLicenseImg);
@@ -127,7 +129,8 @@ public class ShopServiceImpl implements ShopService {
 							throw new ShopOperationException("addBusinessLicenseImg error:" + e.getMessage());
 						}
 					}
-					if (profileImg.getImage() != null){
+					if (profileImg != null && profileImg.getImage() != null && profileImg.getImageName() != null
+							&& !"".equals(profileImg.getImageName())){
 						// 存储businessLicenseImg图片
 						try {
 							addProfileImg(shop, profileImg);
