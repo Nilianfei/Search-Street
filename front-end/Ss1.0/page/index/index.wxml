@@ -1,0 +1,31 @@
+<!--page/index/index.wxml-->
+<view class="index">
+  <view class="index-hd">
+     <image class="index-logo" src=""></image>
+     <view class="index-desc">搜街</view>
+  </view>
+  <view class="index-bd">
+   <view class="kind-list">
+     <navigator class="kind-list-item" catchtap='click'>
+       <view class="kind-list-text">商铺登陆</view>
+       <image class="kind-list-img" src="../../images/商铺.png"></image>
+     </navigator> 
+     <navigator class="kind-list-item" id="serach-store">
+       <view class="kind-list-text">搜搜商铺</view>
+       <image class="kind-list-img" src="../../images/搜索周边商家.png"></image>
+    </navigator>
+     <navigator class="kind-list-item" id="serach-help">
+       <view class="kind-list-text">寻帮助</view>
+       <image class="kind-list-img" src="../../images/帮助.png"></image>
+     </navigator>
+     <navigator class="kind-list-item" id="my-help">
+       <view class="kind-list-text">帮把手</view>
+       <image class="kind-list-img" src="../../images/帮助中心.png"></image>
+     </navigator>
+     <navigator class="kind-list-item" id="pri-inf">
+       <view class="kind-list-text">个人中心</view>
+       <image class="kind-list-img" src="../../images/个人.png"></image>
+     </navigator>
+   </view>
+  </view>   
+  </view>

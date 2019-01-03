@@ -1,0 +1,25 @@
+/* page/register/register.wxss */
+@import "../../weui.wxss";
+.reghd-text{
+  text-align: left;
+  font-size: 16px;
+}
+.reg-hd{
+  height: 200px;
+  background-color: #34d4dae0;
+}
+.section-sttext{
+  font-size: 17px;
+  color: #132627b0;
+  padding-left: 15px;
+}
+.section-stimage{
+  height: 120px;
+}
+.store-locat{
+  font-size: 17px;
+  color: #000;
+  background-color: #34d4dae0;
+  text-align: center;
+  padding: 10px;
+}
