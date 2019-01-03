@@ -1,5 +1,7 @@
 package com.graduation.ss.service;
 
+import java.util.List;
+
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.ShopExecution;
 import com.graduation.ss.entity.Shop;
@@ -32,7 +34,7 @@ public interface ShopService {
 	 * @return
 	 * @throws ShopOperationException
 	 */
-	ShopExecution modifyShop(Shop shop, ImageHolder shopImg, ImageHolder businessLicenseImg, ImageHolder profileImg) throws ShopOperationException;
+	ShopExecution modifyShop(Shop shop, List<ImageHolder> shopImgList, ImageHolder businessLicenseImg, ImageHolder profileImg) throws ShopOperationException;
 
 	/**
 	 * 注册店铺信息，包括图片处理
@@ -43,5 +45,5 @@ public interface ShopService {
 	 * @return
 	 * @throws ShopOperationException
 	 */
-	ShopExecution addShop(Shop shop, ImageHolder shopImg, ImageHolder businessLicenseImg, ImageHolder profileImg) throws ShopOperationException;
+	ShopExecution addShop(Shop shop, List<ImageHolder> shopImgList, ImageHolder businessLicenseImg, ImageHolder profileImg) throws ShopOperationException;
 }

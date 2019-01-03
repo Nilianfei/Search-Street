@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.ss.dao.ShopImgDao">
+	<select id="getShopImgList" resultType="com.graduation.ss.entity.ShopImg">
+		SELECT
+		shop_img_id,
+		img_addr,
+		create_time,
+		shop_id
+		FROM tb_shop_img
+		WHERE shop_id=#{shopId}
+		ORDER BY
+		shop_img_id ASC
+	</select>
+	<insert id="batchInsertShopImg" parameterType="java.util.List">	
+		INSERT INTO
+		tb_shop_img(img_addr,create_time,shop_id)
+		VALUES
+		<foreach collection="list" item="shopImg" index="index"
+			separator=",">
+			(
+			#{shopImg.imgAddr},
+			#{shopImg.createTime},
+			#{shopImg.shopId}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteShopImgByShopId">
+		DELETE FROM
+		tb_shop_img
+		WHERE
+		shop_id =
+		#{shopId}
+	</delete>
+</mapper>

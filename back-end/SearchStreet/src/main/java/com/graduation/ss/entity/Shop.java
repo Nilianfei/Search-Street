@@ -2,11 +2,12 @@ package com.graduation.ss.entity;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 public class Shop {
 	private Long shopId;
 	private String shopName;
-	private String shopImg;
+	private List<ShopImg> shopImgList;
 	private String businessLicenseImg;
 	private String businessLicenseCode;
 	private String phone;
@@ -41,11 +42,11 @@ public class Shop {
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
 	}
-	public String getShopImg() {
-		return shopImg;
+	public List<ShopImg> getShopImgList() {
+		return shopImgList;
 	}
-	public void setShopImg(String shopImg) {
-		this.shopImg = shopImg;
+	public void setShopImgList(List<ShopImg> shopImgList) {
+		this.shopImgList = shopImgList;
 	}
 	public String getBusinessLicenseImg() {
 		return businessLicenseImg;

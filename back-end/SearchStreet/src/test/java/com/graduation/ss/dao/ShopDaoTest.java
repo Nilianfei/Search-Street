@@ -70,7 +70,6 @@ public class ShopDaoTest {
 		shop.setPhone("test");
 		shop.setProfileImg("test");
 		shop.setProvince("test");
-		shop.setShopImg("test");
 		shop.setShopMoreInfo("test");
 		shop.setShopName("test");
 		shop.setUserId(1L);

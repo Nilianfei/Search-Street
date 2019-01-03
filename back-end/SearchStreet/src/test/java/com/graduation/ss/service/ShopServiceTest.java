@@ -7,7 +7,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,24 +41,24 @@ public class ShopServiceTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testModifyShop() throws ShopOperationException, FileNotFoundException {
 		Shop shop = new Shop();
 		shop.setShopId(2L);
 		shop.setShopName("修改后的店铺名称");
 		File shopImg = new File("C:/Users/Al/Pictures/test.png");
 		InputStream is = new FileInputStream(shopImg);
-		ImageHolder shopImageHolder = new ImageHolder(shopImg.getName(), is);
-		/*InputStream is1 = new FileInputStream(shopImg);
-		ImageHolder shopImageHolder1 = new ImageHolder(shopImg.getName(), is1);
-		InputStream is2 = new FileInputStream(shopImg);
+		List<ImageHolder> shopImageHolderList = new ArrayList<ImageHolder>();
+		shopImageHolderList.add(new ImageHolder(shopImg.getName(), is));
+		InputStream is1 = new FileInputStream(shopImg);
+		ImageHolder profileImageHolder1 = new ImageHolder(shopImg.getName(), is1);
+		/*InputStream is2 = new FileInputStream(shopImg);
 		ImageHolder shopImageHolder2 = new ImageHolder(shopImg.getName(), is2);*/
-		ShopExecution shopExecution = shopService.modifyShop(shop, shopImageHolder, null, null);
-		System.out.println("新的店铺图片地址为：" + shopExecution.getShop().getShopImg());
+		ShopExecution shopExecution = shopService.modifyShop(shop, shopImageHolderList, null, profileImageHolder1);
 		System.out.println("新的头像地址为：" + shopExecution.getShop().getProfileImg());
-		System.out.println("新的营业执照照片地址为：" + shopExecution.getShop().getBusinessLicenseImg());
 	}
+	
 	@Test
-	@Ignore
 	public void testAddShop() throws ShopOperationException, FileNotFoundException {
 		Shop shop = new Shop();
 		shop.setBusinessLicenseCode("test");
@@ -79,10 +81,14 @@ public class ShopServiceTest {
 		shop.setEnableStatus(0);
 		File shopImg = new File("C:/Users/Al/Pictures/test.png");
 		InputStream is = new FileInputStream(shopImg);
-		ImageHolder shopImageHolder = new ImageHolder(shopImg.getName(), is);
-		InputStream is1 = new FileInputStream(shopImg);
-		ImageHolder shopImageHolder1 = new ImageHolder(shopImg.getName(), is1);
-		ShopExecution se = shopService.addShop(shop, shopImageHolder, shopImageHolder1, null );
+		File shopImg1 = new File("C:/Users/Al/Pictures/timg.jpg");
+		InputStream is1 = new FileInputStream(shopImg1);
+		List<ImageHolder> shopImgList = new ArrayList<ImageHolder>();
+		shopImgList.add(new ImageHolder(shopImg.getName(), is));
+		shopImgList.add(new ImageHolder(shopImg1.getName(), is1));
+		InputStream is2 = new FileInputStream(shopImg);
+		ImageHolder businessImgHolder = new ImageHolder(shopImg.getName(), is2);
+		ShopExecution se = shopService.addShop(shop, shopImgList, businessImgHolder, null );
 		assertEquals(ShopStateEnum.CHECK.getState(), se.getState());
 	}
 }

@@ -18,9 +18,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.graduation.ss.dao.ShopImgDao;
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.ShopExecution;
 import com.graduation.ss.entity.Shop;
+import com.graduation.ss.entity.ShopImg;
 import com.graduation.ss.enums.ShopStateEnum;
 import com.graduation.ss.exceptions.ShopOperationException;
 import com.graduation.ss.service.ShopService;
@@ -32,6 +34,11 @@ import com.graduation.ss.util.HttpServletRequestUtil;
 public class ShopManagementController {
 	@Autowired
 	private ShopService shopService;
+	@Autowired
+	private ShopImgDao shopImgDao;
+	
+	// 支持上传店铺详情图的最大数量
+	private static final int IMAGEMAXCOUNT = 6;
 	
 	@RequestMapping(value = "/getshoplistbyuserid", method = RequestMethod.GET)
 	@ResponseBody
@@ -61,7 +68,11 @@ public class ShopManagementController {
 		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
 		if (shopId > 0) {
 			try {
+				//获取店铺信息
 				Shop shop = shopService.getByShopId(shopId);
+				//获取店铺详情图列表
+				List<ShopImg> shopImgList = shopImgDao.getShopImgList(shopId);
+				shop.setShopImgList(shopImgList);
 				modelMap.put("shop", shop);
 				modelMap.put("success", true);
 			} catch (Exception e) {
@@ -90,16 +101,19 @@ public class ShopManagementController {
 			modelMap.put("errMsg", e.getMessage());
 			return modelMap;
 		}
-		CommonsMultipartFile shopImg = null;
-		CommonsMultipartFile businessLicenseImg = null;
-		CommonsMultipartFile profileImg = null;
+		List<ImageHolder> shopImgList = new ArrayList<ImageHolder>();
+		ImageHolder businessLicenseImg = null;
+		ImageHolder profileImg = null;
 		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
 				request.getSession().getServletContext());
-		if (commonsMultipartResolver.isMultipart(request)) {
-			MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
-			shopImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("shopImg");
-			businessLicenseImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("businessLicenseImg");
-			profileImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("profileImg");
+		try{
+			if (commonsMultipartResolver.isMultipart(request)) {
+				handleImage(request, shopImgList, businessLicenseImg, profileImg);
+			}
+		}catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
 		}
 		// 2.注册店铺
 		if (shop != null) {
@@ -107,13 +121,7 @@ public class ShopManagementController {
 			shop.setUserId(userId);
 			ShopExecution se;
 			try {
-				ImageHolder shopImgHolder = null;
-				ImageHolder businessImgHolder = null;
-				ImageHolder profileImgHolder = null;
-				if(shopImg != null) shopImgHolder = new ImageHolder(shopImg.getOriginalFilename(), shopImg.getInputStream());
-				if(businessLicenseImg != null) businessImgHolder = new ImageHolder(businessLicenseImg.getOriginalFilename(), businessLicenseImg.getInputStream());
-				if(profileImg != null) profileImgHolder = new ImageHolder(profileImg.getOriginalFilename(), profileImg.getInputStream());
-				se = shopService.addShop(shop, shopImgHolder, businessImgHolder, profileImgHolder);
+				se = shopService.addShop(shop, shopImgList, businessLicenseImg, profileImg);
 				if (se.getState() == ShopStateEnum.CHECK.getState()) {
 					modelMap.put("success", true);
 					// 该用户可以操作的店铺列表
@@ -131,9 +139,6 @@ public class ShopManagementController {
 			} catch (ShopOperationException e) {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", e.getMessage());
-			} catch (IOException e) {
-				modelMap.put("success", false);
-				modelMap.put("errMsg", e.getMessage());
 			}
 			return modelMap;
 		} else {
@@ -143,6 +148,34 @@ public class ShopManagementController {
 		}
 	}
 	
+	private void handleImage(HttpServletRequest request, List<ImageHolder> shopImgList, ImageHolder businessLicenseImg,
+			ImageHolder profileImg) throws IOException {
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		// 取出详情图列表并构建List<ImageHolder>列表对象，最多支持六张图片上传
+		for (int i = 0; i < IMAGEMAXCOUNT; i++) {
+			CommonsMultipartFile shopImgFile = (CommonsMultipartFile) multipartRequest.getFile("shopImg" + i);
+			if (shopImgFile != null) {
+				// 若取出的第i个详情图片文件流不为空，则将其加入详情图列表
+				ImageHolder shopImg = new ImageHolder(shopImgFile.getOriginalFilename(),
+						shopImgFile.getInputStream());
+				shopImgList.add(shopImg);
+			} else {
+				// 若取出的第i个详情图片文件流为空，则终止循环
+				break;
+			}
+		}
+		// 取出businessImg并构建ImageHolder对象
+		CommonsMultipartFile businessImgFile = (CommonsMultipartFile) multipartRequest.getFile("businessLicenseImg");
+		if (businessImgFile != null) {
+			businessLicenseImg = new ImageHolder(businessImgFile.getOriginalFilename(), businessImgFile.getInputStream());
+		}
+		// 取出profileImg并构建ImageHolder对象
+		CommonsMultipartFile profileImgFile = (CommonsMultipartFile) multipartRequest.getFile("profileImg");
+		if (profileImgFile != null) {
+			profileImg = new ImageHolder(profileImgFile.getOriginalFilename(), profileImgFile.getInputStream());
+		}
+	}
+
 	@RequestMapping(value = "/modifyshop", method = RequestMethod.POST)
 	@ResponseBody
 	private Map<String, Object> modifyShop(HttpServletRequest request) {
@@ -158,28 +191,25 @@ public class ShopManagementController {
 			modelMap.put("errMsg", e.getMessage());
 			return modelMap;
 		}
-		CommonsMultipartFile shopImg = null;
-		CommonsMultipartFile businessLicenseImg = null;
-		CommonsMultipartFile profileImg = null;
+		List<ImageHolder> shopImgList = new ArrayList<ImageHolder>();
+		ImageHolder businessLicenseImg = null;
+		ImageHolder profileImg = null;
 		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
 				request.getSession().getServletContext());
-		if (commonsMultipartResolver.isMultipart(request)) {
-			MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
-			shopImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("shopImg");
-			businessLicenseImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("businessLicenseImg");
-			profileImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("profileImg");
+		try{
+			if (commonsMultipartResolver.isMultipart(request)) {
+				handleImage(request, shopImgList, businessLicenseImg, profileImg);
+			}
+		}catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
 		}
 		// 2.修改店铺信息
 		if (shop != null && shop.getShopId() != null) {
 			ShopExecution se;
 			try {
-				ImageHolder shopImgHolder = null;
-				ImageHolder businessImgHolder = null;
-				ImageHolder profileImgHolder = null;
-				if(shopImg != null) shopImgHolder = new ImageHolder(shopImg.getOriginalFilename(), shopImg.getInputStream());
-				if(businessLicenseImg != null) businessImgHolder = new ImageHolder(businessLicenseImg.getOriginalFilename(), businessLicenseImg.getInputStream());
-				if(profileImg != null) profileImgHolder = new ImageHolder(profileImg.getOriginalFilename(), profileImg.getInputStream());
-				se = shopService.addShop(shop, shopImgHolder, businessImgHolder, profileImgHolder);
+				se = shopService.addShop(shop, shopImgList, businessLicenseImg, profileImg);
 				if (se.getState() == ShopStateEnum.SUCCESS.getState()) {
 					modelMap.put("success", true);
 				} else {
@@ -187,9 +217,6 @@ public class ShopManagementController {
 					modelMap.put("errMsg", se.getStateInfo());
 				}
 			} catch (ShopOperationException e) {
-				modelMap.put("success", false);
-				modelMap.put("errMsg", e.getMessage());
-			} catch (IOException e) {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", e.getMessage());
 			}
