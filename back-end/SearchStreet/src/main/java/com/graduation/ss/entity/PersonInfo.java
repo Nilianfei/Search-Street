@@ -8,7 +8,7 @@ public class PersonInfo {
 	private String profileImg;
 	//F女性，M男性
 	private String sex;
-	private Integer age;
+	private Date birth;
 	private String phone;
 	private Long souCoin;
 	//0普通用户，1管理员
@@ -49,11 +49,11 @@ public class PersonInfo {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	public Integer getAge() {
-		return age;
+	public Date getBirth() {
+		return birth;
 	}
-	public void setAge(Integer age) {
-		this.age = age;
+	public void setBirth(Date birth) {
+		this.birth = birth;
 	}
 	public String getPhone() {
 		return phone;

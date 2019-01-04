@@ -25,7 +25,7 @@ public class PersonInfoDaoTest {
 		// 设置新增的用户信息
 		PersonInfo personInfo = new PersonInfo();
 		personInfo.setUserName("测试用户名");
-		personInfo.setAge(11);
+		personInfo.setBirth(new Date());
 		personInfo.setCreateTime(new Date());
 		personInfo.setEmail("testemailaddress");
 		personInfo.setEnableStatus(1);
@@ -49,11 +49,10 @@ public class PersonInfoDaoTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testUpdatePersonInfo() {
 		PersonInfo personInfo = new PersonInfo();
 		personInfo.setUserId(1L);
-		personInfo.setAge(30);
+		personInfo.setBirth(new Date());
 		personInfo.setSouCoin(10000L);
 		personInfo.setLastEditTime(new Date());
 		int effectedNum = personInfoDao.updatePersonInfo(personInfo);

@@ -10,7 +10,7 @@
 		user_name,
 		profile_img,
 		sex,
-		age,
+		birth,
 		phone,
 		sou_coin,
 		user_type,
@@ -31,7 +31,7 @@
 		user_name,
 		profile_img,
 		sex,
-		age,
+		birth,
 		phone,
 		sou_coin,
 		user_type,
@@ -40,7 +40,7 @@
 		last_edit_time,
 		enable_status)
 		VALUES
-		(#{userName},#{profileImg},#{sex},#{age},
+		(#{userName},#{profileImg},#{sex},#{birth},
 		#{phone},#{souCoin},#{userType},#{email},
 		#{createTime},#{lastEditTime},#{enableStatus})
 	</insert>
@@ -50,7 +50,7 @@
 			<if test="userName != null">user_name=#{userName},</if>
 			<if test="profileImg != null">profile_img=#{profileImg},</if>
 			<if test="sex != null">sex=#{sex},</if>
-			<if test ="age != null">age=#{age},</if>
+			<if test ="birth != null">birth=#{birth},</if>
 			<if test ="phone != null">phone=#{phone},</if>
 			<if test ="souCoin != null">sou_coin=#{souCoin},</if>
 			<if test ="userType != null">user_type=#{userType},</if>
