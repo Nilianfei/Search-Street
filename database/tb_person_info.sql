@@ -1,17 +1,17 @@
-﻿/*
- Navicat Premium Data Transfer
+/*
+ Navicat MySQL Data Transfer
 
- Source Server         : summerunreal
+ Source Server         : root
  Source Server Type    : MySQL
- Source Server Version : 50642
+ Source Server Version : 50723
  Source Host           : localhost:3306
  Source Schema         : search_street
 
  Target Server Type    : MySQL
- Target Server Version : 50642
+ Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 21/12/2018 20:53:02
+ Date: 04/01/2019 17:50:25
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +27,7 @@ CREATE TABLE `tb_person_info`  (
   `profile_img` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `email` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sex` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `age` int(3) UNSIGNED NULL DEFAULT 0,
+  `birth` date NULL,
   `phone` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sou_coin` int(10) UNSIGNED NULL DEFAULT 0,
   `user_type` int(2) NOT NULL DEFAULT 0 COMMENT '0:普通用户，1:管理员',
@@ -35,6 +35,6 @@ CREATE TABLE `tb_person_info`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `last_edit_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 SET FOREIGN_KEY_CHECKS = 1;
