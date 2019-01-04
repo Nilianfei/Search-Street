@@ -1,0 +1,54 @@
+<!--page/index/index.wxml-->
+<view class="index">
+  <view class="index-hd">
+     <image class="index-logo" src=""></image>
+     <view class="index-desc">搜街</view>
+  </view>
+  <view class="index-bd">
+   <view class="kind-list">
+     <view class="kind-list-item">
+      <view class="kind-list-item-hd {{open ? 'kind-list-item-hd-show' : ''}} " bindtap="kindToggle">
+       <view class="kind-list-text">商铺注册</view>
+       <image class="kind-list-img" src="../../images/商铺.png"></image>
+      </view>
+      <view class="kind-list-item-bd {{open ? 'kind-list-item-bd-show' : ''}}">
+        <view class="navigator-box {{open ? 'navigator-box-show' : ''}}">
+          <navigator class="navigator" url="../e-register/e-register">
+            <view class="navigator-text">固定商家注册</view>
+            <view class="navigator-arrow"></view>
+          </navigator>
+          <navigator class="navigator" url="../m-register/m-register">
+            <view class="navigator-text">移动商家注册</view>
+            <view class="navigator-arrow"></view>
+          </navigator>
+        </view>
+      </view>
+    </view>
+   
+     <view class="kind-list-item" id="serach-store">
+       <view class="kind-list-item-hd">
+          <view class="kind-list-text">搜搜商铺</view>
+          <image class="kind-list-img" src="../../images/搜索周边商家.png"></image>
+        </view>
+    </view>
+     <navigator class="kind-list-item" id="serach-help">
+       <view class="kind-list-item-hd">
+         <view class="kind-list-text">寻帮助</view>
+         <image class="kind-list-img" src="../../images/帮助.png"></image>
+        </view>
+     </navigator>
+     <navigator class="kind-list-item" id="my-help">
+        <view class="kind-list-item-hd">
+          <view class="kind-list-text">帮把手</view>
+          <image class="kind-list-img" src="../../images/帮助中心.png"></image>
+        </view>
+     </navigator>
+     <navigator class="kind-list-item" id="pri-inf">
+     <view class="kind-list-item-hd">
+       <view class="kind-list-text">个人中心</view>
+       <image class="kind-list-img" src="../../images/个人.png"></image>
+      </view>
+     </navigator>
+   </view>
+  </view>   
+  </view>

@@ -1,0 +1,6 @@
+{
+  "pages":["page/login/login",
+  "page/index/index",
+  "page/e-register/e-register",
+  "page/m-register/m-register"]
+}
