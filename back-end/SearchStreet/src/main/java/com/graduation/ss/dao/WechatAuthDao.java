@@ -5,13 +5,6 @@ import org.apache.ibatis.annotations.Param;
 import com.graduation.ss.entity.WechatAuth;
 
 public interface WechatAuthDao {
-	/**
-	 * 通过用户Id查询对应的WechatAuth
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	WechatAuth queryWechatByUserId(@Param("userId")long userId);
 	
 	/**
 	 * 通过openId查询对应的WechatAuth

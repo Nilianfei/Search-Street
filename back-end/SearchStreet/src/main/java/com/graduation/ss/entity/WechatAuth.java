@@ -32,4 +32,6 @@ public class WechatAuth {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+	
+	
 }

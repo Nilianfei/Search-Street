@@ -3,26 +3,19 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.graduation.ss.dao.WechatAuthDao">
-	<select id="queryWechatByUserId" resultType="com.graduation.ss.entity.WechatAuth">
-		SELECT
-		wechat_auth_id,
-		open_id,
-		create_time,
-		user_id
-		FROM tb_wechat_auth
-		WHERE user_id=#{userId}
-	</select>
 	<select id="queryWechatByOpenId" resultType="com.graduation.ss.entity.WechatAuth">
 		SELECT
 		wechat_auth_id,
 		open_id,
 		create_time,
 		user_id
-		FROM tb_wechat_auth
-		WHERE open_id=#{openId}
+		FROM 
+		tb_wechat_auth
+		WHERE
+		open_id=#{openId}
 	</select>
 	<insert id="insertWechatAuth" parameterType="com.graduation.ss.entity.WechatAuth"
-	useGeneratedKeys="true" keyProperty="wechatAuthId" keyColumn="wechat_auth_id">
+		useGeneratedKeys="true" keyProperty="wechatAuthId" keyColumn="wechat_auth_id">
 		INSERT
 		INTO
 		tb_wechat_auth(open_id,create_time,user_id)

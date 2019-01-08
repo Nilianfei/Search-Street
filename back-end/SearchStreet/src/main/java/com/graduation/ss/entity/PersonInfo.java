@@ -6,7 +6,7 @@ public class PersonInfo {
 	private Long userId;
 	private String userName;
 	private String profileImg;
-	//F女性，M男性
+	//0未知，1男性，2女性
 	private String sex;
 	private Date birth;
 	private String phone;

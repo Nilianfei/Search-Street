@@ -7,33 +7,59 @@ Page({
   },
   onLoad: function () {
     var that = this;
-    // 查看是否授权
-    wx.getSetting({
-      success: function (res) {
-        if (res.authSetting['scope.userInfo']) {
-          wx.getUserInfo({
-            success: function (res) {
-              //从数据库获取用户信息
-              that.queryUserInfo();
-              //用户已经授权过
-              wx.redirectTo({
-                url: '../index/index'
-              })
+    wx.checkSession({
+      success() {
+        // 查看是否授权
+        wx.getSetting({
+          success: function (res) {
+            if (res.authSetting['scope.userInfo']) {
+              wx.getUserInfo({
+                success: function (res) {
+                  //从数据库获取用户信息
+                  that.queryUserInfo();
+                  //用户已经授权过
+                  wx.redirectTo({
+                    url: '../index/index'
+                  })
+                }
+              });
             }
-          });
-        }
+          }
+        })
       }
     })
   },
   bindGetUserInfo: function (e) {
+    //console.log(e.detail.userInfo)
+    //用户按了允许授权按钮
+    var that = this;
     if (e.detail.userInfo) {
-      //用户按了允许授权按钮
-      var that = this;
+      wx.login({
+        success: res => {
+          console.log(res)
+          var code = res.code;
+          wx.request({
+            url: "http://localhost:8080/ss/wechat/login",
+            data: {
+              code: code,
+              userInfo: e.detail.userInfo
+            },
+            method: "POST",
+            success: res => {
+              try {
+                wx.setStorageSync('token', res.data.token)
+              } catch (e) { 
+                console.log("error");
+              }
+            }
+          })
+        }
+      });
+      
       //插入登录的用户的相关信息到数据库
-      wx.request({
+      /**wx.request({
         url: 'user/add',
         data: {
-          openid: getApp().globalData.openid,
           nickName: e.detail.userInfo.nickName,
           avatarUrl: e.detail.userInfo.avatarUrl,
           province: e.detail.userInfo.province,
@@ -45,7 +71,7 @@ Page({
         success: function (res) {
           console.log("插入小程序登录用户信息成功！");
         }
-      });
+      });*/
       //授权成功后，跳转进入小程序首页
       wx.redirectTo({
         url: '../index/index'
@@ -67,13 +93,26 @@ Page({
   },
   //获取用户信息接口
   queryUserInfo: function () {
+    var token = null;
+    try {
+      const value = wx.getStorageSync('token')
+      if (value) {
+        token = value;
+      }
+    } catch (e) {
+      console.log("error");
+    }
+    wx.getStorage({
+      key: 'token',
+      success(res) {
+        token = res;
+        console.log("getStorage" + token);
+      }
+    })
     wx.request({
-      url: 'user/userInfo',
+      url: 'http://localhost:8080/ss/wechat/getUserInfo',
       data: {
-      openid: getApp().globalData.openid
-      },
-      header: {
-        'content-type': 'application/json'
+        token: token
       },
       success: function (res) {
         // 拿到自己后台传过来的数据，自己作处理

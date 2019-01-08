@@ -30,12 +30,6 @@ public class WechatAuthDaoTest {
 	}
 	
 	@Test
-	public void testQueryWechatByUserId() {
-		WechatAuth wechatAuth = wechatAuthDao.queryWechatByUserId(1L);
-		assertEquals(openid, wechatAuth.getOpenId());
-	}
-	
-	@Test
 	public void testQueryWechatByOpenId() {
 		WechatAuth wechatAuth = wechatAuthDao.queryWechatByOpenId(openid);
 		assertEquals("1", wechatAuth.getUserId().toString());
