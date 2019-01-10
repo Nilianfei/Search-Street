@@ -1,5 +1,3 @@
-var app = getApp()
-
 Page({
   data: {
     //判断小程序的API，回调，参数，组件等是否在当前版本可用。
@@ -17,10 +15,6 @@ Page({
                 success: function (res) {
                   //从数据库获取用户信息
                   that.queryUserInfo();
-                  //用户已经授权过
-                  wx.redirectTo({
-                    url: '../index/index'
-                  })
                 }
               });
             }
@@ -30,7 +24,6 @@ Page({
     })
   },
   bindGetUserInfo: function (e) {
-    //console.log(e.detail.userInfo)
     //用户按了允许授权按钮
     var that = this;
     if (e.detail.userInfo) {
@@ -46,36 +39,21 @@ Page({
             },
             method: "POST",
             success: res => {
-              try {
-                wx.setStorageSync('token', res.data.token)
-              } catch (e) { 
-                console.log("error");
-              }
+              wx.setStorage({
+                key: 'token',
+                data: res.data.token
+              })
+              //授权成功后，跳转进入小程序首页
+              wx.redirectTo({
+                url: '../index/index'
+              })
+            },
+            fail: function (err) {
+              console.log(err)
             }
           })
         }
       });
-      
-      //插入登录的用户的相关信息到数据库
-      /**wx.request({
-        url: 'user/add',
-        data: {
-          nickName: e.detail.userInfo.nickName,
-          avatarUrl: e.detail.userInfo.avatarUrl,
-          province: e.detail.userInfo.province,
-          city: e.detail.userInfo.city
-        },
-        header: {
-          'content-type': 'application/json'
-        },
-        success: function (res) {
-          console.log("插入小程序登录用户信息成功！");
-        }
-      });*/
-      //授权成功后，跳转进入小程序首页
-      wx.redirectTo({
-        url: '../index/index'
-      })
     } else {
       //用户按了拒绝按钮
       wx.showModal({
@@ -117,6 +95,12 @@ Page({
       success: function (res) {
         // 拿到自己后台传过来的数据，自己作处理
         console.log(res.data);
+        if(null != res.data.success && res.data.success){
+          //用户登录成功
+          wx.redirectTo({
+            url: '../index/index'
+          })
+        }
       }
       ,fail:function(err){
         console.log(err)

@@ -80,6 +80,7 @@ public class WechatUtil {
 		personInfo.setSex(user.getGender());
 		personInfo.setProfileImg(user.getAvatarUrl());
 		personInfo.setEnableStatus(1);
+		personInfo.setSouCoin(0L);
 		return personInfo;
 	}
 
