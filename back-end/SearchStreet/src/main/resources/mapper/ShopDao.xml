@@ -5,7 +5,7 @@
 <mapper namespace="com.graduation.ss.dao.ShopDao">
 	<select id="queryShopList" resultType="com.graduation.ss.entity.Shop">
 		SELECT
-		shop_name,business_license_img,business_license_code,phone,province,city,district,
+		shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
 		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,coordinate_x,coordinate_y,
 		enable_status,business_scope,create_time,last_edit_time
 		FROM
@@ -70,11 +70,11 @@
 		useGeneratedKeys="true" keyProperty="shopId" keyColumn="shop_id">
 		INSERT
 		INTO
-		tb_shop(shop_name,business_license_img,business_license_code,phone,province,city,district,
+		tb_shop(shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
 		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,coordinate_x,coordinate_y,
 		business_scope,create_time,last_edit_time,user_id,enable_status)
 		VALUES
-		(#{shopName},#{businessLicenseImg},#{businessLicenseCode},#{phone},#{province},#{city},
+		(#{shopName},#{businessLicenseImg},#{businessLicenseCode},#{perCost},#{phone},#{province},#{city},
 		#{district},#{fullAddress},#{shopMoreInfo},#{isMobile},#{openTime},#{closeTime},#{profileImg},#{coordinateX},
 		#{coordinateY},#{businessScope},#{createTime},#{lastEditTime},#{userId},#{enableStatus})
 	</insert>
@@ -84,6 +84,7 @@
 			<if test="shopName != null">shop_name=#{shopName},</if>
 			<if test="businessLicenseImg != null">business_license_img=#{businessLicenseImg},</if>
 			<if test="businessLicenseCode != null">business_license_code=#{businessLicenseCode},</if>
+			<if test="perCost != null">per_cost=#{perCost},</if>
 			<if test="phone != null">phone=#{phone},</if>
 			<if test="province!=null">province=#{province},</if>
 			<if test="city != null">city=#{city},</if>
@@ -104,7 +105,7 @@
 	</update>
 	<select id="queryByShopId" resultType="com.graduation.ss.entity.Shop" parameterType="Long">
 		SELECT
-		shop_name,business_license_img,business_license_code,phone,province,city,district,
+		shop_id,shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
 		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,coordinate_x,coordinate_y,
 		enable_status,business_scope,create_time,last_edit_time
 		FROM

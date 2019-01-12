@@ -14,18 +14,12 @@
 		ORDER BY
 		shop_img_id ASC
 	</select>
-	<insert id="batchInsertShopImg" parameterType="java.util.List">	
+	<insert id="insertShopImg" parameterType="com.graduation.ss.entity.ShopImg" 
+		useGeneratedKeys="true" keyProperty="shopImgId" keyColumn="shop_img_id">	
 		INSERT INTO
 		tb_shop_img(img_addr,create_time,shop_id)
 		VALUES
-		<foreach collection="list" item="shopImg" index="index"
-			separator=",">
-			(
-			#{shopImg.imgAddr},
-			#{shopImg.createTime},
-			#{shopImg.shopId}
-			)
-		</foreach>
+		(#{imgAddr},#{createTime},#{shopId})
 	</insert>
 
 	<delete id="deleteShopImgByShopId">

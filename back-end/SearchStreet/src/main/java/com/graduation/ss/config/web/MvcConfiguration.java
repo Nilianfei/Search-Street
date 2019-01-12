@@ -1,10 +1,14 @@
 package com.graduation.ss.config.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -70,17 +74,34 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
 		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
+	
+	/**
+	 * 文件上传解析器
+	 * 
+	 * @return
+	 */
+	@Bean(name = "multipartResolver")
+	public CommonsMultipartResolver createMultipartResolver() {
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+		multipartResolver.setDefaultEncoding("utf-8");
+		// 1024 * 1024 * 20 = 20M
+		multipartResolver.setMaxUploadSize(20971520);
+		multipartResolver.setMaxInMemorySize(20971520);
+		return multipartResolver;
+	}
 
 	/**
 	 * 添加拦截器配置
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		String interceptPath = "/wechat/**";
+		List<String> interceptPaths = new ArrayList<String>();
+		interceptPaths.add("/wechat/**");
+		interceptPaths.add("/shopadmin/**");
 		// 注册拦截器
 		InterceptorRegistration loginIR = registry.addInterceptor(new TokenInterceptor());
 		// 配置拦截的路径
-		loginIR.addPathPatterns(interceptPath);
+		loginIR.addPathPatterns(interceptPaths);
 		loginIR.excludePathPatterns("/wechat/login");
 	}
 

@@ -88,25 +88,17 @@ public class WechatLoginController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		String token = request.getParameter("token");
 		UserCode2Session userCode2Session = null;
-		if(null != token) {
-			//将token解密成openId 和session_key
-			userCode2Session = JWT.unsign(token, UserCode2Session.class);
-			if(null != userCode2Session && null != userCode2Session.getOpenId() && null != userCode2Session.getSession_key()){
-				
-			} else {
-				modelMap.put("success", false);
-				modelMap.put("errMsg", "token无效");
-				return modelMap;
-			}
-		} else {
-			modelMap.put("success", false);
-			modelMap.put("errMsg", "token获取失败");
-			return modelMap;
-		}
+		//将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
 		//获取个人信息
 		String openId = userCode2Session.getOpenId();
 		try{
 			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			if(null == wechatAuth){
+				modelMap.put("success", false);
+				modelMap.put("errMsg", "获取微信账号信息失败");
+				return modelMap;
+			}
 			Long userId = wechatAuth.getUserId();
 			PersonInfo personInfo = personInfoService.getPersonInfoByUserId(userId);
 			if(null != personInfo){
@@ -115,6 +107,7 @@ public class WechatLoginController {
 			} else {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", "获取用户信息失败");
+				return modelMap;
 			}
 		} catch (Exception e) {
 			modelMap.put("success", false);

@@ -7,9 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -48,13 +46,12 @@ public class ShopServiceTest {
 		shop.setShopName("修改后的店铺名称");
 		File shopImg = new File("C:/Users/Al/Pictures/test.png");
 		InputStream is = new FileInputStream(shopImg);
-		List<ImageHolder> shopImageHolderList = new ArrayList<ImageHolder>();
-		shopImageHolderList.add(new ImageHolder(shopImg.getName(), is));
+		ImageHolder shopImageHolder = new ImageHolder(shopImg.getName(), is);
 		InputStream is1 = new FileInputStream(shopImg);
 		ImageHolder profileImageHolder1 = new ImageHolder(shopImg.getName(), is1);
 		/*InputStream is2 = new FileInputStream(shopImg);
 		ImageHolder shopImageHolder2 = new ImageHolder(shopImg.getName(), is2);*/
-		ShopExecution shopExecution = shopService.modifyShop(shop, shopImageHolderList, null, profileImageHolder1);
+		ShopExecution shopExecution = shopService.modifyShop(shop, shopImageHolder, null, profileImageHolder1);
 		System.out.println("新的头像地址为：" + shopExecution.getShop().getProfileImg());
 	}
 	
@@ -79,7 +76,7 @@ public class ShopServiceTest {
 		shop.setShopName("测试service店铺");
 		shop.setUserId(1L);
 		shop.setEnableStatus(0);
-		File shopImg = new File("C:/Users/Al/Pictures/test.png");
+		/*File shopImg = new File("C:/Users/Al/Pictures/test.png");
 		InputStream is = new FileInputStream(shopImg);
 		File shopImg1 = new File("C:/Users/Al/Pictures/timg.jpg");
 		InputStream is1 = new FileInputStream(shopImg1);
@@ -87,8 +84,8 @@ public class ShopServiceTest {
 		shopImgList.add(new ImageHolder(shopImg.getName(), is));
 		shopImgList.add(new ImageHolder(shopImg1.getName(), is1));
 		InputStream is2 = new FileInputStream(shopImg);
-		ImageHolder businessImgHolder = new ImageHolder(shopImg.getName(), is2);
-		ShopExecution se = shopService.addShop(shop, shopImgList, businessImgHolder, null );
+		ImageHolder businessImgHolder = new ImageHolder(shopImg.getName(), is2);*/
+		ShopExecution se = shopService.addShop(shop);
 		assertEquals(ShopStateEnum.CHECK.getState(), se.getState());
 	}
 }

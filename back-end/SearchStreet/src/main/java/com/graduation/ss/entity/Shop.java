@@ -10,6 +10,7 @@ public class Shop {
 	private List<ShopImg> shopImgList;
 	private String businessLicenseImg;
 	private String businessLicenseCode;
+	private Integer perCost;
 	private String phone;
 	private String province;
 	private String city;
@@ -30,6 +31,12 @@ public class Shop {
 	private Date lastEditTime;
 	private Long userId;
 	
+	public Integer getPerCost() {
+		return perCost;
+	}
+	public void setPerCost(Integer perCost) {
+		this.perCost = perCost;
+	}
 	public Long getShopId() {
 		return shopId;
 	}
@@ -162,6 +169,17 @@ public class Shop {
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	@Override
+	public String toString() {
+		return "Shop [shopId=" + shopId + ", shopName=" + shopName + ", shopImgList=" + shopImgList
+				+ ", businessLicenseImg=" + businessLicenseImg + ", businessLicenseCode=" + businessLicenseCode
+				+ ", perCost=" + perCost + ", phone=" + phone + ", province=" + province + ", city=" + city
+				+ ", district=" + district + ", fullAddress=" + fullAddress + ", shopMoreInfo=" + shopMoreInfo
+				+ ", isMobile=" + isMobile + ", openTime=" + openTime + ", closeTime=" + closeTime + ", profileImg="
+				+ profileImg + ", coordinateX=" + coordinateX + ", coordinateY=" + coordinateY + ", enableStatus="
+				+ enableStatus + ", businessScope=" + businessScope + ", createTime=" + createTime + ", lastEditTime="
+				+ lastEditTime + ", userId=" + userId + "]";
 	}
 	
 }

@@ -5,23 +5,7 @@ Page({
   },
   onLoad: function () {
     var that = this;
-    wx.checkSession({
-      success() {
-        // 查看是否授权
-        wx.getSetting({
-          success: function (res) {
-            if (res.authSetting['scope.userInfo']) {
-              wx.getUserInfo({
-                success: function (res) {
-                  //从数据库获取用户信息
-                  that.queryUserInfo();
-                }
-              });
-            }
-          }
-        })
-      }
-    })
+    
   },
   bindGetUserInfo: function (e) {
     //用户按了允许授权按钮
@@ -80,13 +64,6 @@ Page({
     } catch (e) {
       console.log("error");
     }
-    wx.getStorage({
-      key: 'token',
-      success(res) {
-        token = res;
-        console.log("getStorage" + token);
-      }
-    })
     wx.request({
       url: 'http://localhost:8080/ss/wechat/getUserInfo',
       data: {

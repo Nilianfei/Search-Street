@@ -20,7 +20,7 @@ public interface ShopImgDao {
 	 * @param productImgList
 	 * @return
 	 */
-	int batchInsertShopImg(List<ShopImg> shopImgList);
+	int insertShopImg(ShopImg shopImg);
 
 	/**
 	 * 删除指定店铺下的所有详情图

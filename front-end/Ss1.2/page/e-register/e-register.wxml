@@ -10,7 +10,7 @@
      <text>{{text}}</text>
     </view>
      <view class="weui-uploader__files">
-          <view wx:for="{{imageList}}" wx:key="*this" wx:for-item="image">
+          <view wx:for="{{shop_imgs}}" wx:key="*this" wx:for-item="image">
            <view class="weui-uploader__file">
               <image class="weui-uploader__img" src="{{image}}" data-src="{{image}}" bindtap="previewImage"></image>
             </view>
@@ -24,38 +24,38 @@
     <form bindsubmit="formSubmit" bindreset="formReset">
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input">
-          <input class="weui-input" placeholder="商铺名字" name="sname" focus/>
+          <input class="weui-input" placeholder="商铺名字" name="shopName" focus/>
         </view>
       </view>
      <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input">
-          <input class="weui-input" placeholder="主营范围" name="sspecis" focus/>
+          <input class="weui-input" placeholder="主营范围" name="businessScope" focus/>
         </view>
       </view>
      <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input">
-          <input class="weui-input" placeholder="人均消费（元/人）" name="cost" type='number'/>
+          <input class="weui-input" placeholder="人均消费（元/人）" name="perCost" type='number'/>
         </view>
       </view>
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input">
-          <input class="weui-input" placeholder="营业执照编码" name="secode" focus/>
+          <input class="weui-input" placeholder="营业执照编码" name="businessLicenseCode" focus/>
         </view>
       </view>
       <view class="section-stimage">
         <view class="section-sttext">营业执照上传</view>
            <view class="big-logos">  
             <image class="big-logo {{flag ? '' : 'big-logof'}}" bindtap="upimg" src='../../images/添加图片.png'></image>  
-             <block wx:for="{{img_arr}}">  
+             <block wx:for="{{business_img}}">  
              <view class='logoinfos'>  
-             <image class="logoinfo" src='{{item}}' name="logoimg"></image>  
+             <image class="logoinfo" src='{{item}}' name="businessLicenseImg"></image>  
              </view>  
             </block>  
              </view>
       </view>
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input">
-          <input class="weui-input" placeholder="联系电话" name="snumber" type='number'/>
+          <input class="weui-input" placeholder="联系电话" name="phone" type='number'/>
         </view>
       </view>
       <view class="store-locat">商铺定位</view>
@@ -67,7 +67,7 @@
       <view class="slocat-logo">
         <image class="slocat-img" src="../../images/定位.png"></image>
         <form bindsubmit="sformSubmit">
-         <input class="slocat-text" placeholder="请输入详细地址" name="geocoder"/>
+         <input class="slocat-text" placeholder="请输入详细地址" name="fullAddress"/>
          <button form-type="submit" bindtap="geo">定位</button>
         </form>
       </view>
@@ -82,7 +82,7 @@
       </map>
       <view class="serach-append">地址补充</view>
        <view class="serach-append1">可以让更多人找到你哦！</view>
-        <textarea class="serach-text" name="sloapp"></textarea>
+        <textarea class="serach-text" name="shopMoreInfo"></textarea>
         <view class="submitbo"></view>
       <view class="finsubmit">
        <button class="check" formType="submit">提交审核</button>

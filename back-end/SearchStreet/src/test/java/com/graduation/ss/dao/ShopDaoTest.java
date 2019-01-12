@@ -22,6 +22,7 @@ public class ShopDaoTest {
 	private ShopDao shopDao;
 	
 	@Test
+	@Ignore
 	public void testQueryShopListAndCount() {
 		Shop shopCondition = new Shop();
 		
@@ -90,7 +91,6 @@ public class ShopDaoTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testQueryByShopId() {
 		long shopId = 1;
 		Shop shop = shopDao.queryByShopId(shopId);

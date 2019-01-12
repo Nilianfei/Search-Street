@@ -2,12 +2,10 @@ package com.graduation.ss.dao;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -25,7 +23,7 @@ public class ShopImgDaoTest {
 	private ShopImgDao ShopImgDao;
 
 	@Test
-	public void testABatchInsertShopImg() throws Exception {
+	public void testAInsertShopImg() throws Exception {
 		// ShopId为1的商品里添加两个详情图片记录
 		ShopImg ShopImg1 = new ShopImg();
 		ShopImg1.setImgAddr("图片1");
@@ -35,11 +33,9 @@ public class ShopImgDaoTest {
 		ShopImg2.setImgAddr("图片2");
 		ShopImg2.setCreateTime(new Date());
 		ShopImg2.setShopId(1L);
-		List<ShopImg> ShopImgList = new ArrayList<ShopImg>();
-		ShopImgList.add(ShopImg1);
-		ShopImgList.add(ShopImg2);
-		int effectedNum = ShopImgDao.batchInsertShopImg(ShopImgList);
-		assertEquals(2, effectedNum);
+		int effectedNum = ShopImgDao.insertShopImg(ShopImg1);
+		assertEquals(1, effectedNum);
+		effectedNum = ShopImgDao.insertShopImg(ShopImg2);
 	}
 
 	@Test
@@ -50,7 +46,6 @@ public class ShopImgDaoTest {
 	}
 
 	@Test
-	@Ignore
 	public void testCDeleteShopImgByShopId() throws Exception {
 		// 删除新增的两条商品详情图片记录
 		long ShopId = 1;

@@ -39,9 +39,7 @@ public class WechatUser implements Serializable{
 		return userInfo.get("country");
 	}
 	
-	public String getCode() {
-		return code;
-	}
+	
 	
 	public String getGender() {
 		return userInfo.get("gender");
@@ -50,5 +48,7 @@ public class WechatUser implements Serializable{
 	public String getAvatarUrl() {
 		return userInfo.get("avatarUrl");
 	}
-	
+	public String getCode() {
+		return code;
+	}
 }

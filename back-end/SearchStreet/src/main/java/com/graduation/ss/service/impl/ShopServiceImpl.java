@@ -1,6 +1,5 @@
 package com.graduation.ss.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class ShopServiceImpl implements ShopService {
 
 	@Override
 	@Transactional
-	public ShopExecution modifyShop(Shop shop, List<ImageHolder> shopImgList, ImageHolder businessLicenseImg,
+	public ShopExecution modifyShop(Shop shop, ImageHolder shopImg, ImageHolder businessLicenseImg,
 			ImageHolder profileImg) throws ShopOperationException {
 		if (shop == null || shop.getShopId() == null) {
 			return new ShopExecution(ShopStateEnum.NULL_SHOP);
@@ -61,9 +60,9 @@ public class ShopServiceImpl implements ShopService {
 			// 1.判断是否需要处理图片
 			try {
 				Shop tempShop = shopDao.queryByShopId(shop.getShopId());
-				if (shopImgList != null && shopImgList.size() > 0) {
-					deleteShopImgList(shop.getShopId());
-					addShopImgList(shop, shopImgList);
+				if (shopImg != null && shopImg.getImage() != null && shopImg.getImageName() != null
+						&& !"".equals(shopImg.getImageName())) {
+					addShopImg(shop, shopImg);
 				}
 				if (businessLicenseImg != null && businessLicenseImg.getImage() != null && businessLicenseImg.getImageName() != null
 						&& !"".equals(businessLicenseImg.getImageName())) {
@@ -96,8 +95,7 @@ public class ShopServiceImpl implements ShopService {
 
 	@Override
 	@Transactional
-	public ShopExecution addShop(Shop shop, List<ImageHolder> shopImgList, ImageHolder businessLicenseImg,
-			ImageHolder profileImg) throws ShopOperationException {
+	public ShopExecution addShop(Shop shop) throws ShopOperationException {
 		// 空值判断
 		if (shop == null) {
 			return new ShopExecution(ShopStateEnum.NULL_SHOP);
@@ -111,66 +109,28 @@ public class ShopServiceImpl implements ShopService {
 			int effectedNum = shopDao.insertShop(shop);
 			if (effectedNum <= 0) {
 				throw new ShopOperationException("店铺创建失败");
-			} else {
-				if (shopImgList != null || businessLicenseImg != null || profileImg != null) {
-					if (shopImgList != null && shopImgList.size() > 0){
-						// 存储shopImg图片
-						addShopImgList(shop, shopImgList);
-					}
-					if (businessLicenseImg != null && businessLicenseImg.getImage() != null && businessLicenseImg.getImageName() != null
-							&& !"".equals(businessLicenseImg.getImageName())){
-						// 存储businessLicenseImg图片
-						try {
-							addBusinessLicenseImg(shop, businessLicenseImg);
-						} catch (Exception e) {
-							throw new ShopOperationException("addBusinessLicenseImg error:" + e.getMessage());
-						}
-					}
-					if (profileImg != null && profileImg.getImage() != null && profileImg.getImageName() != null
-							&& !"".equals(profileImg.getImageName())){
-						// 存储businessLicenseImg图片
-						try {
-							addProfileImg(shop, profileImg);
-						} catch (Exception e) {
-							throw new ShopOperationException("addProfileImg error:" + e.getMessage());
-						}
-					}
-					// 更新店铺的图片地址
-					effectedNum = shopDao.updateShop(shop);
-					if (effectedNum <= 0) {
-						throw new ShopOperationException("更新图片地址失败");
-					}
-				}
-			}
+			} 
 		} catch (Exception e) {
 			throw new ShopOperationException("addShop error:" + e.getMessage());
 		}
 		return new ShopExecution(ShopStateEnum.CHECK, shop);
 	}
 
-	private void addShopImgList(Shop shop, List<ImageHolder> shopImgHolderList) {
+	private void addShopImg(Shop shop, ImageHolder shopImgHolder) {
 		// 获取图片存储路径，这里直接存放到相应店铺的文件夹底下
 		String dest = PathUtil.getShopImgPath(shop.getShopId());
-		List<ShopImg> shopImgList = new ArrayList<ShopImg>();
-		// 遍历图片一次去处理，并添加进ShopImg实体类里
-		for (ImageHolder shopImgHolder : shopImgHolderList) {
-			String imgAddr = ImageUtil.generateNormalImg(shopImgHolder, dest);
-			ShopImg shopImg = new ShopImg();
-			shopImg.setImgAddr(imgAddr);
-			shopImg.setShopId(shop.getShopId());
-			shopImg.setCreateTime(new Date());
-			shopImgList.add(shopImg);
-		}
-		// 如果确实是有图片需要添加的，就执行批量添加操作
-		if (shopImgList.size() > 0) {
-			try {
-				int effectedNum = shopImgDao.batchInsertShopImg(shopImgList);
-				if (effectedNum <= 0) {
-					throw new ShopOperationException("创建店铺详情图片失败");
-				}
-			} catch (Exception e) {
-				throw new ShopOperationException("创建店铺详情图片失败:" + e.toString());
+		String imgAddr = ImageUtil.generateNormalImg(shopImgHolder, dest);
+		ShopImg shopImg = new ShopImg();
+		shopImg.setImgAddr(imgAddr);
+		shopImg.setShopId(shop.getShopId());
+		shopImg.setCreateTime(new Date());
+		try {
+			int effectedNum = shopImgDao.insertShopImg(shopImg);
+			if (effectedNum <= 0) {
+				throw new ShopOperationException("创建店铺详情图片失败");
 			}
+		} catch (Exception e) {
+			throw new ShopOperationException("创建店铺详情图片失败:" + e.toString());
 		}
 	}
 	
@@ -179,6 +139,7 @@ public class ShopServiceImpl implements ShopService {
 	 * 
 	 * @param shopId
 	 */
+	@SuppressWarnings("unused")
 	private void deleteShopImgList(long shopId) {
 		// 根据shopId获取原来的图片
 		List<ShopImg> shopImgList = shopImgDao.getShopImgList(shopId);

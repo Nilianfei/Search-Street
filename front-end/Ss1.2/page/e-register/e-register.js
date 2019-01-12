@@ -1,10 +1,12 @@
+var app = getApp();
+
 var initData='添加店铺环境或菜品图片审核通过率会高哦'
 // 引入SDK核心类
 var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
 
 // 实例化API核心类
 var qqmapsdk = new QQMapWX({
-  key: 'X2DBZ-4TCHU-T43VA-BRN5Y-T7LY7-MVBXT' // 必填
+  key: 'GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM' // 必填
 });
 Page({
   data:{
@@ -12,9 +14,11 @@ Page({
     region: ['广东省', '广州市', '海珠区'],
     customItem: '全部',
     imgsrc:null,
-    img_arr:[],
+    business_img:[],
     flag:true,
-    imageList:[],
+    shop_imgs:[],
+    latitude:null,
+    longitude:null,
     markers: [{
       id: 0,
       title: 'T.I.T 创意园',
@@ -30,37 +34,23 @@ Page({
     }
   },
   chooseImage: function () {
-    var that = this,
-    imageList = this.data.imageList
+    var that = this;
+    var shop_imgs = this.data.shop_imgs;
     
-    if(this.data.imageList.length<3){
+    if(this.data.shop_imgs.length<3){
     wx.chooseImage({
       count: 3,  //最多可以选择的图片总数  
       sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有  
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
       success: function (res) {
-        console.log(res)
-        var imgsrc = res.tempFilePaths
-        imageList = imageList.concat(res.tempFilePaths)
+        //console.log(res)
+        //var imgsrc = res.tempFilePaths
+        shop_imgs = shop_imgs.concat(res.tempFilePaths);
         that.setData({
-          imageList: imageList,
-          imgsrc:imgsrc
+          shop_imgs: shop_imgs,
+          //imgsrc:imgsrc
         })
-        wx.uploadFile({
-          url: '',    //服务器地址
-          filePath: imgsrc[0],
-          name: 'file',
-          formData:null,
-          success(resp) {
-            if (resp.statusCode == 200){
-              console.log(resp.data);
-              wx.showModal({
-                title: '提示',
-                content: '提交成功!'
-              })
-            }
-          }
-        })
+        console.log(shop_imgs);
       }
     })
     }else{
@@ -70,14 +60,13 @@ Page({
         duration: 3000
       })
     }
-   console.log(imageList)
   },
   previewImage: function (e) {
     var current = e.target.dataset.src
 
     wx.previewImage({
       current: current,
-      urls: this.data.imageList
+      urls: this.data.shop_imgs
     })
   },
   bindRegionChange: function (e) {
@@ -89,24 +78,25 @@ Page({
   upimg: function () {
     var that = this;
     var flag=this.data.flag;
-      wx.chooseImage({
-        sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有  
-        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-        success: function (res) {
-          console.log(res.tempFilePaths)
-          that.setData({
-            img_arr: that.data.img_arr.concat(res.tempFilePaths),
-            flag:!flag
-          })
-        }
-      })
+    wx.chooseImage({
+      sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有  
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        that.setData({
+          business_img: res.tempFilePaths,
+          flag:!flag
+        })
+      }
+    })
   },
   sformSubmit(e){
     var _this = this;
+    var fulladdress = _this.data.region[0] + _this.data.region[1] + _this.data.region[2] + e.detail.value.fullAddress;
+    console.log(fulladdress);
     //调用地址解析接口
     qqmapsdk.geocoder({
       //获取表单传入地址
-      address: e.detail.value.geocoder, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
+      address: fulladdress, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
       success: function (res) {//成功后的回调
         console.log(res);
         var res = res.result;
@@ -128,6 +118,9 @@ Page({
             longitude: longitude
           }
         });
+        _this.data.latitude = latitude;
+        _this.data.longitude = longitude;
+        console.log(longitude);
       },
       fail: function (error) {
         console.error(error);
@@ -138,28 +131,60 @@ Page({
     })
   },
   formSubmit:function(e){
-    console.log('form发生了submit事件，携带数据为：', e.detail.value);
+    //console.log('form发生了submit事件，携带数据为：', e.detail.value);
     var that = this;
-    var form_data = e.detail.value;
-    wx.uploadFile({
-      url: util.apiUrl + 'Index/formsubmit?program_id=' + app.jtappid,  //服务器地址
-      filePath:img_arr[0],
-      name:logoimg,
-      formData:form_data,
-      success: function (res) {
-        if (resp.statusCode == 200) {
-          console.log(res.data)
-          wx.showToast({
-            icon: "success",
-            duration: 1000
-          });
-          setTimeout(function () {
-            wx.navigateBack({});
-          }, 1000);
+    var token = null;
+    try {
+      const value = wx.getStorageSync('token')
+      if (value) {
+        token = value;
+      }
+    } catch (e) {
+      console.log("error");
+    }
+    wx.request({
+      url: "http://localhost:8080/ss/shopadmin/registershop?token=" + token,
+      data: {
+        shopName: e.detail.value.shopName,
+        businessScope: e.detail.value.businessScope,
+        perCost: e.detail.value.perCost,
+        businessLicenseCode: e.detail.value.businessLicenseCode,
+        phone: e.detail.value.phone,
+        province: that.data.region[0],
+        city: that.data.region[1],
+        district: that.data.region[2],
+        fullAddress : e.detail.value.fullAddress,
+        coordinateY: that.data.longitude,
+        coordinateX: that.data.latitude,
+        shopMoreInfo: e.detail.value.shopMoreInfo,
+        isMobile : 0
+      },
+      method: "POST",
+      success: res => {
+        console.log(res);
+        if(res.data.success){
+          wx.setStorage({
+            key: 'shopId',
+            data: res.data.shopId
+          })
+          var url = "http://localhost:8080/ss/shopadmin/modifyshop?shopId=" + res.data.shopId + "&token=" + token;
+          app.uploadAImg({
+            url : url,
+            filePath: that.data.business_img[0],
+            fileName: "businessLicenseImg"
+          })
+          for(var i=0; i<that.data.shop_imgs.length; i++){
+            app.uploadAImg({
+              url: url,
+              filePath: that.data.shop_imgs[i],
+              fileName: "shopImg"
+            })
+          }
+        } else{
+          console.log("registershop error")
         }
-      }, fail: function (error) {
-        console.error(error);
       }
     })
+    
   }
 })

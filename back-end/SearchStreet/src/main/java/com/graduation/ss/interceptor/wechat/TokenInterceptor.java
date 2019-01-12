@@ -20,11 +20,14 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
 		if(null != token) {
 			UserCode2Session userCode2Session = JWT.unsign(token, UserCode2Session.class);
 			if(null != userCode2Session && null != userCode2Session.getOpenId() && null != userCode2Session.getSession_key()){
+				System.out.println("成功越过拦截器");
 				return true;
 			} else {
+				System.out.println("token无效");
 				return false;
 			}
 		} else {
+			System.out.println("token为空");
 			return false;
 		}
 	}
