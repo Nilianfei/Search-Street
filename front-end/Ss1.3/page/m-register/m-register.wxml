@@ -1,24 +1,14 @@
-<!--page/register/register.wxml-->
+<!--page/m-register/m-register.wxml-->
 <view class="container">
   <view class="reg-hd">
-   <view class='header'>
-      <view class="userinfo-avatar">
-       <open-data  type="userAvatarUrl"></open-data>
-      </view>
+    <view class="userinfo-avatar">
+       <image class="big-logo {{flag ? '' : 'big-logof'}}" bindtap="upimg" src='../../images/添加logo.png'></image>  
+          <block wx:for="{{business_img}}">  
+            <view class='logoinfos'>  
+              <image class="logoinfo" src='{{item}}' name="businessLogo"></image>  
+            </view>  
+          </block>  
     </view>
-    <view class="reghd-text">
-     <text>{{text}}</text>
-    </view>
-     <view class="weui-uploader__files">
-          <view wx:for="{{shop_imgs}}" wx:key="*this" wx:for-item="image">
-           <view class="weui-uploader__file">
-              <image class="weui-uploader__img" src="{{image}}" data-src="{{image}}" bindtap="previewImage"></image>
-            </view>
-          </view>
-        <view class="weui-uploader__input-box">
-          <view class="weui-uploader__input" bindtap="chooseImage"></view>
-       </view>
-      </view>
   </view>
   <view class="reg-bd">
     <form bindsubmit="formSubmit" bindreset="formReset">
@@ -39,26 +29,10 @@
       </view>
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input">
-          <input class="weui-input" placeholder="营业执照编码" name="businessLicenseCode" focus/>
-        </view>
-      </view>
-      <view class="section-stimage">
-        <view class="section-sttext">营业执照上传</view>
-           <view class="big-logos">  
-            <image class="big-logo {{flag ? '' : 'big-logof'}}" bindtap="upimg" src='../../images/添加图片.png'></image>  
-             <block wx:for="{{business_img}}">  
-             <view class='logoinfos'>  
-             <image class="logoinfo" src='{{item}}' name="businessLicenseImg"></image>  
-             </view>  
-            </block>  
-             </view>
-      </view>
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell weui-cell_input">
           <input class="weui-input" placeholder="联系电话" name="phone" type='number'/>
         </view>
       </view>
-      <view class="store-locat">商铺定位</view>
+      <view class="store-locat">摊位定位</view>
       <view class="section">
        <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
        <view class="picker">当前选择：{{region[0]}}，{{region[1]}}，{{region[2]}}</view>
@@ -88,7 +62,6 @@
        <button class="check" formType="submit">提交审核</button>
        <view class="submit-append">(审核通过才能开铺哦）</view>
       </view>
-
     </form>
     </view>
    

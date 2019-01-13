@@ -15,6 +15,8 @@ Page({
     customItem: '全部',
     imgsrc:null,
     business_img:[],
+    business_logo:[],
+    show_chlogo:true,
     flag:true,
     shop_imgs:[],
     latitude:null,
@@ -85,6 +87,20 @@ Page({
         that.setData({
           business_img: res.tempFilePaths,
           flag:!flag
+        })
+      }
+    })
+  },
+  chooseLogo: function () {
+    var that = this;
+    var flag = this.data.show_chlogo;
+    wx.chooseImage({
+      sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有  
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        that.setData({
+          business_logo: res.tempFilePaths,
+          show_chlogo: !flag
         })
       }
     })
@@ -172,6 +188,11 @@ Page({
             url : url,
             filePath: that.data.business_img[0],
             fileName: "businessLicenseImg"
+          })
+          app.uploadAImg({
+            url: url,
+            filePath: that.data.business_logo[0],
+            fileName: "businessLogo"
           })
           for(var i=0; i<that.data.shop_imgs.length; i++){
             app.uploadAImg({
