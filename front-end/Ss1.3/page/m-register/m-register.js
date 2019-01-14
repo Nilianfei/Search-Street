@@ -1,9 +1,12 @@
+var app = getApp();
+
 // 引入SDK核心类
 var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
-
+//引入md5工具类
+var md5 = require('../../util/md5.min.js');
 // 实例化API核心类
 var qqmapsdk = new QQMapWX({
-  key: 'X2DBZ-4TCHU-T43VA-BRN5Y-T7LY7-MVBXT' // 必填
+  key: 'GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM' // 必填
 });
 Page({
 
@@ -104,8 +107,10 @@ Page({
   sformSubmit(e) {
     var _this = this;
     var fulladdress = _this.data.region[0] + _this.data.region[1] + _this.data.region[2] + e.detail.value.fullAddress;
+    var sig = md5("/ws/geocoder/v1/?address=" + fulladdress + "&key=GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM&output=jsonPPxq4x9BswKT7fyXshwNjUOfacWkNbxJ");
     //调用地址解析接口
     qqmapsdk.geocoder({
+      sig: sig,
       //获取表单传入地址
       address: fulladdress, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
       success: function (res) {//成功后的回调
@@ -181,7 +186,7 @@ Page({
           app.uploadAImg({
             url: url,
             filePath: that.data.business_img[0],
-            fileName: "businessLogo"
+            fileName: "profileImg"
           })
         } else {
           console.log("registershop error")

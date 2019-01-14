@@ -3,7 +3,8 @@ var app = getApp();
 var initData='添加店铺环境或菜品图片审核通过率会高哦'
 // 引入SDK核心类
 var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
-
+//引入md5工具类
+var md5 = require('../../util/md5.min.js');
 // 实例化API核心类
 var qqmapsdk = new QQMapWX({
   key: 'GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM' // 必填
@@ -108,9 +109,10 @@ Page({
   sformSubmit(e){
     var _this = this;
     var fulladdress = _this.data.region[0] + _this.data.region[1] + _this.data.region[2] + e.detail.value.fullAddress;
-    console.log(fulladdress);
+    var sig = md5("/ws/geocoder/v1/?address=" + fulladdress + "&key=GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM&output=jsonPPxq4x9BswKT7fyXshwNjUOfacWkNbxJ");
     //调用地址解析接口
     qqmapsdk.geocoder({
+      sig: sig,
       //获取表单传入地址
       address: fulladdress, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
       success: function (res) {//成功后的回调
@@ -192,7 +194,7 @@ Page({
           app.uploadAImg({
             url: url,
             filePath: that.data.business_logo[0],
-            fileName: "businessLogo"
+            fileName: "profileImg"
           })
           for(var i=0; i<that.data.shop_imgs.length; i++){
             app.uploadAImg({
