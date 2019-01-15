@@ -1,4 +1,7 @@
 /* page/index/index.wxss */
+.isshow-index{
+  display: none;
+}
 .index-hd {
   padding: 80rpx;
   text-align: center;

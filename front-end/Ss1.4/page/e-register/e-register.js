@@ -1,6 +1,7 @@
 var app = getApp();
 
 var initData='添加店铺环境或菜品图片审核通过率会高哦'
+var showCheck="此为必填选项哦"
 // 引入SDK核心类
 var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
 //引入md5工具类
@@ -12,6 +13,7 @@ var qqmapsdk = new QQMapWX({
 Page({
   data:{
     text:initData,
+    errorMsg: showCheck,
     region: ['广东省', '广州市', '海珠区'],
     customItem: '全部',
     imgsrc:null,
@@ -34,6 +36,13 @@ Page({
     poi: {
       latitude: 23.099994,
       longitude: 113.324520
+    },
+    errorMsgs:{
+      name_error:null,
+      scope_error:null,
+      percost_error:null,
+      code_error:null,
+      phone_error:null
     }
   },
   chooseImage: function () {
@@ -60,7 +69,7 @@ Page({
       wx.showToast({
         title: '最多上传3张图片',
         icon: 'loading',
-        duration: 3000
+        duration: 2000
       })
     }
   },
@@ -149,8 +158,57 @@ Page({
     })
   },
   formSubmit:function(e){
-    //console.log('form发生了submit事件，携带数据为：', e.detail.value);
     var that = this;
+    var errorMsg=this.data.errorMsg;
+    if (that.data.business_logo.length==0)
+    {
+      wx.showModal({
+        title:'提示',  
+        content: '请上传您的商店头像',
+      })
+    }else if(that.data.business_img.length==0){
+      wx.showModal({
+        title:'提示',
+        content: '固定商家需要上传营业执照，请您上传',
+      })
+    }else if(e.detail.value.shopName.length==0){
+      this.setData({
+        errorMsgs: {
+          name_error: errorMsg
+        }
+      })
+    }else if(e.detail.value.businessScope.length==0){
+      this.setData({
+        errorMsgs: {
+          scope_error: errorMsg
+        }
+      })
+    }else if(e.detail.value.perCost.length==0){
+      this.setData({
+        errorMsgs:{
+         percost_error:errorMsg
+        } 
+      })
+    }else if(e.detail.value.businessLicenseCode.length==0){
+      this.setData({
+        errorMsgs: {
+          code_error: errorMsg
+        }
+      })
+    }else if(e.detail.value.phone.length==0){
+      this.setData({
+        errorMsgs: {
+          phone_error: errorMsg
+        }
+      })
+    }else if(e.detail.value.fullAddress.length==0){
+      wx.showModal({
+        title: '提示',
+        content: '请您输入商店的完整地址',
+      })
+    }else{
+    //console.log('form发生了submit事件，携带数据为：', e.detail.value);
+    //var that = this;
     var token = null;
     try {
       const value = wx.getStorageSync('token')
@@ -208,6 +266,6 @@ Page({
         }
       }
     })
-    
+    }
   }
 })

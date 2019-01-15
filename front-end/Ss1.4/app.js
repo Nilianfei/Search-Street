@@ -2,28 +2,7 @@
 
 App({
   onLaunch: function () {
-    var that = this;
-    wx.checkSession({
-      success() {
-        // 查看是否授权
-        wx.getSetting({
-          success: function (res) {
-            //console.log(res)
-            if (res.authSetting['scope.userInfo']) {
-              wx.getUserInfo({
-                success: function (res) {
-                  //console.log(res)
-                  //授权成功后，跳转进入小程序首页
-                  wx.redirectTo({
-                    url: '../index/index'
-                  })
-                }
-              });
-            }
-          }
-        })
-      }
-    })
+   
   },
    
   onShow: function () {

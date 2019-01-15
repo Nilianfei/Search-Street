@@ -1,5 +1,5 @@
 var app = getApp();
-
+var showCheck = "此为必填选项哦"
 // 引入SDK核心类
 var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
 //引入md5工具类
@@ -14,6 +14,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    errorMsg: showCheck,
     region: ['广东省', '广州市', '海珠区'],
     customItem: '全部',
     latitude: null,
@@ -32,6 +33,12 @@ Page({
     poi: {
       latitude: 23.099994,
       longitude: 113.324520
+    },
+    errorMsgs: {
+      name_error: null,
+      scope_error: null,
+      percost_error: null,
+      phone_error: null
     }
   },
 
@@ -147,8 +154,45 @@ Page({
     })
   },
   formSubmit: function (e) {
-    //console.log('form发生了submit事件，携带数据为：', e.detail.value);
     var that = this;
+    var errorMsg = this.data.errorMsg;
+    if (that.data.business_img.length == 0) {
+      wx.showModal({
+        title: '提示',
+        content: '请上传您的商店头像',
+      })
+    } else if (e.detail.value.shopName.length == 0) {
+      this.setData({
+        errorMsgs: {
+          name_error: errorMsg
+        }
+      })
+    } else if (e.detail.value.businessScope.length == 0) {
+      this.setData({
+        errorMsgs: {
+          scope_error: errorMsg
+        }
+      })
+    } else if (e.detail.value.perCost.length == 0) {
+      this.setData({
+        errorMsgs: {
+          percost_error: errorMsg
+        }
+      })
+    }else if (e.detail.value.phone.length == 0) {
+      this.setData({
+        errorMsgs: {
+          phone_error: errorMsg
+        }
+      })
+    } else if (e.detail.value.fullAddress.length == 0) {
+      wx.showModal({
+        title: '提示',
+        content: '请您输入商店的完整地址',
+      })
+    }else{
+    //console.log('form发生了submit事件，携带数据为：', e.detail.value);
+    //var that = this;
     var token = null;
     try {
       const value = wx.getStorageSync('token')
@@ -193,6 +237,6 @@ Page({
         }
       }
     })
-
   }
+ }
 })
