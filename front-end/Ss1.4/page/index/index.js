@@ -57,6 +57,11 @@ Page({
 
           }
         })
+      },
+      fail: function(res){
+        wx.redirectTo({
+          url: '../../page/login/login'
+        })
       }
     })
   },
