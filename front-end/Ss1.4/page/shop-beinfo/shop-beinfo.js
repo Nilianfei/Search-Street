@@ -1,10 +1,14 @@
+var test_name='华南师范大学小卖部'
+var test_pic='../../images/商铺.png'
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    
+    shopname:test_name,
+    shoppic:test_pic
   },
 
   /**

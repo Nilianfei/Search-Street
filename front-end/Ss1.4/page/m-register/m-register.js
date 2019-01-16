@@ -153,6 +153,7 @@ Page({
       }
     })
   },
+  
   formSubmit: function (e) {
     var that = this;
     var errorMsg = this.data.errorMsg;

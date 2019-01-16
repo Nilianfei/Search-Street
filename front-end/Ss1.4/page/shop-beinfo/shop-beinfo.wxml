@@ -1,0 +1,11 @@
+<!--page/shop-beinfo/shop-beinfo.wxml-->
+<view class="containor">
+  <view class="shop-message">
+    <view class= "shop-message-picture">
+      <image class="shop-picture" mode='aspectFit' src="{{shoppic}}"></image>
+    </view>
+    <view class="shop-message-name">
+      <text>{{shopname}}</text>
+    </view>
+  </view>
+</view>

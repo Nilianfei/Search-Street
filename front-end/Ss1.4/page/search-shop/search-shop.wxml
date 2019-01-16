@@ -1,0 +1,26 @@
+<!--page/search-shop/search-shop.wxml-->
+<view class="page-body">
+  <view class="page-section page-section-gap">
+    <map
+      id="myMap"
+      style="width: 100%; height: 100vh;"
+      latitude="{{latitude}}"
+      longitude="{{longitude}}"
+      
+      controls="{{controls}}"
+      bindcontroltap="bindcontroltap"
+
+      markers="{{markers}}"
+      bindmarkertap="bindmarkertap"
+      polyline="{{polyline}}"
+
+      bindregionchange="bindregionchange"
+
+      enable-rotate
+      show-location
+      show-compass>
+        
+    </map>
+    
+  </view>
+</view>

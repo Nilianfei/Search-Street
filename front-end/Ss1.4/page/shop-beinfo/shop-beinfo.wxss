@@ -1,0 +1,17 @@
+
+.containor{
+  height: 100vh;
+  background-color: #da8d4a7c;
+}
+
+.shop-message{
+  margin-top: 10rpx;
+  background-color: #6e8bb6;
+  display: flex;
+  flex-direction: row;
+}
+.shop-picture{
+  border-radius: 25px;
+  width: 100rpx;
+  height: 100rpx;
+}

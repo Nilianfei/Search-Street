@@ -1,0 +1,34 @@
+/* page/search-shop/search-shop.wxss */
+.page-section-gap{
+  height: 100%;
+}
+
+
+.place_info {
+position: relative;
+width: 90%;
+margin-top: 1000rpx;
+margin-left: auto;
+margin-right: auto; 
+border-radius: 5rpx;
+background: white;
+padding: 10rpx;
+}
+.place_info_parking{
+ font-size: 50rpx
+}
+.place_info_surplus{
+  color: #999999
+}
+.place_info_order{
+  margin-top: 10rpx;
+margin-bottom: 10rpx; 
+margin-left: auto;
+margin-right: auto;   
+background-color: #ff7700;
+color: #FFFFFF;
+padding: 10rpx;
+width: 90%;
+border-radius: 5rpx;
+text-align: center;
+}
