@@ -36,7 +36,7 @@ Page({
                         success: function(res) {
                           if(res.confirm)
                           {
-                            wx.redirectTo({
+                            wx.navigateTo({
                               url: '../shop-beinfo/shop-beinfo',
                             })
                           }
@@ -120,5 +120,10 @@ Page({
     this.setData({
       open: open
     });
+  },
+  searchstore:function(){
+    wx.navigateTo({
+        url: '../search-shop/search-shop',
+      })
   }
 })

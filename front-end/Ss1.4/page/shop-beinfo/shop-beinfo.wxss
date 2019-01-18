@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 .containor{
   height: 100vh;
   background-color: #526685;
@@ -15,6 +16,17 @@
 .shop-message{
   width: 100vh;
   background-color: #6e8bb6;
+=======
+page{
+  
+  background-color: #104fad;
+}
+
+.shop-messagehd{
+  position: absolute;
+  margin-top: 20px;
+  background-color: #6c98db;
+>>>>>>> Stashed changes
   display: flex;
   flex-direction: column;
 }
@@ -22,7 +34,103 @@
 .shop-message-top{
   display: flex;
   flex-direction: row;
+  height: 200px;
+  width: 100%;
 }
+.shop-message-picture{
+  overflow:hidden;
+  display: block;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  background-color: #fff;
+  margin-left: 10px;
+  position: absolute;
+  margin-top: 10px;
+}
+.shop-message-name{
+  position: absolute;
+  margin-top: 30px;
+  margin-left: 100px;
+  color: #fff;
+}
+.shop-servicescore{
+  float: left;
+  position: absolute;
+  margin-left: 20px;
+  margin-top:150px;
+  color: #fff;
+}
+.shop-starscore{
+  float: left;
+  position: absolute;
+  margin-left: 100px;
+  margin-top:150px;
+  color: #fff;
+}
+.shop-successscore{
+  float: left;
+  position: absolute;
+  margin-left: 200px;
+  margin-top:150px;
+  color: #fff;
+}
+.shop-messagebd{
+  position: absolute;
+  margin-top: 260px;
+  background-color: #6c98db;
+  height: 260px;
+  width: 100%;
+}
+.shop-album{
+  border: solid #fff 0.2px;
+  margin-top: 40px;
+}
+.shop-beinfo-icon{
+  height: 80rpx;
+  width: 80rpx;
+  margin-left: 10px;
+  float: left;
+}
+.shopalbum-text{
+  position: absolute;
+  margin-left: 60px;
+  margin-top: 10rpx;
+  color: #fff;
+  float: left;
+}
+.shop-beinfo-locat{
+  position: absolute;
+  width: 90%;
+  height: 170px;
+  margin-top: 540px;
+  margin-left: 20px;
+  border-radius: 10%;
+  background-color: #031c42;
+}
+.shop-locatstart{
+  display: block;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  background-color: rgb(238, 160, 14);
+  position: relative;
+  float: right;
+  margin-right: 10px;
+}
+.onlinetime{
+  position: relative;
+  color: #fff;
+  margin-left: 10px;
+  margin-top: 20px;
+}
+.issearched{
+  position: relative;
+  color: #fff;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+<<<<<<< Updated upstream
 
 .shop-message-picture{
   margin-left: 10rpx;
@@ -38,6 +146,12 @@
   border-radius: 50%;
   border: 3px solid whitesmoke;
   border-color: white;
+=======
+.shop-lstext{
+  position: relative;
+  margin-top: 20px;
+  color: #fff;
+>>>>>>> Stashed changes
 }
 
 .shop-message-name{

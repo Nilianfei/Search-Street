@@ -1,5 +1,6 @@
 <!--page/shop-beinfo/shop-beinfo.wxml-->
 <view class="containor">
+<<<<<<< Updated upstream
   
   <view class="break0"></view>
   
@@ -11,6 +12,11 @@
       <view class="shop-message-name">
         <text class="name">{{shopname}}</text>
       </view>
+=======
+  <view class="shop-messagehd">
+    <view class= "shop-message-picture">
+      <image class="shop-picture" mode='aspectFit' src="{{shoppic}}"></image>
+>>>>>>> Stashed changes
     </view>
 
     <view class="shop-message-buttom">
@@ -26,6 +32,41 @@
         <text class="score-number">{{score_number2*100}}%</text>
         <text class="score-text">搜街成功率</text>
       </view>
+    </view>
+    <view class="shop-score">
+     <view class="shop-servicescore">服务分</view>
+     <view class="shop-starscore">星级评分</view>
+     <view class="shop-successscore">搜街成交率</view>
+    </view>
+  </view>
+  <view class="shop-messagebd">
+    <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/相册.png"></image>
+    <view class="shopalbum-text">相册</view>
+   <view class="shop-album"></view>
+    <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/笑脸.png"></image>
+    <view class="shopalbum-text">服务评价</view>
+   <view class="shop-album"></view>
+   <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/商铺 (1).png"></image>
+    <view class="shopalbum-text">商铺信息</view>
+   <view class="shop-album"></view>
+   <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/设置.png"></image>
+    <view class="shopalbum-text">设置</view>
+   <view class="shop-album"></view>
+   <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/订单.png"></image>
+    <view class="shopalbum-text">订单</view>
+    <view class="shop-album"></view>
+   <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/服务.png"></image>
+    <view class="shopalbum-text">添加服务</view>
+  </view>
+  <view class="shop-beinfo-locat">
+    <view class="onlinetime">在线：
+         <text>{{time}}</text>小时
+    </view>
+    <view class="issearched">被搜：
+        <text>{{number}}</text>单
+    </view>
+    <view class="shop-locatstart">
+      <view class="shop-lstext">开启定位</view>
     </view>
   </view>
   
