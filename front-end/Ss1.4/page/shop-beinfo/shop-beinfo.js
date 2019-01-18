@@ -1,5 +1,9 @@
-var test_name='华南师范大学小卖部'
-var test_pic='../../images/商铺.png'
+var test_name='华南师范大学小卖部石牌校区旗舰店'
+var test_pic='../../images/search_buck.png'
+var score=80;
+var score_rank=5;
+score_rank=score_rank.toFixed(1);
+var score_rate=0.8;
 
 Page({
 
@@ -8,7 +12,10 @@ Page({
    */
   data: {
     shopname:test_name,
-    shoppic:test_pic
+    shoppic:test_pic,
+    score_number0: score,
+    score_number1: score_rank,
+    score_number2: score_rate,
   },
 
   /**

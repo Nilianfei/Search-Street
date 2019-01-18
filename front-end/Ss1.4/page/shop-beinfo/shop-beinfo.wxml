@@ -1,11 +1,36 @@
 <!--page/shop-beinfo/shop-beinfo.wxml-->
 <view class="containor">
+  
+  <view class="break0"></view>
+  
   <view class="shop-message">
-    <view class= "shop-message-picture">
-      <image class="shop-picture" mode='aspectFit' src="{{shoppic}}"></image>
+    <view class="shop-message-top">
+      <view class= "shop-message-picture">
+        <image class="shop-picture" mode='aspectFit' src="{{shoppic}}"></image>
+      </view>
+      <view class="shop-message-name">
+        <text class="name">{{shopname}}</text>
+      </view>
     </view>
-    <view class="shop-message-name">
-      <text>{{shopname}}</text>
+
+    <view class="shop-message-buttom">
+      <view class="shop-score">
+        <text class="score-number">{{score_number0}}</text>
+        <text class="score-text">服务分</text>
+      </view>
+      <view class="shop-score">
+        <text class="score-number">{{score_number1}}</text>
+        <text class="score-text">星级评分</text>
+      </view>
+      <view class="shop-score">
+        <text class="score-number">{{score_number2*100}}%</text>
+        <text class="score-text">搜街成功率</text>
+      </view>
     </view>
+  </view>
+  
+  <view class="break1"></view>
+
+  <view class="funtion_widget">
   </view>
 </view>

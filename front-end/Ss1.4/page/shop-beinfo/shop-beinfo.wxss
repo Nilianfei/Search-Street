@@ -1,17 +1,84 @@
 
 .containor{
   height: 100vh;
-  background-color: #da8d4a7c;
+  background-color: #526685;
+}
+
+.break0{
+  height: 20rpx;
+}
+
+.break1{
+  height: 40rpx;
 }
 
 .shop-message{
-  margin-top: 10rpx;
+  width: 100vh;
   background-color: #6e8bb6;
+  display: flex;
+  flex-direction: column;
+}
+
+.shop-message-top{
   display: flex;
   flex-direction: row;
 }
+
+.shop-message-picture{
+  margin-left: 10rpx;
+  width: 200rpx;
+  height: 200rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .shop-picture{
-  border-radius: 25px;
-  width: 100rpx;
-  height: 100rpx;
+  width: 170rpx;
+  height: 170rpx;
+  border-radius: 50%;
+  border: 3px solid whitesmoke;
+  border-color: white;
+}
+
+.shop-message-name{
+  margin-left: 10rpx;
+  width: 520rpx;
+  display: flex;
+  align-items: center;
+}
+
+.name{
+  font-size: 48rpx;
+  color: white;
+}
+
+.shop-message-buttom{
+
+  height: 200rpx;
+  width: 750rpx;
+  display: flex;
+}
+
+.shop-score{
+  margin-left: 38rpx;
+  width: 200rpx;
+  height: 200rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.score-number{
+  font-size: 64rpx;
+  color: white;
+}
+.score-text{
+  font-size: 32rpx;
+  color: white;
+}
+
+.funtion{
+  background-color: #6e8bb6;
+  height: 400rpx;
 }
