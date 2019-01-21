@@ -1,17 +1,17 @@
 /*
- Navicat Premium Data Transfer
+ Navicat MySQL Data Transfer
 
- Source Server         : summerunreal
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 50642
+ Source Server Version : 50724
  Source Host           : localhost:3306
  Source Schema         : search_street
 
  Target Server Type    : MySQL
- Target Server Version : 50642
+ Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 21/12/2018 21:22:40
+ Date: 21/01/2019 15:10:24
 */
 
 SET NAMES utf8mb4;
@@ -34,8 +34,8 @@ CREATE TABLE `tb_appeal`  (
   `full_address` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '详细地址',
   `sou_coin` int(10) NOT NULL COMMENT '回报的搜币',
   `appeal_status` int(2) NOT NULL DEFAULT 0 COMMENT '求助的状态（0不确定帮助对象，1已确定帮助对象，2已完成,3已删除）',
-  `coordinate_x` double NOT NULL COMMENT '定位的纬度',
-  `coordinate_y` float NOT NULL COMMENT '定位的经度',
+  `latitude` float NOT NULL COMMENT '定位的纬度',
+  `longitude` float NOT NULL COMMENT '定位的经度',
   `start_time` datetime(0) NOT NULL COMMENT '开始时间',
   `end_time` datetime(0) NOT NULL COMMENT '结束时间',
   PRIMARY KEY (`appeal_id`) USING BTREE

@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 12/01/2019 22:10:42
+ Date: 21/01/2019 15:10:37
 */
 
 SET NAMES utf8mb4;
@@ -34,8 +34,8 @@ CREATE TABLE `tb_appeal`  (
   `full_address` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '详细地址',
   `sou_coin` int(10) NOT NULL COMMENT '回报的搜币',
   `appeal_status` int(2) NOT NULL DEFAULT 0 COMMENT '求助的状态（0不确定帮助对象，1已确定帮助对象，2已完成,3已删除）',
-  `coordinate_x` float NOT NULL COMMENT '定位的纬度',
-  `coordinate_y` float NOT NULL COMMENT '定位的经度',
+  `latitude` float NOT NULL COMMENT '定位的纬度',
+  `longitude` float NOT NULL COMMENT '定位的经度',
   `start_time` datetime(0) NOT NULL COMMENT '开始时间',
   `end_time` datetime(0) NOT NULL COMMENT '结束时间',
   PRIMARY KEY (`appeal_id`) USING BTREE
@@ -143,14 +143,14 @@ CREATE TABLE `tb_shop`  (
   `open_time` time(0) NULL DEFAULT NULL,
   `close_time` time(0) NULL DEFAULT NULL,
   `profile_img` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `coordinate_x` float NOT NULL,
-  `coordinate_y` float NOT NULL,
+  `latitude` float NOT NULL,
+  `longitude` float NOT NULL,
   `enable_status` int(2) NOT NULL DEFAULT 0,
   `business_scope` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `create_time` datetime(0) NULL DEFAULT NULL,
   `last_edit_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`shop_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 51 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_shop_comment
@@ -176,7 +176,7 @@ CREATE TABLE `tb_shop_img`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `shop_id` int(10) NULL DEFAULT NULL,
   PRIMARY KEY (`shop_img_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_wechat_auth
