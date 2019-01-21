@@ -63,8 +63,8 @@ public class ShopServiceTest {
 		shop.setCity("test");
 		shop.setCloseTime(new Time(new Date().getTime()));
 		shop.setOpenTime(new Time(new Date().getTime()));
-		shop.setCoordinateX(1f);
-		shop.setCoordinateY(1f);
+		shop.setLatitude(1f);
+		shop.setLongitude(1f);
 		shop.setCreateTime(new Date());
 		shop.setDistrict("test");
 		shop.setFullAddress("test");
@@ -76,15 +76,6 @@ public class ShopServiceTest {
 		shop.setShopName("测试service店铺");
 		shop.setUserId(1L);
 		shop.setEnableStatus(0);
-		/*File shopImg = new File("C:/Users/Al/Pictures/test.png");
-		InputStream is = new FileInputStream(shopImg);
-		File shopImg1 = new File("C:/Users/Al/Pictures/timg.jpg");
-		InputStream is1 = new FileInputStream(shopImg1);
-		List<ImageHolder> shopImgList = new ArrayList<ImageHolder>();
-		shopImgList.add(new ImageHolder(shopImg.getName(), is));
-		shopImgList.add(new ImageHolder(shopImg1.getName(), is1));
-		InputStream is2 = new FileInputStream(shopImg);
-		ImageHolder businessImgHolder = new ImageHolder(shopImg.getName(), is2);*/
 		ShopExecution se = shopService.addShop(shop);
 		assertEquals(ShopStateEnum.CHECK.getState(), se.getState());
 	}

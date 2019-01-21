@@ -22,6 +22,17 @@ public class ShopDaoTest {
 	private ShopDao shopDao;
 	
 	@Test
+	//@Ignore
+	public void testQueryNearbyShopList() {
+		List<Shop> shopList = shopDao.queryNearbyShopList(30, 20, 130, 100);
+		if(shopList.size() != 0) {
+			for (Shop shop : shopList) {
+				System.out.println(shop);
+			}
+		}
+		else System.out.println("没有符合条件的shop");
+	}
+	@Test
 	@Ignore
 	public void testQueryShopListAndCount() {
 		Shop shopCondition = new Shop();
@@ -61,8 +72,8 @@ public class ShopDaoTest {
 		shop.setCity("test");
 		shop.setCloseTime(new Time(new Date().getTime()));
 		shop.setOpenTime(new Time(new Date().getTime()));
-		shop.setCoordinateX(1f);
-		shop.setCoordinateY(1f);
+		shop.setLatitude(1f);
+		shop.setLongitude(1f);
 		shop.setCreateTime(new Date());
 		shop.setDistrict("test");
 		shop.setFullAddress("test");
@@ -74,6 +85,7 @@ public class ShopDaoTest {
 		shop.setShopMoreInfo("test");
 		shop.setShopName("test");
 		shop.setUserId(1L);
+		shop.setEnableStatus(0);
 		int effectedNum = shopDao.insertShop(shop);
 		assertEquals(1, effectedNum);
 	}
@@ -91,6 +103,7 @@ public class ShopDaoTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testQueryByShopId() {
 		long shopId = 1;
 		Shop shop = shopDao.queryByShopId(shopId);

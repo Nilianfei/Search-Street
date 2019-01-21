@@ -19,6 +19,14 @@ public class HttpServletRequestUtil {
 		}
 	}
 
+	public static float getFloat(HttpServletRequest request, String key) {
+		try {
+			return Float.valueOf(request.getParameter(key));
+		} catch (Exception e) {
+			return -1f;
+		}
+	}
+	
 	public static Double getDouble(HttpServletRequest request, String key) {
 		try {
 			return Double.valueOf(request.getParameter(key));

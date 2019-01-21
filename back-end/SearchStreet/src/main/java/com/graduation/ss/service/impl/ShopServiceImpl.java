@@ -28,6 +28,19 @@ public class ShopServiceImpl implements ShopService {
 	private ShopImgDao shopImgDao;
 
 	@Override
+	public ShopExecution getNearbyShopList(float maxlat, float minlat, float maxlng, float minlng) {
+		List<Shop> shopList = shopDao.queryNearbyShopList(maxlat, minlat, maxlng, minlng);
+		ShopExecution se = new ShopExecution();
+		if(shopList != null) {
+			se.setShopList(shopList);
+			se.setCount(shopList.size());
+		} else {
+			se.setState(ShopStateEnum.INNER_ERROR.getState());
+		}
+		return se;
+	}
+	
+	@Override
 	public ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize) {
 		//将页码转换成行码
 		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
@@ -164,4 +177,5 @@ public class ShopServiceImpl implements ShopService {
 		String profileImgAddr = ImageUtil.generateThumbnail(profileImg, dest);
 		shop.setProfileImg(profileImgAddr);
 	}
+
 }

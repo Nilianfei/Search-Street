@@ -26,8 +26,8 @@ public class Appeal {
 		 * 0不确定帮助对象，1已确定帮助对象，2已完成,3已删除
 		 */
 		private Integer appealStatus;
-		private Float coordinateX;
-		private Float coordinateY;
+		private Float latitude;
+		private Float longitude;
 		private Date startTime;
 		private Date endTime;
 
@@ -151,23 +151,23 @@ public class Appeal {
 		}
 
 
-		public Float getCoordinateX() {
-			return coordinateX;
+		public Float getLatitude() {
+			return latitude;
 		}
 
 
-		public void setCoordinateX(Float coordinateX) {
-			this.coordinateX = coordinateX;
+		public void setLatitude(Float latitude) {
+			this.latitude = latitude;
 		}
 
 
-		public Float getCoordinateY() {
-			return coordinateY;
+		public Float getLongitude() {
+			return longitude;
 		}
 
 
-		public void setCoordinateY(Float coordinateY) {
-			this.coordinateY = coordinateY;
+		public void setLongitude(Float longitude) {
+			this.longitude = longitude;
 		}
 
 

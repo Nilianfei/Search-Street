@@ -3,10 +3,22 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.graduation.ss.dao.ShopDao">
-	<select id="queryShopList" resultType="com.graduation.ss.entity.Shop">
+	<select id="queryNearbyShopList"
+		resultType="com.graduation.ss.entity.Shop">
 		SELECT
 		shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
-		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,coordinate_x,coordinate_y,
+		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,latitude,longitude,
+		enable_status,business_scope,create_time,last_edit_time
+		FROM
+		tb_shop
+		WHERE latitude &lt; #{maxlat} and latitude &gt; #{minlat} and
+		longitude &lt; #{maxlng} and longitude &gt; #{minlng}
+	</select>
+	<select id="queryShopList"
+		resultType="com.graduation.ss.entity.Shop">
+		SELECT
+		shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
+		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,latitude,longitude,
 		enable_status,business_scope,create_time,last_edit_time
 		FROM
 		tb_shop
@@ -29,8 +41,7 @@
 			<if test="shopCondition.isMobile != null">
 				and is_mobile = #{shopCondition.isMobile}
 			</if>
-			<if
-				test="shopCondition.userId != null">
+			<if test="shopCondition.userId != null">
 				and user_id = #{shopCondition.userId}
 			</if>
 		</where>
@@ -60,25 +71,26 @@
 			<if test="shopCondition.isMobile != null">
 				and is_mobile = #{shopCondition.isMobile}
 			</if>
-			<if
-				test="shopCondition.userId != null">
+			<if test="shopCondition.userId != null">
 				and user_id = #{shopCondition.userId}
 			</if>
 		</where>
 	</select>
-	<insert id="insertShop" parameterType="com.graduation.ss.entity.Shop"
-		useGeneratedKeys="true" keyProperty="shopId" keyColumn="shop_id">
+	<insert id="insertShop"
+		parameterType="com.graduation.ss.entity.Shop" useGeneratedKeys="true"
+		keyProperty="shopId" keyColumn="shop_id">
 		INSERT
 		INTO
 		tb_shop(shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
-		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,coordinate_x,coordinate_y,
+		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,latitude,longitude,
 		business_scope,create_time,last_edit_time,user_id,enable_status)
 		VALUES
 		(#{shopName},#{businessLicenseImg},#{businessLicenseCode},#{perCost},#{phone},#{province},#{city},
-		#{district},#{fullAddress},#{shopMoreInfo},#{isMobile},#{openTime},#{closeTime},#{profileImg},#{coordinateX},
-		#{coordinateY},#{businessScope},#{createTime},#{lastEditTime},#{userId},#{enableStatus})
+		#{district},#{fullAddress},#{shopMoreInfo},#{isMobile},#{openTime},#{closeTime},#{profileImg},#{latitude},
+		#{longitude},#{businessScope},#{createTime},#{lastEditTime},#{userId},#{enableStatus})
 	</insert>
-	<update id="updateShop" parameterType="com.graduation.ss.entity.Shop">
+	<update id="updateShop"
+		parameterType="com.graduation.ss.entity.Shop">
 		update tb_shop
 		<set>
 			<if test="shopName != null">shop_name=#{shopName},</if>
@@ -95,18 +107,19 @@
 			<if test="openTime != null">open_time=#{openTime},</if>
 			<if test="closeTime != null">close_time=#{closeTime},</if>
 			<if test="profileImg != null">profile_img=#{profileImg},</if>
-			<if test="coordinateX != null">coordinate_x=#{coordinateX},</if>
-			<if test="coordinateY != null">coordinate_y=#{coordinateY},</if>
+			<if test="latitude != null">latitude=#{latitude},</if>
+			<if test="longitude != null">longitude=#{longitude},</if>
 			<if test="businessScope != null">business_scope=#{businessScope},</if>
 			<if test="lastEditTime != null">last_edit_time=#{lastEditTime},</if>
 			<if test="enableStatus != null">enable_status=#{enableStatus}</if>
 		</set>
 		where shop_id=#{shopId}
 	</update>
-	<select id="queryByShopId" resultType="com.graduation.ss.entity.Shop" parameterType="Long">
+	<select id="queryByShopId"
+		resultType="com.graduation.ss.entity.Shop" parameterType="Long">
 		SELECT
 		shop_id,shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
-		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,coordinate_x,coordinate_y,
+		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,latitude,longitude,
 		enable_status,business_scope,create_time,last_edit_time
 		FROM
 		tb_shop

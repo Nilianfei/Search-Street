@@ -17,6 +17,16 @@ public interface ShopService {
 	public ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize);
 
 	/**
+	 * 根据经纬范围返回附近店铺列表
+	 * @param maxlat
+	 * @param minlat
+	 * @param maxlng
+	 * @param minlng
+	 * @return
+	 */
+	public ShopExecution getNearbyShopList(float maxlat, float minlat, float maxlng, float minlng);
+	
+	/**
 	 * 通过店铺Id获取店铺信息
 	 * 
 	 * @param shopId

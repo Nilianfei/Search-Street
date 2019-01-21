@@ -22,8 +22,8 @@ public class Shop {
 	private Time openTime;
 	private Time closeTime;
 	private String profileImg;
-	private Float coordinateX;
-	private Float coordinateY;
+	private Float latitude;
+	private Float longitude;
 	//0：审核中，1：许可，2：不许可
 	private Integer enableStatus;
 	private String businessScope;
@@ -128,17 +128,17 @@ public class Shop {
 	public void setProfileImg(String profileImg) {
 		this.profileImg = profileImg;
 	}
-	public Float getCoordinateX() {
-		return coordinateX;
+	public Float getLatitude() {
+		return latitude;
 	}
-	public void setCoordinateX(Float coordinateX) {
-		this.coordinateX = coordinateX;
+	public void setLatitude(Float latitude) {
+		this.latitude = latitude;
 	}
-	public Float getCoordinateY() {
-		return coordinateY;
+	public Float getLongitude() {
+		return longitude;
 	}
-	public void setCoordinateY(Float coordinateY) {
-		this.coordinateY = coordinateY;
+	public void setLongitude(Float longitude) {
+		this.longitude = longitude;
 	}
 	public Integer getEnableStatus() {
 		return enableStatus;
@@ -177,9 +177,10 @@ public class Shop {
 				+ ", perCost=" + perCost + ", phone=" + phone + ", province=" + province + ", city=" + city
 				+ ", district=" + district + ", fullAddress=" + fullAddress + ", shopMoreInfo=" + shopMoreInfo
 				+ ", isMobile=" + isMobile + ", openTime=" + openTime + ", closeTime=" + closeTime + ", profileImg="
-				+ profileImg + ", coordinateX=" + coordinateX + ", coordinateY=" + coordinateY + ", enableStatus="
-				+ enableStatus + ", businessScope=" + businessScope + ", createTime=" + createTime + ", lastEditTime="
-				+ lastEditTime + ", userId=" + userId + "]";
+				+ profileImg + ", latitude=" + latitude + ", longitude=" + longitude + ", enableStatus=" + enableStatus
+				+ ", businessScope=" + businessScope + ", createTime=" + createTime + ", lastEditTime=" + lastEditTime
+				+ ", userId=" + userId + "]";
 	}
+	
 	
 }

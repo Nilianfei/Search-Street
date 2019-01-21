@@ -31,7 +31,6 @@ import com.graduation.ss.service.WechatAuthService;
 import com.graduation.ss.util.HttpServletRequestUtil;
 import com.graduation.ss.util.JWT;
 
-
 @RestController
 @RequestMapping("/shopadmin")
 public class ShopManagementController {
@@ -41,19 +40,34 @@ public class ShopManagementController {
 	private ShopImgDao shopImgDao;
 	@Autowired
 	private WechatAuthService wechatAuthService;
-	
+
 	@RequestMapping(value = "/getshoplistbyuserid", method = RequestMethod.GET)
 	@ResponseBody
-	private Map<String, Object> getShopList(HttpServletRequest request) {
+	private Map<String, Object> getShopListByUserId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		Long userId = (Long) request.getSession().getAttribute("userId");
+		String token = HttpServletRequestUtil.getString(request, "token");
+		Long userId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人信息
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			userId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+		}
 		try {
 			Shop shopCondition = new Shop();
 			shopCondition.setUserId(userId);
 			ShopExecution se = shopService.getShopList(shopCondition, 0, 100);
 			modelMap.put("shopList", se.getShopList());
-			// 列出店铺成功之后，将店铺放入session中作为权限验证依据，即该帐号只能操作它自己的店铺
-			request.getSession().setAttribute("shopList", se.getShopList());
+			/*
+			 * // 列出店铺成功之后，将店铺放入session中作为权限验证依据，即该帐号只能操作它自己的店铺
+			 * request.getSession().setAttribute("shopList", se.getShopList());
+			 */
 			modelMap.put("userId", userId);
 			modelMap.put("success", true);
 		} catch (Exception e) {
@@ -62,17 +76,17 @@ public class ShopManagementController {
 		}
 		return modelMap;
 	}
-	
+
 	@RequestMapping(value = "/getshopbyid", method = RequestMethod.GET)
 	@ResponseBody
-	private Map<String, Object> getShopById(HttpServletRequest request) {
+	private Map<String, Object> getShopByShopId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
 		if (shopId > 0) {
 			try {
-				//获取店铺信息
+				// 获取店铺信息
 				Shop shop = shopService.getByShopId(shopId);
-				//获取店铺详情图列表
+				// 获取店铺详情图列表
 				List<ShopImg> shopImgList = shopImgDao.getShopImgList(shopId);
 				shop.setShopImgList(shopImgList);
 				modelMap.put("shop", shop);
@@ -87,6 +101,7 @@ public class ShopManagementController {
 		}
 		return modelMap;
 	}
+
 	@RequestMapping(value = "/registershop", method = RequestMethod.POST)
 	@ResponseBody
 	private Map<String, Object> registerShop(@RequestBody Shop shop, String token) {
@@ -94,11 +109,11 @@ public class ShopManagementController {
 		// 注册店铺
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
-		//将token解密成openId 和session_key
+		// 将token解密成openId 和session_key
 		userCode2Session = JWT.unsign(token, UserCode2Session.class);
-		//获取个人信息
+		// 获取个人信息
 		String openId = userCode2Session.getOpenId();
-		try{
+		try {
 			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
 			userId = wechatAuth.getUserId();
 		} catch (Exception e) {
@@ -122,7 +137,7 @@ public class ShopManagementController {
 		}
 		return modelMap;
 	}
-	
+
 	private void handleImage(HttpServletRequest request, ImageHolder shopImg, ImageHolder businessLicenseImg,
 			ImageHolder profileImg) throws IOException {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -157,11 +172,11 @@ public class ShopManagementController {
 		ImageHolder profileImg = new ImageHolder("", null);
 		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
 				request.getSession().getServletContext());
-		try{
+		try {
 			if (commonsMultipartResolver.isMultipart(request)) {
 				handleImage(request, shopImg, businessLicenseImg, profileImg);
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
 			System.out.println(e.getMessage());
@@ -182,7 +197,44 @@ public class ShopManagementController {
 		} catch (ShopOperationException e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
-			System.out.println(e.getMessage());
+		}
+		return modelMap;
+	}
+
+	@RequestMapping(value = "/searchnearbyshops", method = RequestMethod.GET)
+	@ResponseBody
+	private Map<String, Object> searchNearbyShops(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		float longitude = HttpServletRequestUtil.getFloat(request, "longitude");
+		float latitude = HttpServletRequestUtil.getFloat(request, "latitude");
+		float minlat = 0f;// 定义经纬度四个极限值
+		float maxlat = 0f;
+		float minlng = 0f;
+		float maxlng = 0f;
+
+		// 先计算查询点的经纬度范围
+		float r = 6371;// 地球半径千米
+		float dis = 20;// 距离（单位：千米），查询范围20km内的所有店铺
+		float dlng = (float) (2 * Math.asin(Math.sin(dis / (2 * r)) / Math.cos(longitude * Math.PI / 180)));
+		dlng = (float) (dlng * 180 / Math.PI);
+		float dlat = dis / r;
+		dlat = (float) (dlat * 180 / Math.PI);
+		if (dlng < 0) {
+			minlng = longitude + dlng;
+			maxlng = longitude - dlng;
+		} else {
+			minlng = longitude - dlng;
+			maxlng = longitude + dlng;
+		}
+		minlat = latitude - dlat;
+		maxlat = latitude + dlat;
+		try {
+			ShopExecution se = shopService.getNearbyShopList(maxlat, minlat, maxlng, minlng);
+			modelMap.put("shopList", se.getShopList());
+			modelMap.put("success", true);
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
 		}
 		return modelMap;
 	}
