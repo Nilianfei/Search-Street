@@ -12,33 +12,33 @@ public class AppealExecution {
 	// 状态标识
 	private String stateInfo;
 
-	// 店铺数量
+	// 求助数量
 	private int count;
 
-	// 操作的appeal(增删改店铺的时候用到)
+	// 操作的appeal(增删改求助的时候用到)
 	private Appeal appeal;
 
-	// appeal列表(查询店铺列表的时候使用)
+	// appeal列表(查询求助列表的时候使用)
 	private List<Appeal> appealList;
 
 	public AppealExecution() {
 
 	}
 
-	// 店铺操作失败的时候使用的构造器
+	// 求助操作失败的时候使用的构造器
 	public AppealExecution(AppealStateEnum stateEnum) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
 	}
 
-	// 店铺操作成功的时候使用的构造器
+	// 求助操作成功的时候使用的构造器
 	public AppealExecution(AppealStateEnum stateEnum, Appeal appeal) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
 		this.appeal = appeal;
 	}
 
-	// 店铺操作成功的时候使用的构造器
+	// 求助操作成功的时候使用的构造器
 	public AppealExecution(AppealStateEnum stateEnum, List<Appeal> appealList) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
