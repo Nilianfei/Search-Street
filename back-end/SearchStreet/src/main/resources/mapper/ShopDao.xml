@@ -12,7 +12,8 @@
 		FROM
 		tb_shop
 		WHERE latitude &lt; #{maxlat} and latitude &gt; #{minlat} and
-		longitude &lt; #{maxlng} and longitude &gt; #{minlng}
+		longitude &lt; #{maxlng} and longitude &gt; #{minlng} and
+		enable_status = 1
 	</select>
 	<select id="queryShopList"
 		resultType="com.graduation.ss.entity.Shop">

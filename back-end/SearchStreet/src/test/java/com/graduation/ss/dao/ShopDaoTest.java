@@ -20,48 +20,49 @@ import com.graduation.ss.entity.Shop;
 public class ShopDaoTest {
 	@Autowired
 	private ShopDao shopDao;
-	
+
 	@Test
-	//@Ignore
+	@Ignore
 	public void testQueryNearbyShopList() {
 		List<Shop> shopList = shopDao.queryNearbyShopList(30, 20, 130, 100);
-		if(shopList.size() != 0) {
+		if (shopList.size() != 0) {
 			for (Shop shop : shopList) {
 				System.out.println(shop);
 			}
-		}
-		else System.out.println("没有符合条件的shop");
+		} else
+			System.out.println("没有符合条件的shop");
 	}
+
 	@Test
 	@Ignore
 	public void testQueryShopListAndCount() {
 		Shop shopCondition = new Shop();
-		
+
 		shopCondition.setUserId(1L);
 		List<Shop> shopList = shopDao.queryShopList(shopCondition, 0, 4);
 		int count = shopDao.queryShopCount(shopCondition);
 		System.out.println("店铺列表-user的大小：" + shopList.size());
-		System.out.println("店铺总数-user：" + count);	
-		
+		System.out.println("店铺总数-user：" + count);
+
 		shopCondition.setShopName("测试店铺");
 		shopList = shopDao.queryShopList(shopCondition, 0, 3);
 		count = shopDao.queryShopCount(shopCondition);
 		System.out.println("店铺列表-name的大小：" + shopList.size());
 		System.out.println("店铺总数-name：" + count);
-		
+
 		shopCondition.setProvince("测试省份1");
 		shopList = shopDao.queryShopList(shopCondition, 0, 4);
 		count = shopDao.queryShopCount(shopCondition);
 		System.out.println("店铺列表-province的大小：" + shopList.size());
-		System.out.println("店铺总数-province：" + count);	
-		
+		System.out.println("店铺总数-province：" + count);
+
 		shopCondition.setEnableStatus(1);
 		shopList = shopDao.queryShopList(shopCondition, 0, 3);
 		count = shopDao.queryShopCount(shopCondition);
 		System.out.println("店铺列表-enable的大小：" + shopList.size());
 		System.out.println("店铺总数-enable：" + count);
 	}
-	
+
 	@Test
 	@Ignore
 	public void testInsertShop() {
@@ -89,7 +90,7 @@ public class ShopDaoTest {
 		int effectedNum = shopDao.insertShop(shop);
 		assertEquals(1, effectedNum);
 	}
-	
+
 	@Test
 	@Ignore
 	public void testUpdateShop() {
@@ -101,12 +102,12 @@ public class ShopDaoTest {
 		int effectedNum = shopDao.updateShop(shop);
 		assertEquals(1, effectedNum);
 	}
-	
+
 	@Test
 	@Ignore
 	public void testQueryByShopId() {
 		long shopId = 1;
 		Shop shop = shopDao.queryByShopId(shopId);
-		System.out.println("fullAddress: "+shop.getFullAddress());
+		System.out.println("fullAddress: " + shop.getFullAddress());
 	}
 }

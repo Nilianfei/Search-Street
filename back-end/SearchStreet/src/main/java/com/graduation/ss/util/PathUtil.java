@@ -19,14 +19,19 @@ public class PathUtil {
 		String imagePath = "/upload/images/item/shop/shopImg/" + shopId + "/";
 		return imagePath.replace("/", seperator);
 	}
-	
+
 	public static String getShopBusinessLicenseImgPath(long shopId) {
 		String imagePath = "/upload/images/item/shop/businessLicenseImg/" + shopId + "/";
 		return imagePath.replace("/", seperator);
 	}
-	
+
 	public static String getShopProfileImgPath(long shopId) {
 		String imagePath = "/upload/images/item/shop/profileImg/" + shopId + "/";
+		return imagePath.replace("/", seperator);
+	}
+
+	public static String getAppealImgPath(Long appealId) {
+		String imagePath = "/upload/images/item/appeal/appealImg/" + appealId + "/";
 		return imagePath.replace("/", seperator);
 	}
 }

@@ -2,10 +2,10 @@ package com.graduation.ss.dto;
 
 import java.util.List;
 
-import com.graduation.ss.entity.Shop;
-import com.graduation.ss.enums.ShopStateEnum;
+import com.graduation.ss.entity.Appeal;
+import com.graduation.ss.enums.AppealStateEnum;
 
-public class ShopExecution {
+public class AppealExecution {
 	// 结果状态
 	private int state;
 
@@ -15,34 +15,34 @@ public class ShopExecution {
 	// 店铺数量
 	private int count;
 
-	// 操作的shop(增删改店铺的时候用到)
-	private Shop shop;
+	// 操作的appeal(增删改店铺的时候用到)
+	private Appeal appeal;
 
-	// shop列表(查询店铺列表的时候使用)
-	private List<Shop> shopList;
+	// appeal列表(查询店铺列表的时候使用)
+	private List<Appeal> appealList;
 
-	public ShopExecution() {
+	public AppealExecution() {
 
 	}
 
 	// 店铺操作失败的时候使用的构造器
-	public ShopExecution(ShopStateEnum stateEnum) {
+	public AppealExecution(AppealStateEnum stateEnum) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
 	}
 
 	// 店铺操作成功的时候使用的构造器
-	public ShopExecution(ShopStateEnum stateEnum, Shop shop) {
+	public AppealExecution(AppealStateEnum stateEnum, Appeal appeal) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
-		this.shop = shop;
+		this.appeal = appeal;
 	}
 
 	// 店铺操作成功的时候使用的构造器
-	public ShopExecution(ShopStateEnum stateEnum, List<Shop> shopList) {
+	public AppealExecution(AppealStateEnum stateEnum, List<Appeal> appealList) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
-		this.shopList = shopList;
+		this.appealList = appealList;
 	}
 
 	public int getState() {
@@ -69,19 +69,19 @@ public class ShopExecution {
 		this.count = count;
 	}
 
-	public Shop getShop() {
-		return shop;
+	public Appeal getAppeal() {
+		return appeal;
 	}
 
-	public void setShop(Shop shop) {
-		this.shop = shop;
+	public void setAppeal(Appeal appeal) {
+		this.appeal = appeal;
 	}
 
-	public List<Shop> getShopList() {
-		return shopList;
+	public List<Appeal> getAppealList() {
+		return appealList;
 	}
 
-	public void setShopList(List<Shop> shopList) {
-		this.shopList = shopList;
+	public void setAppealList(List<Appeal> appealList) {
+		this.appealList = appealList;
 	}
 }

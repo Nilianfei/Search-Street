@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.graduation.ss.entity.ShopImg;
 
-
 public interface ShopImgDao {
 	/**
 	 * 列出某个店铺的详情图列表
@@ -15,9 +14,9 @@ public interface ShopImgDao {
 	List<ShopImg> getShopImgList(long shopId);
 
 	/**
-	 * 批量添加店铺详情图片
+	 * 添加店铺详情图片
 	 * 
-	 * @param productImgList
+	 * @param shopImg
 	 * @return
 	 */
 	int insertShopImg(ShopImg shopImg);

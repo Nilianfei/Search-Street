@@ -1,193 +1,171 @@
 package com.graduation.ss.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class Appeal {
 
-		/**
-		 * 求助者id 主键
-		 */
-		private Long appealId;
-		/**
-		 * 用户id Foreign key
-		 */
-		private Long userId;
-		private String appealImg;
-		private String appealTitle;
-		private String appealDesc;
-		private String appealContent;
-		private String province;
-		private String city;
-		private String district;
-		private String fullAddress;
-		private Long souCoin;
-		/**
-		 * 求助的状态
-		 * 0不确定帮助对象，1已确定帮助对象，2已完成,3已删除
-		 */
-		private Integer appealStatus;
-		private Float latitude;
-		private Float longitude;
-		private Date startTime;
-		private Date endTime;
+	/**
+	 * 求助者id 主键
+	 */
+	private Long appealId;
+	/**
+	 * 用户id Foreign key
+	 */
+	private Long userId;
+	private String appealTitle;
+	private List<AppealImg> appealImgList;
+	private String phone;
+	private String appealContent;
+	private String province;
+	private String city;
+	private String district;
+	private String fullAddress;
+	private String appealMoreInfo;
+	private Long souCoin;
+	/**
+	 * 求助的状态 0不确定帮助对象，1已确定帮助对象，2已完成,3已删除
+	 */
+	private Integer appealStatus;
+	private Float latitude;
+	private Float longitude;
+	private Date startTime;
+	private Date endTime;
 
-		public Long getAppealId() {
-			return appealId;
-		}
+	public Long getAppealId() {
+		return appealId;
+	}
 
+	public void setAppealId(Long appealId) {
+		this.appealId = appealId;
+	}
 
-		public void setAppealId(Long appealId) {
-			this.appealId = appealId;
-		}
+	public Long getUserId() {
+		return userId;
+	}
 
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
-		public Long getUserId() {
-			return userId;
-		}
+	public String getAppealTitle() {
+		return appealTitle;
+	}
 
+	public void setAppealTitle(String appealTitle) {
+		this.appealTitle = appealTitle;
+	}
 
-		public void setUserId(Long userId) {
-			this.userId = userId;
-		}
+	public List<AppealImg> getAppealImgList() {
+		return appealImgList;
+	}
 
+	public void setAppealImgList(List<AppealImg> appealImgList) {
+		this.appealImgList = appealImgList;
+	}
 
-		public String getAppealImg() {
-			return appealImg;
-		}
+	public String getPhone() {
+		return phone;
+	}
 
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
-		public void setAppealImg(String appealImg) {
-			this.appealImg = appealImg;
-		}
+	public String getAppealContent() {
+		return appealContent;
+	}
 
+	public void setAppealContent(String appealContent) {
+		this.appealContent = appealContent;
+	}
 
-		public String getAppealTitle() {
-			return appealTitle;
-		}
+	public String getProvince() {
+		return province;
+	}
 
+	public void setProvince(String province) {
+		this.province = province;
+	}
 
-		public void setAppealTitle(String appealTitle) {
-			this.appealTitle = appealTitle;
-		}
+	public String getCity() {
+		return city;
+	}
 
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-		public String getAppealDesc() {
-			return appealDesc;
-		}
+	public String getDistrict() {
+		return district;
+	}
 
+	public void setDistrict(String district) {
+		this.district = district;
+	}
 
-		public void setAppealDesc(String appealDesc) {
-			this.appealDesc = appealDesc;
-		}
+	public String getFullAddress() {
+		return fullAddress;
+	}
 
+	public void setFullAddress(String fullAddress) {
+		this.fullAddress = fullAddress;
+	}
 
-		public String getAppealContent() {
-			return appealContent;
-		}
+	public String getAppealMoreInfo() {
+		return appealMoreInfo;
+	}
 
+	public void setAppealMoreInfo(String appealMoreInfo) {
+		this.appealMoreInfo = appealMoreInfo;
+	}
 
-		public void setAppealContent(String appealContent) {
-			this.appealContent = appealContent;
-		}
+	public Long getSouCoin() {
+		return souCoin;
+	}
 
+	public void setSouCoin(Long souCoin) {
+		this.souCoin = souCoin;
+	}
 
-		public String getProvince() {
-			return province;
-		}
+	public Integer getAppealStatus() {
+		return appealStatus;
+	}
 
+	public void setAppealStatus(Integer appealStatus) {
+		this.appealStatus = appealStatus;
+	}
 
-		public void setProvince(String province) {
-			this.province = province;
-		}
+	public Float getLatitude() {
+		return latitude;
+	}
 
+	public void setLatitude(Float latitude) {
+		this.latitude = latitude;
+	}
 
-		public String getCity() {
-			return city;
-		}
+	public Float getLongitude() {
+		return longitude;
+	}
 
+	public void setLongitude(Float longitude) {
+		this.longitude = longitude;
+	}
 
-		public void setCity(String city) {
-			this.city = city;
-		}
+	public Date getStartTime() {
+		return startTime;
+	}
 
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
 
-		public String getDistrict() {
-			return district;
-		}
+	public Date getEndTime() {
+		return endTime;
+	}
 
-
-		public void setDistrict(String district) {
-			this.district = district;
-		}
-
-
-		public String getFullAddress() {
-			return fullAddress;
-		}
-
-
-		public void setFullAddress(String fullAddress) {
-			this.fullAddress = fullAddress;
-		}
-
-
-		public Long getSouCoin() {
-			return souCoin;
-		}
-
-
-		public void setSouCoin(Long souCoin) {
-			this.souCoin = souCoin;
-		}
-
-
-		public Integer getAppealStatus() {
-			return appealStatus;
-		}
-
-
-		public void setAppealStatus(Integer appealStatus) {
-			this.appealStatus = appealStatus;
-		}
-
-
-		public Float getLatitude() {
-			return latitude;
-		}
-
-
-		public void setLatitude(Float latitude) {
-			this.latitude = latitude;
-		}
-
-
-		public Float getLongitude() {
-			return longitude;
-		}
-
-
-		public void setLongitude(Float longitude) {
-			this.longitude = longitude;
-		}
-
-
-		public Date getStartTime() {
-			return startTime;
-		}
-
-
-		public void setStartTime(Date startTime) {
-			this.startTime = startTime;
-		}
-
-
-		public Date getEndTime() {
-			return endTime;
-		}
-
-
-		public void setEndTime(Date endTime) {
-			this.endTime = endTime;
-		}
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
 
 }

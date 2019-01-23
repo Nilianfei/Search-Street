@@ -27,7 +27,14 @@ import com.graduation.ss.exceptions.ShopOperationException;
 public class ShopServiceTest {
 	@Autowired
 	private ShopService shopService;
-	
+
+	@Test
+	@Ignore
+	public void testGetNearbyShopList() {
+		ShopExecution se = shopService.getNearbyShopList(30, 20, 120, 100);
+		System.out.println("店铺列表数为" + se.getCount());
+	}
+
 	@Test
 	@Ignore
 	public void testGetShopList() {
@@ -37,26 +44,36 @@ public class ShopServiceTest {
 		System.out.println("店铺列表数为：" + se.getShopList().size());
 		System.out.println("店铺总数为：" + se.getCount());
 	}
-	
+
 	@Test
 	@Ignore
-	public void testModifyShop() throws ShopOperationException, FileNotFoundException {
-		Shop shop = new Shop();
-		shop.setShopId(2L);
-		shop.setShopName("修改后的店铺名称");
+	public void testUploadImg() throws ShopOperationException, FileNotFoundException {
 		File shopImg = new File("C:/Users/Al/Pictures/test.png");
 		InputStream is = new FileInputStream(shopImg);
 		ImageHolder shopImageHolder = new ImageHolder(shopImg.getName(), is);
 		InputStream is1 = new FileInputStream(shopImg);
 		ImageHolder profileImageHolder1 = new ImageHolder(shopImg.getName(), is1);
-		/*InputStream is2 = new FileInputStream(shopImg);
-		ImageHolder shopImageHolder2 = new ImageHolder(shopImg.getName(), is2);*/
-		ShopExecution shopExecution = shopService.modifyShop(shop, shopImageHolder, null, profileImageHolder1);
+		/*
+		 * InputStream is2 = new FileInputStream(shopImg); ImageHolder shopImageHolder2
+		 * = new ImageHolder(shopImg.getName(), is2);
+		 */
+		ShopExecution shopExecution = shopService.uploadImg(2L, shopImageHolder, null, profileImageHolder1);
 		System.out.println("新的头像地址为：" + shopExecution.getShop().getProfileImg());
 	}
-	
+
 	@Test
-	public void testAddShop() throws ShopOperationException, FileNotFoundException {
+	@Ignore
+	public void testModifyShop() throws ShopOperationException {
+		Shop shop = new Shop();
+		shop.setShopId(2L);
+		shop.setShopName("修改后的店铺名称");
+		ShopExecution se = shopService.modifyShop(shop);
+		System.out.println("新的店铺名称为：" + se.getShop().getShopName());
+	}
+
+	@Test
+	@Ignore
+	public void testAddShop() throws ShopOperationException {
 		Shop shop = new Shop();
 		shop.setBusinessLicenseCode("test");
 		shop.setBusinessScope("test");
