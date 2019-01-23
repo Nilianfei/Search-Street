@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 21/01/2019 15:10:37
+ Date: 23/01/2019 15:18:10
 */
 
 SET NAMES utf8mb4;
@@ -24,14 +24,14 @@ DROP TABLE IF EXISTS `tb_appeal`;
 CREATE TABLE `tb_appeal`  (
   `appeal_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '求助id',
   `user_id` int(10) NOT NULL COMMENT '用户id',
-  `appeal_img` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '求助相关图片',
   `appeal_title` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '求助标题',
-  `appeal_desc` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '求助描述',
+  `phone` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '求助联系电话',
   `appeal_content` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '求助内容',
   `province` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '省份',
   `city` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '城市',
   `district` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '地区',
   `full_address` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '详细地址',
+  `appeal_more_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址补充',
   `sou_coin` int(10) NOT NULL COMMENT '回报的搜币',
   `appeal_status` int(2) NOT NULL DEFAULT 0 COMMENT '求助的状态（0不确定帮助对象，1已确定帮助对象，2已完成,3已删除）',
   `latitude` float NOT NULL COMMENT '定位的纬度',
@@ -39,7 +39,19 @@ CREATE TABLE `tb_appeal`  (
   `start_time` datetime(0) NOT NULL COMMENT '开始时间',
   `end_time` datetime(0) NOT NULL COMMENT '结束时间',
   PRIMARY KEY (`appeal_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '寻帮助' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '寻帮助' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for tb_appeal_img
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_appeal_img`;
+CREATE TABLE `tb_appeal_img`  (
+  `appeal_img_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '求助图片ID',
+  `img_addr` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图片地址',
+  `appeal_id` int(10) NOT NULL COMMENT '求助ID',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`appeal_img_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_help
@@ -138,7 +150,7 @@ CREATE TABLE `tb_shop`  (
   `city` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `district` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `full_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `shop_more_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `shop_more_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址补充',
   `is_mobile` int(2) NOT NULL DEFAULT 1,
   `open_time` time(0) NULL DEFAULT NULL,
   `close_time` time(0) NULL DEFAULT NULL,
@@ -150,7 +162,7 @@ CREATE TABLE `tb_shop`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `last_edit_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`shop_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_shop_comment
@@ -171,12 +183,12 @@ CREATE TABLE `tb_shop_comment`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_shop_img`;
 CREATE TABLE `tb_shop_img`  (
-  `shop_img_id` int(20) NOT NULL AUTO_INCREMENT,
-  `img_addr` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `shop_id` int(10) NULL DEFAULT NULL,
+  `shop_img_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '店铺图片ID',
+  `img_addr` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图片地址',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `shop_id` int(10) NOT NULL COMMENT '店铺ID',
   PRIMARY KEY (`shop_img_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_wechat_auth
