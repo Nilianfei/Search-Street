@@ -6,11 +6,11 @@ import java.util.List;
 public class Appeal {
 
 	/**
-	 * 求助者id 主键
+	 * 求助id 主键
 	 */
 	private Long appealId;
 	/**
-	 * 用户id Foreign key
+	 * 求助者用户id
 	 */
 	private Long userId;
 	private String appealTitle;

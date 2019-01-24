@@ -88,11 +88,11 @@ public class AppealController {
 				modelMap.put("success", true);
 			} catch (Exception e) {
 				modelMap.put("success", false);
-				modelMap.put("errMsg", e.toString());
+				modelMap.put("errMsg", e.getMessage());
 			}
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "empty appealId");
+			modelMap.put("errMsg", "appealId无效");
 		}
 		return modelMap;
 	}

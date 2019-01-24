@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.ss.dao.HelpDao">
+	<select id="queryHelpList"
+		resultType="com.graduation.ss.entity.Help">
+		SELECT
+		help_id,
+		appeal_id,
+		help_status,
+		completion,
+		efficiency,
+		attitude,
+		additional_coin
+		FROM
+		tb_help
+		<where>
+			<if test="helpCondition.appealId != null">
+				and appeal_id = #{helpCondition.appealId}
+			</if>
+			<if test="helpCondition.userId != null">
+				and user_id = #{helpCondition.userId}
+			</if>
+		</where>
+		LIMIT #{rowIndex},#{pageSize};
+	</select>
+	<select id="queryHelpCount" resultType="int">
+		SELECT
+		count(1)
+		FROM
+		tb_help
+		<where>
+			<if test="helpCondition.appealId != null">
+				and appeal_id = #{helpCondition.appealId}
+			</if>
+			<if test="helpCondition.userId != null">
+				and user_id = #{helpCondition.userId}
+			</if>
+		</where>
+	</select>
+	<select id="queryByHelpId"
+		resultType="com.graduation.ss.entity.Help" parameterType="long">
+		SELECT
+		help_id,
+		appeal_id,
+		help_status,
+		completion,
+		efficiency,
+		attitude,
+		additional_coin
+		FROM
+		tb_help
+		WHERE
+		help_id=#{helpId}
+	</select>
+	<insert id="insertHelp"
+		parameterType="com.graduation.ss.entity.Help" useGeneratedKeys="true"
+		keyProperty="helpId" keyColumn="help_id">
+		INSERT
+		INTO
+		tb_help(
+		appeal_id,
+		user_id,
+		help_status,
+		completion,
+		efficiency,
+		attitude,
+		additional_coin)
+		VALUES
+		(#{appealId},#{userId},#{helpStatus},#{completion},
+		#{efficiency},#{attitude},#{additionalCoin})
+	</insert>
+	<update id="updateHelp"
+		parameterType="com.graduation.ss.entity.Help">
+		update tb_help
+		<set>
+			<if test="helpStatus != null">help_status=#{helpStatus},</if>
+			<if test="completion != null">completion=#{completion},</if>
+			<if test="efficiency != null">efficiency=#{efficiency},</if>
+			<if test="attitude != null">attitude=#{attitude},</if>
+			<if test="additionalCoin != null">additional_coin=#{additionalCoin}</if>
+		</set>
+		where help_id=#{helpId}
+	</update>
+</mapper>
