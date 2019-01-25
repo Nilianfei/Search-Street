@@ -103,7 +103,6 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	@Transactional
 	public ShopExecution addShop(Shop shop) throws ShopOperationException {
 		// 空值判断
 		if (shop == null) {
@@ -126,7 +125,6 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	@Transactional
 	public ShopExecution modifyShop(Shop shop) throws ShopOperationException {
 		// 空值判断
 		if (shop == null) {

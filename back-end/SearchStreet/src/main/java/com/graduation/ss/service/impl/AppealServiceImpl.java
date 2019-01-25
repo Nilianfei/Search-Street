@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.graduation.ss.dao.AppealDao;
 import com.graduation.ss.dao.AppealImgDao;
@@ -64,7 +63,6 @@ public class AppealServiceImpl implements AppealService {
 	}
 
 	@Override
-	@Transactional
 	public void uploadImg(long appealId, ImageHolder appealImg) throws AppealOperationException {
 		try {
 			if (appealImg != null && appealImg.getImage() != null && appealImg.getImageName() != null
@@ -95,7 +93,6 @@ public class AppealServiceImpl implements AppealService {
 	}
 
 	@Override
-	@Transactional
 	public AppealExecution addAppeal(Appeal appeal) throws AppealOperationException {
 		// 空值判断
 		if (appeal == null) {
