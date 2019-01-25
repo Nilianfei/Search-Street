@@ -1,123 +1,73 @@
 
-<<<<<<< Updated upstream
 .containor{
   height: 100vh;
   background-color: #526685;
-}
-
-.break0{
-  height: 20rpx;
-}
-
-.break1{
-  height: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .shop-message{
-  width: 100vh;
+  width: 100%;
   background-color: #6e8bb6;
-=======
-page{
-  
-  background-color: #104fad;
 }
 
-.shop-messagehd{
-  position: absolute;
-  margin-top: 20px;
-  background-color: #6c98db;
->>>>>>> Stashed changes
-  display: flex;
-  flex-direction: column;
+page{
+  background-color: #526685;
 }
+
 
 .shop-message-top{
   display: flex;
   flex-direction: row;
-  height: 200px;
+  height: 200rpx;
   width: 100%;
 }
-.shop-message-picture{
-  overflow:hidden;
-  display: block;
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 50%;
-  background-color: #fff;
-  margin-left: 10px;
-  position: absolute;
-  margin-top: 10px;
-}
-.shop-message-name{
-  position: absolute;
-  margin-top: 30px;
-  margin-left: 100px;
-  color: #fff;
-}
-.shop-servicescore{
-  float: left;
-  position: absolute;
-  margin-left: 20px;
-  margin-top:150px;
-  color: #fff;
-}
-.shop-starscore{
-  float: left;
-  position: absolute;
-  margin-left: 100px;
-  margin-top:150px;
-  color: #fff;
-}
-.shop-successscore{
-  float: left;
-  position: absolute;
-  margin-left: 200px;
-  margin-top:150px;
-  color: #fff;
-}
+
 .shop-messagebd{
-  position: absolute;
-  margin-top: 260px;
-  background-color: #6c98db;
-  height: 260px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+  background-color: #c4f1b2;
   width: 100%;
+  height: 600rpx;
 }
-.shop-album{
-  border: solid #fff 0.2px;
-  margin-top: 40px;
+
+.shop-function{
+  height: 100rpx;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #6e8bb6;
+  border-bottom: gainsboro solid 1rpx;
+}
+
+.shop-function-icon{
+  margin-left: 20rpx;
+  height: 80rpx;
+  widows: 80rpx;
 }
 .shop-beinfo-icon{
   height: 80rpx;
   width: 80rpx;
-  margin-left: 10px;
-  float: left;
 }
 .shopalbum-text{
-  position: absolute;
-  margin-left: 60px;
-  margin-top: 10rpx;
+  margin-left: 20rpx;
+  width: 500rpx;
   color: #fff;
   float: left;
+  font-size: 48rpx;
 }
 .shop-beinfo-locat{
-  position: absolute;
   width: 90%;
   height: 170px;
-  margin-top: 540px;
-  margin-left: 20px;
-  border-radius: 10%;
+  margin-top: 20rpx;
+  border-radius: 5%;
+  border: #7687a1 solid 6rpx;
   background-color: #031c42;
 }
-.shop-locatstart{
-  display: block;
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 50%;
-  background-color: rgb(238, 160, 14);
-  position: relative;
-  float: right;
-  margin-right: 10px;
-}
+
 .onlinetime{
   position: relative;
   color: #fff;
@@ -130,7 +80,6 @@ page{
   margin-left: 10px;
   margin-top: 10px;
 }
-<<<<<<< Updated upstream
 
 .shop-message-picture{
   margin-left: 10rpx;
@@ -144,19 +93,20 @@ page{
   width: 170rpx;
   height: 170rpx;
   border-radius: 50%;
-  border: 3px solid whitesmoke;
+  border: 6rpx solid whitesmoke;
   border-color: white;
-=======
+}
+
 .shop-lstext{
   position: relative;
   margin-top: 20px;
   color: #fff;
->>>>>>> Stashed changes
 }
 
 .shop-message-name{
   margin-left: 10rpx;
   width: 520rpx;
+  height: 200rpx;
   display: flex;
   align-items: center;
 }
@@ -190,9 +140,4 @@ page{
 .score-text{
   font-size: 32rpx;
   color: white;
-}
-
-.funtion{
-  background-color: #6e8bb6;
-  height: 400rpx;
 }

@@ -1,11 +1,11 @@
 {
   "pages": [
-    
+    "page/shop-beinfo/shop-beinfo",
     "page/index/index",
     "page/login/login",
     "page/e-register/e-register",
     "page/m-register/m-register",
-    "page/shop-beinfo/shop-beinfo",
+    
     "page/search-shop/search-shop"
   ]
 }
