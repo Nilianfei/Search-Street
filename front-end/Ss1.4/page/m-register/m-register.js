@@ -227,7 +227,7 @@ Page({
             key: 'shopId',
             data: res.data.shopId
           })
-          var url = "http://localhost:8080/ss/shopadmin/modifyshop?shopId=" + res.data.shopId + "&token=" + token;
+          var url = "http://localhost:8080/ss/shopadmin/uploadimg?shopId=" + res.data.shopId + "&token=" + token;
           app.uploadAImg({
             url: url,
             filePath: that.data.business_img[0],
