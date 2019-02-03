@@ -6,9 +6,9 @@
 	<select id="queryNearbyShopList"
 		resultType="com.graduation.ss.entity.Shop">
 		SELECT
-		shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
-		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,latitude,longitude,
-		enable_status,business_scope,create_time,last_edit_time
+		shop_id,shop_name,phone,province,city,district,
+		full_address,shop_more_info,is_mobile,latitude,longitude,
+		business_scope
 		FROM
 		tb_shop
 		WHERE latitude &lt; #{maxlat} and latitude &gt; #{minlat} and

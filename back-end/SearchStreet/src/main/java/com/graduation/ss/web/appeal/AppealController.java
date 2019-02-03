@@ -207,7 +207,7 @@ public class AppealController {
 		// 先计算查询点的经纬度范围
 		float r = 6371;// 地球半径千米
 		float dis = 20;// 距离（单位：千米），查询范围20km内的所有求助
-		float dlng = (float) (2 * Math.asin(Math.sin(dis / (2 * r)) / Math.cos(longitude * Math.PI / 180)));
+		float dlng = (float) (2 * Math.asin(Math.sin(dis / (2 * r)) / Math.cos(latitude * Math.PI / 180)));
 		dlng = (float) (dlng * 180 / Math.PI);
 		float dlat = dis / r;
 		dlat = (float) (dlat * 180 / Math.PI);

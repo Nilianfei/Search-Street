@@ -232,8 +232,8 @@ public class ShopManagementController {
 
 		// 先计算查询点的经纬度范围
 		float r = 6371;// 地球半径千米
-		float dis = 20;// 距离（单位：千米），查询范围20km内的所有店铺
-		float dlng = (float) (2 * Math.asin(Math.sin(dis / (2 * r)) / Math.cos(longitude * Math.PI / 180)));
+		float dis = 20;// 查询范围20km内的所有店铺
+		float dlng = (float) (2 * Math.asin(Math.sin(dis / (2 * r)) / Math.cos(latitude * Math.PI / 180)));
 		dlng = (float) (dlng * 180 / Math.PI);
 		float dlat = dis / r;
 		dlat = (float) (dlat * 180 / Math.PI);
@@ -249,6 +249,10 @@ public class ShopManagementController {
 		try {
 			ShopExecution se = shopService.getNearbyShopList(maxlat, minlat, maxlng, minlng);
 			modelMap.put("shopList", se.getShopList());
+			modelMap.put("minlng", minlng);
+			modelMap.put("maxlng", maxlng);
+			modelMap.put("minlat", minlat);
+			modelMap.put("maxlat", maxlat);
 			modelMap.put("success", true);
 		} catch (Exception e) {
 			modelMap.put("success", false);

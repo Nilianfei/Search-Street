@@ -103,6 +103,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
 		// 配置拦截的路径
 		loginIR.addPathPatterns(interceptPaths);
 		loginIR.excludePathPatterns("/wechat/login");
+		loginIR.excludePathPatterns("/shopadmin/searchnearbyshops");
 	}
 
 }
