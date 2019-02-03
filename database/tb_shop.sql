@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 21/01/2019 15:10:06
+ Date: 03/02/2019 17:43:52
 */
 
 SET NAMES utf8mb4;
@@ -33,18 +33,18 @@ CREATE TABLE `tb_shop`  (
   `city` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `district` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `full_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `shop_more_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `shop_more_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址补充',
   `is_mobile` int(2) NOT NULL DEFAULT 1,
   `open_time` time(0) NULL DEFAULT NULL,
   `close_time` time(0) NULL DEFAULT NULL,
   `profile_img` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `latitude` float NOT NULL,
-  `longitude` float NOT NULL,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL,
   `enable_status` int(2) NOT NULL DEFAULT 0,
   `business_scope` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `create_time` datetime(0) NULL DEFAULT NULL,
   `last_edit_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`shop_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 63 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

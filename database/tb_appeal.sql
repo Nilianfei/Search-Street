@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 23/01/2019 15:18:45
+ Date: 03/02/2019 17:43:36
 */
 
 SET NAMES utf8mb4;
@@ -34,8 +34,8 @@ CREATE TABLE `tb_appeal`  (
   `appeal_more_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址补充',
   `sou_coin` int(10) NOT NULL COMMENT '回报的搜币',
   `appeal_status` int(2) NOT NULL DEFAULT 0 COMMENT '求助的状态（0不确定帮助对象，1已确定帮助对象，2已完成,3已删除）',
-  `latitude` float NOT NULL COMMENT '定位的纬度',
-  `longitude` float NOT NULL COMMENT '定位的经度',
+  `latitude` double NOT NULL COMMENT '定位的纬度',
+  `longitude` double NOT NULL COMMENT '定位的经度',
   `start_time` datetime(0) NOT NULL COMMENT '开始时间',
   `end_time` datetime(0) NOT NULL COMMENT '结束时间',
   PRIMARY KEY (`appeal_id`) USING BTREE

@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 23/01/2019 15:18:10
+ Date: 03/02/2019 17:44:03
 */
 
 SET NAMES utf8mb4;
@@ -34,8 +34,8 @@ CREATE TABLE `tb_appeal`  (
   `appeal_more_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址补充',
   `sou_coin` int(10) NOT NULL COMMENT '回报的搜币',
   `appeal_status` int(2) NOT NULL DEFAULT 0 COMMENT '求助的状态（0不确定帮助对象，1已确定帮助对象，2已完成,3已删除）',
-  `latitude` float NOT NULL COMMENT '定位的纬度',
-  `longitude` float NOT NULL COMMENT '定位的经度',
+  `latitude` double NOT NULL COMMENT '定位的纬度',
+  `longitude` double NOT NULL COMMENT '定位的经度',
   `start_time` datetime(0) NOT NULL COMMENT '开始时间',
   `end_time` datetime(0) NOT NULL COMMENT '结束时间',
   PRIMARY KEY (`appeal_id`) USING BTREE
@@ -67,7 +67,7 @@ CREATE TABLE `tb_help`  (
   `attitude` int(2) NULL DEFAULT NULL COMMENT '态度评分',
   `additional_coin` int(10) NULL DEFAULT NULL COMMENT '追赏金',
   PRIMARY KEY (`help_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '帮把手' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '帮把手' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for tb_local_auth
@@ -155,14 +155,14 @@ CREATE TABLE `tb_shop`  (
   `open_time` time(0) NULL DEFAULT NULL,
   `close_time` time(0) NULL DEFAULT NULL,
   `profile_img` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `latitude` float NOT NULL,
-  `longitude` float NOT NULL,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL,
   `enable_status` int(2) NOT NULL DEFAULT 0,
   `business_scope` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `create_time` datetime(0) NULL DEFAULT NULL,
   `last_edit_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`shop_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 63 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_shop_comment
