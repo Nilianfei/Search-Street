@@ -9,20 +9,11 @@ Page({
     latitude: 23.139317,
     longitude: 113.352354,
     scale: 18,
-
-    markers: [{
-      id: 0,
-      latitude: 23.139317,
-      longitude: 113.352354,
-      name: '华南师范大学',
-
-      callout: {
-        content: "SCNU\n南中国一般大学",
-        boderRadius: 1000,
-        color: "#ff7700",
-        display: 'BYCLICK'
-      }
-    }]
+    maxlng: null,
+    maxlat:null,
+    minlng:null,
+    minlat:null,
+    markers: []
   },
 
   /**
@@ -30,16 +21,32 @@ Page({
    */
   onLoad: function () {
     var that = this;
+    console.log("初始化地图");
+    wx.getSetting({
+      success(res) {
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success() {
+              
+            }
+          })
+        }
+      }
+    })
+
     //获取当前位置
     wx.getLocation({
-      type: "wgs84",
+      type: "gcj02",
       success: function (res) {
         var latitude = res.latitude;
         var longitude = res.longitude;
         that.setData({
           latitude: res.latitude,
           longitude: res.longitude
-        })
+        });
+        //初始化markers
+        that.getShopLocation(res);
       },
     });
 
@@ -89,22 +96,7 @@ Page({
       },
     })
 
-    wx.request({
-      url: '',    //获取商铺位置
-      data: {},
-      method: 'GET',
-      success: (res) => {
-        this.setData({
-          markers: res.data.data
-        })
-      },
-      fail: function (res) {
-
-      },
-      complete: function (res) {
-
-      }
-    })
+    
 
   },
 
@@ -123,6 +115,59 @@ Page({
   onShow: function () {
     this.mapCtx = wx.createMapContext('myMap');
     this.moveToPosition();
+  },
+
+  getShopLocation: function (res) {
+    wx.request({
+      url: 'http://localhost:8080/ss/shopadmin/searchnearbyshops',    //获取商铺位置
+      data: {
+        longitude: res.longitude,
+        latitude: res.latitude
+      },
+      method: 'GET',
+      success: (res) => {
+        if (res.data.success) {
+          this.setMarkers(res.data.shopList);
+          this.setData({
+            maxlat: res.data.maxlat,
+            maxlng: res.data.maxlng,
+            minlat: res.data.minlat,
+            minlng: res.data.minlng
+          })
+        } else {
+          console.log(res.data.errMsg);
+        }
+      },
+      fail: function (res) {
+
+      },
+      complete: function (res) {
+
+      }
+    })
+  },
+
+  setMarkers: function (shopList) {
+    var _markers=[];
+    for (var i = 0; i < shopList.length; i++){
+      _markers[i] = {
+        id: shopList[i].shopId,
+        latitude: shopList[i].latitude,
+        longitude: shopList[i].longitude,
+        name: shopList[i].shopName,
+
+        callout: {
+          content: shopList[i].shopName,
+          boderRadius: 1000,
+          color: "#ff7700",
+          display: 'BYCLICK'
+        }
+      }
+    }
+    this.setData({
+      markers:_markers
+    })
+    console.log(this.data.markers);
   },
 
   //移动地图到当前所在位置
@@ -165,21 +210,21 @@ Page({
 
   //地图拖动事件
   bindregionchange: function (e) {
-    if (e.type == "begin") {
-      wx.request({
-        url: '',
-        data: {},
-        method: 'GET',
+    //console.log(e.type);
+    if (e.type == "end") {
+      this.mapCtx.getRegion({
         success: (res) => {
-          this.setData({
-            _markers: res.data.data
-          })
+          if(res.northeast.latitude > this.data.maxlat ||
+            res.northeast.longitude > this.data.maxlng ||
+            res.southwest.latitude < this.data.minlat ||
+            res.southwest.longitude < this.data.minlng){
+            this.mapCtx.getCenterLocation({
+              success: (res) => {
+                this.getShopLocation(res);
+              }
+            })
+          }
         }
-      })
-    }
-    else if (e.type == "end") {
-      this.setData({
-        markers: this.data._markers
       })
     }
   },
