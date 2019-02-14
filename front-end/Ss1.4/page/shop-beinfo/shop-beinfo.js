@@ -1,10 +1,10 @@
 
-var test_name='华南师范大学小卖部石牌校区旗舰店'
-var test_pic='../../images/search_buck.png'
-var score=80;
-var score_rank=5;
-score_rank=score_rank.toFixed(1);
-var score_rate=0.8;
+var test_name = '华南师范大学小卖部石牌校区旗舰店'
+var test_pic = '../../images/search_buck.png'
+var score = 80;
+var score_rank = 5;
+score_rank = score_rank.toFixed(1);
+var score_rate = 0.8;
 
 Page({
 
@@ -13,8 +13,8 @@ Page({
    */
   data: {
 
-    shopname:test_name,
-    shoppic:test_pic,
+    shopname: test_name,
+    shoppic: test_pic,
     score_number0: score,
     score_number1: score_rank,
     score_number2: score_rate,
@@ -22,8 +22,8 @@ Page({
     shopname:null,
     shoppic:null,
     */
-    time:0,
-    number:0,
+    time: 0,
+    number: 0,
 
   },
 
@@ -31,10 +31,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    /*
+    wx.setStorage({
+      key: 'shopId',
+      data: options.id//从shoplist传来的shopid
+    })//异步更新缓存shopId
     var token = null;
-    try {
-      const value = wx.getStorageSync('shopId')
+    try {//同步获取与用户信息有关的缓存token
+      const value = wx.getStorageSync('token')
       if (value) {
         token = value;
       }
@@ -42,70 +45,68 @@ Page({
       console.log("error");
     }
     wx.request({
-      url: '',
-      data:{
-       shopId:token
-      },
-      method:"POST",
+      url: "http://localhost:8080/ss/shopadmin/getshopbyid?shopId=" + options.id + "&token=" + token,
+      data: {},
+      method: "GET",
       success: res => {
         console.log(res);   //设置页面中的数据
         this.setData(
           {
-            shopname:res.data.shopName,
-            shoppic:res.data.pofileImg,
+            shopname: res.data.shop.shopName,
+            shoppic: res.data.shop.pofileImg,
           }
         )
       }
     })
-    */    
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    
+
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    
+
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    
+
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    
+
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    
+
   }
 })
