@@ -31,10 +31,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    /*
+    wx.setStorage({
+      key: 'shopId',
+      data: options.id//从shoplist传来的shopid
+    })//异步更新缓存shopId
     var token = null;
-    try {
-      const value = wx.getStorageSync('shopId')
+    try {//同步获取与用户信息有关的缓存token
+      const value = wx.getStorageSync('token')
       if (value) {
         token = value;
       }
@@ -42,22 +45,20 @@ Page({
       console.log("error");
     }
     wx.request({
-      url: '',
-      data:{
-       shopId:token
-      },
-      method:"POST",
+      url: "http://localhost:8080/ss/shopadmin/getshopbyid?shopId=" + options.id + "&token=" + token,
+      data:{},
+      method:"GET",
       success: res => {
         console.log(res);   //设置页面中的数据
         this.setData(
           {
-            shopname:res.data.shopName,
-            shoppic:res.data.pofileImg,
+            shopname:res.data.shop.shopName,
+            shoppic:res.data.shop.pofileImg,
           }
         )
       }
     })
-    */    
+      
   },
 
   /**

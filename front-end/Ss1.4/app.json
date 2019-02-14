@@ -3,10 +3,14 @@
     
     "page/index/index",
     "page/login/login",
+    "page/shop-list/shop-list",
+    "page/shop-register/shop-register",
     "page/e-register/e-register",
     "page/m-register/m-register",
     "page/shop-beinfo/shop-beinfo",
-    "page/search-shop/search-shop"
+    "page/search-shop/search-shop",
+    "page/service-list/service-list"
+    
   ],
   "permission": {
     "scope.userLocation": {

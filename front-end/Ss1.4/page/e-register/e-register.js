@@ -230,8 +230,8 @@ Page({
         city: that.data.region[1],
         district: that.data.region[2],
         fullAddress : e.detail.value.fullAddress,
-        coordinateY: that.data.longitude,
-        coordinateX: that.data.latitude,
+        longitude: that.data.longitude,
+        latitude: that.data.latitude,
         shopMoreInfo: e.detail.value.shopMoreInfo,
         isMobile : 0
       },

@@ -41,62 +41,6 @@ Page({
       phone_error: null
     }
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-    
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-    
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-    
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-    
-  },
   upimg: function () {
     var that = this;
     var flag = this.data.flag;
@@ -153,7 +97,12 @@ Page({
       }
     })
   },
-  
+  bindRegionChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      region: e.detail.value
+    })
+  },
   formSubmit: function (e) {
     var that = this;
     var errorMsg = this.data.errorMsg;
@@ -214,8 +163,8 @@ Page({
         city: that.data.region[1],
         district: that.data.region[2],
         fullAddress: e.detail.value.fullAddress,
-        coordinateY: that.data.longitude,
-        coordinateX: that.data.latitude,
+        longitude: that.data.longitude,
+        latitude: that.data.latitude,
         shopMoreInfo: e.detail.value.shopMoreInfo,
         isMobile: 1
       },

@@ -1,0 +1,3 @@
+<!--page/shop-register/shop-register.wxml-->
+<i-button bind:click="eregister" type="success" shape="circle" size="large">固定商铺注册</i-button>
+<i-button bind:click="mregister" type="success" shape="circle" size="large">移动商铺注册</i-button>

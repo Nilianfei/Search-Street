@@ -1,0 +1,9 @@
+<!--page/shop-list/shop-list.wxml-->
+<view class='container'>
+<loading hidden="{{!loading}}">加载中</loading>
+<i-cell-group>
+  <block wx:for="{{list}}" wx:key="id">
+    <i-cell title="{{item.shopName}}" label="{{item.isMobile}}" value="{{item.enableStatus}}" is-link url="../shop-beinfo/shop-beinfo?id={{item.shopId}}"></i-cell>
+  </block>
+</i-cell-group>
+</view>

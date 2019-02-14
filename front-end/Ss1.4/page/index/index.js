@@ -22,7 +22,7 @@ Page({
             if (res.authSetting['scope.userInfo']) {
               wx.getUserInfo({
                 success: function (res) {
-                  console.log(res)
+                  /*console.log(res)
                   var token="dfef"
                   try {
                     const value = wx.getStorageSync('shopId')
@@ -45,7 +45,7 @@ Page({
                     }
                   } catch (e) {
                     console.log("error");
-                  }
+                  }*/
                 }
               });
             }
