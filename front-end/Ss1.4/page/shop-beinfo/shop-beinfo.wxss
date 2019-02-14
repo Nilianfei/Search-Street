@@ -1,7 +1,5 @@
-
 .containor{
   height: 100vh;
-  background-color: #526685;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,11 +9,6 @@
   width: 100%;
   background-color: #6e8bb6;
 }
-
-page{
-  background-color: #526685;
-}
-
 
 .shop-message-top{
   display: flex;
@@ -28,55 +21,39 @@ page{
   display: flex;
   flex-direction: column;
   margin-top: 20rpx;
-  background-color: #c4f1b2;
   width: 100%;
   height: 600rpx;
 }
 
-.shop-function{
-  height: 100rpx;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: #6e8bb6;
-  border-bottom: gainsboro solid 1rpx;
+.shop-function-list{
+  width:100%;
+  display: block;        
 }
 
-.shop-function-icon{
-  margin-left: 20rpx;
-  height: 80rpx;
-  widows: 80rpx;
-}
-.shop-beinfo-icon{
-  height: 80rpx;
-  width: 80rpx;
-}
 .shopalbum-text{
   margin-left: 20rpx;
   width: 500rpx;
-  color: #fff;
   float: left;
-  font-size: 48rpx;
+  font-size: medium;
 }
-.shop-beinfo-locat{
-  width: 90%;
-  height: 170px;
-  margin-top: 20rpx;
-  border-radius: 5%;
-  border: #7687a1 solid 6rpx;
-  background-color: #031c42;
+
+.shop-situation{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:100%;
+  font-size: medium;
 }
 
 .onlinetime{
   position: relative;
-  color: #fff;
+  color:#495060;
   margin-left: 10px;
   margin-top: 20px;
 }
 .issearched{
   position: relative;
-  color: #fff;
+  color:#495060;
   margin-left: 10px;
   margin-top: 10px;
 }
@@ -112,7 +89,7 @@ page{
 }
 
 .name{
-  font-size: 48rpx;
+  font-size: large;
   color: white;
 }
 
@@ -134,10 +111,10 @@ page{
 }
 
 .score-number{
-  font-size: 64rpx;
+  font-size: xx-large;
   color: white;
 }
 .score-text{
-  font-size: 32rpx;
+  font-size: small;
   color: white;
 }

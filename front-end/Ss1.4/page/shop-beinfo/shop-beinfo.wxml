@@ -31,64 +31,43 @@
     </view>
 
   </view>
-  <view class="shop-messagebd">
-    <view class="shop-function">
-      <view class="shop-function-icon">
-        <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/相册.png"></image>
-      </view>
+  
+  <i-panel class="shop-function-list">
+    <i-cell-group>
+      <i-cell title="相册"  is-link>
+        <i-icon type="picture" slot="icon" />
+      </i-cell>
 
-      <view class="shopalbum-text">相册</view>
-    </view>
+      <i-cell title="服务评价"  is-link>
+        <i-icon type="praise" slot="icon" />
+      </i-cell>
 
-    <view class="shop-function">
-      <view class="shop-function-icon">
-        <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/笑脸.png"></image>
-      </view>
-
-      <view class="shopalbum-text">服务评价</view>
-    </view>
-
-    <view class="shop-function">
-      <view class="shop-function-icon">
-        <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/商铺 (1).png"></image>
-      </view>
-
-      <view class="shopalbum-text">商铺信息</view>
-    </view>
-
-    <view class="shop-function">
-      <view class="shop-function-icon">
-        <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/设置.png"></image>
-      </view>
-
-      <view class="shopalbum-text">设置</view>
-    </view>
+      <i-cell title="商铺信息" is-link>
+        <i-icon type="shop_fill" slot="icon" />
+      </i-cell>
     
-    <view class="shop-function">
-      <view class="shop-function-icon">
-        <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/订单.png"></image>
-      </view>
+      <i-cell title="设置" is-link>
+        <i-icon type="setup" slot="icon" />
+      </i-cell>
 
-      <view class="shopalbum-text">订单</view>
+      <i-cell title="订单" is-link>
+        <i-icon type="task" slot="icon" />
+      </i-cell>
+    
+      <i-cell title="添加服务" is-link>
+        <i-icon type="add" slot="icon" />
+      </i-cell>
+    </i-cell-group>
+  </i-panel>
+
+  <i-panel class="shop-situation">
+    <view class="onlinetime">
+      在线： <text>{{time}}</text> 小时
     </view>
 
-    <view class="shop-function">
-      <view class="shop-function-icon">
-        <image class="shop-beinfo-icon" mode="aspectFit" src="../../images/服务.png"></image>
-      </view>
-
-      <view class="shopalbum-text">添加服务</view>
+    <view class="issearched" >
+      被搜： <text>{{number}}</text> 单
     </view>
-  </view>
-
-  <view class="shop-beinfo-locat">
-    <view class="onlinetime">在线：
-         <text>{{time}}</text>小时
-    </view>
-
-    <view class="issearched">被搜：
-        <text>{{number}}</text>单
-    </view>
-  </view>
+  </i-panel>
 
 </view>
