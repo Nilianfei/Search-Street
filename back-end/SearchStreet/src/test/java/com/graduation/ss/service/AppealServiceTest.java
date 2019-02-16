@@ -28,7 +28,6 @@ public class AppealServiceTest {
 	private AppealService appealService;
 
 	@Test
-	@Ignore
 	public void testGetNearbyAppealList() {
 		AppealExecution ae = appealService.getNearbyAppealList(50, 0, 50, 0);
 		System.out.println("求助列表数为：" + ae.getCount());
@@ -81,6 +80,7 @@ public class AppealServiceTest {
 		appeal.setProvince("testprovince");
 		appeal.setSouCoin(1l);
 		appeal.setStartTime(new Date());
+		appeal.setEndTime(new Date());
 		appeal.setUserId(1l);
 		AppealExecution appealExecution = appealService.addAppeal(appeal);
 		assertEquals(AppealStateEnum.SUCCESS.getState(), appealExecution.getState());

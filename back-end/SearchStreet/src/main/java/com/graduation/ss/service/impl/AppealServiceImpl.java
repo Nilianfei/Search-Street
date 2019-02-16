@@ -1,6 +1,7 @@
 package com.graduation.ss.service.impl;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,14 @@ public class AppealServiceImpl implements AppealService {
 		List<Appeal> appealList = appealDao.queryNearbyAppealList(maxlat, minlat, maxlng, minlng);
 		AppealExecution ae = new AppealExecution();
 		if (appealList != null) {
+			Date today = new Date();
+			Iterator<Appeal> iter = appealList.iterator();
+			while (iter.hasNext()) {
+	            Appeal value = iter.next();
+	            if (value.getEndTime().getTime()< today.getTime()) {
+	                iter.remove();
+	            }
+	        }
 			ae.setAppealList(appealList);
 			ae.setCount(appealList.size());
 		} else {

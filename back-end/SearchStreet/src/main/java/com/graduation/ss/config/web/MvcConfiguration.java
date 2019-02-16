@@ -104,6 +104,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
 		loginIR.addPathPatterns(interceptPaths);
 		loginIR.excludePathPatterns("/wechat/login");
 		loginIR.excludePathPatterns("/shopadmin/searchnearbyshops");
+		loginIR.excludePathPatterns("/shopadmin/getshopbyid");
 	}
 
 }

@@ -1,0 +1,80 @@
+/* page/shop/shop.wxss */
+.container{
+  background-color: #eeeeee;
+}
+
+.shop-message{
+  width: 100%;
+  background-color: #6e8bb6;
+}
+
+.shop-message-top{
+  display: flex;
+  flex-direction: row;
+  height: 200rpx;
+  width: 100%;
+}
+
+.shop-messagebd{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+  width: 100%;
+  height: 600rpx;
+}
+
+.shop-message-picture{
+  margin-left: 10rpx;
+  width: 200rpx;
+  height: 200rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shop-message-name{
+  margin-left: 10rpx;
+  width: 520rpx;
+  height: 200rpx;
+  display: flex;
+  align-items: center;
+}
+
+.shop-message-buttom{
+
+  height: 200rpx;
+  width: 750rpx;
+  display: flex;
+}
+
+.shop-picture{
+  width: 170rpx;
+  height: 170rpx;
+  border-radius: 50%;
+  border: 6rpx solid whitesmoke;
+  border-color: white;
+}
+
+.name{
+  font-size: large;
+  color: white;
+}
+
+.shop-score{
+  margin-left: 38rpx;
+  width: 200rpx;
+  height: 200rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.score-number{
+  font-size: xx-large;
+  color: white;
+}
+.score-text{
+  font-size: small;
+  color: white;
+}

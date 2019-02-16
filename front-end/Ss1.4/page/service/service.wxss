@@ -1,0 +1,43 @@
+/* page/service/service.wxss */
+.container{
+  background-color: #eeeeee;
+}
+
+.little-bottom{
+  margin-bottom:10px;
+}
+
+.big-bottom{
+  margin-bottom:60px;
+}
+
+.image{
+  width: 100%; 
+  height: 200px; 
+  background-color: #ffffff;
+}
+
+.text-view{
+  padding:10px;
+}
+
+.service-content-title{
+  padding: 15px;
+  text-align:center;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.service-content{
+  padding-left:15px;
+  padding-right:15px;
+  padding-bottom: 15px;
+  word-break:normal;
+  word-wrap:break-word;
+}
+
+.botton-view{
+  bottom:0;
+  position:fixed;
+  width:100%;
+}

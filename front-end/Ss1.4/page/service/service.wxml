@@ -1,0 +1,27 @@
+<!--page/service/service.wxml-->
+<view class="container">
+  <view class='little-bottom'>
+    <image
+      class='image'
+      src="{{service.serviceImg}}"
+    ></image>
+  </view>
+  <view class='little-bottom'>
+    <i-panel>
+      <view class='text-view'><text style='font-size:20px'>{{service.serviceName}}</text></view>
+      <view class='text-view'><text style='color:#ff9900;'>{{service.servicePrice}}元</text></view>
+    </i-panel>
+    <i-panel>
+      <view class='text-view'>{{service.serviceDesc}}</view>
+    </i-panel>
+  </view>
+  <view class='big-bottom'>
+    <i-panel>
+      <view class='service-content-title'>服务内容</view>
+      <view class='service-content'>{{service.serviceContent}}</view>
+    </i-panel>
+  </view>
+  <view class='botton-view'>
+    <i-button type="primary" long="true" bind:click="booking">{{bottonText}}</i-button>
+  </view>
+</view>

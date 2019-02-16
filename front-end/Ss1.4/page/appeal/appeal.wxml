@@ -1,0 +1,27 @@
+<!--page/appeal/appeal.wxml-->
+<loading hidden="{{!loading}}">加载中</loading>
+<view class='container'>
+  <i-panel>
+    <i-row>
+      <i-col span="12" i-class="col-class"><view class='appeal-name'>{{appeal.appealTitle}}</view></i-col>
+      <i-col span="12" i-class="col-class"><view class='soucoin'>赏{{appeal.souCoin}}搜币</view></i-col>
+    </i-row>
+    <view class='appeal-content'>{{appeal.appealContent}}</view>
+  </i-panel>
+  <view class='appeal-img'>
+    <i-row>
+      <i-col span="6" i-class="col-class" wx:for="{{appeal.appealImgList}}"><image class="logoinfo" src='../../images/search_buck.png' name="businessLogo"></image></i-col>
+    </i-row>
+  </view>
+  <i-panel>
+    <i-input value="{{appeal.startTime}}" title="开始时间"  disabled />
+    <i-input value="{{appeal.endTime}}" title="结束时间"  disabled />
+    <i-input value="{{appeal.phone}}" title="联系电话"  disabled />
+    <i-input value="{{appeal.province}}{{appeal.city}}{{appeal.district}}" title="地址" type="textarea" disabled />
+    <i-input value="{{appeal.fullAddress}}" type="textarea" title="详细地址" disabled />
+    <i-input value="{{appeal.appealMoreInfo}}" title="补充说明" type="textarea" disabled />
+  </i-panel>
+  <view class='botton-view'>
+    <i-button type="primary" long="true" bind:click="helping">{{bottonText}}</i-button>
+  </view>
+</view>

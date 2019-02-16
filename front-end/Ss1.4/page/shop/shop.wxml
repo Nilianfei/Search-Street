@@ -1,0 +1,56 @@
+<!--page/shop/shop.wxml-->
+<view class='container'>
+  <view class="shop-message">
+    <view class="shop-message-top">
+      <view class= "shop-message-picture">
+        <image class="shop-picture" mode='aspectFit' src="{{shop.profileImg}}"></image>
+      </view>
+
+      <view class="shop-message-name">
+        <text class="name">{{shop.shopName}}</text>
+      </view>
+
+    </view>
+
+    <view class="shop-message-buttom">
+      <view class="shop-score">
+        <text class="score-number">{{score_number0}}</text>
+        <text class="score-text">服务分</text>
+      </view>
+
+      <view class="shop-score">
+        <text class="score-number">{{score_number1}}</text>
+        <text class="score-text">星级评分</text>
+      </view>
+
+      <view class="shop-score">
+        <text class="score-number">{{score_number2*100}}%</text>
+        <text class="score-text">搜街成功率</text>
+      </view>
+    </view>
+
+  </view>
+  
+  <i-panel title="商铺信息">
+    <i-input value="{{shop.businessScope}}" title="主营范围" type="textarea" disabled />
+    <i-input value="{{shop.perCost}}" title="人均消费（元/人）" disabled />
+    <i-input value="{{shop.businessLicenseCode}}" title="营业执照编码" disabled />
+    <i-input value="{{shop.phone}}" title="联系电话" disabled />
+    <i-input value="{{shop.province}}{{shop.city}}{{shop.district}}" title="地址" type="textarea" disabled />
+    <i-input value="{{shop.fullAddress}}" type="textarea" title="详细地址" disabled />
+    <i-input value="{{shop.shopMoreInfo}}" title="补充说明" type="textarea" disabled />
+  </i-panel>
+  <i-panel>
+    <i-cell-group>
+      <i-cell title="相册"  is-link>
+        <i-icon type="picture" slot="icon" />
+      </i-cell>
+      <i-cell title="服务列表"  is-link>
+        <i-icon type="service" slot="icon" />
+      </i-cell>
+      <i-cell title="服务评价"  is-link>
+        <i-icon type="praise" slot="icon" />
+      </i-cell>
+    </i-cell-group>
+  </i-panel>
+</view>

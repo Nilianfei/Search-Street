@@ -1,0 +1,46 @@
+/* page/appeal/appeal.wxss */
+.container{
+  background-color: #eeeeee;
+}
+.appeal-name{
+  margin:15px;
+  width:100%;
+  font-weight:bold;
+  font-size:20px;
+}
+.soucoin{
+  margin:15px;
+  text-align:right;
+  color:#ff9900;
+}
+.appeal-content-title{
+  padding: 15px;
+  text-align:center;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.appeal-content{
+  padding-left:15px;
+  padding-right:15px;
+  padding-bottom: 15px;
+  word-break:normal;
+  word-wrap:break-word;
+  font-size:15px;
+  color:#495060;
+}
+.appeal-img{
+  background-color: white;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+.botton-view{
+  bottom:0;
+  position:fixed;
+  width:100%;
+}
+.logoinfo{
+  padding: 5px;
+  height: 80px;
+  width: 80px;
+}

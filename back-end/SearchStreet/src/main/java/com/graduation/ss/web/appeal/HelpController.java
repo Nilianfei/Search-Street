@@ -53,7 +53,50 @@ public class HelpController {
 		}
 		return modelMap;
 	}
-
+	
+	@RequestMapping(value = "/queryishelp", method = RequestMethod.GET)
+	@ResponseBody
+	private Map<String, Object> queryisHelp(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		String token = HttpServletRequestUtil.getString(request, "token");
+		Long userId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人信息
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			userId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+		}
+		if (appealId <= 0) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "appealId无效");
+		} else {
+			try {
+				Help helpCondition = new Help();
+				helpCondition.setAppealId(appealId);
+				helpCondition.setUserId(userId);
+				HelpExecution helpExecution = helpService.getHelpList(helpCondition, 0, 100);
+				if(helpExecution.getCount()>0){
+					modelMap.put("ishelp", true);
+					modelMap.put("success", true);
+				} else{
+					modelMap.put("ishelp", false);
+					modelMap.put("success", true);
+				}
+			} catch (Exception e) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", e.getMessage());
+			}
+		}
+		return modelMap;
+	}
+	
 	@RequestMapping(value = "/gethelplistbyuserid", method = RequestMethod.GET)
 	@ResponseBody
 	private Map<String, Object> getHelpListByUserId(HttpServletRequest request) {
@@ -112,6 +155,7 @@ public class HelpController {
 	private Map<String, Object> addHelp(@RequestBody Help help, String token) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long userId = null;
+		System.out.println(help.toString());
 		UserCode2Session userCode2Session = null;
 		// 将token解密成openId 和session_key
 		userCode2Session = JWT.unsign(token, UserCode2Session.class);
