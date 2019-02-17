@@ -1,0 +1,49 @@
+<!--page/search-help/search-help.wxml-->
+<view class="container">
+   <view class="shelp-hd">
+      <image class="shelp-photo" src="../../images/添加图片.png"></image>
+      <text class="shelp-text">{{shelp_text}}</text>
+    </view>
+    <text class="shelp-title">求助标题</text>
+      <input class="shelp-titletext" name="shelpTitle"></input>
+    <text class="shelp-title">求助内容</text>
+      <textarea class="shelp-titletext shelp-content" name="shelpContent"></textarea> 
+    <image class="shelp-cost" src="../../images/钱币.png"></image>
+      <selector selectData="{{cost}}"></selector>
+      <text class="shelp-costtext">搜币</text>
+    <image class="shelp-cost" src="../../images/时钟.png"></image>
+      <selector selectData="{{timelimit}}"></selector>
+      <text class="shelp-costtext">有效</text>
+    <input class="shelp-phone" value="联系电话" type="number" placeholder="请输入手机号" name="shelpPhone"></input>
+     <view class="store-locat">帮帮定位</view>
+      <view class="section">
+       <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+       <view class="picker">当前选择：{{region[0]}}，{{region[1]}}，{{region[2]}}</view>
+       </picker>
+      </view>
+      <view class="slocat-logo">
+        <image class="slocat-img" src="../../images/定位.png"></image>
+        <form bindsubmit="sformSubmit">
+         <input class="slocat-text" placeholder="请输入详细地址" name="fullAddress"/>
+         <button form-type="submit" bindtap="geo">定位</button>
+        </form>
+      </view>
+      <!--地图容器-->
+      <!--longitude及latitude为设置为调转到指定地址位置，默认不显示-->
+      <map id="myMap"
+        markers="{{markers}}"
+        style="width:100%;height:200px;"
+        longitude="{{poi.longitude}}"
+        latitude="{{poi.latitude}}"
+        scale='16' show-location>
+      </map>
+      <view class="serach-append">地址补充</view>
+       <view class="serach-append1">可以让更多人找到你哦！</view>
+        <textarea class="serach-text" name="shopMoreInfo"></textarea>
+        <view class="submitbo"></view>
+      <view class="finsubmit">
+       <button class="check" formType="submit">马上求助</button>
+      </view>
+</view>
+    
+  
