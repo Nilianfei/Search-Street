@@ -36,6 +36,8 @@ public class HelpController {
 	private Map<String, Object> getHelpListByAppealId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
+		int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
 		if (appealId <= 0) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", "appealId无效");
@@ -43,8 +45,11 @@ public class HelpController {
 			try {
 				Help helpCondition = new Help();
 				helpCondition.setAppealId(appealId);
-				HelpExecution helpExecution = helpService.getHelpList(helpCondition, 0, 100);
+				HelpExecution helpExecution = helpService.getHelpList(helpCondition, pageIndex, pageSize);
+				int pageNum = (int)(helpExecution.getCount()/pageSize);
+				if(pageNum*pageSize<helpExecution.getCount())pageNum++;
 				modelMap.put("helpList", helpExecution.getHelpList());
+				modelMap.put("pageNum", pageNum);
 				modelMap.put("success", true);
 			} catch (Exception e) {
 				modelMap.put("success", false);

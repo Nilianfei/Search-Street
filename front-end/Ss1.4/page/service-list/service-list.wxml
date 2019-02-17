@@ -6,4 +6,16 @@
     <i-cell title="{{item.serviceName}}" value="{{item.servicePrice}}" is-link url="..//?id={{item.shopId}}"></i-cell>
   </block>
 </i-cell-group>
+<view class='bottom-view'>
+  <i-page current="{{ current }}" total="{{pageNum}}" bind:change="handleChange">
+    <view slot="prev">
+        <i-icon type="return"></i-icon>
+        上一页
+    </view>
+    <view slot="next">
+        下一页
+        <i-icon type="enter"></i-icon>
+    </view>
+  </i-page>
+</view>
 </view>

@@ -46,6 +46,8 @@ public class AppealController {
 	private Map<String, Object> getAppealListByUserId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		String token = HttpServletRequestUtil.getString(request, "token");
+		int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
+		int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
 		// 将token解密成openId 和session_key
@@ -62,8 +64,11 @@ public class AppealController {
 		try {
 			Appeal appealCondition = new Appeal();
 			appealCondition.setUserId(userId);
-			AppealExecution ae = appealService.getAppealList(appealCondition, 0, 100);
+			AppealExecution ae = appealService.getAppealList(appealCondition, pageIndex, pageSize);
+			int pageNum = (int)(ae.getCount()/pageSize);
+			if(pageNum*pageSize<ae.getCount())pageNum++;
 			modelMap.put("appealList", ae.getAppealList());
+			modelMap.put("pageNum", pageNum);
 			modelMap.put("success", true);
 		} catch (Exception e) {
 			modelMap.put("success", false);

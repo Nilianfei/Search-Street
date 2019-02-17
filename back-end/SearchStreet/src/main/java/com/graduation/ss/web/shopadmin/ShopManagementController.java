@@ -46,6 +46,8 @@ public class ShopManagementController {
 	private Map<String, Object> getShopListByUserId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		String token = HttpServletRequestUtil.getString(request, "token");
+		int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
+		int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
 		// 将token解密成openId 和session_key
@@ -62,8 +64,11 @@ public class ShopManagementController {
 		try {
 			Shop shopCondition = new Shop();
 			shopCondition.setUserId(userId);
-			ShopExecution se = shopService.getShopList(shopCondition, 0, 100);
+			ShopExecution se = shopService.getShopList(shopCondition, pageIndex, pageSize);
+			int pageNum = (int)(se.getCount()/pageSize);
+			if(pageNum*pageSize<se.getCount())pageNum++;
 			modelMap.put("shopList", se.getShopList());
+			modelMap.put("pageNum", pageNum);
 			/*
 			 * // 列出店铺成功之后，将店铺放入session中作为权限验证依据，即该帐号只能操作它自己的店铺
 			 * request.getSession().setAttribute("shopList", se.getShopList());
