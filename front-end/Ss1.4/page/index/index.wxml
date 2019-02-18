@@ -31,11 +31,9 @@
           <image class="kind-list-img" src="../../images/搜索周边商家.png"></image>
         </view>
     </view>
-<<<<<<< HEAD
-     <navigator class="kind-list-item" id="serach-help">
-=======
+
      <navigator class="kind-list-item" id="serach-help" url="../search-help/search-help">
->>>>>>> add search-help and selector components
+
        <view class="kind-list-item-hd">
          <view class="kind-list-text">寻帮助</view>
          <image class="kind-list-img" src="../../images/帮助.png"></image>
@@ -48,11 +46,11 @@
         </view>
      </navigator>
      <navigator class="kind-list-item" id="pri-inf">
-     <view class="kind-list-item-hd">
+      <view class="kind-list-item-hd">
        <view class="kind-list-text">个人中心</view>
        <image class="kind-list-img" src="../../images/个人.png"></image>
       </view>
      </navigator>
    </view>
   </view>   
-  </view>
+</view>
