@@ -52,7 +52,9 @@ App({
        * 设置全局变量
        */
   globalData: {
-    
+    imgUrl: "http://139.196.101.84:8080/image",
+    serviceUrl: "http://139.196.101.84:8080"
+    //serviceUrl: "http://localhost:8080"
   }
 
 })

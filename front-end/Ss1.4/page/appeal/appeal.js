@@ -35,7 +35,7 @@ Page({
     }
     //获取服务信息
     wx.request({
-      url: "http://localhost:8080/ss/appeal/getappealbyid?appealId=" + that.data.appealId,
+      url: app.globalData.serviceUrl+"/SearchStreet/appeal/getappealbyid?appealId=" + that.data.appealId,
       data: {},
       method: "GET",
       success: res => {
@@ -52,7 +52,7 @@ Page({
     })
     //查询用户是否预约过服务
     wx.request({
-      url: "http://localhost:8080/ss/help/queryishelp?appealId=" + that.data.appealId + "&token=" + that.data.token,
+      url: app.globalData.serviceUrl+"/SearchStreet/help/queryishelp?appealId=" + that.data.appealId + "&token=" + that.data.token,
       data: {},
       method: "GET",
       success: res => {
@@ -73,7 +73,7 @@ Page({
     var that = this;
     if (that.data.bottonText != "已求助") {
       wx.request({
-        url: "http://localhost:8080/ss/help/addHelp?token="+that.data.token,
+        url: app.globalData.serviceUrl+"/SearchStreet/help/addHelp?token="+that.data.token,
         data: {
           appealId: that.data.appealId,
         },

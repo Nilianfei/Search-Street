@@ -3,6 +3,7 @@ var score = 80;
 var score_rank = 5;
 score_rank = score_rank.toFixed(1);
 var score_rate = 0.8;
+var app=getApp();
 Page({
 
   /**
@@ -14,6 +15,7 @@ Page({
     score_number1: score_rank,
     score_number2: score_rate,
     shopId:null,
+    imgUrl: app.globalData.imgUrl,
   },
 
   /**
@@ -22,15 +24,17 @@ Page({
   onLoad: function (options) {
     var that=this;
     that.setData({
-      shopId:1//options.id
+      shopId:63//options.id
     })
     //获取商铺信息
     wx.request({
-      url: "http://localhost:8080/ss/shopadmin/getshopbyid?shopId=" + that.data.shopId,
+      url: app.globalData.serviceUrl+"/SearchStreet/shopadmin/getshopbyid?shopId=" + that.data.shopId,
       data: {},
       method: "GET",
       success: res => {
         console.log(res);
+        var shop=res.data.shop;
+        shop.profileImg=that.data.imgUrl+shop.profileImg;
         that.setData(
           {
             shop: res.data.shop,//设置页面中的数据

@@ -12,12 +12,8 @@
     "page/search-shop/search-shop",
     "page/service-list/service-list",
     "page/service/service",
-<<<<<<< HEAD
-    "page/appeal/appeal"
-=======
     "page/appeal/appeal",
     "page/search-help/search-help"
->>>>>>> add search-help and selector components
   ],
   "permission": {
     "scope.userLocation": {

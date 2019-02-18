@@ -1,4 +1,4 @@
-
+var app=getApp();
 var test_name = '华南师范大学小卖部石牌校区旗舰店'
 var test_pic = '../../images/search_buck.png'
 var score = 80;
@@ -45,15 +45,15 @@ Page({
       console.log("error");
     }
     wx.request({
-      url: "http://localhost:8080/ss/shopadmin/getshopbyid?shopId=" + options.id + "&token=" + token,
+      url: app.globalData.serviceUrl+"/SearchStreet/shopadmin/getshopbyid?shopId=" + options.id + "&token=" + token,
       data: {},
       method: "GET",
       success: res => {
-        console.log(res);   //设置页面中的数据
+        console.log(res.data.shop);   //设置页面中的数据
         this.setData(
           {
             shopname: res.data.shop.shopName,
-            shoppic: res.data.shop.pofileImg,
+            shoppic: app.globalData.imgUrl+res.data.shop.profileImg,
           }
         )
       }
