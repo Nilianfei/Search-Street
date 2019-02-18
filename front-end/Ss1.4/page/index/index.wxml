@@ -33,7 +33,6 @@
     </view>
 
      <navigator class="kind-list-item" id="serach-help" url="../search-help/search-help">
-
        <view class="kind-list-item-hd">
          <view class="kind-list-text">寻帮助</view>
          <image class="kind-list-img" src="../../images/帮助.png"></image>

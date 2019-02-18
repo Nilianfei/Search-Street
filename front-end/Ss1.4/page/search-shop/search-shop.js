@@ -1,5 +1,5 @@
 // page/search-shop/search-shop.js
-
+var app=getApp();
 Page({
 
   /**
@@ -119,7 +119,7 @@ Page({
 
   getShopLocation: function (res) {
     wx.request({
-      url: 'http://localhost:8080/ss/shopadmin/searchnearbyshops',    //获取商铺位置
+      url: app.globalData.serviceUrl+'/SearchStreet/shopadmin/searchnearbyshops',    //获取商铺位置
       data: {
         longitude: res.longitude,
         latitude: res.latitude

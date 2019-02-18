@@ -219,7 +219,7 @@ Page({
       console.log("error");
     }
     wx.request({
-      url: "http://localhost:8080/ss/shopadmin/registershop?token=" + token,
+      url: app.globalData.serviceUrl+"/SearchStreet/shopadmin/registershop?token=" + token,
       data: {
         shopName: e.detail.value.shopName,
         businessScope: e.detail.value.businessScope,
@@ -243,7 +243,7 @@ Page({
             key: 'shopId',
             data: res.data.shopId
           })
-          var url = "http://localhost:8080/ss/shopadmin/uploadimg?shopId=" + res.data.shopId + "&token=" + token;
+          var url = app.globalData.serviceUrl+"/SearchStreet/shopadmin/uploadimg?shopId=" + res.data.shopId + "&token=" + token;
           app.uploadAImg({
             url : url,
             filePath: that.data.business_img[0],

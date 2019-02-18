@@ -16,7 +16,7 @@ Page({
           console.log(res)
           var code = res.code;
           wx.request({
-            url: "http://localhost:8080/ss/wechat/login",
+            url: app.globalData.serviceUrl+"/SearchStreet/wechat/login",
             data: {
               code: code,
               userInfo: e.detail.userInfo
@@ -65,7 +65,7 @@ Page({
       console.log("error");
     }
     wx.request({
-      url: 'http://localhost:8080/ss/wechat/getUserInfo',
+      url: app.globalData.serviceUrl+'/SearchStreet/wechat/getUserInfo',
       data: {
         token: token
       },
