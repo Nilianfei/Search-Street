@@ -31,8 +31,13 @@ import com.graduation.ss.service.WechatAuthService;
 import com.graduation.ss.util.HttpServletRequestUtil;
 import com.graduation.ss.util.JWT;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/shopadmin")
+@Api(value = "ShopManagementController|对店铺操作的控制器")
 public class ShopManagementController {
 	@Autowired
 	private ShopService shopService;
@@ -83,6 +88,8 @@ public class ShopManagementController {
 
 	@RequestMapping(value = "/getshopbyid", method = RequestMethod.GET)
 	@ResponseBody
+	@ApiOperation(value="根据店铺ID获取店铺信息")
+    @ApiImplicitParam(paramType="query", name = "shopId", value = "店铺ID", required = true, dataType = "Long")
 	private Map<String, Object> getShopByShopId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
