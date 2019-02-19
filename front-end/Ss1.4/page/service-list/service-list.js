@@ -68,7 +68,7 @@ Page({
       url: "",
       data: {
         token: that.data.token,
-        pageIndex: that.data.current,
+        pageIndex: 0,
         pageSize: that.data.pageSize
       },
       method: 'GET',

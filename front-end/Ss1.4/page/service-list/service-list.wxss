@@ -5,3 +5,7 @@
   width:100%;
   background-color: white;
 }
+
+.service-list-view{
+  margin-bottom: 60px;
+}

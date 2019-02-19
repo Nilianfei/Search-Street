@@ -5,3 +5,7 @@
   width:100%;
   background-color: white;
 }
+
+.shop-list-view{
+  margin-bottom: 60px;
+}

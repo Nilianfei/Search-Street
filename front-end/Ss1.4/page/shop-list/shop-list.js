@@ -76,7 +76,7 @@ Page({
       url: app.globalData.serviceUrl+"/SearchStreet/shopadmin/getshoplistbyuserid",
       data: {
         token: that.data.token,
-        pageIndex: that.data.current,
+        pageIndex: 0,
         pageSize: that.data.pageSize
       },
       method: 'GET',
