@@ -98,13 +98,19 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
 		List<String> interceptPaths = new ArrayList<String>();
 		interceptPaths.add("/wechat/**");
 		interceptPaths.add("/shopadmin/**");
+		interceptPaths.add("/appeal/**");
+		interceptPaths.add("/help/**");
 		// 注册拦截器
-		InterceptorRegistration loginIR = registry.addInterceptor(new TokenInterceptor());
+		InterceptorRegistration tokenIR = registry.addInterceptor(new TokenInterceptor());
 		// 配置拦截的路径
-		loginIR.addPathPatterns(interceptPaths);
-		loginIR.excludePathPatterns("/wechat/login");
-		loginIR.excludePathPatterns("/shopadmin/searchnearbyshops");
-		loginIR.excludePathPatterns("/shopadmin/getshopbyid");
+		tokenIR.addPathPatterns(interceptPaths);
+		tokenIR.excludePathPatterns("/wechat/login");
+		tokenIR.excludePathPatterns("/shopadmin/searchnearbyshops");
+		tokenIR.excludePathPatterns("/shopadmin/getshopbyid");
+		tokenIR.excludePathPatterns("/appeal/searchnearbyappeals");
+		tokenIR.excludePathPatterns("/appeal/getappealbyid");
+		tokenIR.excludePathPatterns("/help/gethelplistbyappealid");
+		tokenIR.excludePathPatterns("/help/gethelpbyhelpid");
 	}
 
 }

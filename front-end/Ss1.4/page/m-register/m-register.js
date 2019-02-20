@@ -183,7 +183,11 @@ Page({
             fileName: "profileImg"
           })
         } else {
-          console.log("registershop error")
+          if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+            wx.redirectTo({
+              url: '../../page/login/login'
+            })
+          }
         }
       }
     })

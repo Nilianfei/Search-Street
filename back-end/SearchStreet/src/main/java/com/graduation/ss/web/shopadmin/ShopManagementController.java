@@ -74,10 +74,6 @@ public class ShopManagementController {
 			if(pageNum*pageSize<se.getCount())pageNum++;
 			modelMap.put("shopList", se.getShopList());
 			modelMap.put("pageNum", pageNum);
-			/*
-			 * // 列出店铺成功之后，将店铺放入session中作为权限验证依据，即该帐号只能操作它自己的店铺
-			 * request.getSession().setAttribute("shopList", se.getShopList());
-			 */
 			modelMap.put("success", true);
 		} catch (Exception e) {
 			modelMap.put("success", false);

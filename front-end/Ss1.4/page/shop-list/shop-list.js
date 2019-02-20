@@ -39,16 +39,24 @@ Page({
         },
         method: 'GET',
         success: function (res) {
-          var shopList = res.data.shopList;//res.data就是从后台接收到的值
-          for (var i = 0; i < shopList.length; i++) {
-            shopList[i].isMobile = that.data.isMobile[shopList[i].isMobile];
-            shopList[i].enableStatus = that.data.enablestatus[shopList[i].enableStatus];
+          if(res.data.success){
+            var shopList = res.data.shopList;//res.data就是从后台接收到的值
+            for (var i = 0; i < shopList.length; i++) {
+              shopList[i].isMobile = that.data.isMobile[shopList[i].isMobile];
+              shopList[i].enableStatus = that.data.enablestatus[shopList[i].enableStatus];
+            }
+            that.setData({
+              list: shopList,
+              loading: false,
+              pageNum: res.data.pageNum
+            })
+          } else{
+            if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+              wx.redirectTo({
+                url: '../../page/login/login'
+              })
+            }
           }
-          that.setData({
-            list: shopList,
-            loading: false,
-            pageNum: res.data.pageNum
-          })
         },
         fail: function (res) {
           console.log('submit fail');
@@ -81,16 +89,24 @@ Page({
       },
       method: 'GET',
       success: function (res) {
-        var shopList = res.data.shopList;//res.data就是从后台接收到的值
-        for (var i = 0; i < shopList.length; i++) {
-          shopList[i].isMobile = that.data.isMobile[shopList[i].isMobile];
-          shopList[i].enableStatus = that.data.enablestatus[shopList[i].enableStatus];
+        if (res.data.success) {
+          var shopList = res.data.shopList;//res.data就是从后台接收到的值
+          for (var i = 0; i < shopList.length; i++) {
+            shopList[i].isMobile = that.data.isMobile[shopList[i].isMobile];
+            shopList[i].enableStatus = that.data.enablestatus[shopList[i].enableStatus];
+          }
+          that.setData({
+            list: shopList,
+            loading: false,
+            pageNum: res.data.pageNum
+          })
+        } else {
+          if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+            wx.redirectTo({
+              url: '../../page/login/login'
+            })
+          }
         }
-        that.setData({
-          list: shopList,
-          loading: false,
-          pageNum: res.data.pageNum
-        })
       },
       fail: function (res) {
         console.log('submit fail');

@@ -45,7 +45,7 @@ Page({
       console.log("error");
     }
     wx.request({
-      url: app.globalData.serviceUrl+"/SearchStreet/shopadmin/getshopbyid?shopId=" + options.id + "&token=" + token,
+      url: app.globalData.serviceUrl+"/SearchStreet/shopadmin/getshopbyid?shopId=" + options.id,
       data: {},
       method: "GET",
       success: res => {

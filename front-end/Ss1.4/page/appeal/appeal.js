@@ -56,14 +56,21 @@ Page({
       data: {},
       method: "GET",
       success: res => {
-        console.log(res.data);
-        that.setData({
-          loading:false
-        })
-        if (res.data.ishelp==true) {
+        if(res.data.success){
           that.setData({
-            bottonText: "已求助"
+            loading: false
           })
+          if (res.data.ishelp == true) {
+            that.setData({
+              bottonText: "已求助"
+            })
+          }
+        } else{
+          if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+            wx.redirectTo({
+              url: '../../page/login/login'
+            })
+          }
         }
       }
     })

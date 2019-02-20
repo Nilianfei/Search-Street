@@ -39,8 +39,8 @@ public class ShopServiceTest {
 	@Ignore
 	public void testGetShopList() {
 		Shop shopCondition = new Shop();
-		shopCondition.setProvince("测试省份1");
-		ShopExecution se = shopService.getShopList(shopCondition, 3, 2);
+		shopCondition.setUserId(13L);
+		ShopExecution se = shopService.getShopList(shopCondition, 2, 15);
 		System.out.println("店铺列表数为：" + se.getShopList().size());
 		System.out.println("店铺总数为：" + se.getCount());
 	}
