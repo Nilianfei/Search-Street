@@ -114,11 +114,18 @@ Page({
   onShareAppMessage: function () {
 
   },
-  kindToggle: function (e) {
-    var open = this.data.open;
-    open=!open;
+  kindToggle1: function (e) {
+    var open1 = this.data.open1;
+    open1=!open1;
     this.setData({
-      open: open
+      open1: open1
+    });
+  },
+  kindToggle2: function (e) {
+    var open2 = this.data.open2;
+    open2 = !open2;
+    this.setData({
+      open2: open2
     });
   },
   searchstore:function(){

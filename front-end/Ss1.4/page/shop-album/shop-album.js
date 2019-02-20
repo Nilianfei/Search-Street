@@ -1,5 +1,7 @@
 // page/shop-album/shop-album.js
 
+
+
 Page({
 
   /**

@@ -1,6 +1,5 @@
 {
   "pages": [
-   
     "page/index/index",
     "page/login/login",
     "page/shop-list/shop-list",
@@ -14,7 +13,8 @@
     "page/service/service",
     "page/appeal/appeal",
     "page/search-help/search-help",
-    "page/shop-album/shop-album"
+    "page/shop-album/shop-album",
+    "page/search-help-response/search-help-response"
   ],
   "permission": {
     "scope.userLocation": {

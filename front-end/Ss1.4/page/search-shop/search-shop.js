@@ -82,15 +82,29 @@ Page({
             //中心位置图标（用中心位置去计算距离弥补定位不准确）
             {
               id: 3,
-              iconPath: '/images/girl_1f467.png',
+              iconPath: '/images/round-pushpin_1f4cd.png',
               position: {
-                left: res.windowWidth / 2 - 10,
-                top: res.windowHeight / 2 - 10,
-                width: 20,
-                height: 20
+                left: res.windowWidth / 2 - 20,
+                top: res.windowHeight / 2 - 40,
+                width: 40,
+                height: 40
               },
-              clickable: false
+              clickable: false,
+            },
+
+            //进入我的订单界面按钮图标
+            {
+              id: 4,
+              iconPath: '/images/clipboard_1f4cb.png',
+              position: {
+                left: res.windowWidth-60,
+                top: res.windowHeight - 75,
+                width: 50,
+                height: 50
+              },
+              clickable: true,
             }
+
           ]
         })
       },
@@ -179,6 +193,11 @@ Page({
   bindcontroltap: function (e) {
     switch (e.controlId) {
       case 1: this.moveToPosition();
+        break;
+      
+      case 4: wx.navigateTo({
+        url: '../../page/shop-album/shop-album'   //等订单页面完成后修改跳转页面！
+      });
         break;
       default: break;
     }
