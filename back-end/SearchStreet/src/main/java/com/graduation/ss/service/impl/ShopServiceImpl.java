@@ -66,14 +66,19 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	@Transactional
 	public ShopExecution uploadImg(long shopId, ImageHolder shopImg, ImageHolder businessLicenseImg,
-			ImageHolder profileImg) throws ShopOperationException {
+			ImageHolder profileImg, Date createTime) throws ShopOperationException {
 		Shop shop = new Shop();
 		shop.setShopId(shopId);
 		try {
 			Shop tempShop = shopDao.queryByShopId(shopId);
 			if (shopImg != null && shopImg.getImage() != null && shopImg.getImageName() != null
 					&& !"".equals(shopImg.getImageName())) {
-				addShopImg(shopId, shopImg);
+				if (createTime!=null) {
+					deleteShopImgList(shopId,createTime);
+				} else {
+					return new ShopExecution(ShopStateEnum.NULL_SHOPIMG_CREATETIME);
+				}
+				addShopImg(shopId, shopImg,createTime);
 			}
 			if (businessLicenseImg != null && businessLicenseImg.getImage() != null
 					&& businessLicenseImg.getImageName() != null && !"".equals(businessLicenseImg.getImageName())) {
@@ -143,14 +148,14 @@ public class ShopServiceImpl implements ShopService {
 		return new ShopExecution(ShopStateEnum.SUCCESS, shop);
 	}
 
-	private void addShopImg(long shopId, ImageHolder shopImgHolder) {
+	private void addShopImg(long shopId, ImageHolder shopImgHolder, Date createTime) {
 		// 获取图片存储路径，这里直接存放到相应店铺的文件夹底下
 		String dest = PathUtil.getShopImgPath(shopId);
 		String imgAddr = ImageUtil.generateNormalImg(shopImgHolder, dest);
 		ShopImg shopImg = new ShopImg();
 		shopImg.setImgAddr(imgAddr);
 		shopImg.setShopId(shopId);
-		shopImg.setCreateTime(new Date());
+		shopImg.setCreateTime(createTime);
 		try {
 			int effectedNum = shopImgDao.insertShopImg(shopImg);
 			if (effectedNum <= 0) {
@@ -162,20 +167,23 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	/**
-	 * 删除某个店铺下的所有详情图
+	 * 删除某个店铺下的所有旧的详情图
 	 * 
 	 * @param shopId
+	 * @param createTime 最新上传详情图的时间
 	 */
-	@SuppressWarnings("unused")
-	private void deleteShopImgList(long shopId) {
+	private void deleteShopImgList(long shopId,Date createTime) {
 		// 根据shopId获取原来的图片
 		List<ShopImg> shopImgList = shopImgDao.getShopImgList(shopId);
-		// 干掉原来的图片
-		for (ShopImg shopImg : shopImgList) {
-			ImageUtil.deleteFileOrPath(shopImg.getImgAddr());
+		if (shopImgList!=null&&shopImgList.size()>0) {
+			// 干掉原来的图片
+			for (ShopImg shopImg : shopImgList) {
+				if(shopImg.getCreateTime().getTime()<createTime.getTime())
+					ImageUtil.deleteFileOrPath(shopImg.getImgAddr());
+			}
+			// 删除数据库里原有图片的信息
+			shopImgDao.deleteShopImgByShopIdAndCreateTime(shopId,createTime);
 		}
-		// 删除数据库里原有图片的信息
-		shopImgDao.deleteShopImgByShopId(shopId);
 	}
 
 	private void addBusinessLicenseImg(Shop shop, ImageHolder businessLicenseImg) {

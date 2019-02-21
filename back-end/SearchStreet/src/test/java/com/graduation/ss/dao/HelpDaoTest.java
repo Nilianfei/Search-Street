@@ -26,20 +26,32 @@ public class HelpDaoTest {
 		help.setAppealId(1L);
 		help.setUserId(1L);
 		help.setHelpStatus(0);
+		help.setAvgAttitude(5.0f);
+		help.setAvgCompletion(4.5f);
+		help.setAvgEfficiency(3.3f);
 		int effectedNum = helpDao.insertHelp(help);
 		assertEquals(1, effectedNum);
 	}
 
 	@Test
-	@Ignore
-	public void testQueryHelpListAndCount() {
+	//@Ignore
+	public void testQueryHelpListFYAndCount() {
 		Help helpCondition = new Help();
 
 		helpCondition.setAppealId(1L);
-		List<Help> helpList = helpDao.queryHelpList(helpCondition, 3, 2);
+		List<Help> helpList = helpDao.queryHelpListFY(helpCondition, 3, 2);
 		int count = helpDao.queryHelpCount(helpCondition);
 		System.out.println("帮助列表-appealId的大小:" + helpList.size());
 		System.out.println("帮助总数-appealID：" + count);
+	}
+
+	@Test
+	@Ignore
+	public void testQueryHelpList() {
+		Help helpCondition = new Help();
+		helpCondition.setUserId(1L);
+		List<Help> helpList = helpDao.queryHelpList(helpCondition);
+		System.out.println("帮助列表-userId的大小:" + helpList.size());
 	}
 
 	@Test
@@ -57,6 +69,7 @@ public class HelpDaoTest {
 	}
 
 	@Test
+	@Ignore
 	public void testQueryByHelpId() {
 		long helpId = 1;
 		Help help = helpDao.queryByHelpId(helpId);

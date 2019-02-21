@@ -27,9 +27,16 @@ public interface AppealDao {
 	 * @param pageSize        返回的条数
 	 * @return
 	 */
-	List<Appeal> queryAppealList(@Param("appealCondition") Appeal appealCondition, @Param("rowIndex") int rowIndex,
+	List<Appeal> queryAppealListFY(@Param("appealCondition") Appeal appealCondition, @Param("rowIndex") int rowIndex,
 			@Param("pageSize") int pageSize);
 
+	/**
+	 * 查询求助，可输入的条件有：求助名（模糊），求助状态，省份，城市，地区，求助者的用户ID
+	 * 
+	 * @param appealCondition
+	 * @return
+	 */
+	List<Appeal> queryAppealList(@Param("appealCondition") Appeal appealCondition);
 	/**
 	 * 返回queryAppealList总数
 	 * 

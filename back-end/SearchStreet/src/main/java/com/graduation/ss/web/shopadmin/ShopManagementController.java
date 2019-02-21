@@ -1,6 +1,7 @@
 package com.graduation.ss.web.shopadmin;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,9 @@ import com.graduation.ss.util.JWT;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/shopadmin")
@@ -48,6 +51,11 @@ public class ShopManagementController {
 
 	@RequestMapping(value = "/getshoplistbyuserid", method = RequestMethod.GET)
 	@ResponseBody
+	@ApiOperation(value = "根据用户ID获取其所有店铺信息（分页）")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = true, dataType = "int"),
+			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的店铺数目", required = true, dataType = "int") })
 	private Map<String, Object> getShopListByUserId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		String token = HttpServletRequestUtil.getString(request, "token");
@@ -65,13 +73,15 @@ public class ShopManagementController {
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
 		}
 		try {
 			Shop shopCondition = new Shop();
 			shopCondition.setUserId(userId);
 			ShopExecution se = shopService.getShopList(shopCondition, pageIndex, pageSize);
-			int pageNum = (int)(se.getCount()/pageSize);
-			if(pageNum*pageSize<se.getCount())pageNum++;
+			int pageNum = (int) (se.getCount() / pageSize);
+			if (pageNum * pageSize < se.getCount())
+				pageNum++;
 			modelMap.put("shopList", se.getShopList());
 			modelMap.put("pageNum", pageNum);
 			modelMap.put("success", true);
@@ -84,8 +94,8 @@ public class ShopManagementController {
 
 	@RequestMapping(value = "/getshopbyid", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value="根据店铺ID获取店铺信息")
-    @ApiImplicitParam(paramType="query", name = "shopId", value = "店铺ID", required = true, dataType = "Long")
+	@ApiOperation(value = "根据店铺ID获取店铺信息")
+	@ApiImplicitParam(paramType = "query", name = "shopId", value = "店铺ID", required = true, dataType = "Long", example = "65")
 	private Map<String, Object> getShopByShopId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
@@ -111,7 +121,10 @@ public class ShopManagementController {
 
 	@RequestMapping(value = "/registershop", method = RequestMethod.POST)
 	@ResponseBody
-	private Map<String, Object> registerShop(@RequestBody Shop shop, String token) {
+	@ApiOperation(value = "注册店铺（不添加图片）", notes = "不用传shopId")
+	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
+	private Map<String, Object> registerShop(
+			@RequestBody @ApiParam(name = "shop", value = "传入json格式,不用传shopId", required = true) Shop shop, String token) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		// 注册店铺
 		Long userId = null;
@@ -126,6 +139,7 @@ public class ShopManagementController {
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
 		}
 		shop.setUserId(userId);
 		ShopExecution se;
@@ -147,7 +161,10 @@ public class ShopManagementController {
 
 	@RequestMapping(value = "/modifyshop", method = RequestMethod.POST)
 	@ResponseBody
-	private Map<String, Object> modifyShop(@RequestBody Shop shop) {
+	@ApiOperation(value = "修改店铺信息（不修改图片）", notes = "要传shopId")
+	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
+	private Map<String, Object> modifyShop(
+			@RequestBody @ApiParam(name = "shop", value = "传入json格式,要传shopId", required = true) Shop shop) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		ShopExecution se;
 		try {
@@ -190,10 +207,17 @@ public class ShopManagementController {
 
 	@RequestMapping(value = "/uploadimg", method = RequestMethod.POST)
 	@ResponseBody
+	@ApiOperation(value = "上传店铺相关图片", notes = "注册和修改信息都适用,在swagger这个网站上看不了效果,请查看前端已使用过的页面")
+	@ApiImplicitParams({
+		@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+		@ApiImplicitParam(paramType = "query", name = "shopId", value = "店铺id", required = true, dataType = "Long"),
+		@ApiImplicitParam(paramType = "query", name = "createTime", value = "图片创建时间", required = true, dataType = "String")
+	})
 	private Map<String, Object> uploadImg(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		// 1.接收并转化相应的参数，包括店铺id以及图片信息
 		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
+		Date createTime = HttpServletRequestUtil.getDate(request, "createTime");
 		ImageHolder shopImg = new ImageHolder("", null);
 		ImageHolder businessLicenseImg = new ImageHolder("", null);
 		ImageHolder profileImg = new ImageHolder("", null);
@@ -212,7 +236,7 @@ public class ShopManagementController {
 		// 2.上传店铺图片
 		ShopExecution se;
 		try {
-			se = shopService.uploadImg(shopId, shopImg, businessLicenseImg, profileImg);
+			se = shopService.uploadImg(shopId, shopImg, businessLicenseImg, profileImg, createTime);
 			if (se.getState() == ShopStateEnum.SUCCESS.getState()) {
 				modelMap.put("success", true);
 			} else {
@@ -229,6 +253,11 @@ public class ShopManagementController {
 
 	@RequestMapping(value = "/searchnearbyshops", method = RequestMethod.GET)
 	@ResponseBody
+	@ApiOperation(value = "返回用户20km内的所有店铺")
+	@ApiImplicitParams({
+		@ApiImplicitParam(paramType = "query", name = "longitude", value = "用户所在的经度", required = true, dataType = "Float"),
+		@ApiImplicitParam(paramType = "query", name = "latitude", value = "用户所在的纬度", required = true, dataType = "Float")
+	})
 	private Map<String, Object> searchNearbyShops(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		float longitude = HttpServletRequestUtil.getFloat(request, "longitude");

@@ -1,5 +1,8 @@
 package com.graduation.ss.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class HttpServletRequestUtil {
@@ -53,6 +56,16 @@ public class HttpServletRequestUtil {
 				result = null;
 			}
 			return result;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public static Date getDate(HttpServletRequest request, String key) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date = sdf.parse(request.getParameter(key));
+			return date;
 		} catch (Exception e) {
 			return null;
 		}

@@ -26,11 +26,11 @@
 		(#{imgAddr},#{createTime},#{shopId})
 	</insert>
 
-	<delete id="deleteShopImgByShopId">
+	<delete id="deleteShopImgByShopIdAndCreateTime">
 		DELETE FROM
 		tb_shop_img
 		WHERE
 		shop_id =
-		#{shopId}
+		#{shopId} and create_time &lt; #{createTime}
 	</delete>
 </mapper>

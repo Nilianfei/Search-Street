@@ -28,6 +28,7 @@ public class AppealServiceTest {
 	private AppealService appealService;
 
 	@Test
+	@Ignore
 	public void testGetNearbyAppealList() {
 		AppealExecution ae = appealService.getNearbyAppealList(50, 0, 50, 0);
 		System.out.println("求助列表数为：" + ae.getCount());
@@ -37,8 +38,8 @@ public class AppealServiceTest {
 	@Ignore
 	public void testGetAppealList() {
 		Appeal appealCondition = new Appeal();
-		appealCondition.setAppealTitle("test");
-		AppealExecution ae = appealService.getAppealList(appealCondition, 1, 1);
+		appealCondition.setAppealStatus(0);
+		AppealExecution ae = appealService.getAppealList(appealCondition);
 		System.out.println("求助列表数为:" + ae.getAppealList().size());
 		System.out.println("求助总数为:" + ae.getCount());
 	}
@@ -64,6 +65,13 @@ public class AppealServiceTest {
 
 	@Test
 	@Ignore
+	public void testGetAppealById() throws AppealOperationException {
+		Appeal appeal = appealService.getByAppealId(2L);
+		System.out.println(appeal.getAppealStatus());
+	}
+
+	@Test
+	@Ignore
 	public void testAddAppeal() throws AppealOperationException {
 		Appeal appeal = new Appeal();
 		appeal.setAppealContent("testappealContent");
@@ -84,5 +92,17 @@ public class AppealServiceTest {
 		appeal.setUserId(1l);
 		AppealExecution appealExecution = appealService.addAppeal(appeal);
 		assertEquals(AppealStateEnum.SUCCESS.getState(), appealExecution.getState());
+	}
+	
+	@Test
+	@Ignore
+	public void testCompleteAppeal() throws AppealOperationException{
+		AppealExecution ae=appealService.completeAppeal(4l, 9l, 1l);
+		System.out.println(ae.getStateInfo());
+	}
+	
+	@Test
+	public void testAdditionSouCoin() throws AppealOperationException{
+		appealService.additionSouCoin(9l, 1l, 1l);
 	}
 }

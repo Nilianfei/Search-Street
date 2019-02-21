@@ -2,7 +2,6 @@ package com.graduation.ss.dao;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -71,8 +70,6 @@ public class ShopDaoTest {
 		shop.setBusinessLicenseImg("test");
 		shop.setBusinessScope("test");
 		shop.setCity("test");
-		shop.setCloseTime(new Time(new Date().getTime()));
-		shop.setOpenTime(new Time(new Date().getTime()));
 		shop.setLatitude(1f);
 		shop.setLongitude(1f);
 		shop.setCreateTime(new Date());

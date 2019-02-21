@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.sql.Time;
 import java.util.Date;
 
 import org.junit.Ignore;
@@ -57,7 +56,7 @@ public class ShopServiceTest {
 		 * InputStream is2 = new FileInputStream(shopImg); ImageHolder shopImageHolder2
 		 * = new ImageHolder(shopImg.getName(), is2);
 		 */
-		ShopExecution shopExecution = shopService.uploadImg(2L, shopImageHolder, null, profileImageHolder1);
+		ShopExecution shopExecution = shopService.uploadImg(2L, shopImageHolder, null, profileImageHolder1,new Date());
 		System.out.println("新的头像地址为：" + shopExecution.getShop().getProfileImg());
 	}
 
@@ -78,8 +77,6 @@ public class ShopServiceTest {
 		shop.setBusinessLicenseCode("test");
 		shop.setBusinessScope("test");
 		shop.setCity("test");
-		shop.setCloseTime(new Time(new Date().getTime()));
-		shop.setOpenTime(new Time(new Date().getTime()));
 		shop.setLatitude(1f);
 		shop.setLongitude(1f);
 		shop.setCreateTime(new Date());

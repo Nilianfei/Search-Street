@@ -1,5 +1,6 @@
 package com.graduation.ss.service;
 
+import com.graduation.ss.dto.PersonInfoExecution;
 import com.graduation.ss.entity.PersonInfo;
 
 public interface PersonInfoService {
@@ -11,4 +12,12 @@ public interface PersonInfoService {
 	 * @return
 	 */
 	PersonInfo getPersonInfoByUserId(Long userId);
+	
+	/**
+	 * 修改用户信息
+	 * 
+	 * @param personInfo
+	 * @return
+	 */
+	PersonInfoExecution modifyPersonInfo(PersonInfo personInfo);
 }

@@ -23,16 +23,25 @@ import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.UserCode2Session;
 import com.graduation.ss.entity.Appeal;
 import com.graduation.ss.entity.AppealImg;
+import com.graduation.ss.entity.Help;
 import com.graduation.ss.entity.WechatAuth;
 import com.graduation.ss.enums.AppealStateEnum;
 import com.graduation.ss.exceptions.AppealOperationException;
 import com.graduation.ss.service.AppealService;
+import com.graduation.ss.service.HelpService;
 import com.graduation.ss.service.WechatAuthService;
 import com.graduation.ss.util.HttpServletRequestUtil;
 import com.graduation.ss.util.JWT;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @RequestMapping("/appeal")
+@Api(value = "AppealController|对求助操作的控制器")
 public class AppealController {
 	@Autowired
 	private AppealService appealService;
@@ -40,14 +49,19 @@ public class AppealController {
 	private AppealImgDao appealImgDao;
 	@Autowired
 	private WechatAuthService wechatAuthService;
+	@Autowired
+	private HelpService helpservice;
 
 	@RequestMapping(value = "/getappeallistbyuserid", method = RequestMethod.GET)
 	@ResponseBody
+	@ApiOperation(value = "根据用户ID和求助状态获取其所有求助信息(不分页)", notes = "进行中:appealStatus=1,已完成:appealStatus=2,已失效:appealStatus=3")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "appealStatus", value = "求助状态", required = true, dataType = "int") })
 	private Map<String, Object> getAppealListByUserId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		String token = HttpServletRequestUtil.getString(request, "token");
-		int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
-		int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
+		int appealStatus = HttpServletRequestUtil.getInt(request, "appealStatus");
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
 		// 将token解密成openId 和session_key
@@ -60,25 +74,47 @@ public class AppealController {
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
 		}
 		try {
 			Appeal appealCondition = new Appeal();
 			appealCondition.setUserId(userId);
-			AppealExecution ae = appealService.getAppealList(appealCondition, pageIndex, pageSize);
-			int pageNum = (int)(ae.getCount()/pageSize);
-			if(pageNum*pageSize<ae.getCount())pageNum++;
+			appealCondition.setAppealStatus(appealStatus);
+			AppealExecution ae = appealService.getAppealList(appealCondition);
+			if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
+				if (appealStatus == 1) {
+					List<Appeal> appealList = ae.getAppealList();
+					appealCondition.setAppealStatus(0);
+					ae = appealService.getAppealList(appealCondition);
+					if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
+						appealList.addAll(ae.getAppealList());
+						ae.setAppealList(appealList);
+					} else {
+						modelMap.put("success", false);
+						modelMap.put("errMsg", AppealStateEnum.stateOf(ae.getState()).getStateInfo());
+						return modelMap;
+					}
+				}
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", AppealStateEnum.stateOf(ae.getState()).getStateInfo());
+				return modelMap;
+			}
 			modelMap.put("appealList", ae.getAppealList());
-			modelMap.put("pageNum", pageNum);
 			modelMap.put("success", true);
+			return modelMap;
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
 		}
-		return modelMap;
+
 	}
 
 	@RequestMapping(value = "/getappealbyid", method = RequestMethod.GET)
 	@ResponseBody
+	@ApiOperation(value = "根据求助ID获取求助信息")
+	@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助ID", required = true, dataType = "Long")
 	private Map<String, Object> getAppealByAppealId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
@@ -91,20 +127,27 @@ public class AppealController {
 				appeal.setAppealImgList(appealImgList);
 				modelMap.put("appeal", appeal);
 				modelMap.put("success", true);
+				return modelMap;
 			} catch (Exception e) {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", e.getMessage());
+				return modelMap;
 			}
 		} else {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", "appealId无效");
+			return modelMap;
 		}
-		return modelMap;
+
 	}
 
 	@RequestMapping(value = "/registerappeal", method = RequestMethod.POST)
 	@ResponseBody
-	private Map<String, Object> registerAppeal(@RequestBody Appeal appeal, String token) {
+	@ApiOperation(value = "创建求助（不添加图片）", notes = "不用传appealId")
+	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
+	private Map<String, Object> registerAppeal(
+			@RequestBody @ApiParam(name = "appeal", value = "传入json格式,不用传appealId", required = true) Appeal appeal,
+			String token) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		// 添加求助
 		Long userId = null;
@@ -119,6 +162,7 @@ public class AppealController {
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
 		}
 		appeal.setUserId(userId);
 		AppealExecution se;
@@ -140,7 +184,10 @@ public class AppealController {
 
 	@RequestMapping(value = "/modifyappeal", method = RequestMethod.POST)
 	@ResponseBody
-	private Map<String, Object> modifyAppeal(@RequestBody Appeal appeal) {
+	@ApiOperation(value = "修改求助信息（不修改图片）", notes = "要传appealId")
+	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
+	private Map<String, Object> modifyAppeal(
+			@RequestBody @ApiParam(name = "appeal", value = "传入json格式,不用传appealId", required = true) Appeal appeal) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		AppealExecution ae;
 		try {
@@ -170,6 +217,10 @@ public class AppealController {
 
 	@RequestMapping(value = "/uploadimg", method = RequestMethod.POST)
 	@ResponseBody
+	@ApiOperation(value = "上传求助图片", notes = "在swagger这个网站上看不了效果,请查看前端已使用过的页面")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助id", required = true, dataType = "Long") })
 	private Map<String, Object> uploadImg(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		// 1.接收并转化相应的参数，包括求助id以及图片信息
@@ -184,7 +235,6 @@ public class AppealController {
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
-			System.out.println(e.getMessage());
 			return modelMap;
 		}
 		// 2.上传求助图片
@@ -200,6 +250,10 @@ public class AppealController {
 
 	@RequestMapping(value = "/searchnearbyappeals", method = RequestMethod.GET)
 	@ResponseBody
+	@ApiOperation(value = "返回用户20km内的所有有效（没确定帮助人、没过时的）求助")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "longitude", value = "用户所在的经度", required = true, dataType = "Float"),
+			@ApiImplicitParam(paramType = "query", name = "latitude", value = "用户所在的纬度", required = true, dataType = "Float") })
 	private Map<String, Object> searchNearbyAppeals(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		float longitude = HttpServletRequestUtil.getFloat(request, "longitude");
@@ -226,13 +280,104 @@ public class AppealController {
 		minlat = latitude - dlat;
 		maxlat = latitude + dlat;
 		try {
-			AppealExecution se = appealService.getNearbyAppealList(maxlat, minlat, maxlng, minlng);
-			modelMap.put("appealList", se.getAppealList());
+			AppealExecution ae = appealService.getNearbyAppealList(maxlat, minlat, maxlng, minlng);
+			modelMap.put("appealList", ae.getAppealList());
 			modelMap.put("success", true);
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
 		}
+		return modelMap;
+	}
+
+	@RequestMapping(value = "/competeappeal", method = RequestMethod.GET)
+	@ResponseBody
+	@ApiOperation(value = "求助者确定完成求助并支付搜币")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助ID", required = true, dataType = "Long"),
+			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助ID", required = true, dataType = "Long")})
+	private Map<String, Object> competeAppeal(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = HttpServletRequestUtil.getString(request, "token");
+		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
+		Help help = helpservice.getByHelpId(helpId);
+		if (help.getAppealId() != appealId) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "appealId和helpId不对应");
+			return modelMap;
+		}
+		Long appealUserId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人ID
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			appealUserId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+		try {
+			AppealExecution ae = appealService.completeAppeal(appealId, helpId, appealUserId);
+			if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", true);
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", ae.getStateInfo());
+			}
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+		}
+		return modelMap;
+	}
+
+	@RequestMapping(value = "/additionsoucoin", method = RequestMethod.GET)
+	@ResponseBody
+	@ApiOperation(value = "求助者追赏")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助ID", required = true, dataType = "Long"),
+			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助ID", required = true, dataType = "Long"),
+			@ApiImplicitParam(paramType = "query", name = "additionSouCoin", value = "追赏金数", required = true, dataType = "Long")})
+	private Map<String, Object> additionSouCoin(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = HttpServletRequestUtil.getString(request, "token");
+		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
+		Long additionSouCoin = HttpServletRequestUtil.getLong(request, "additionSouCoin");
+		Help help = helpservice.getByHelpId(helpId);
+		if (help.getAppealId() != appealId) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "appealId和helpId不对应");
+			return modelMap;
+		}
+		Long appealUserId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人ID
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			appealUserId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+		try {
+			appealService.additionSouCoin(helpId, appealUserId, additionSouCoin);
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+		}
+		modelMap.put("success", true);
 		return modelMap;
 	}
 }

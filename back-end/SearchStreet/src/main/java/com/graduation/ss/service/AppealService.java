@@ -7,14 +7,14 @@ import com.graduation.ss.exceptions.AppealOperationException;
 
 public interface AppealService {
 	/**
-	 * 根据appealCondition分页返回相应求助列表
+	 * 根据appealCondition返回相应求助列表
 	 * 
 	 * @param appealCondition
 	 * @param pageIndex
 	 * @param pageSize
 	 * @return
 	 */
-	public AppealExecution getAppealList(Appeal appealCondition, int pageIndex, int pageSize);
+	public AppealExecution getAppealList(Appeal appealCondition) throws AppealOperationException;
 
 	/**
 	 * 根据经纬范围返回附近求助列表
@@ -33,7 +33,7 @@ public interface AppealService {
 	 * @param appealId
 	 * @return
 	 */
-	Appeal getByAppealId(long appealId);
+	Appeal getByAppealId(Long appealId)throws AppealOperationException;
 
 	/**
 	 * 更新求助信息，不包括对图片的处理
@@ -65,4 +65,24 @@ public interface AppealService {
 	 * @throws AppealOperationException
 	 */
 	AppealExecution addAppeal(Appeal appeal) throws AppealOperationException;
+
+	/**
+	 * 求助完成之后的相关操作
+	 * 
+	 * @param appealId
+	 * @param helpId
+	 * @param appealUserId
+	 * @return
+	 */
+	AppealExecution completeAppeal(Long appealId, Long helpId, Long appealUserId) throws AppealOperationException;
+
+	/**
+	 * 追赏金
+	 * 
+	 * @param helpId
+	 * @param appealUserId
+	 * @param additionSouCoin
+	 */
+	void additionSouCoin(Long helpId, Long appealUserId, Long additionSouCoin)
+			throws AppealOperationException;
 }

@@ -3,8 +3,8 @@ package com.graduation.ss.enums;
 import com.graduation.ss.enums.AppealStateEnum;
 
 public enum AppealStateEnum {
-	SUCCESS(0, "操作成功"), INNER_ERROR(-1001, "内部系统错误"),
-	NULL_APPEALID(-1002, "AppealId为空"), NULL_APPEAL(-1003, "appeal信息为空");
+	SUCCESS(0, "操作成功"), INNER_ERROR(-1001, "内部系统错误"), NULL_APPEALID(-1002, "AppealId为空"),
+	NULL_APPEAL(-1003, "appeal信息为空"), NULL_USERID(-1004, "userId为空"), NULL_HELPID(-1005, "缺少helpId");
 	private int state;
 	private String stateInfo;
 

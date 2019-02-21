@@ -16,15 +16,23 @@ public interface HelpDao {
 	Help queryByHelpId(long helpId);
 
 	/**
-	 * 分页查询帮助，可输入的条件有：求助ID，帮助者用户ID
+	 * 分页查询帮助，可输入的条件有：求助ID，帮助者用户ID,帮助状态
 	 * 
 	 * @param help
 	 * @param rowIndex 从第几行开始取数据
 	 * @param pageSize 返回的条数
 	 * @return
 	 */
-	List<Help> queryHelpList(@Param("helpCondition") Help help, @Param("rowIndex") int rowIndex,
+	List<Help> queryHelpListFY(@Param("helpCondition") Help help, @Param("rowIndex") int rowIndex,
 			@Param("pageSize") int pageSize);
+
+	/**
+	 * 查询帮助，可输入条件有：求助ID，帮助者用户Id，帮助状态
+	 * 
+	 * @param help
+	 * @return
+	 */
+	List<Help> queryHelpList(@Param("helpCondition") Help help);
 
 	/**
 	 * 返回queryHelpList总数

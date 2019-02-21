@@ -3,33 +3,52 @@ package com.graduation.ss.entity;
 import java.util.Date;
 import java.util.List;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class Appeal {
 
 	/**
 	 * 求助id 主键
 	 */
+	@ApiModelProperty(value = "求助ID，创建时不填，修改信息时必填")
 	private Long appealId;
 	/**
 	 * 求助者用户id
 	 */
+	@ApiModelProperty(value = "用户ID，用token来获取", hidden = true)
 	private Long userId;
+	@ApiModelProperty(value = "求助标题", required = true)
 	private String appealTitle;
+	@ApiModelProperty(value = "求助相关图片", hidden = true)
 	private List<AppealImg> appealImgList;
+	@ApiModelProperty(value = "求助联系电话", required = true)
 	private String phone;
+	@ApiModelProperty(value = "求助内容", required = true)
 	private String appealContent;
+	@ApiModelProperty(value = "省份", required = true)
 	private String province;
+	@ApiModelProperty(value = "城市", required = true)
 	private String city;
+	@ApiModelProperty(value = "地区", required = true)
 	private String district;
+	@ApiModelProperty(value = "详细地址", required = true)
 	private String fullAddress;
+	@ApiModelProperty(value = "补充地址", required = false)
 	private String appealMoreInfo;
+	@ApiModelProperty(value = "求助奖励搜币", required = true)
 	private Long souCoin;
 	/**
-	 * 求助的状态 0不确定帮助对象，1已确定帮助对象，2已完成,3已删除
+	 * 求助的状态 0不确定帮助对象，1已确定帮助对象，2已完成,3已过时失效
 	 */
+	@ApiModelProperty(value = "求助状态： 0不确定帮助对象，1已确定帮助对象，2已完成,3已过时失效", hidden=true)
 	private Integer appealStatus;
+	@ApiModelProperty(value = "纬度", required = true)
 	private Float latitude;
+	@ApiModelProperty(value = "经度", required = true)
 	private Float longitude;
+	@ApiModelProperty(value = "开始时间", required = true)
 	private Date startTime;
+	@ApiModelProperty(value = "结束时间", required = true)
 	private Date endTime;
 
 	public Long getAppealId() {

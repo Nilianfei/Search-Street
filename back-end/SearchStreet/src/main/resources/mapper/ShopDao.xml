@@ -6,20 +6,23 @@
 	<select id="queryNearbyShopList"
 		resultType="com.graduation.ss.entity.Shop">
 		SELECT
-		shop_id,shop_name,phone,province,city,district,
-		full_address,shop_more_info,is_mobile,latitude,longitude,
-		business_scope
+		shop_id,shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
+		full_address,shop_more_info,is_mobile,profile_img,latitude,longitude,
+		enable_status,business_scope,create_time,last_edit_time
 		FROM
 		tb_shop
-		WHERE latitude &lt; #{maxlat} and latitude &gt; #{minlat} and
-		longitude &lt; #{maxlng} and longitude &gt; #{minlng} and
+		WHERE latitude &lt; #{maxlat} and latitude
+		&gt; #{minlat} and
+		longitude
+		&lt; #{maxlng} and longitude &gt;
+		#{minlng} and
 		enable_status = 1
 	</select>
 	<select id="queryShopList"
 		resultType="com.graduation.ss.entity.Shop">
 		SELECT
 		shop_id,shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
-		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,latitude,longitude,
+		full_address,shop_more_info,is_mobile,profile_img,latitude,longitude,
 		enable_status,business_scope,create_time,last_edit_time
 		FROM
 		tb_shop
@@ -83,11 +86,11 @@
 		INSERT
 		INTO
 		tb_shop(shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
-		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,latitude,longitude,
+		full_address,shop_more_info,is_mobile,profile_img,latitude,longitude,
 		business_scope,create_time,last_edit_time,user_id,enable_status)
 		VALUES
 		(#{shopName},#{businessLicenseImg},#{businessLicenseCode},#{perCost},#{phone},#{province},#{city},
-		#{district},#{fullAddress},#{shopMoreInfo},#{isMobile},#{openTime},#{closeTime},#{profileImg},#{latitude},
+		#{district},#{fullAddress},#{shopMoreInfo},#{isMobile},#{profileImg},#{latitude},
 		#{longitude},#{businessScope},#{createTime},#{lastEditTime},#{userId},#{enableStatus})
 	</insert>
 	<update id="updateShop"
@@ -105,8 +108,6 @@
 			<if test="fullAddress != null">full_address=#{fullAddress},</if>
 			<if test="shopMoreInfo != null">shop_more_info=#{shopMoreInfo},</if>
 			<if test="isMobile != null">is_mobile=#{isMobile},</if>
-			<if test="openTime != null">open_time=#{openTime},</if>
-			<if test="closeTime != null">close_time=#{closeTime},</if>
 			<if test="profileImg != null">profile_img=#{profileImg},</if>
 			<if test="latitude != null">latitude=#{latitude},</if>
 			<if test="longitude != null">longitude=#{longitude},</if>
@@ -120,7 +121,7 @@
 		resultType="com.graduation.ss.entity.Shop" parameterType="Long">
 		SELECT
 		shop_id,shop_name,business_license_img,business_license_code,per_cost,phone,province,city,district,
-		full_address,shop_more_info,is_mobile,open_time,close_time,profile_img,latitude,longitude,
+		full_address,shop_more_info,is_mobile,profile_img,latitude,longitude,
 		enable_status,business_scope,create_time,last_edit_time
 		FROM
 		tb_shop

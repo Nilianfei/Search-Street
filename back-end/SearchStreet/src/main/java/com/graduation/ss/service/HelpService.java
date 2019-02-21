@@ -16,6 +16,14 @@ public interface HelpService {
 	public HelpExecution getHelpList(Help helpCondition, int pageIndex, int pageSize);
 
 	/**
+	 * 根据helpCondition获取相应HelpList
+	 * 
+	 * @param appealId
+	 * @return
+	 */
+	public HelpExecution getHelpList(Help helpCondition);
+	
+	/**
 	 * 通过帮助ID获取帮助信息
 	 * 
 	 * @param helpId
@@ -40,4 +48,6 @@ public interface HelpService {
 	 * @throws HelpOperationException
 	 */
 	HelpExecution addHelp(Help help) throws HelpOperationException;
+	
+	void selectHelp(Long helpId,Long appealId) throws HelpOperationException;
 }

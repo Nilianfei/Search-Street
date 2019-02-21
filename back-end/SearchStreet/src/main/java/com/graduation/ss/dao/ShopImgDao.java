@@ -1,6 +1,9 @@
 package com.graduation.ss.dao;
 
+import java.util.Date;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.graduation.ss.entity.ShopImg;
 
@@ -27,5 +30,5 @@ public interface ShopImgDao {
 	 * @param shopId
 	 * @return
 	 */
-	int deleteShopImgByShopId(long shopId);
+	int deleteShopImgByShopIdAndCreateTime(@Param("shopId")long shopId, @Param("createTime")Date createTime);
 }

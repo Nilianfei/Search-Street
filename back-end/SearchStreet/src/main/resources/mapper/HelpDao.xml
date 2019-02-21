@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.graduation.ss.dao.HelpDao">
-	<select id="queryHelpList"
+	<select id="queryHelpListFY"
 		resultType="com.graduation.ss.entity.Help">
 		SELECT
 		help_id,
@@ -12,7 +12,11 @@
 		completion,
 		efficiency,
 		attitude,
-		additional_coin
+		avg_completion,
+		avg_efficiency,
+		avg_attitude,
+		additional_coin,
+		end_time
 		FROM
 		tb_help
 		<where>
@@ -22,8 +26,39 @@
 			<if test="helpCondition.userId != null">
 				and user_id = #{helpCondition.userId}
 			</if>
+			<if test="helpCondition.helpStatus != null">
+				and help_status = #{helpCondition.helpStatus}
+			</if>
 		</where>
 		LIMIT #{rowIndex},#{pageSize};
+	</select>
+	<select id="queryHelpList"
+		resultType="com.graduation.ss.entity.Help">
+		SELECT
+		help_id,
+		appeal_id,
+		help_status,
+		completion,
+		efficiency,
+		attitude,
+		avg_completion,
+		avg_efficiency,
+		avg_attitude,
+		additional_coin,
+		end_time
+		FROM
+		tb_help
+		<where>
+			<if test="helpCondition.appealId != null">
+				and appeal_id = #{helpCondition.appealId}
+			</if>
+			<if test="helpCondition.userId != null">
+				and user_id = #{helpCondition.userId}
+			</if>
+			<if test="helpCondition.helpStatus != null">
+				and help_status = #{helpCondition.helpStatus}
+			</if>
+		</where>
 	</select>
 	<select id="queryHelpCount" resultType="int">
 		SELECT
@@ -37,18 +72,26 @@
 			<if test="helpCondition.userId != null">
 				and user_id = #{helpCondition.userId}
 			</if>
+			<if test="helpCondition.helpStatus != null">
+				and help_status = #{helpCondition.helpStatus}
+			</if>
 		</where>
 	</select>
 	<select id="queryByHelpId"
 		resultType="com.graduation.ss.entity.Help" parameterType="long">
 		SELECT
 		help_id,
+		user_id,
 		appeal_id,
 		help_status,
 		completion,
 		efficiency,
 		attitude,
-		additional_coin
+		avg_completion,
+		avg_efficiency,
+		avg_attitude,
+		additional_coin,
+		end_time
 		FROM
 		tb_help
 		WHERE
@@ -66,10 +109,14 @@
 		completion,
 		efficiency,
 		attitude,
-		additional_coin)
+		avg_completion,
+		avg_efficiency,
+		avg_attitude,
+		additional_coin,
+		end_time)
 		VALUES
 		(#{appealId},#{userId},#{helpStatus},#{completion},
-		#{efficiency},#{attitude},#{additionalCoin})
+		#{efficiency},#{attitude},#{avgCompletion},#{avgEfficiency},#{avgAttitude},#{additionalCoin},#{endTime})
 	</insert>
 	<update id="updateHelp"
 		parameterType="com.graduation.ss.entity.Help">

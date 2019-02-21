@@ -1,5 +1,7 @@
 package com.graduation.ss.service;
 
+import java.util.Date;
+
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.ShopExecution;
 import com.graduation.ss.entity.Shop;
@@ -55,7 +57,7 @@ public interface ShopService {
 	 * @return
 	 * @throws ShopOperationException
 	 */
-	ShopExecution uploadImg(long shopId, ImageHolder shopImg, ImageHolder businessLicenseImg, ImageHolder profileImg)
+	ShopExecution uploadImg(long shopId, ImageHolder shopImg, ImageHolder businessLicenseImg, ImageHolder profileImg, Date createTime)
 			throws ShopOperationException;
 
 	/**

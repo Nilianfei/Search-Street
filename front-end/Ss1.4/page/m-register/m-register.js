@@ -176,7 +176,8 @@ Page({
             key: 'shopId',
             data: res.data.shopId
           })
-          var url = app.globalData.serviceUrl+"/SearchStreet/shopadmin/uploadimg?shopId=" + res.data.shopId + "&token=" + token;
+          var date = new Date();
+          var url = app.globalData.serviceUrl + "/SearchStreet/shopadmin/uploadimg?shopId=" + res.data.shopId + "&createTime=" + app.timeStamp2String(date) + "&token=" + token;
           app.uploadAImg({
             url: url,
             filePath: that.data.business_img[0],
