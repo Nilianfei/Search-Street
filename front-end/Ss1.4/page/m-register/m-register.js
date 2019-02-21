@@ -19,8 +19,8 @@ Page({
     customItem: '全部',
     latitude: null,
     longitude: null,
-    flag:true,
-    business_img:[],
+    flag: true,
+    business_img: [],
     markers: [{
       id: 0,
       title: 'T.I.T 创意园',
@@ -129,7 +129,7 @@ Page({
           percost_error: errorMsg
         }
       })
-    }else if (e.detail.value.phone.length == 0) {
+    } else if (e.detail.value.phone.length == 0) {
       this.setData({
         errorMsgs: {
           phone_error: errorMsg
@@ -140,58 +140,58 @@ Page({
         title: '提示',
         content: '请您输入商店的完整地址',
       })
-    }else{
-    //console.log('form发生了submit事件，携带数据为：', e.detail.value);
-    //var that = this;
-    var token = null;
-    try {
-      const value = wx.getStorageSync('token')
-      if (value) {
-        token = value;
+    } else {
+      //console.log('form发生了submit事件，携带数据为：', e.detail.value);
+      //var that = this;
+      var token = null;
+      try {
+        const value = wx.getStorageSync('token')
+        if (value) {
+          token = value;
+        }
+      } catch (e) {
+        console.log("error");
       }
-    } catch (e) {
-      console.log("error");
-    }
-    wx.request({
-      url: app.globalData.serviceUrl+"/SearchStreet/shopadmin/registershop?token=" + token,
-      data: {
-        shopName: e.detail.value.shopName,
-        businessScope: e.detail.value.businessScope,
-        perCost: e.detail.value.perCost,
-        phone: e.detail.value.phone,
-        province: that.data.region[0],
-        city: that.data.region[1],
-        district: that.data.region[2],
-        fullAddress: e.detail.value.fullAddress,
-        longitude: that.data.longitude,
-        latitude: that.data.latitude,
-        shopMoreInfo: e.detail.value.shopMoreInfo,
-        isMobile: 1
-      },
-      method: "POST",
-      success: res => {
-        console.log(res);
-        if (res.data.success) {
-          wx.setStorage({
-            key: 'shopId',
-            data: res.data.shopId
-          })
-          var date = new Date();
-          var url = app.globalData.serviceUrl + "/SearchStreet/shopadmin/uploadimg?shopId=" + res.data.shopId + "&createTime=" + app.timeStamp2String(date) + "&token=" + token;
-          app.uploadAImg({
-            url: url,
-            filePath: that.data.business_img[0],
-            fileName: "profileImg"
-          })
-        } else {
-          if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
-            wx.redirectTo({
-              url: '../../page/login/login'
+      wx.request({
+        url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/registershop?token=" + token,
+        data: {
+          shopName: e.detail.value.shopName,
+          businessScope: e.detail.value.businessScope,
+          perCost: e.detail.value.perCost,
+          phone: e.detail.value.phone,
+          province: that.data.region[0],
+          city: that.data.region[1],
+          district: that.data.region[2],
+          fullAddress: e.detail.value.fullAddress,
+          longitude: that.data.longitude,
+          latitude: that.data.latitude,
+          shopMoreInfo: e.detail.value.shopMoreInfo,
+          isMobile: 1
+        },
+        method: "POST",
+        success: res => {
+          console.log(res);
+          if (res.data.success) {
+            wx.setStorage({
+              key: 'shopId',
+              data: res.data.shopId
             })
+            var date = new Date();
+            var url = app.globalData.serviceUrl + "/SearchStreet/shopadmin/uploadimg?shopId=" + res.data.shopId + "&createTime=" + app.timeStamp2String(date) + "&token=" + token;
+            app.uploadAImg({
+              url: url,
+              filePath: that.data.business_img[0],
+              fileName: "profileImg"
+            })
+          } else {
+            if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+              wx.redirectTo({
+                url: '../../page/login/login'
+              })
+            }
           }
         }
-      }
-    })
+      })
+    }
   }
- }
 })

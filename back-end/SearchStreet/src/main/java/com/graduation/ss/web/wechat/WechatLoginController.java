@@ -24,8 +24,13 @@ import com.graduation.ss.service.WechatAuthService;
 import com.graduation.ss.util.JWT;
 import com.graduation.ss.util.wechat.WechatUtil;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/wechat")
+@Api(value = "WechatLoginController|对微信登录和获取个人信息的控制器")
 public class WechatLoginController {
 	@Autowired
 	private WechatAuthService wechatAuthService;
@@ -40,6 +45,7 @@ public class WechatLoginController {
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
+	@ApiOperation(value = "一言难尽，具体用法看前端用过的代码")
 	public Map<String, Object> wechatLogin(@RequestBody WechatUser wechatUser) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		//code是微信登录的临时凭证
@@ -84,6 +90,8 @@ public class WechatLoginController {
 	 */
 	@RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
 	@ResponseBody
+	@ApiOperation(value = "获取用户个人信息")
+	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
 	public Map<String, Object> getWechatUserInfo(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		String token = request.getParameter("token");
