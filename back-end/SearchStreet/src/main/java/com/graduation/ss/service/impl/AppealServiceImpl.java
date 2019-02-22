@@ -99,6 +99,9 @@ public class AppealServiceImpl implements AppealService {
 	@Override
 	public Appeal getByAppealId(Long appealId) throws AppealOperationException{
 		Appeal appeal = appealDao.queryByAppealId(appealId);
+		if(appeal==null) {
+			throw new AppealOperationException("getByAppealId error:" + "appealId无效");
+		}
 		Date today = new Date();
 		if (appeal.getEndTime().getTime() < today.getTime()) {// 当求助失效时，将求助改为已过时失效状态
 			appeal.setAppealStatus(3);
@@ -196,6 +199,9 @@ public class AppealServiceImpl implements AppealService {
 		}
 		Long souCoin = 0l;
 		Appeal appeal = appealDao.queryByAppealId(appealId);
+		if(appeal==null) {
+			throw new AppealOperationException("completeAppeal error:" + "appealId无效");
+		}
 		souCoin = appeal.getSouCoin();
 		try {
 			PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(appealUserId);
@@ -206,8 +212,14 @@ public class AppealServiceImpl implements AppealService {
 				throw new AppealOperationException("扣除求助者搜币失败");
 			}
 			Help help = helpDao.queryByHelpId(helpId);
+			if(help==null) {
+				throw new AppealOperationException("completeAppeal error:" + "helpId无效");
+			}
 			Long helpUserId = help.getUserId();
 			personInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
+			if(personInfo==null) {
+				throw new AppealOperationException("completeAppeal error:" + "帮助者不存在");
+			}
 			appealerSouCoin = personInfo.getSouCoin();
 			personInfo.setSouCoin(appealerSouCoin + souCoin);
 			effectedNum = personInfoDao.updatePersonInfo(personInfo);
@@ -243,6 +255,9 @@ public class AppealServiceImpl implements AppealService {
 
 		try {
 			PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(appealUserId);
+			if(personInfo==null) {
+				throw new AppealOperationException("additionSouCoin error:" + "appealUserId无效");
+			}
 			Long appealerSouCoin = personInfo.getSouCoin();
 			personInfo.setSouCoin(appealerSouCoin - additionSouCoin);
 			int effectedNum = personInfoDao.updatePersonInfo(personInfo);
@@ -250,8 +265,14 @@ public class AppealServiceImpl implements AppealService {
 				throw new AppealOperationException("扣除求助者搜币失败");
 			}
 			Help help = helpDao.queryByHelpId(helpId);
+			if(help==null) {
+				throw new AppealOperationException("additionSouCoin error:" + "helpId无效");
+			}
 			Long helpUserId = help.getUserId();
 			personInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
+			if(personInfo==null) {
+				throw new AppealOperationException("additionSouCoin error:" + "帮助者不存在");
+			}
 			appealerSouCoin = personInfo.getSouCoin();
 			personInfo.setSouCoin(appealerSouCoin + additionSouCoin);
 			effectedNum = personInfoDao.updatePersonInfo(personInfo);

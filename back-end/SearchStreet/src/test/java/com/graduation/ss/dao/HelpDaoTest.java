@@ -2,6 +2,7 @@ package com.graduation.ss.dao;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Ignore;
@@ -24,17 +25,23 @@ public class HelpDaoTest {
 	public void testInsertHelp() {
 		Help help = new Help();
 		help.setAppealId(1L);
+		help.setAppealTitle("appealTitle");
 		help.setUserId(1L);
 		help.setHelpStatus(0);
 		help.setAvgAttitude(5.0f);
 		help.setAvgCompletion(4.5f);
 		help.setAvgEfficiency(3.3f);
+		help.setEfficiency(0);
+		help.setAttitude(0);
+		help.setCompletion(0);
+		help.setAdditionalCoin(0l);
+		help.setEndTime(new Date());
 		int effectedNum = helpDao.insertHelp(help);
 		assertEquals(1, effectedNum);
 	}
 
 	@Test
-	//@Ignore
+	@Ignore
 	public void testQueryHelpListFYAndCount() {
 		Help helpCondition = new Help();
 
@@ -58,7 +65,7 @@ public class HelpDaoTest {
 	@Ignore
 	public void testUpdateHelp() {
 		Help help = new Help();
-		help.setHelpId(1L);
+		help.setHelpId(12L);
 		help.setAdditionalCoin(1l);
 		help.setAttitude(5);
 		help.setCompletion(5);
@@ -71,7 +78,7 @@ public class HelpDaoTest {
 	@Test
 	@Ignore
 	public void testQueryByHelpId() {
-		long helpId = 1;
+		long helpId = 12;
 		Help help = helpDao.queryByHelpId(helpId);
 		System.out.println(help.toString());
 	}

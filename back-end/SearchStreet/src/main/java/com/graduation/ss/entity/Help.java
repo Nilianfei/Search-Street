@@ -16,6 +16,9 @@ public class Help {
 	 */
 	@ApiModelProperty(value = "求助ID", required = true)
 	private Long appealId;
+	
+	@ApiModelProperty(value = "求助标题", required = true)
+	private String appealTitle;
 	/**
 	 * 帮助者用户id
 	 */
@@ -104,6 +107,14 @@ public class Help {
 		this.appealId = appealId;
 	}
 
+	public String getAppealTitle() {
+		return appealTitle;
+	}
+
+	public void setAppealTitle(String appealTitle) {
+		this.appealTitle = appealTitle;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -162,12 +173,11 @@ public class Help {
 
 	@Override
 	public String toString() {
-		return "Help [helpId=" + helpId + ", appealId=" + appealId + ", userId=" + userId + ", helpStatus=" + helpStatus
-				+ ", completion=" + completion + ", efficiency=" + efficiency + ", attitude=" + attitude
-				+ ", avgCompletion=" + avgCompletion + ", avgEfficiency=" + avgEfficiency + ", avgAttitude="
-				+ avgAttitude + ", additionalCoin=" + additionalCoin + ", endTime=" + endTime + "]";
+		return "Help [helpId=" + helpId + ", appealId=" + appealId + ", appealTitle=" + appealTitle + ", userId="
+				+ userId + ", helpStatus=" + helpStatus + ", completion=" + completion + ", efficiency=" + efficiency
+				+ ", attitude=" + attitude + ", avgCompletion=" + avgCompletion + ", avgEfficiency=" + avgEfficiency
+				+ ", avgAttitude=" + avgAttitude + ", additionalCoin=" + additionalCoin + ", endTime=" + endTime + "]";
 	}
 
 	
-
 }

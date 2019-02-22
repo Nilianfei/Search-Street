@@ -105,6 +105,9 @@ public class HelpServiceImpl implements HelpService {
 			help.setAvgCompletion(avgCompletion);
 			help.setAvgEfficiency(avgEfficiency);
 			Appeal appeal = appealDao.queryByAppealId(appealId);
+			if(appeal==null) {
+				throw new HelpOperationException("addHelp error:" + "appealId无效");
+			}
 			help.setEndTime(appeal.getEndTime());
 			// 给帮助信息赋初始值
 			help.setHelpStatus(0);

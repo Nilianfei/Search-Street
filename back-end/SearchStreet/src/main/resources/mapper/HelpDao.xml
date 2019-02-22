@@ -8,6 +8,7 @@
 		SELECT
 		help_id,
 		appeal_id,
+		appeal_title,
 		help_status,
 		completion,
 		efficiency,
@@ -37,6 +38,7 @@
 		SELECT
 		help_id,
 		appeal_id,
+		appeal_title,
 		help_status,
 		completion,
 		efficiency,
@@ -83,6 +85,7 @@
 		help_id,
 		user_id,
 		appeal_id,
+		appeal_title,
 		help_status,
 		completion,
 		efficiency,
@@ -104,6 +107,7 @@
 		INTO
 		tb_help(
 		appeal_id,
+		appeal_title,
 		user_id,
 		help_status,
 		completion,
@@ -115,7 +119,7 @@
 		additional_coin,
 		end_time)
 		VALUES
-		(#{appealId},#{userId},#{helpStatus},#{completion},
+		(#{appealId},#{appealTitle},#{userId},#{helpStatus},#{completion},
 		#{efficiency},#{attitude},#{avgCompletion},#{avgEfficiency},#{avgAttitude},#{additionalCoin},#{endTime})
 	</insert>
 	<update id="updateHelp"

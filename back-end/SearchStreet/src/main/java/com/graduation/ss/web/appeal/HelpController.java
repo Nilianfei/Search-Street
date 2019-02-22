@@ -124,7 +124,7 @@ public class HelpController {
 
 	@RequestMapping(value = "/gethelplistbyuserid", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "根据用户ID和帮助状态查询帮助", notes = "进行中:helpStatus=1,已完成:helpStatus=2,已失效:helpStatus=3")
+	@ApiOperation(value = "根据用户ID和帮助状态查询帮助", notes = "进行中:helpStatus=1（返回的helpStatus=0表示还没有被选中，helpStatus=1表示已被选中）,已完成:helpStatus=2,已失效:helpStatus=3")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "helpStatus", value = "帮助状态", required = true, dataType = "int"),
 			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String") })
@@ -208,7 +208,7 @@ public class HelpController {
 	@ApiOperation(value = "创建帮助")
 	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
 	private Map<String, Object> addHelp(
-			@RequestBody @ApiParam(name = "help", value = "传入json格式,不用传helpId", required = true) Help help,
+			@RequestBody @ApiParam(name = "help", value = "传入json格式,只传appealId和appealTitle就好了", required = true) Help help,
 			String token) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long userId = null;
@@ -246,7 +246,7 @@ public class HelpController {
 
 	@RequestMapping(value = "/modifyhelp", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "修改帮助")
+	@ApiOperation(value = "修改帮助", notes = "目前前端好像不需要用")
 	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
 	private Map<String, Object> modifyHelp(
 			@RequestBody @ApiParam(name = "help", value = "传入json格式,要传helpId", required = true) Help help) {

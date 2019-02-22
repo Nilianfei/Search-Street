@@ -54,7 +54,7 @@ public class AppealController {
 
 	@RequestMapping(value = "/getappeallistbyuserid", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "根据用户ID和求助状态获取其所有求助信息(不分页)", notes = "进行中:appealStatus=1,已完成:appealStatus=2,已失效:appealStatus=3")
+	@ApiOperation(value = "根据用户ID和求助状态获取其所有求助信息(不分页)", notes = "进行中:appealStatus=1（返回的appealStatus=0表示没有确定帮助者，appealStatus=1表示已确定帮助者）,已完成:appealStatus=2,已失效:appealStatus=3")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "appealStatus", value = "求助状态", required = true, dataType = "int") })
@@ -184,7 +184,7 @@ public class AppealController {
 
 	@RequestMapping(value = "/modifyappeal", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "修改求助信息（不修改图片）", notes = "要传appealId")
+	@ApiOperation(value = "修改求助信息（不修改图片）", notes = "要传appealId,目前前端好像不需要用")
 	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
 	private Map<String, Object> modifyAppeal(
 			@RequestBody @ApiParam(name = "appeal", value = "传入json格式,不用传appealId", required = true) Appeal appeal) {
@@ -296,7 +296,7 @@ public class AppealController {
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助ID", required = true, dataType = "Long"),
-			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助ID", required = true, dataType = "Long")})
+			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助ID", required = true, dataType = "Long") })
 	private Map<String, Object> competeAppeal(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		String token = HttpServletRequestUtil.getString(request, "token");
@@ -344,7 +344,7 @@ public class AppealController {
 			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助ID", required = true, dataType = "Long"),
 			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助ID", required = true, dataType = "Long"),
-			@ApiImplicitParam(paramType = "query", name = "additionSouCoin", value = "追赏金数", required = true, dataType = "Long")})
+			@ApiImplicitParam(paramType = "query", name = "additionSouCoin", value = "追赏金数", required = true, dataType = "Long") })
 	private Map<String, Object> additionSouCoin(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		String token = HttpServletRequestUtil.getString(request, "token");

@@ -27,6 +27,9 @@ public class HelpServiceTest {
 		helpCondition.setUserId(1l);
 		//helpCondition.setHelpStatus(0);
 		HelpExecution helpExecution = helpService.getHelpList(helpCondition);
+		for(Help help:helpExecution.getHelpList()) {
+			System.out.println(help.getAppealTitle());
+		}
 		System.out.println("帮助列表数为：" + helpExecution.getHelpList().size());
 		System.out.println("帮助总数为：" + helpExecution.getCount());
 	}
@@ -36,6 +39,7 @@ public class HelpServiceTest {
 	public void testAddHelp() throws HelpOperationException {
 		Help help = new Help();
 		help.setAppealId(3l);
+		help.setAppealTitle("appealTitle");
 		help.setUserId(2l);
 		HelpExecution helpExecution = helpService.addHelp(help);
 		assertEquals(HelpStateEnum.SUCCESS.getState(), helpExecution.getState());
@@ -45,7 +49,7 @@ public class HelpServiceTest {
 	@Ignore
 	public void testModifyHelp() throws HelpOperationException {
 		Help help = new Help();
-		help.setHelpId(4l);
+		help.setHelpId(13l);
 		help.setAdditionalCoin(2l);
 		help.setAttitude(4);
 		help.setCompletion(3);
@@ -58,6 +62,6 @@ public class HelpServiceTest {
 	@Test
 	@Ignore
 	public void testSelectHelp()throws HelpOperationException{
-		helpService.selectHelp(9l, 4l);
+		helpService.selectHelp(13l, 3l);
 	}
 }
