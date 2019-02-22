@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 21/02/2019 20:33:16
+ Date: 22/02/2019 16:00:31
 */
 
 SET NAMES utf8mb4;
@@ -60,6 +60,7 @@ DROP TABLE IF EXISTS `tb_help`;
 CREATE TABLE `tb_help`  (
   `help_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '帮助id\n',
   `appeal_id` int(10) NOT NULL COMMENT '求助id\n',
+  `appeal_title` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '求助标题',
   `user_id` int(10) NOT NULL COMMENT '用户id\n',
   `help_status` int(2) NOT NULL DEFAULT 0 COMMENT '帮助状态（0求助用户未确定帮助对象，1已接受帮助，2未接受帮助，3已结束）\n',
   `completion` int(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT '完成度评分',
@@ -71,7 +72,7 @@ CREATE TABLE `tb_help`  (
   `additional_coin` int(10) NOT NULL COMMENT '追赏金',
   `end_time` datetime(0) NOT NULL,
   PRIMARY KEY (`help_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '帮把手' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '帮把手' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for tb_local_auth
@@ -164,7 +165,7 @@ CREATE TABLE `tb_shop`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `last_edit_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`shop_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 68 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 69 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_shop_comment
