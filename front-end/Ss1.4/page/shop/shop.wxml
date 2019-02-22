@@ -42,8 +42,8 @@
   </i-panel>
   <i-panel>
     <i-cell-group>
-      <i-cell title="相册"  is-link>
-        <i-icon type="picture" slot="icon" />
+      <i-cell title="相册"  is-link url="../shop-album/shop-album?id={{shopId}}">
+        <i-icon type="picture" slot="icon"/>
       </i-cell>
       <i-cell title="服务列表"  is-link>
         <i-icon type="service" slot="icon" />

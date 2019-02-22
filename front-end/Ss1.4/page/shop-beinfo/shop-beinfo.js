@@ -14,10 +14,11 @@ Page({
   data: {
 
     shopname: test_name,
-    shoppic: test_pic,
+    shoppic: null,
     score_number0: score,
     score_number1: score_rank,
     score_number2: score_rate,
+    shopId:null,
     /*
     shopname:null,
     shoppic:null,
@@ -35,6 +36,9 @@ Page({
       key: 'shopId',
       data: options.id//从shoplist传来的shopid
     })//异步更新缓存shopId
+    this.setData({
+      shopId:options.id
+    })
     var token = null;
     try {//同步获取与用户信息有关的缓存token
       const value = wx.getStorageSync('token')
@@ -52,10 +56,14 @@ Page({
         console.log(res.data.shop);   //设置页面中的数据
         this.setData(
           {
-            shopname: res.data.shop.shopName,
-            shoppic: app.globalData.imgUrl+res.data.shop.profileImg,
+            shopname: res.data.shop.shopName
           }
         )
+        if (res.data.shop.profileImg!=null){
+          this.setData({
+            shoppic: app.globalData.imgUrl + res.data.shop.profileImg
+          })
+        }
       }
     })
 

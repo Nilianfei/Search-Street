@@ -24,7 +24,7 @@ Page({
   onLoad: function (options) {
     var that=this;
     that.setData({
-      shopId:63//options.id
+      shopId:70//options.id
     })
     //获取商铺信息
     wx.request({

@@ -1,6 +1,6 @@
 // page/shop-album/shop-album.js
 
-
+var app=getApp();
 
 Page({
 
@@ -10,39 +10,11 @@ Page({
   data: {
 
     current: 'tab1',
-
-    // 相册列表数据
-    albumList: [],
-
-    // 图片布局列表（二维数组，由`albumList`计算而得）
-    layoutList: [],
-
-    // 布局列数
-    layoutColumnSize: 3,
-
-    // 是否显示loading
-    showLoading: false,
-
-    // loading提示语
-    loadingMessage: '',
-
-    // 是否显示toast
-    showToast: false,
-
-    // 提示消息
-    toastMessage: '',
-
-    // 是否显示动作命令
-    showActionsSheet: false,
-
-    // 当前操作的图片
-    imageInAction: '',
-
-    // 图片预览模式
-    previewMode: false,
-
-    // 当前预览索引
-    previewIndex: 0,
+    shopId: null,
+    shopImgList:null,
+    businessLicenseImg:null,
+    imgUrl: app.globalData.imgUrl,
+    loading:true
   },
 
   handleChange({ detail }) {
@@ -50,40 +22,34 @@ Page({
       current: detail.key
     });
   },
-
-  //隐藏loading提示
-  hideLoading(){
-    this.setData({ showLoading: false,loadingMessage:''});
-  },
-
-  //上传图片
-  upimg: function () {
-    var that = this;
-    var flag = this.data.flag;
-    wx.chooseImage({
-      sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有  
-      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function (res) {
-        that.setData({
-          business_img: res.tempFilePaths,
-          flag: !flag
-        })
-      }
-    })
-  },
   
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-  },
-
-  //获取albumList
-  getAlblumList(){
-    this.showLoading('加载列表中');
-    setTimeout(() =>this.hideLoading(), 1000);
-    return 
+    var that = this;
+    that.setData({
+      shopId: options.id
+    })
+    //获取商铺信息
+    wx.request({
+      url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/getshopbyid?shopId=" + that.data.shopId,
+      data: {},
+      method: "GET",
+      success: res => {
+        var shop = res.data.shop;
+        if (shop.businessLicenseImg!=null)
+          shop.businessLicenseImg = that.data.imgUrl + shop.businessLicenseImg;
+        for (var i = 0; i < shop.shopImgList.length; i++) {
+          shop.shopImgList[i].imgAddr = that.data.imgUrl + shop.shopImgList[i].imgAddr;
+        }
+        that.setData({
+          businessLicenseImg:shop.businessLicenseImg,
+          shopImgList:shop.shopImgList,
+          loading:false
+        })
+      }
+    })
   },
 
   /**

@@ -10,7 +10,7 @@
   </i-panel>
   <view class='appeal-img'>
     <i-row>
-      <i-col span="6" i-class="col-class" wx:for="{{appeal.appealImgList}}"><image class="logoinfo" src='../../images/search_buck.png' name="businessLogo"></image></i-col>
+      <i-col span="6" i-class="col-class" wx:for="{{appeal.appealImgList}}"><image class="logoinfo" src='../../images/search_buck.png'></image></i-col>
     </i-row>
   </view>
   <i-panel>

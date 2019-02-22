@@ -3,23 +3,17 @@
     <i-tab key="tab1" title="证书图片"></i-tab>
     <i-tab key="tab2" title="商铺图片"></i-tab>
 </i-tabs>
+<loading hidden="{{!loading}}">加载中</loading>
+<view class='img' wx:if="{{current=='tab2'}}">
+    <i-row>
+      <i-col span="6" i-class="col-class" wx:for="{{shopImgList}}">
+      <image src='{{item.imgAddr}}'></image></i-col>
+    </i-row>
+</view>
 
-<scoll-view class="container" scroll-y="true" enable-back-to-top="true">
-    <view class="album-container">
-        <view class="item-group" wx:for="{{layoutList}}" wx:key="group">
-            <block wx:for="{{group}}" wx:key="item">
-                <block wx:if="{{item}}">
-                    <image bindtap="enterPreviewMode" bindlongtap="showActions" data-src="{{item}}" class="album-item" src="{{item}}" mode="aspectFill"></image>
-                </block>
-                <block wx:else>
-                    <view class="album-item empty"></view>
-                </block>
-            </block>
-        </view>
-    </view>
-    
-    <view class="upload-image" bindtap="upimg">
-        <image src="/images/camera.png" mode="aspectFit"></image>
-        <text>上传图片</text>
-    </view>
-</scoll-view>
+<view class='img' wx:if="{{current=='tab1'}}">
+    <i-row>
+      <i-col span="24" i-class="col-class" >
+      <image src='{{businessLicenseImg}}'></image></i-col>
+    </i-row>
+</view>

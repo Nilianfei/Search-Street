@@ -4,7 +4,7 @@
 <view class='service-list-view'>
   <i-cell-group>
     <block wx:for="{{list}}" wx:key="id">
-      <i-cell title="{{item.serviceName}}" value="{{item.servicePrice}}" is-link url="..//?id={{item.shopId}}"></i-cell>
+      <i-cell title="{{item.serviceName}}" value="{{item.servicePrice}}" is-link url="..//?id={{item.serviceId}}"></i-cell>
     </block>
   </i-cell-group>
 </view>

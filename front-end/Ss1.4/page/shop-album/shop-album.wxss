@@ -48,3 +48,9 @@
     left: 0;
     top: 1.6rem;
 }
+
+.img{
+  background-color: white;
+  margin-top: 10px;
+  text-align:center;
+}
