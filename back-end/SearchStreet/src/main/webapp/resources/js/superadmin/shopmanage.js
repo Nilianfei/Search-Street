@@ -32,7 +32,7 @@ function imgFormater(value, row, index) {
 		img = row.profileImg;
 	else
 		img = row.businessLicenseImg;
-	return '<img src="' + img + '" width="100px" height="100px">';
+	return '<img src="/image' + img + '" width="100px" height="100px">';
 }
 
 function timeFormater(value, row, index) {
