@@ -77,6 +77,15 @@ public class WechatLoginController {
 				modelMap.put("errMsg", "wechatAuthService.register失败");
 				return modelMap;
 			}
+		} else {
+			try {
+				PersonInfo personInfo = WechatUtil.getPersonInfoFromRequest(wechatUser);
+				wechatAuthService.updatePersonInfo(auth, personInfo);
+			} catch (Exception e) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", e.getMessage());
+				return modelMap;
+			}
 		}
 		modelMap.put("success", true);
 		return modelMap;

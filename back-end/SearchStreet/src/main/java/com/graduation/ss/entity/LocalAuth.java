@@ -9,6 +9,7 @@ public class LocalAuth {
 	private Date createTime;
 	private Date lastEditTime;
 	private Long userId;
+	private PersonInfo personInfo;
 	
 	public Long getLocalAuthId() {
 		return localAuthId;
@@ -47,4 +48,11 @@ public class LocalAuth {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+	public PersonInfo getPersonInfo() {
+		return personInfo;
+	}
+	public void setPersonInfo(PersonInfo personInfo) {
+		this.personInfo = personInfo;
+	}
+	
 }

@@ -3,6 +3,10 @@ package com.graduation.ss;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.google.common.base.Predicate;
+
+import io.swagger.annotations.ApiOperation;
+import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -25,9 +29,18 @@ public class Swagger2 {
      */
     @Bean
     public Docket createRestApi() {
+    	Predicate<RequestHandler> predicate = new Predicate<RequestHandler>() {
+            @Override
+            public boolean apply(RequestHandler input) {
+                if (input.isAnnotatedWith(ApiOperation.class))//只有添加了ApiOperation注解的method才在API中显示
+                    return true;
+                return false;
+            }
+        };
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
+                .apis(predicate)
                 .apis(RequestHandlerSelectors.basePackage("com.graduation.ss.web"))
                 .paths(PathSelectors.any())
                 .build();

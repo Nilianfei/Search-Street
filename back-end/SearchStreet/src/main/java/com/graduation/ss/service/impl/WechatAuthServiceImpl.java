@@ -23,13 +23,20 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 	private PersonInfoDao personInfoDao;
 
 	@Override
-	public WechatAuth getWechatAuthByOpenId(String openId) {
-		return wechatAuthDao.queryWechatByOpenId(openId);
+	public WechatAuth getWechatAuthByOpenId(String openId) throws WechatAuthOperationException {
+		WechatAuth wechatAuth = wechatAuthDao.queryWechatByOpenId(openId);
+		PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(wechatAuth.getUserId());
+		int enableStatus = personInfo.getEnableStatus();
+		if (enableStatus == 0) {
+			throw new WechatAuthOperationException("禁止此用户使用");
+		}
+		return wechatAuth;
 	}
 
 	@Override
 	@Transactional
-	public WechatAuthExecution register(WechatAuth wechatAuth, PersonInfo personInfo) throws WechatAuthOperationException {
+	public WechatAuthExecution register(WechatAuth wechatAuth, PersonInfo personInfo)
+			throws WechatAuthOperationException {
 		// 空值判断
 		if (wechatAuth == null || wechatAuth.getOpenId() == null) {
 			return new WechatAuthExecution(WechatAuthStateEnum.NULL_AUTH_INFO);
@@ -62,6 +69,32 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 			}
 		} catch (Exception e) {
 			throw new WechatAuthOperationException("insertWechatAuth error: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void updatePersonInfo(WechatAuth wechatAuth, PersonInfo personInfo)
+			throws WechatAuthOperationException {
+		// 空值判断
+		if (wechatAuth == null || wechatAuth.getOpenId() == null) {
+			throw new WechatAuthOperationException("updatePersonInfo error: " + WechatAuthStateEnum.NULL_AUTH_INFO.getStateInfo());
+		}
+		try {
+			if (wechatAuth.getUserId() != null) {
+				try {
+					personInfo.setUserId(wechatAuth.getUserId());
+					personInfo.setLastEditTime(new Date());
+					int effectedNum = personInfoDao.updatePersonInfo(personInfo);
+					wechatAuth.setUserId(personInfo.getUserId());
+					if (effectedNum <= 0) {
+						throw new WechatAuthOperationException("修改用户信息失败");
+					}
+				} catch (Exception e) {
+					throw new WechatAuthOperationException("updatePersonInfo error: " + e.getMessage());
+				}
+			}
+		} catch (Exception e) {
+			throw new WechatAuthOperationException("updatePersonInfo error: " + e.getMessage());
 		}
 	}
 

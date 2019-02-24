@@ -3,6 +3,7 @@ package com.graduation.ss.dao;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -49,6 +50,7 @@ public class PersonInfoDaoTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testUpdatePersonInfo() {
 		PersonInfo personInfo = new PersonInfo();
 		personInfo.setUserId(1L);
@@ -57,5 +59,15 @@ public class PersonInfoDaoTest {
 		personInfo.setLastEditTime(new Date());
 		int effectedNum = personInfoDao.updatePersonInfo(personInfo);
 		assertEquals(1, effectedNum);
+	}
+	
+	@Test
+	public void testQueryPersonInfoList() {
+		PersonInfo personInfo = new PersonInfo();
+		personInfo.setEnableStatus(1);
+		List<PersonInfo> personInfos=personInfoDao.queryPersonInfoList(personInfo, 0, 1);
+		int count = personInfoDao.queryPersonInfoCount(personInfo);
+		System.out.println(personInfos.size());
+		System.out.println(count);
 	}
 }

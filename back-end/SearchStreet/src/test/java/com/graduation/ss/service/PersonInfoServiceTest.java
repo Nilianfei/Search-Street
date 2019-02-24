@@ -1,5 +1,7 @@
 package com.graduation.ss.service;
 
+import java.util.List;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,5 +26,14 @@ public class PersonInfoServiceTest {
 		personInfo.setSouCoin(1l);
 		PersonInfoExecution personInfoExecution = personInfoService.modifyPersonInfo(personInfo);
 		System.out.println(personInfoExecution.getPersonInfo().getSouCoin());
+	}
+	
+	@Test
+	@Ignore
+	public void testGetPersonInfoList() {
+		PersonInfo personInfo = new PersonInfo();
+		personInfo.setEnableStatus(1);
+		List<PersonInfo> personInfos=personInfoService.getPersonInfoList(personInfo, 0, 1).getPersonInfoList();
+		System.out.println(personInfos.size());
 	}
 }

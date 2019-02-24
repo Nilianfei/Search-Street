@@ -12,7 +12,7 @@ public interface WechatAuthService {
 	 * @param openId
 	 * @return
 	 */
-	WechatAuth getWechatAuthByOpenId(String openId);
+	WechatAuth getWechatAuthByOpenId(String openId) throws WechatAuthOperationException;
 
 	/**
 	 * 注册本平台的微信帐号
@@ -23,4 +23,15 @@ public interface WechatAuthService {
 	 * @throws RuntimeException
 	 */
 	WechatAuthExecution register(WechatAuth wechatAuth, PersonInfo personInfo) throws WechatAuthOperationException;
+
+	/**
+	 * 更新用户信息
+	 * 
+	 * @param wechatAuth
+	 * @param personInfo
+	 * @return
+	 * @throws WechatAuthOperationException
+	 */
+	void updatePersonInfo(WechatAuth wechatAuth, PersonInfo personInfo)
+			throws WechatAuthOperationException;
 }
