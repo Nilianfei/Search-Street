@@ -1,13 +1,20 @@
 package com.graduation.ss.service.impl;
 
+import java.io.IOException;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.graduation.ss.cache.JedisUtil;
 import com.graduation.ss.dao.PersonInfoDao;
 import com.graduation.ss.dao.WechatAuthDao;
+import com.graduation.ss.dto.WechatAuthAndEnableStatus;
 import com.graduation.ss.dto.WechatAuthExecution;
 import com.graduation.ss.entity.PersonInfo;
 import com.graduation.ss.entity.WechatAuth;
@@ -21,12 +28,58 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 	private WechatAuthDao wechatAuthDao;
 	@Autowired
 	private PersonInfoDao personInfoDao;
+	@Autowired
+	private JedisUtil.Keys jedisKeys;
+	@Autowired
+	private JedisUtil.Strings jedisStrings;
 
 	@Override
+	@Transactional
 	public WechatAuth getWechatAuthByOpenId(String openId) throws WechatAuthOperationException {
-		WechatAuth wechatAuth = wechatAuthDao.queryWechatByOpenId(openId);
-		PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(wechatAuth.getUserId());
-		int enableStatus = personInfo.getEnableStatus();
+		// 定义redis的key
+		String key = openId;
+		// 定义接收对象
+		WechatAuthAndEnableStatus wechatAuthAndEnableStatus = new WechatAuthAndEnableStatus();
+		// 定义jackson数据转换操作类
+		ObjectMapper mapper = new ObjectMapper();
+
+		WechatAuth wechatAuth;
+		// 判断key是否存在
+		if (!jedisKeys.exists(key)) {
+			// 若不存在，则从数据库里面取出相应数据
+			wechatAuth = wechatAuthDao.queryWechatByOpenId(openId);
+			PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(wechatAuth.getUserId());
+			wechatAuthAndEnableStatus.setWechatAuth(wechatAuth);
+			wechatAuthAndEnableStatus.setEnableStatus(personInfo.getEnableStatus());
+			// 将相关的实体类集合转换成string,存入redis里面对应的key中
+			String jsonString;
+			try {
+				jsonString = mapper.writeValueAsString(wechatAuthAndEnableStatus);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+				throw new WechatAuthOperationException(e.getMessage());
+			}
+			jedisStrings.set(key, jsonString);
+		} else {
+			// 若存在，则直接从redis里面取出相应数据
+			String jsonString = jedisStrings.get(key);
+			try {
+				// 将相关key对应的value里的的string转换成对象的实体类集合
+				wechatAuthAndEnableStatus = mapper.readValue(jsonString, WechatAuthAndEnableStatus.class);
+				wechatAuth = wechatAuthAndEnableStatus.getWechatAuth();
+			} catch (JsonParseException e) {
+				e.printStackTrace();
+				throw new WechatAuthOperationException(e.getMessage());
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+				throw new WechatAuthOperationException(e.getMessage());
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new WechatAuthOperationException(e.getMessage());
+			}
+		}
+
+		int enableStatus = wechatAuthAndEnableStatus.getEnableStatus();
 		if (enableStatus == 0) {
 			throw new WechatAuthOperationException("禁止此用户使用");
 		}
@@ -73,11 +126,11 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 	}
 
 	@Override
-	public void updatePersonInfo(WechatAuth wechatAuth, PersonInfo personInfo)
-			throws WechatAuthOperationException {
+	public void updatePersonInfo(WechatAuth wechatAuth, PersonInfo personInfo) throws WechatAuthOperationException {
 		// 空值判断
 		if (wechatAuth == null || wechatAuth.getOpenId() == null) {
-			throw new WechatAuthOperationException("updatePersonInfo error: " + WechatAuthStateEnum.NULL_AUTH_INFO.getStateInfo());
+			throw new WechatAuthOperationException(
+					"updatePersonInfo error: " + WechatAuthStateEnum.NULL_AUTH_INFO.getStateInfo());
 		}
 		try {
 			if (wechatAuth.getUserId() != null) {

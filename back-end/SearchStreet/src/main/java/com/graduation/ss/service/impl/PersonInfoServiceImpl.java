@@ -6,9 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.graduation.ss.cache.JedisUtil;
 import com.graduation.ss.dao.PersonInfoDao;
+import com.graduation.ss.dao.WechatAuthDao;
 import com.graduation.ss.dto.PersonInfoExecution;
 import com.graduation.ss.entity.PersonInfo;
+import com.graduation.ss.entity.WechatAuth;
 import com.graduation.ss.enums.PersonInfoStateEnum;
 import com.graduation.ss.exceptions.PersonInfoOperationException;
 import com.graduation.ss.service.PersonInfoService;
@@ -18,6 +21,10 @@ import com.graduation.ss.util.PageCalculator;
 public class PersonInfoServiceImpl implements PersonInfoService {
 	@Autowired
 	private PersonInfoDao personInfoDao;
+	@Autowired
+	private WechatAuthDao wechatAuthDao;
+	@Autowired
+	private JedisUtil.Keys jedisKeys;
 
 	@Override
 	public PersonInfo getPersonInfoByUserId(Long userId) {
@@ -30,7 +37,15 @@ public class PersonInfoServiceImpl implements PersonInfoService {
 		if (personInfo == null) {
 			return new PersonInfoExecution(PersonInfoStateEnum.NULL_PERSONINFO);
 		}
+		if(personInfo.getUserId()==null) {
+			return new PersonInfoExecution(PersonInfoStateEnum.NULL_USERID);
+		}
 		try {
+			if(personInfo.getEnableStatus()!=null) {
+				WechatAuth wechatAuth = wechatAuthDao.queryWechatByUserId(personInfo.getUserId());
+				String openId = wechatAuth.getOpenId();
+				jedisKeys.del(openId);
+			}
 			personInfo.setLastEditTime(new Date());
 			// 修改个人信息
 			int effectedNum = personInfoDao.updatePersonInfo(personInfo);

@@ -19,13 +19,13 @@ public class PersonInfoServiceTest {
 	private PersonInfoService personInfoService;
 	
 	@Test
-	@Ignore
+	//@Ignore
 	public void testModifyPersonInfo() {
 		PersonInfo personInfo = new PersonInfo();
 		personInfo.setUserId(1L);
-		personInfo.setSouCoin(1l);
+		personInfo.setEnableStatus(0);
 		PersonInfoExecution personInfoExecution = personInfoService.modifyPersonInfo(personInfo);
-		System.out.println(personInfoExecution.getPersonInfo().getSouCoin());
+		System.out.println(personInfoExecution.getPersonInfo().getUserId());
 	}
 	
 	@Test
