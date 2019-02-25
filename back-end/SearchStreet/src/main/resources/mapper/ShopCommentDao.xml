@@ -16,6 +16,10 @@
 				test="shopCommentCondition.shopId != null">
 				and shop_id = #{shopCommentCondition.shopId}
 			</if> 
+			<if
+				test="shopCommentCondition.commentContent != null">
+				and comment_content like '%${shopCommentCondition.commentContent}%'
+			</if> 
 		</where>
 		LIMIT #{rowIndex},#{pageSize};
 	</select>

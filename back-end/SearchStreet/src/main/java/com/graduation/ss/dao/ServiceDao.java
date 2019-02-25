@@ -33,12 +33,7 @@ public interface ServiceDao{
 	 * @return
 	 */
 	public ServiceInfo queryByServiceId(long serviceId);
-	/**
-	 * 通过shop id查询服务
-	 * @param shopId
-	 * @return
-	 */
-	public List<ServiceInfo> queryByShopId(long shopId);
+
 	/**
 	 * 添加服务
 	 * @param serviceInfo

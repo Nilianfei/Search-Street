@@ -1,5 +1,7 @@
 package com.graduation.ss.entity;
 
+import java.util.List;
+
 public class ServiceInfo {
 
 	/**
@@ -14,7 +16,7 @@ public class ServiceInfo {
 	private Long servicePrice;
 	private String serviceDesc;
 	private String serviceContent;
-	private String serviceImg;
+	private String ServiceImgAddr;
 	public Long getServiceId() {
 		return serviceId;
 	}
@@ -51,11 +53,11 @@ public class ServiceInfo {
 	public void setServiceContent(String serviceContent) {
 		this.serviceContent = serviceContent;
 	}
-	public String getServiceImg() {
-		return serviceImg;
+	public String getServiceImgAddr() {
+		return ServiceImgAddr;
 	}
-	public void setServiceImg(String serviceImg) {
-		this.serviceImg = serviceImg;
+	public void setServiceImgAddr(String serviceImgAddr) {
+		ServiceImgAddr = serviceImgAddr;
 	}
 	
 	

@@ -57,7 +57,7 @@ public class ServiceDaoTest {
 		serviceInfo.setServicePrice(2L);
 		serviceInfo.setServiceDesc("test");
 		serviceInfo.setServiceContent("test");
-		serviceInfo.setServiceImg("test");
+		serviceInfo.setServiceImgAddr("test.png");
 		int effectedNum = serviceDao.insertService(serviceInfo);
 		assertEquals(1, effectedNum);
 	}
@@ -71,7 +71,7 @@ public class ServiceDaoTest {
 		serviceInfo2.setServicePrice(1L);
 		serviceInfo2.setServiceDesc("2测试服务名称");
 		serviceInfo2.setServiceContent("2测试服务名称");
-		serviceInfo2.setServiceImg("2测试服务名称");
+		serviceInfo2.setServiceImgAddr("test.png");
 		serviceInfoList.add(serviceInfo2);
 		ServiceInfo serviceInfo3 = new ServiceInfo();
 		serviceInfo3.setShopId(6L);
@@ -79,7 +79,7 @@ public class ServiceDaoTest {
 		serviceInfo3.setServicePrice(1L);
 		serviceInfo3.setServiceDesc("A测试服务名称");
 		serviceInfo3.setServiceContent("A测试服务名称");
-		serviceInfo3.setServiceImg("A测试服务名称");
+		serviceInfo3.setServiceImgAddr("test.png");
 		serviceInfoList.add(serviceInfo3);
 		ServiceInfo serviceInfo4 = new ServiceInfo();
 		serviceInfo4.setShopId(7L);
@@ -87,7 +87,7 @@ public class ServiceDaoTest {
 		serviceInfo4.setServicePrice(1L);
 		serviceInfo4.setServiceDesc("aa测试服务名称");
 		serviceInfo4.setServiceContent("aa测试服务名称");
-		serviceInfo4.setServiceImg("aa测试服务名称");
+		serviceInfo4.setServiceImgAddr("test.png");
 		serviceInfoList.add(serviceInfo4);
 		int effectedNum = serviceDao.insertServiceInfo(serviceInfoList);
 		assertEquals(3, effectedNum);
@@ -110,14 +110,7 @@ public class ServiceDaoTest {
 		ServiceInfo serviceInfo = serviceDao.queryByServiceId(serviceId);
 		System.out.println("servicecontent: "+serviceInfo.getServiceContent());
 	}
-	@Test
-	@Ignore
-	public void testQueryByShopId() {
-		long shopId = 1L;
-		List<ServiceInfo>serviceInfoList=serviceDao.queryByShopId(shopId);
-		for(int i=0;i<serviceInfoList.size();i++)
-		System.out.println("servicecontent: "+serviceInfoList.get(i).getServiceContent());
-	}
+
 	@Test
 	@Ignore
 	public void testDeleteService() {

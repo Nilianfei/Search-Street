@@ -34,4 +34,8 @@ public class PathUtil {
 		String imagePath = "/upload/images/item/appeal/appealImg/" + appealId + "/";
 		return imagePath.replace("/", seperator);
 	}
+	public static String getServiceImgPath(long serviceId) {
+		String imagePath = "/upload/images/item/shop/serviceImg/" + serviceId + "/";
+		return imagePath.replace("/", seperator);
+	}
 }
