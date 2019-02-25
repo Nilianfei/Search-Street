@@ -14,7 +14,9 @@
     "page/appeal/appeal",
     "page/search-help/search-help",
     "page/shop-album/shop-album",
-    "page/search-help-response/search-help-response"
+    "page/search-help-response/search-help-response",
+    "page/personal-center/personal-center",
+    "page/personal-account/personal-account"
   ],
   "permission": {
     "scope.userLocation": {

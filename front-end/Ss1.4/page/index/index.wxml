@@ -69,7 +69,7 @@
         </view>
       </navigator>
 
-      <navigator class="kind-list-item" id="pri-inf">
+      <navigator class="kind-list-item" id="pri-inf" url="../personal-center/personal-center">
         <view class="kind-list-item-hd">
           <view class="kind-list-text">个人中心</view>
           <image class="kind-list-img" src="../../images/个人.png"></image>

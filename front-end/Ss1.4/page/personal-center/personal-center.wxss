@@ -1,0 +1,34 @@
+/* page/personal-center/personal-center */
+.perinf-hd{
+   height: 260rpx;
+   text-align: center;
+}
+.userinfo-avatar {
+  overflow:hidden;
+  display: block;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  margin:0 auto;
+  margin-top: 30rpx;
+}
+.perinf-bd1{
+  height: 250rpx;
+  background-color: rgb(240, 235, 235);
+  display: flex;
+  flex-direction: row;
+}
+.perinf-item{
+ width: 250rpx;
+ border-right: 1px solid #fff;
+ display: flex;
+ flex-direction: column;
+ text-align: center;
+}
+.perinf-img{
+  height: 80rpx;
+  width: 80rpx;
+  margin-top: 60rpx;
+  margin-left: 100rpx;
+}
