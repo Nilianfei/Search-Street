@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.graduation.ss.dto.LocalAuthExecution;
 import com.graduation.ss.entity.LocalAuth;
+import com.graduation.ss.entity.PersonInfo;
+import com.graduation.ss.enums.LocalAuthStateEnum;
 import com.graduation.ss.service.LocalAuthService;
 import com.graduation.ss.util.HttpServletRequestUtil;
 
@@ -57,5 +60,69 @@ public class LoginController {
 			modelMap.put("errMsg", "用户名和密码均不能为空");
 		}
 		return modelMap;
+	}
+
+	@RequestMapping(value = "/maincheck", method = RequestMethod.GET)
+	@ResponseBody
+	private Map<String, Object> mainCheck(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		PersonInfo user = (PersonInfo) request.getSession().getAttribute("user");
+		if (user == null) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "没有登录验证");
+		} else {
+			if (user.getUserType() != 1) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", "非管理员没有权限访问");
+			} else {
+				modelMap.put("success", true);
+			}
+		}
+		return modelMap;
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@ResponseBody
+	private Map<String, Object> register(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		// 获取前端传递过来的帐号和密码以及userId
+		String userName = HttpServletRequestUtil.getString(request, "userName");
+		String password = HttpServletRequestUtil.getString(request, "password");
+		Long userId = HttpServletRequestUtil.getLong(request, "userId");
+		if (userName == null) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "用户名为空");
+			return modelMap;
+		}
+		if (password == null) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "密码为空");
+			return modelMap;
+		}
+		if (userId == -1) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "userId为空");
+			return modelMap;
+		}
+
+		LocalAuth localAuth = new LocalAuth();
+		localAuth.setUserId(userId);
+		localAuth.setUserName(userName);
+		localAuth.setPassword(password);
+		try {
+			LocalAuthExecution lae = localAuthService.bindLocalAuth(localAuth);
+			if (lae.getState() == LocalAuthStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", true);
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", lae.getStateInfo());
+			}
+			return modelMap;
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+
 	}
 }

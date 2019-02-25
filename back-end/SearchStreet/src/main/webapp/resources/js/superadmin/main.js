@@ -1,4 +1,21 @@
 ﻿$(function() {
+	$.ajax({
+		async : false,
+		cache : false,
+		type : "get",
+		dataType : 'json',
+		url : "maincheck",// 请求的action路径
+		data : {},
+		error : function() {// 请求失败处理函数
+			alert('请求失败');
+		},
+		success : function(data) { // 请求成功后处理函数。
+			var success = data.success;
+			if (success == false) {
+				window.location = 'login';
+			}
+		}
+	});
 	$('#centerTab').tabs({
 		tools:[{
 			iconCls:'icon-back',
