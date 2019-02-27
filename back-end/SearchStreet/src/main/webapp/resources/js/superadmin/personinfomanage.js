@@ -243,6 +243,15 @@ function personinfoManagementEdit() {
 		}
 	});
 }
+function sexFormatter(value, row, index) {
+	if(row.sex==1)return '男性';
+	else if(row.sex==2) return '女性';
+	else return '未知';
+}
+function statusFormatter(value, row, index) {
+	if(row.enableStatus==1)return '合法';
+	else return '非法';
+}
 function userTypeFormater(value, row, index) {
 	if(row.userType==1)return '管理员';
 	else return '普通用户';

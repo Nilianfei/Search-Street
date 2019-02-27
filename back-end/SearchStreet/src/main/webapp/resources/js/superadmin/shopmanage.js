@@ -34,6 +34,20 @@ function imgFormater(value, row, index) {
 		img = row.businessLicenseImg;
 	return '<img src="/image' + img + '" width="100px" height="100px">';
 }
+function ismobileFormater(value, row, index) {
+	if (row.isMobile == 0)
+		return '否';
+	else if (row.isMobile == 1)
+		return '是';
+}
+function statusFormater(value, row, index) {
+	if (row.enableStatus == 0)
+		return '审核中';
+	else if (row.enableStatus == 1)
+		return '已启动';
+	else if (row.enableStatus == 2)
+		return '已禁止';
+}
 
 function timeFormater(value, row, index) {
 	if (value == null || value == '') {
