@@ -1,0 +1,38 @@
+<!--page/personal-help/personal-help.wxml-->
+<view class="contanier">
+   <i-tabs current="{{ current }}" bindchange="handleChange">
+    <i-tab key="tab1" title="我的服务"></i-tab>
+    <i-tab key="tab2" title="我的求助"></i-tab>
+   </i-tabs>
+
+     <block wx:if="{{current=='tab1'}}">
+       <view class="perhelp-bd">
+        <view class="perhelp-item">
+         <image class="service-img" src="../../images/进行中.png"></image>
+         <text class="service-text">进行中</text>
+        </view>
+        <view class="perhelp-item">
+          <image class="service-img" src="../../images/已完成.png"></image>
+          <text class="service-text">已完成</text>
+        </view>
+       </view>
+     </block>
+    
+     <block wx:if="{{current=='tab2'}}">
+       <view class="perhelp-bd">
+        <view class="perhelp-item1">
+         <image class="service-img1" src="../../images/进行中.png"></image>
+         <text class="service-text1">进行中</text>
+        </view>
+        <view class="perhelp-item1">
+         <image class="service-img1" src="../../images/失效.png"></image>
+         <text class="service-text1">失效单</text>
+        </view>
+        <view class="perhelp-item1">
+          <image class="service-img1" src="../../images/已完成.png"></image>
+          <text class="service-text1">已完成</text>
+        </view>
+       </view>
+      </block>
+ 
+</view>

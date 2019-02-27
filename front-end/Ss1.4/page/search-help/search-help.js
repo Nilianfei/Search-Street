@@ -6,7 +6,8 @@ Page({
    */
   data: {
     shelp_text:shelp_text,
-    value1:'',
+    shelp_imgs:[],
+    show_photo:true,
     cost:['10','20','40','80'],
     timelimit:['30分钟','60分钟','90分钟','120分钟'],
     region: ['广东省', '广州市', '海珠区'],
@@ -26,6 +27,35 @@ Page({
       latitude: 23.099994,
       longitude: 113.324520
     },
+  },
+
+  /* 上传求助图片 */
+  chooseImage: function () {
+    var that = this;
+    var shelp_imgs = this.data.shelp_imgs;
+    var flag=this.data.show_photo;
+
+    if (this.data.shelp_imgs.length < 3) {
+      wx.chooseImage({
+        count: 3,  //最多可以选择的图片总数  
+        sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有  
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+          shelp_imgs = shelp_imgs.concat(res.tempFilePaths);
+          that.setData({
+            shelp_imgs: shelp_imgs,
+            show_photo:!flag,
+          })
+          console.log(shelp_imgs);
+        }
+      })
+    } else {
+      wx.showToast({
+        title: '最多上传3张图片',
+        icon: 'loading',
+        duration: 2000
+      })
+    }
   },
 
   /**

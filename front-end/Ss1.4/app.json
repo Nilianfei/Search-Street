@@ -16,7 +16,8 @@
     "page/shop-album/shop-album",
     "page/search-help-response/search-help-response",
     "page/personal-center/personal-center",
-    "page/personal-account/personal-account"
+    "page/personal-account/personal-account",
+    "page/personal-help/personal-help"
   ],
   "permission": {
     "scope.userLocation": {

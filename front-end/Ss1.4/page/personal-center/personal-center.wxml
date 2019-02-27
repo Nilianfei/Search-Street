@@ -15,7 +15,7 @@
      <image class="perinf-img" src="../../images/钱包.png"></image>
      <text class="perinf-text">钱包</text>
      </navigator> 
-    <navigator class="perinf-item" url="">
+    <navigator class="perinf-item" url="../personal-help/personal-help">
      <image class="perinf-img" src="../../images/手掌.png"></image>
      <text class="perinf-text">求帮记录</text>
     </navigator>

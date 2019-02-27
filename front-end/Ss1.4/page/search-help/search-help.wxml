@@ -1,7 +1,12 @@
 <!--page/search-help/search-help.wxml-->
 <view class="container">
    <view class="shelp-hd">
-      <image class="shelp-photo" src="../../images/添加图片.png"></image>
+    <view class="shelp-hd1">
+     <view wx:for="{{[1,2,3,4]}}" wx:for-index='idx'>
+      <image class="shelp-photo {{show_photo ? '' : 'helpimage'}}" src="../../images/添加图片.png" bindtap='chooseImage'></image>
+      <image class="shelp-photo" src='{{shelp_imgs[idx]}}' name="shelpImage"></image>  
+     </view>
+    </view>
       <text class="shelp-text">{{shelp_text}}</text>
     </view>
     <text class="shelp-title">求助标题</text>

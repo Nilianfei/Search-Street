@@ -1,0 +1,35 @@
+/* page/personal-help/personal-help.wxss */
+.perhelp-bd{
+  height: 200rpx;
+  border-bottom: 1px solid #000;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.perhelp-item{
+  width: 300rpx;
+  display: flex;
+  flex-direction: column;
+}
+.service-img{
+   width: 80rpx;
+   height: 80rpx;
+   margin-left:180rpx;
+}
+.service-text{
+  margin-left:170rpx;
+}
+.perhelp-item1{
+  width: 300rpx;
+  display: flex;
+  flex-direction: column;
+}
+.service-img1{
+   width: 60rpx;
+   height: 60rpx;
+   margin-left: 100rpx;
+}
+.service-text1{
+  font-size: 30rpx;
+  margin-left: 90rpx;
+}
