@@ -10,6 +10,7 @@ public class JedisUtil {
 	/**
 	 * 缓存生存时间
 	 */
+	@SuppressWarnings("unused")
 	private final int expire = 60000;
 	/** 操作Key的方法 */
 	public Keys KEYS;

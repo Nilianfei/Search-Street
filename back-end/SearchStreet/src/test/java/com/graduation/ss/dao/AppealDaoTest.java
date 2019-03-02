@@ -96,7 +96,7 @@ public class AppealDaoTest {
 	@Test
 	@Ignore
 	public void testQueryNearbyAppealList() {
-		List<Appeal> appealList = appealDao.queryNearbyAppealList(30, 20, 130, 100);
+		List<Appeal> appealList = appealDao.queryNearbyAppealList(2, 0, 2, 0, "测试");
 		if (appealList.size() != 0) {
 			for (Appeal appeal : appealList) {
 				System.out.println(appeal);

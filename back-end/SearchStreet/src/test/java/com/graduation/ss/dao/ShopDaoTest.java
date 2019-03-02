@@ -23,7 +23,7 @@ public class ShopDaoTest {
 	@Test
 	@Ignore
 	public void testQueryNearbyShopList() {
-		List<Shop> shopList = shopDao.queryNearbyShopList(30, 20, 130, 100);
+		List<Shop> shopList = shopDao.queryNearbyShopList(30, 0, 130, 0, null);
 		if (shopList.size() != 0) {
 			for (Shop shop : shopList) {
 				System.out.println(shop);

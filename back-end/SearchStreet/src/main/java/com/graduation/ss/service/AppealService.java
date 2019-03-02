@@ -25,7 +25,7 @@ public interface AppealService {
 	 * @param minlng
 	 * @return
 	 */
-	public AppealExecution getNearbyAppealList(float maxlat, float minlat, float maxlng, float minlng);
+	public AppealExecution getNearbyAppealList(float maxlat, float minlat, float maxlng, float minlng, String appealTitle);
 
 	/**
 	 * 通过求助Id获取求助信息

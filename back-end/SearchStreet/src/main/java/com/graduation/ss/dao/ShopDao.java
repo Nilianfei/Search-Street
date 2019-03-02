@@ -27,7 +27,7 @@ public interface ShopDao {
 	 * @return
 	 */
 	List<Shop> queryNearbyShopList(@Param("maxlat") float maxlat, @Param("minlat") float minlat,
-			@Param("maxlng") float maxlng, @Param("minlng") float minlng);
+			@Param("maxlng") float maxlng, @Param("minlng") float minlng, @Param("shopName") String shopName);
 
 	/**
 	 * 返回queryShopList总数

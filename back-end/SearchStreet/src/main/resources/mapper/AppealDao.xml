@@ -11,11 +11,24 @@
 		appeal_status,start_time,end_time
 		FROM
 		tb_appeal
-		WHERE latitude &lt;
-		#{maxlat} and latitude &gt; #{minlat} and
-		longitude &lt; #{maxlng} and
-		longitude &gt; #{minlng} and
-		appeal_status = 0
+		<where>
+			appeal_status = 0
+			<if test="appealTitle != null">
+				and appeal_title like '%${appealTitle}%'
+			</if>
+			<if test="maxlat != null">
+				and latitude &lt; #{maxlat}
+			</if>
+			<if test="minlat != null">
+				and latitude &gt; #{minlat}
+			</if>
+			<if test="maxlng != null">
+				and longitude &lt; #{maxlng}
+			</if>
+			<if test="minlng != null">
+				and longitude &gt; #{minlng}
+			</if>
+		</where>
 	</select>
 	<select id="queryAppealListFY"
 		resultType="com.graduation.ss.entity.Appeal">

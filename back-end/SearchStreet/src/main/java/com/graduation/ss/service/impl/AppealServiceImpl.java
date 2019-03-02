@@ -76,8 +76,8 @@ public class AppealServiceImpl implements AppealService {
 	}
 
 	@Override
-	public AppealExecution getNearbyAppealList(float maxlat, float minlat, float maxlng, float minlng) {
-		List<Appeal> appealList = appealDao.queryNearbyAppealList(maxlat, minlat, maxlng, minlng);
+	public AppealExecution getNearbyAppealList(float maxlat, float minlat, float maxlng, float minlng, String appealTitle) {
+		List<Appeal> appealList = appealDao.queryNearbyAppealList(maxlat, minlat, maxlng, minlng, appealTitle);
 		AppealExecution ae = new AppealExecution();
 		if (appealList != null) {
 			Date today = new Date();

@@ -256,12 +256,14 @@ public class ShopManagementController {
 	@ApiOperation(value = "返回用户20km内的所有店铺")
 	@ApiImplicitParams({
 		@ApiImplicitParam(paramType = "query", name = "longitude", value = "用户所在的经度", required = true, dataType = "Float"),
-		@ApiImplicitParam(paramType = "query", name = "latitude", value = "用户所在的纬度", required = true, dataType = "Float")
+		@ApiImplicitParam(paramType = "query", name = "latitude", value = "用户所在的纬度", required = true, dataType = "Float"),
+		@ApiImplicitParam(paramType = "query", name = "shopName", value = "店铺名", required = false, dataType = "String")
 	})
 	private Map<String, Object> searchNearbyShops(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		float longitude = HttpServletRequestUtil.getFloat(request, "longitude");
 		float latitude = HttpServletRequestUtil.getFloat(request, "latitude");
+		String shopName = HttpServletRequestUtil.getString(request, "shopName");
 		float minlat = 0f;// 定义经纬度四个极限值
 		float maxlat = 0f;
 		float minlng = 0f;
@@ -284,7 +286,7 @@ public class ShopManagementController {
 		minlat = latitude - dlat;
 		maxlat = latitude + dlat;
 		try {
-			ShopExecution se = shopService.getNearbyShopList(maxlat, minlat, maxlng, minlng);
+			ShopExecution se = shopService.getNearbyShopList(maxlat, minlat, maxlng, minlng, shopName);
 			modelMap.put("shopList", se.getShopList());
 			modelMap.put("minlng", minlng);
 			modelMap.put("maxlng", maxlng);

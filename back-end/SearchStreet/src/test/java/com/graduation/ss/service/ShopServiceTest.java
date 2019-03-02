@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,8 +31,14 @@ public class ShopServiceTest {
 	@Test
 	@Ignore
 	public void testGetNearbyShopList() {
-		ShopExecution se = shopService.getNearbyShopList(30, 20, 120, 100);
-		System.out.println("店铺列表数为" + se.getCount());
+		ShopExecution se = shopService.getNearbyShopList(30, 20, 120, 100, null);
+		List<Shop> shopList = se.getShopList();
+		if (shopList.size() != 0) {
+			for (Shop shop : shopList) {
+				System.out.println(shop);
+			}
+		} else
+			System.out.println("没有符合条件的shop");
 	}
 
 	@Test

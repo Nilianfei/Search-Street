@@ -28,8 +28,8 @@ public class ShopServiceImpl implements ShopService {
 	private ShopImgDao shopImgDao;
 
 	@Override
-	public ShopExecution getNearbyShopList(float maxlat, float minlat, float maxlng, float minlng) {
-		List<Shop> shopList = shopDao.queryNearbyShopList(maxlat, minlat, maxlng, minlng);
+	public ShopExecution getNearbyShopList(float maxlat, float minlat, float maxlng, float minlng, String shopName) {
+		List<Shop> shopList = shopDao.queryNearbyShopList(maxlat, minlat, maxlng, minlng, shopName);
 		ShopExecution se = new ShopExecution();
 		if (shopList != null) {
 			se.setShopList(shopList);

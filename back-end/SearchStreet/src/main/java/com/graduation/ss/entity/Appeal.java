@@ -187,4 +187,14 @@ public class Appeal {
 		this.endTime = endTime;
 	}
 
+	@Override
+	public String toString() {
+		return "Appeal [appealId=" + appealId + ", userId=" + userId + ", appealTitle=" + appealTitle
+				+ ", appealImgList=" + appealImgList + ", phone=" + phone + ", appealContent=" + appealContent
+				+ ", province=" + province + ", city=" + city + ", district=" + district + ", fullAddress="
+				+ fullAddress + ", appealMoreInfo=" + appealMoreInfo + ", souCoin=" + souCoin + ", appealStatus="
+				+ appealStatus + ", latitude=" + latitude + ", longitude=" + longitude + ", startTime=" + startTime
+				+ ", endTime=" + endTime + "]";
+	}
+
 }

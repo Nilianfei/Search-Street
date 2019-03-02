@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,8 +31,14 @@ public class AppealServiceTest {
 	@Test
 	@Ignore
 	public void testGetNearbyAppealList() {
-		AppealExecution ae = appealService.getNearbyAppealList(50, 0, 50, 0);
-		System.out.println("求助列表数为：" + ae.getCount());
+		AppealExecution ae = appealService.getNearbyAppealList(50, 0, 50, 0, null);
+		List<Appeal> appealList  = ae.getAppealList();
+		if (appealList.size() != 0) {
+			for (Appeal appeal : appealList) {
+				System.out.println(appeal);
+			}
+		} else
+			System.out.println("没有符合条件的appeal");
 	}
 
 	@Test
@@ -102,6 +109,7 @@ public class AppealServiceTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testAdditionSouCoin() throws AppealOperationException{
 		appealService.additionSouCoin(9l, 1l, 1l);
 	}

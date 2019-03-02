@@ -27,7 +27,7 @@ public interface ShopService {
 	 * @param minlng
 	 * @return
 	 */
-	public ShopExecution getNearbyShopList(float maxlat, float minlat, float maxlng, float minlng);
+	public ShopExecution getNearbyShopList(float maxlat, float minlat, float maxlng, float minlng, String shopName);
 
 	/**
 	 * 通过店铺Id获取店铺信息

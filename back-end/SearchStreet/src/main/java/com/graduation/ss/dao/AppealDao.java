@@ -17,7 +17,7 @@ public interface AppealDao {
 	 * @return
 	 */
 	List<Appeal> queryNearbyAppealList(@Param("maxlat") float maxlat, @Param("minlat") float minlat,
-			@Param("maxlng") float maxlng, @Param("minlng") float minlng);
+			@Param("maxlng") float maxlng, @Param("minlng") float minlng, @Param("appealTitle") String appealTitle);
 
 	/**
 	 * 分页查询求助，可输入的条件有：求助名（模糊），求助状态，省份，城市，地区，求助者的用户ID

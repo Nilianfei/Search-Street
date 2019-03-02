@@ -253,11 +253,14 @@ public class AppealController {
 	@ApiOperation(value = "返回用户20km内的所有有效（没确定帮助人、没过时的）求助")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "longitude", value = "用户所在的经度", required = true, dataType = "Float"),
-			@ApiImplicitParam(paramType = "query", name = "latitude", value = "用户所在的纬度", required = true, dataType = "Float") })
+			@ApiImplicitParam(paramType = "query", name = "latitude", value = "用户所在的纬度", required = true, dataType = "Float") ,
+			@ApiImplicitParam(paramType = "query", name = "appealTitle", value = "求助标题", required = false, dataType = "String")
+	})
 	private Map<String, Object> searchNearbyAppeals(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		float longitude = HttpServletRequestUtil.getFloat(request, "longitude");
 		float latitude = HttpServletRequestUtil.getFloat(request, "latitude");
+		String appealTitle = HttpServletRequestUtil.getString(request, "appealTitle");
 		float minlat = 0f;// 定义经纬度四个极限值
 		float maxlat = 0f;
 		float minlng = 0f;
@@ -280,8 +283,12 @@ public class AppealController {
 		minlat = latitude - dlat;
 		maxlat = latitude + dlat;
 		try {
-			AppealExecution ae = appealService.getNearbyAppealList(maxlat, minlat, maxlng, minlng);
+			AppealExecution ae = appealService.getNearbyAppealList(maxlat, minlat, maxlng, minlng, appealTitle);
 			modelMap.put("appealList", ae.getAppealList());
+			modelMap.put("minlng", minlng);
+			modelMap.put("maxlng", maxlng);
+			modelMap.put("minlat", minlat);
+			modelMap.put("maxlat", maxlat);
 			modelMap.put("success", true);
 		} catch (Exception e) {
 			modelMap.put("success", false);
