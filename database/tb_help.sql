@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : localhost_3306
+ Source Server         : root
  Source Server Type    : MySQL
- Source Server Version : 50724
+ Source Server Version : 50723
  Source Host           : localhost:3306
  Source Schema         : search_street
 
  Target Server Type    : MySQL
- Target Server Version : 50724
+ Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 22/02/2019 16:00:43
+ Date: 03/03/2019 23:01:26
 */
 
 SET NAMES utf8mb4;
@@ -33,9 +33,9 @@ CREATE TABLE `tb_help`  (
   `avg_completion` float(2, 1) UNSIGNED NOT NULL DEFAULT 0.0 COMMENT '之前的平均完成度评分',
   `avg_efficiency` float(2, 1) UNSIGNED NOT NULL DEFAULT 0.0 COMMENT '之前的平均效率评分',
   `avg_attitude` float(2, 1) UNSIGNED NOT NULL DEFAULT 0.0 COMMENT '之前的平均态度评分',
-  `additional_coin` int(10) NOT NULL COMMENT '追赏金',
+  `additional_coin` int(10) UNSIGNED NOT NULL COMMENT '追赏金',
   `end_time` datetime(0) NOT NULL,
   PRIMARY KEY (`help_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '帮把手' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '帮把手' ROW_FORMAT = Compact;
 
 SET FOREIGN_KEY_CHECKS = 1;
