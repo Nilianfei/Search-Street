@@ -1,5 +1,7 @@
 package com.graduation.ss.service;
 
+import java.util.Date;
+
 import com.graduation.ss.dto.HelpExecution;
 import com.graduation.ss.entity.Help;
 import com.graduation.ss.exceptions.HelpOperationException;
@@ -13,16 +15,16 @@ public interface HelpService {
 	 * @param pageSize
 	 * @return
 	 */
-	public HelpExecution getHelpList(Help helpCondition, int pageIndex, int pageSize);
+	public HelpExecution getHelpListFY(Help helpCondition, Date startTime, Date endTime, int pageIndex, int pageSize);
 
 	/**
 	 * 根据helpCondition获取相应HelpList
 	 * 
 	 * @param appealId
 	 * @return
-	 */
-	public HelpExecution getHelpList(Help helpCondition);
-	
+	 *//*
+	public HelpExecution getHelpList(Help helpCondition);*/
+
 	/**
 	 * 通过帮助ID获取帮助信息
 	 * 
@@ -48,6 +50,6 @@ public interface HelpService {
 	 * @throws HelpOperationException
 	 */
 	HelpExecution addHelp(Help help) throws HelpOperationException;
-	
-	void selectHelp(Long helpId,Long appealId) throws HelpOperationException;
+
+	void selectHelp(Long helpId, Long appealId) throws HelpOperationException;
 }

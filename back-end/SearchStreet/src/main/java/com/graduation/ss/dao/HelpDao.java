@@ -1,5 +1,6 @@
 package com.graduation.ss.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -16,15 +17,17 @@ public interface HelpDao {
 	Help queryByHelpId(long helpId);
 
 	/**
-	 * 分页查询帮助，可输入的条件有：求助ID，帮助者用户ID,帮助状态
+	 * 分页查询帮助，可输入的条件有：求助ID，帮助者用户ID,帮助状态，指定日期范围，搜币（大于搜币）
 	 * 
 	 * @param help
-	 * @param rowIndex 从第几行开始取数据
-	 * @param pageSize 返回的条数
+	 * @param rowIndex
+	 *            从第几行开始取数据
+	 * @param pageSize
+	 *            返回的条数
 	 * @return
 	 */
-	List<Help> queryHelpListFY(@Param("helpCondition") Help help, @Param("rowIndex") int rowIndex,
-			@Param("pageSize") int pageSize);
+	List<Help> queryHelpListFY(@Param("helpCondition") Help help, @Param("startTime") Date startTime,
+			@Param("endTime") Date endTime, @Param("rowIndex") int rowIndex, @Param("pageSize") int pageSize);
 
 	/**
 	 * 查询帮助，可输入条件有：求助ID，帮助者用户Id，帮助状态
@@ -35,12 +38,13 @@ public interface HelpDao {
 	List<Help> queryHelpList(@Param("helpCondition") Help help);
 
 	/**
-	 * 返回queryHelpList总数
+	 * 返回queryHelpListFY总数
 	 * 
 	 * @param helpCondition
 	 * @return
 	 */
-	int queryHelpCount(@Param("helpCondition") Help helpCondition);
+	int queryHelpCount(@Param("helpCondition") Help helpCondition, @Param("startTime") Date startTime,
+			@Param("endTime") Date endTime);
 
 	/**
 	 * 添加帮助

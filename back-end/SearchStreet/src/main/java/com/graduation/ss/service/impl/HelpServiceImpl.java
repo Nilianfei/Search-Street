@@ -1,7 +1,6 @@
 package com.graduation.ss.service.impl;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +12,7 @@ import com.graduation.ss.dao.HelpDao;
 import com.graduation.ss.dto.HelpExecution;
 import com.graduation.ss.entity.Appeal;
 import com.graduation.ss.entity.Help;
-import com.graduation.ss.enums.AppealStateEnum;
 import com.graduation.ss.enums.HelpStateEnum;
-import com.graduation.ss.exceptions.AppealOperationException;
 import com.graduation.ss.exceptions.HelpOperationException;
 import com.graduation.ss.service.HelpService;
 import com.graduation.ss.util.PageCalculator;
@@ -28,13 +25,13 @@ public class HelpServiceImpl implements HelpService {
 	private AppealDao appealDao;
 
 	@Override
-	public HelpExecution getHelpList(Help helpCondition, int pageIndex, int pageSize) {
+	public HelpExecution getHelpListFY(Help helpCondition, Date startTime, Date endTime, int pageIndex, int pageSize) {
 		// 将页码转换成行码
 		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
 		// 依据查询条件，调用dao层返回相关的帮助列表
-		List<Help> helpList = helpDao.queryHelpListFY(helpCondition, rowIndex, pageSize);
+		List<Help> helpList = helpDao.queryHelpListFY(helpCondition, startTime, endTime, rowIndex, pageSize);
 		// 依据相同的查询条件，返回帮助总数
-		int count = helpDao.queryHelpCount(helpCondition);
+		int count = helpDao.queryHelpCount(helpCondition, startTime, endTime);
 		HelpExecution he = new HelpExecution();
 		if (helpList != null) {
 			he.setHelpList(helpList);
@@ -105,7 +102,7 @@ public class HelpServiceImpl implements HelpService {
 			help.setAvgCompletion(avgCompletion);
 			help.setAvgEfficiency(avgEfficiency);
 			Appeal appeal = appealDao.queryByAppealId(appealId);
-			if(appeal==null) {
+			if (appeal == null) {
 				throw new HelpOperationException("addHelp error:" + "appealId无效");
 			}
 			help.setEndTime(appeal.getEndTime());
@@ -126,7 +123,7 @@ public class HelpServiceImpl implements HelpService {
 		return new HelpExecution(HelpStateEnum.SUCCESS, help);
 	}
 
-	@Override
+	/*@Override
 	public HelpExecution getHelpList(Help helpCondition) {
 		List<Help> helpList = helpDao.queryHelpList(helpCondition);
 		HelpExecution he = new HelpExecution();
@@ -162,7 +159,7 @@ public class HelpServiceImpl implements HelpService {
 			he.setState(HelpStateEnum.INNER_ERROR.getState());
 		}
 		return he;
-	}
+	}*/
 
 	@Override
 	@Transactional

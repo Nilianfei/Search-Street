@@ -20,7 +20,7 @@ public interface AppealDao {
 			@Param("maxlng") float maxlng, @Param("minlng") float minlng, @Param("appealTitle") String appealTitle);
 
 	/**
-	 * 分页查询求助，可输入的条件有：求助名（模糊），求助状态，省份，城市，地区，求助者的用户ID
+	 * 分页查询求助，可输入的条件有：求助名（模糊），求助状态，省份，城市，地区，求助者的用户ID，指定日期范围（大于开始时间，小于失效时间），搜币（大于搜币）
 	 * 
 	 * @param appealCondition
 	 * @param rowIndex        从第几行开始取数据
@@ -38,7 +38,7 @@ public interface AppealDao {
 	 */
 	List<Appeal> queryAppealList(@Param("appealCondition") Appeal appealCondition);
 	/**
-	 * 返回queryAppealList总数
+	 * 返回queryAppealListFY总数
 	 * 
 	 * @param appealCondition
 	 * @return

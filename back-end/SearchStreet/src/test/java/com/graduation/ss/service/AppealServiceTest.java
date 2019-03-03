@@ -46,7 +46,7 @@ public class AppealServiceTest {
 	public void testGetAppealList() {
 		Appeal appealCondition = new Appeal();
 		appealCondition.setAppealStatus(0);
-		AppealExecution ae = appealService.getAppealList(appealCondition);
+		AppealExecution ae = appealService.getAppealListFY(appealCondition, 1,15);
 		System.out.println("求助列表数为:" + ae.getAppealList().size());
 		System.out.println("求助总数为:" + ae.getCount());
 	}

@@ -52,16 +52,17 @@ public class AppealController {
 	@Autowired
 	private HelpService helpservice;
 
-	@RequestMapping(value = "/getappeallistbyuserid", method = RequestMethod.GET)
+	@RequestMapping(value = "/getappeallistbyuserid", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "根据用户ID和求助状态获取其所有求助信息(不分页)", notes = "进行中:appealStatus=1（返回的appealStatus=0表示没有确定帮助者，appealStatus=1表示已确定帮助者）,已完成:appealStatus=2,已失效:appealStatus=3")
+	@ApiOperation(value = "根据用户ID和求助状态获取相应的（可增加输入的条件有：求助名（模糊），省份，城市，地区，指定日期范围（大于输入startTime，小于输入endTime），搜币（大于输入搜币））求助信息(分页)", notes = "进行中:appealStatus=1（返回的appealStatus=0表示没有确定帮助者，appealStatus=1表示已确定帮助者）,已完成:appealStatus=2,已失效:appealStatus=3")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
-			@ApiImplicitParam(paramType = "query", name = "appealStatus", value = "求助状态", required = true, dataType = "int") })
-	private Map<String, Object> getAppealListByUserId(HttpServletRequest request) {
+			@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = true, dataType = "int"),
+			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的数目", required = true, dataType = "int") })
+	private Map<String, Object> getAppealListByUserId(
+			@RequestBody @ApiParam(name = "appeal", value = "传入json格式,不用传appealId", required = true) Appeal appeal,
+			String token, int pageIndex, int pageSize) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		String token = HttpServletRequestUtil.getString(request, "token");
-		int appealStatus = HttpServletRequestUtil.getInt(request, "appealStatus");
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
 		// 将token解密成openId 和session_key
@@ -77,38 +78,24 @@ public class AppealController {
 			return modelMap;
 		}
 		try {
-			Appeal appealCondition = new Appeal();
-			appealCondition.setUserId(userId);
-			appealCondition.setAppealStatus(appealStatus);
-			AppealExecution ae = appealService.getAppealList(appealCondition);
+			appeal.setUserId(userId);
+			AppealExecution ae = appealService.getAppealListFY(appeal, pageIndex, pageSize);
 			if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
-				if (appealStatus == 1) {
-					List<Appeal> appealList = ae.getAppealList();
-					appealCondition.setAppealStatus(0);
-					ae = appealService.getAppealList(appealCondition);
-					if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
-						appealList.addAll(ae.getAppealList());
-						ae.setAppealList(appealList);
-					} else {
-						modelMap.put("success", false);
-						modelMap.put("errMsg", AppealStateEnum.stateOf(ae.getState()).getStateInfo());
-						return modelMap;
-					}
-				}
+				int pageNum = (int) (ae.getCount() / pageSize);
+				if (pageNum * pageSize < ae.getCount())
+					pageNum++;
+				modelMap.put("appealList", ae.getAppealList());
+				modelMap.put("pageNum", pageNum);
+				modelMap.put("success", true);
 			} else {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", AppealStateEnum.stateOf(ae.getState()).getStateInfo());
-				return modelMap;
 			}
-			modelMap.put("appealList", ae.getAppealList());
-			modelMap.put("success", true);
-			return modelMap;
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
-			return modelMap;
 		}
-
+		return modelMap;
 	}
 
 	@RequestMapping(value = "/getappealbyid", method = RequestMethod.GET)
@@ -253,9 +240,8 @@ public class AppealController {
 	@ApiOperation(value = "返回用户20km内的所有有效（没确定帮助人、没过时的）求助")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "longitude", value = "用户所在的经度", required = true, dataType = "Float"),
-			@ApiImplicitParam(paramType = "query", name = "latitude", value = "用户所在的纬度", required = true, dataType = "Float") ,
-			@ApiImplicitParam(paramType = "query", name = "appealTitle", value = "求助标题", required = false, dataType = "String")
-	})
+			@ApiImplicitParam(paramType = "query", name = "latitude", value = "用户所在的纬度", required = true, dataType = "Float"),
+			@ApiImplicitParam(paramType = "query", name = "appealTitle", value = "求助标题", required = false, dataType = "String") })
 	private Map<String, Object> searchNearbyAppeals(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		float longitude = HttpServletRequestUtil.getFloat(request, "longitude");

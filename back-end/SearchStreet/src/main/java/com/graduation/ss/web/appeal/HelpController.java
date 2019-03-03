@@ -1,7 +1,9 @@
 package com.graduation.ss.web.appeal;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +19,6 @@ import com.graduation.ss.dto.HelpExecution;
 import com.graduation.ss.dto.UserCode2Session;
 import com.graduation.ss.entity.Help;
 import com.graduation.ss.entity.WechatAuth;
-import com.graduation.ss.enums.AppealStateEnum;
 import com.graduation.ss.enums.HelpStateEnum;
 import com.graduation.ss.exceptions.HelpOperationException;
 import com.graduation.ss.service.HelpService;
@@ -59,7 +60,7 @@ public class HelpController {
 			try {
 				Help helpCondition = new Help();
 				helpCondition.setAppealId(appealId);
-				HelpExecution helpExecution = helpService.getHelpList(helpCondition, pageIndex, pageSize);
+				HelpExecution helpExecution = helpService.getHelpListFY(helpCondition, null, null, pageIndex, pageSize);
 				int pageNum = (int) (helpExecution.getCount() / pageSize);
 				if (pageNum * pageSize < helpExecution.getCount())
 					pageNum++;
@@ -106,7 +107,7 @@ public class HelpController {
 				Help helpCondition = new Help();
 				helpCondition.setAppealId(appealId);
 				helpCondition.setUserId(userId);
-				HelpExecution helpExecution = helpService.getHelpList(helpCondition, 0, 100);
+				HelpExecution helpExecution = helpService.getHelpListFY(helpCondition, null, null, 0, 100);
 				if (helpExecution.getCount() > 0) {
 					modelMap.put("ishelp", true);
 					modelMap.put("success", true);
@@ -122,16 +123,32 @@ public class HelpController {
 		return modelMap;
 	}
 
-	@RequestMapping(value = "/gethelplistbyuserid", method = RequestMethod.GET)
+	@RequestMapping(value = "/gethelplistbyuserid", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "根据用户ID和帮助状态查询帮助", notes = "进行中:helpStatus=1（返回的helpStatus=0表示还没有被选中，helpStatus=1表示已被选中）,已完成:helpStatus=2,已失效:helpStatus=3")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "helpStatus", value = "帮助状态", required = true, dataType = "int"),
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String") })
-	private Map<String, Object> getHelpListByUserId(HttpServletRequest request) {
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "startTime", value = "时间范围（下限）", required = false, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "endTime", value = "时间范围（上限）", required = false, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = true, dataType = "int"),
+			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的数目", required = true, dataType = "int") })
+	private Map<String, Object> getHelpListByUserId(
+			@RequestBody @ApiParam(name = "help", value = "传入json格式,不用传helpId", required = true) Help help,
+			String token, String startTime, String endTime, int pageIndex, int pageSize) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		String token = HttpServletRequestUtil.getString(request, "token");
-		int helpStatus = HttpServletRequestUtil.getInt(request, "helpStatus");
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date startTimeD;
+		Date endTimeD;
+		try {
+			startTimeD = sdf.parse(startTime);
+			endTimeD = sdf.parse(endTime);
+		} catch (ParseException e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
 		// 将token解密成openId 和session_key
@@ -147,31 +164,19 @@ public class HelpController {
 			return modelMap;
 		}
 		try {
-			Help helpCondition = new Help();
-			helpCondition.setUserId(userId);
-			helpCondition.setHelpStatus(helpStatus);
-			HelpExecution helpExecution = helpService.getHelpList(helpCondition);
-			if (helpExecution.getState() == AppealStateEnum.SUCCESS.getState()) {
-				if (helpStatus == 1) {
-					List<Help> helpList = helpExecution.getHelpList();
-					helpCondition.setHelpStatus(0);
-					helpExecution = helpService.getHelpList(helpCondition);
-					if (helpExecution.getState() == AppealStateEnum.SUCCESS.getState()) {
-						helpList.addAll(helpExecution.getHelpList());
-						helpExecution.setHelpList(helpList);
-					} else {
-						modelMap.put("success", false);
-						modelMap.put("errMsg", AppealStateEnum.stateOf(helpExecution.getState()).getStateInfo());
-						return modelMap;
-					}
-				}
+			help.setUserId(userId);
+			HelpExecution helpExecution = helpService.getHelpListFY(help, startTimeD, endTimeD, pageIndex, pageSize);
+			if (helpExecution.getState() == HelpStateEnum.SUCCESS.getState()) {
+				int pageNum = (int) (helpExecution.getCount() / pageSize);
+				if (pageNum * pageSize < helpExecution.getCount())
+					pageNum++;
+				modelMap.put("helpList", helpExecution.getHelpList());
+				modelMap.put("pageNum", pageNum);
+				modelMap.put("success", true);
 			} else {
 				modelMap.put("success", false);
-				modelMap.put("errMsg", AppealStateEnum.stateOf(helpExecution.getState()).getStateInfo());
-				return modelMap;
+				modelMap.put("errMsg", HelpStateEnum.stateOf(helpExecution.getState()).getStateInfo());
 			}
-			modelMap.put("helpList", helpExecution.getHelpList());
-			modelMap.put("success", true);
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());

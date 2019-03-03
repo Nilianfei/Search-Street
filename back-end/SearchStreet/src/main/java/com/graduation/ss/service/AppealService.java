@@ -14,7 +14,7 @@ public interface AppealService {
 	 * @param pageSize
 	 * @return
 	 */
-	public AppealExecution getAppealList(Appeal appealCondition) throws AppealOperationException;
+	public AppealExecution getAppealListFY(Appeal appealCondition, int pageIndex, int pageSize) throws AppealOperationException;
 
 	/**
 	 * 根据经纬范围返回附近求助列表

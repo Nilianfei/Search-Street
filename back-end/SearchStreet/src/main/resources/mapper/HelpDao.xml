@@ -3,8 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.graduation.ss.dao.HelpDao">
-	<select id="queryHelpListFY"
-		resultType="com.graduation.ss.entity.Help">
+	<select id="queryHelpListFY" resultType="com.graduation.ss.entity.Help">
 		SELECT
 		help_id,
 		appeal_id,
@@ -28,13 +27,27 @@
 				and user_id = #{helpCondition.userId}
 			</if>
 			<if test="helpCondition.helpStatus != null">
-				and help_status = #{helpCondition.helpStatus}
+				and
+				<if test="helpCondition.helpStatus == 1">
+					(
+				</if>
+				help_status = #{helpCondition.helpStatus}
+				<if test="helpCondition.helpStatus == 1">
+					or help_status = 0)
+				</if>
+			</if>
+			<if test="startTime != null and endTime != null">
+				and (end_time &gt; #{startTime} and end_time &lt;
+				#{endTime})
+			</if>
+			<if test="helpCondition.additionalCoin != null">
+				and additional_coin &gt; #{helpCondition.additionalCoin}
 			</if>
 		</where>
+		ORDER BY end_time desc
 		LIMIT #{rowIndex},#{pageSize};
 	</select>
-	<select id="queryHelpList"
-		resultType="com.graduation.ss.entity.Help">
+	<select id="queryHelpList" resultType="com.graduation.ss.entity.Help">
 		SELECT
 		help_id,
 		appeal_id,
@@ -75,12 +88,26 @@
 				and user_id = #{helpCondition.userId}
 			</if>
 			<if test="helpCondition.helpStatus != null">
-				and help_status = #{helpCondition.helpStatus}
+				and
+				<if test="helpCondition.helpStatus == 1">
+					(
+				</if>
+				help_status = #{helpCondition.helpStatus}
+				<if test="helpCondition.helpStatus == 1">
+					or help_status = 0)
+				</if>
+			</if>
+			<if test="startTime != null and endTime != null">
+				and (end_time &gt; #{startTime} and end_time &lt;
+				#{endTime})
+			</if>
+			<if test="helpCondition.additionalCoin != null">
+				and additional_coin &gt; #{helpCondition.additionalCoin}
 			</if>
 		</where>
 	</select>
-	<select id="queryByHelpId"
-		resultType="com.graduation.ss.entity.Help" parameterType="long">
+	<select id="queryByHelpId" resultType="com.graduation.ss.entity.Help"
+		parameterType="long">
 		SELECT
 		help_id,
 		user_id,
@@ -100,9 +127,8 @@
 		WHERE
 		help_id=#{helpId}
 	</select>
-	<insert id="insertHelp"
-		parameterType="com.graduation.ss.entity.Help" useGeneratedKeys="true"
-		keyProperty="helpId" keyColumn="help_id">
+	<insert id="insertHelp" parameterType="com.graduation.ss.entity.Help"
+		useGeneratedKeys="true" keyProperty="helpId" keyColumn="help_id">
 		INSERT
 		INTO
 		tb_help(
@@ -122,8 +148,7 @@
 		(#{appealId},#{appealTitle},#{userId},#{helpStatus},#{completion},
 		#{efficiency},#{attitude},#{avgCompletion},#{avgEfficiency},#{avgAttitude},#{additionalCoin},#{endTime})
 	</insert>
-	<update id="updateHelp"
-		parameterType="com.graduation.ss.entity.Help">
+	<update id="updateHelp" parameterType="com.graduation.ss.entity.Help">
 		update tb_help
 		<set>
 			<if test="helpStatus != null">help_status=#{helpStatus},</if>

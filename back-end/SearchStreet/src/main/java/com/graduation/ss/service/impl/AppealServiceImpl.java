@@ -22,6 +22,7 @@ import com.graduation.ss.enums.AppealStateEnum;
 import com.graduation.ss.exceptions.AppealOperationException;
 import com.graduation.ss.service.AppealService;
 import com.graduation.ss.util.ImageUtil;
+import com.graduation.ss.util.PageCalculator;
 import com.graduation.ss.util.PathUtil;
 
 @Service
@@ -37,37 +38,17 @@ public class AppealServiceImpl implements AppealService {
 
 	@Override
 	@Transactional
-	public AppealExecution getAppealList(Appeal appealCondition) throws AppealOperationException{
-		List<Appeal> appealList = appealDao.queryAppealList(appealCondition);
+	public AppealExecution getAppealListFY(Appeal appealCondition, int pageIndex, int pageSize)
+			throws AppealOperationException {
+		// 将页码转换成行码
+		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+		List<Appeal> appealList = appealDao.queryAppealListFY(appealCondition, rowIndex, pageSize);
+		// 依据相同的查询条件，返回帮助总数
+		int count = appealDao.queryAppealCount(appealCondition);
 		AppealExecution ae = new AppealExecution();
-		if (appealCondition.getAppealStatus() != null
-				&& (appealCondition.getAppealStatus() == 1 || appealCondition.getAppealStatus()==0)) {
-			if (appealList != null) {
-				Date today = new Date();
-				Iterator<Appeal> iter = appealList.iterator();
-				while (iter.hasNext()) {
-					Appeal value = iter.next();
-					if (value.getEndTime().getTime() < today.getTime()) {// 修改已过时失效的求助
-						value.setAppealStatus(3);
-						try {
-							int effectedNum=appealDao.updateAppeal(value);
-							if (effectedNum <= 0) {
-								throw new AppealOperationException("求助修改失败");
-							}
-						} catch (Exception e) {
-							throw new AppealOperationException("modifyAppeal error:" + e.getMessage());
-						}
-						iter.remove();
-					}
-				}
-			} else {
-				ae.setState(AppealStateEnum.INNER_ERROR.getState());
-				return ae;
-			}
-		}
 		if (appealList != null) {
 			ae.setAppealList(appealList);
-			ae.setCount(appealList.size());
+			ae.setCount(count);
 			ae.setState(AppealStateEnum.SUCCESS.getState());
 		} else {
 			ae.setState(AppealStateEnum.INNER_ERROR.getState());
@@ -76,7 +57,8 @@ public class AppealServiceImpl implements AppealService {
 	}
 
 	@Override
-	public AppealExecution getNearbyAppealList(float maxlat, float minlat, float maxlng, float minlng, String appealTitle) {
+	public AppealExecution getNearbyAppealList(float maxlat, float minlat, float maxlng, float minlng,
+			String appealTitle) {
 		List<Appeal> appealList = appealDao.queryNearbyAppealList(maxlat, minlat, maxlng, minlng, appealTitle);
 		AppealExecution ae = new AppealExecution();
 		if (appealList != null) {
@@ -97,9 +79,9 @@ public class AppealServiceImpl implements AppealService {
 	}
 
 	@Override
-	public Appeal getByAppealId(Long appealId) throws AppealOperationException{
+	public Appeal getByAppealId(Long appealId) throws AppealOperationException {
 		Appeal appeal = appealDao.queryByAppealId(appealId);
-		if(appeal==null) {
+		if (appeal == null) {
 			throw new AppealOperationException("getByAppealId error:" + "appealId无效");
 		}
 		Date today = new Date();
@@ -199,7 +181,7 @@ public class AppealServiceImpl implements AppealService {
 		}
 		Long souCoin = 0l;
 		Appeal appeal = appealDao.queryByAppealId(appealId);
-		if(appeal==null) {
+		if (appeal == null) {
 			throw new AppealOperationException("completeAppeal error:" + "appealId无效");
 		}
 		souCoin = appeal.getSouCoin();
@@ -212,12 +194,12 @@ public class AppealServiceImpl implements AppealService {
 				throw new AppealOperationException("扣除求助者搜币失败");
 			}
 			Help help = helpDao.queryByHelpId(helpId);
-			if(help==null) {
+			if (help == null) {
 				throw new AppealOperationException("completeAppeal error:" + "helpId无效");
 			}
 			Long helpUserId = help.getUserId();
 			personInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
-			if(personInfo==null) {
+			if (personInfo == null) {
 				throw new AppealOperationException("completeAppeal error:" + "帮助者不存在");
 			}
 			appealerSouCoin = personInfo.getSouCoin();
@@ -255,7 +237,7 @@ public class AppealServiceImpl implements AppealService {
 
 		try {
 			PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(appealUserId);
-			if(personInfo==null) {
+			if (personInfo == null) {
 				throw new AppealOperationException("additionSouCoin error:" + "appealUserId无效");
 			}
 			Long appealerSouCoin = personInfo.getSouCoin();
@@ -265,12 +247,12 @@ public class AppealServiceImpl implements AppealService {
 				throw new AppealOperationException("扣除求助者搜币失败");
 			}
 			Help help = helpDao.queryByHelpId(helpId);
-			if(help==null) {
+			if (help == null) {
 				throw new AppealOperationException("additionSouCoin error:" + "helpId无效");
 			}
 			Long helpUserId = help.getUserId();
 			personInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
-			if(personInfo==null) {
+			if (personInfo == null) {
 				throw new AppealOperationException("additionSouCoin error:" + "帮助者不存在");
 			}
 			appealerSouCoin = personInfo.getSouCoin();
@@ -281,7 +263,7 @@ public class AppealServiceImpl implements AppealService {
 			}
 			help.setAdditionalCoin(additionSouCoin);
 			effectedNum = helpDao.updateHelp(help);
-			if(effectedNum<=0) {
+			if (effectedNum <= 0) {
 				throw new AppealOperationException("修改帮助追赏金失败");
 			}
 		} catch (Exception e) {

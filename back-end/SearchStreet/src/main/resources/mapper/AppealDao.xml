@@ -43,7 +43,14 @@
 				and appeal_title like '%${appealCondition.appealTitle}%'
 			</if>
 			<if test="appealCondition.appealStatus != null">
-				and appeal_status = #{appealCondition.appealStatus}
+				and
+				<if test="appealCondition.appealStatus == 1">
+					 (
+				</if>
+				appeal_status = #{appealCondition.appealStatus}
+				<if test="appealCondition.appealStatus == 1">
+					or appeal_status = 0)
+				</if>
 			</if>
 			<if test="appealCondition.province != null">
 				and province = #{appealCondition.province}
@@ -57,7 +64,17 @@
 			<if test="appealCondition.userId != null">
 				and user_id = #{appealCondition.userId}
 			</if>
+			<if test="appealCondition.startTime != null">
+				and start_time &gt; #{appealCondition.startTime}
+			</if>
+			<if test="appealCondition.endTime != null">
+				and end_time &lt; #{appealCondition.endTime}
+			</if>
+			<if test="appealCondition.souCoin != null">
+				and sou_coin &gt; #{appealCondition.souCoin}
+			</if>
 		</where>
+		ORDER BY end_time desc
 		LIMIT #{rowIndex},#{pageSize};
 	</select>
 	<select id="queryAppealList"
@@ -99,7 +116,14 @@
 				and appeal_title like '%${appealCondition.appealTitle}%'
 			</if>
 			<if test="appealCondition.appealStatus != null">
-				and appeal_status = #{appealCondition.appealStatus}
+				and
+				<if test="appealCondition.appealStatus == 1">
+					 (
+				</if>
+				appeal_status = #{appealCondition.appealStatus}
+				<if test="appealCondition.appealStatus == 1">
+					or appeal_status = 0)
+				</if>
 			</if>
 			<if test="appealCondition.province != null">
 				and province = #{appealCondition.province}
@@ -112,6 +136,15 @@
 			</if>
 			<if test="appealCondition.userId != null">
 				and user_id = #{appealCondition.userId}
+			</if>
+			<if test="appealCondition.startTime != null">
+				and start_time &gt; #{appealCondition.startTime}
+			</if>
+			<if test="appealCondition.endTime != null">
+				and end_time &lt; #{appealCondition.endTime}
+			</if>
+			<if test="appealCondition.souCoin != null">
+				and sou_coin &gt; #{appealCondition.souCoin}
 			</if>
 		</where>
 	</select>
