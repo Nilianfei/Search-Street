@@ -11,7 +11,7 @@
  Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 03/03/2019 23:06:32
+ Date: 03/03/2019 23:10:53
 */
 
 SET NAMES utf8mb4;
@@ -157,8 +157,6 @@ CREATE TABLE `tb_shop`  (
   `full_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `shop_more_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址补充',
   `is_mobile` int(2) NOT NULL DEFAULT 1,
-  `open_time` time(0) NULL DEFAULT NULL,
-  `close_time` time(0) NULL DEFAULT NULL,
   `profile_img` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL,
