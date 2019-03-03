@@ -125,7 +125,7 @@ public class HelpController {
 
 	@RequestMapping(value = "/gethelplistbyuserid", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "根据用户ID和帮助状态查询帮助", notes = "进行中:helpStatus=1（返回的helpStatus=0表示还没有被选中，helpStatus=1表示已被选中）,已完成:helpStatus=2,已失效:helpStatus=3")
+	@ApiOperation(value = "根据用户ID和帮助状态查询帮助（可增加输入的条件有：帮助状态，指定日期范围，搜币（大于等于输入搜币）信息(分页)", notes = "进行中:helpStatus=1（返回的helpStatus=0表示还没有被选中，helpStatus=1表示已被选中）,已完成:helpStatus=2,已失效:helpStatus=3")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "startTime", value = "时间范围（下限）", required = false, dataType = "String"),
@@ -249,7 +249,7 @@ public class HelpController {
 		return modelMap;
 	}
 
-	@RequestMapping(value = "/modifyhelp", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/modifyhelp", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "修改帮助", notes = "目前前端好像不需要用")
 	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
@@ -271,7 +271,7 @@ public class HelpController {
 			modelMap.put("errMsg", e.getMessage());
 		}
 		return modelMap;
-	}
+	}*/
 
 	@RequestMapping(value = "/selectHelper", method = RequestMethod.GET)
 	@ResponseBody

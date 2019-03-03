@@ -135,6 +135,12 @@ public class AppealServiceImpl implements AppealService {
 		if (appeal == null) {
 			return new AppealExecution(AppealStateEnum.NULL_APPEAL);
 		}
+		Long userId = appeal.getUserId();
+		PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(userId);
+		Long souCoin = personInfo.getSouCoin();
+		if (appeal.getSouCoin() > souCoin) {
+			return new AppealExecution(AppealStateEnum.SOUCOIN_LACK);
+		}
 		try {
 			// 给求助信息赋初始值
 			appeal.setAppealStatus(0);
@@ -188,6 +194,9 @@ public class AppealServiceImpl implements AppealService {
 		try {
 			PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(appealUserId);
 			Long appealerSouCoin = personInfo.getSouCoin();
+			if (appealerSouCoin < souCoin) {
+				return new AppealExecution(AppealStateEnum.SOUCOIN_LACK);
+			}
 			personInfo.setSouCoin(appealerSouCoin - souCoin);
 			int effectedNum = personInfoDao.updatePersonInfo(personInfo);
 			if (effectedNum <= 0) {
@@ -195,12 +204,12 @@ public class AppealServiceImpl implements AppealService {
 			}
 			Help help = helpDao.queryByHelpId(helpId);
 			if (help == null) {
-				throw new AppealOperationException("completeAppeal error:" + "helpId无效");
+				throw new AppealOperationException("helpId无效");
 			}
 			Long helpUserId = help.getUserId();
 			personInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
 			if (personInfo == null) {
-				throw new AppealOperationException("completeAppeal error:" + "帮助者不存在");
+				throw new AppealOperationException("帮助者不存在");
 			}
 			appealerSouCoin = personInfo.getSouCoin();
 			personInfo.setSouCoin(appealerSouCoin + souCoin);
@@ -208,10 +217,16 @@ public class AppealServiceImpl implements AppealService {
 			if (effectedNum <= 0) {
 				throw new AppealOperationException("增加帮助者搜币失败");
 			}
+			if (appeal.getAppealStatus() != 1) {
+				return new AppealExecution(AppealStateEnum.COMPLETE_ERR);
+			}
 			appeal.setAppealStatus(2);
 			effectedNum = appealDao.updateAppeal(appeal);
 			if (effectedNum <= 0) {
 				throw new AppealOperationException("修改求助状态失败");
+			}
+			if (help.getHelpStatus() != 1) {
+				return new AppealExecution(AppealStateEnum.COMPLETE_ERR);
 			}
 			help.setHelpStatus(2);
 			effectedNum = helpDao.updateHelp(help);
@@ -238,9 +253,12 @@ public class AppealServiceImpl implements AppealService {
 		try {
 			PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(appealUserId);
 			if (personInfo == null) {
-				throw new AppealOperationException("additionSouCoin error:" + "appealUserId无效");
+				throw new AppealOperationException("appealUserId无效");
 			}
 			Long appealerSouCoin = personInfo.getSouCoin();
+			if (additionSouCoin > appealerSouCoin) {
+				throw new AppealOperationException(AppealStateEnum.SOUCOIN_LACK.getStateInfo());
+			}
 			personInfo.setSouCoin(appealerSouCoin - additionSouCoin);
 			int effectedNum = personInfoDao.updatePersonInfo(personInfo);
 			if (effectedNum <= 0) {
@@ -248,12 +266,15 @@ public class AppealServiceImpl implements AppealService {
 			}
 			Help help = helpDao.queryByHelpId(helpId);
 			if (help == null) {
-				throw new AppealOperationException("additionSouCoin error:" + "helpId无效");
+				throw new AppealOperationException("helpId无效");
+			}
+			if (help.getHelpStatus() != 2) {
+				throw new AppealOperationException("该状态不能追赏");
 			}
 			Long helpUserId = help.getUserId();
 			personInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
 			if (personInfo == null) {
-				throw new AppealOperationException("additionSouCoin error:" + "帮助者不存在");
+				throw new AppealOperationException("帮助者不存在");
 			}
 			appealerSouCoin = personInfo.getSouCoin();
 			personInfo.setSouCoin(appealerSouCoin + additionSouCoin);

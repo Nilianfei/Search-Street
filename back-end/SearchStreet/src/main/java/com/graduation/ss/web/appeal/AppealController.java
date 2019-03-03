@@ -54,7 +54,7 @@ public class AppealController {
 
 	@RequestMapping(value = "/getappeallistbyuserid", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "根据用户ID和求助状态获取相应的（可增加输入的条件有：求助名（模糊），省份，城市，地区，指定日期范围（大于输入startTime，小于输入endTime），搜币（大于输入搜币））求助信息(分页)", notes = "进行中:appealStatus=1（返回的appealStatus=0表示没有确定帮助者，appealStatus=1表示已确定帮助者）,已完成:appealStatus=2,已失效:appealStatus=3")
+	@ApiOperation(value = "根据用户ID和求助状态获取相应的（可增加输入的条件有：求助名（模糊），省份，城市，地区，指定日期范围（大于等于输入startTime，小于等于输入endTime），搜币（大于等于输入搜币））求助信息(分页)", notes = "进行中:appealStatus=1（返回的appealStatus=0表示没有确定帮助者，appealStatus=1表示已确定帮助者）,已完成:appealStatus=2,已失效:appealStatus=3")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = true, dataType = "int"),
@@ -169,7 +169,7 @@ public class AppealController {
 		return modelMap;
 	}
 
-	@RequestMapping(value = "/modifyappeal", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/modifyappeal", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "修改求助信息（不修改图片）", notes = "要传appealId,目前前端好像不需要用")
 	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
@@ -191,7 +191,7 @@ public class AppealController {
 			modelMap.put("errMsg", e.getMessage());
 		}
 		return modelMap;
-	}
+	}*/
 
 	private void handleImage(HttpServletRequest request, ImageHolder appealImg) throws IOException {
 		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;

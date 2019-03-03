@@ -45,33 +45,15 @@ public class AppealDaoTest {
 	}
 
 	@Test
-	@Ignore
+	//@Ignore
 	public void testQueryAppealListAndCount() {
 		Appeal appealCondition = new Appeal();
 
 		appealCondition.setUserId(1L);
-		List<Appeal> appealList = appealDao.queryAppealListFY(appealCondition, 0, 4);
+		List<Appeal> appealList = appealDao.queryAppealListFY(appealCondition, 0, 5);
 		int count = appealDao.queryAppealCount(appealCondition);
 		System.out.println("求助列表-user的大小：" + appealList.size());
 		System.out.println("求助总数-user：" + count);
-
-		appealCondition.setAppealTitle("测试求助");
-		appealList = appealDao.queryAppealListFY(appealCondition, 0, 3);
-		count = appealDao.queryAppealCount(appealCondition);
-		System.out.println("求助列表-title的大小：" + appealList.size());
-		System.out.println("求助总数-title：" + count);
-
-		appealCondition.setProvince("测试省份");
-		appealList = appealDao.queryAppealListFY(appealCondition, 0, 4);
-		count = appealDao.queryAppealCount(appealCondition);
-		System.out.println("求助列表-province的大小：" + appealList.size());
-		System.out.println("求助总数-province：" + count);
-
-		appealCondition.setAppealStatus(1);
-		appealList = appealDao.queryAppealListFY(appealCondition, 0, 3);
-		count = appealDao.queryAppealCount(appealCondition);
-		System.out.println("求助列表-status的大小：" + appealList.size());
-		System.out.println("求助总数-status：" + count);
 	}
 
 	@Test

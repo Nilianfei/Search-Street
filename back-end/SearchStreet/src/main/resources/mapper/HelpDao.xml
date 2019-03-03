@@ -37,11 +37,11 @@
 				</if>
 			</if>
 			<if test="startTime != null and endTime != null">
-				and (end_time &gt; #{startTime} and end_time &lt;
+				and (end_time &gt;= #{startTime} and end_time &lt;=
 				#{endTime})
 			</if>
 			<if test="helpCondition.additionalCoin != null">
-				and additional_coin &gt; #{helpCondition.additionalCoin}
+				and additional_coin &gt;= #{helpCondition.additionalCoin}
 			</if>
 		</where>
 		ORDER BY end_time desc
@@ -98,11 +98,11 @@
 				</if>
 			</if>
 			<if test="startTime != null and endTime != null">
-				and (end_time &gt; #{startTime} and end_time &lt;
+				and (end_time &gt;= #{startTime} and end_time &lt;=
 				#{endTime})
 			</if>
 			<if test="helpCondition.additionalCoin != null">
-				and additional_coin &gt; #{helpCondition.additionalCoin}
+				and additional_coin &gt;= #{helpCondition.additionalCoin}
 			</if>
 		</where>
 	</select>

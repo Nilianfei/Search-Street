@@ -17,16 +17,16 @@
 				and appeal_title like '%${appealTitle}%'
 			</if>
 			<if test="maxlat != null">
-				and latitude &lt; #{maxlat}
+				and latitude &lt;= #{maxlat}
 			</if>
 			<if test="minlat != null">
-				and latitude &gt; #{minlat}
+				and latitude &gt;= #{minlat}
 			</if>
 			<if test="maxlng != null">
-				and longitude &lt; #{maxlng}
+				and longitude &lt;= #{maxlng}
 			</if>
 			<if test="minlng != null">
-				and longitude &gt; #{minlng}
+				and longitude &gt;= #{minlng}
 			</if>
 		</where>
 	</select>
@@ -65,13 +65,13 @@
 				and user_id = #{appealCondition.userId}
 			</if>
 			<if test="appealCondition.startTime != null">
-				and start_time &gt; #{appealCondition.startTime}
+				and start_time &gt;= #{appealCondition.startTime}
 			</if>
 			<if test="appealCondition.endTime != null">
-				and end_time &lt; #{appealCondition.endTime}
+				and end_time &lt;= #{appealCondition.endTime}
 			</if>
 			<if test="appealCondition.souCoin != null">
-				and sou_coin &gt; #{appealCondition.souCoin}
+				and sou_coin &gt;= #{appealCondition.souCoin}
 			</if>
 		</where>
 		ORDER BY end_time desc
@@ -138,13 +138,13 @@
 				and user_id = #{appealCondition.userId}
 			</if>
 			<if test="appealCondition.startTime != null">
-				and start_time &gt; #{appealCondition.startTime}
+				and start_time &gt;= #{appealCondition.startTime}
 			</if>
 			<if test="appealCondition.endTime != null">
-				and end_time &lt; #{appealCondition.endTime}
+				and end_time &lt;= #{appealCondition.endTime}
 			</if>
 			<if test="appealCondition.souCoin != null">
-				and sou_coin &gt; #{appealCondition.souCoin}
+				and sou_coin &gt;= #{appealCondition.souCoin}
 			</if>
 		</where>
 	</select>

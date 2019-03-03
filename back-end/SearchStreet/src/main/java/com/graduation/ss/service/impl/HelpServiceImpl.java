@@ -103,7 +103,7 @@ public class HelpServiceImpl implements HelpService {
 			help.setAvgEfficiency(avgEfficiency);
 			Appeal appeal = appealDao.queryByAppealId(appealId);
 			if (appeal == null) {
-				throw new HelpOperationException("addHelp error:" + "appealId无效");
+				throw new HelpOperationException("appealId无效");
 			}
 			help.setEndTime(appeal.getEndTime());
 			// 给帮助信息赋初始值
