@@ -1,26 +1,40 @@
 <!--page/search-shop/search-shop.wxml-->
 <view class="page-body">
   <view class="page-section page-section-gap">
-    <map
-      id="myMap"
-      style="width: 100%; height: 100vh;"
-      latitude="{{latitude}}"
-      longitude="{{longitude}}"
-      
-      controls="{{controls}}"
-      bindcontroltap="bindcontroltap"
+    <i-panel class="{{openSearch?'':'hide'}}">
+      <i-input value="{{ shopName }}" type="textarea" title="商铺名" placeholder="搜索商铺" maxlength="50" bind:change="inputShopName"/>
+      <i-input value="{{ shopAddress }}" type="textarea" title="详细地址" placeholder="搜索地址" maxlength="100" bind:change="inputShopAddress"/>
+      <view class="buttonClick">
+        <view class="buttonClickSearch">
+          <i-button bind:click="buttonClickSearch" type="primary">搜索</i-button>
+        </view>
+        <view class="buttonClickBack">
+          <i-button bind:click="buttonClickBack">取消</i-button>
+        </view>
+      </view>
+    </i-panel>
 
-      markers="{{markers}}"
-      bindmarkertap="bindmarkertap"
-      polyline="{{polyline}}"
+    <map id="myMap" style="width: 100%; height: 100vh;" latitude="{{latitude}}" longitude="{{longitude}}" controls="{{controls}}" bindcontroltap="bindcontroltap" markers="{{markers}}" bindmarkertap="bindmarkertap" polyline="{{polyline}}" bindregionchange="bindregionchange"
+      enable-rotate show-location show-compass>
 
-      bindregionchange="bindregionchange"
+      <cover-view class="moveToPosition" bindtap='moveToPosition'>
+        <cover-image src='/images/heavy-black-heart_2764.png'></cover-image>
+      </cover-view>
 
-      enable-rotate
-      show-location
-      show-compass>
-        
+      <cover-view class="searchShop" bindtap='searchShop'>
+        <cover-image src='/images/search_buck.png'></cover-image>
+      </cover-view>
+
+      <cover-view class="checkOrder" bindtap='checkOrder'>
+        <cover-image src='/images/clipboard_1f4cb.png'></cover-image>
+      </cover-view>
+      <cover-view class="search-input {{openSearch?'':'hide'}}">
+        {{shopName}}
+        {{shopAddress}}
+      </cover-view>
     </map>
-    
+
+
+
   </view>
 </view>

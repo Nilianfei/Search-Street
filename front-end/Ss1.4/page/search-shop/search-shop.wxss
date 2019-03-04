@@ -32,3 +32,52 @@ width: 90%;
 border-radius: 5rpx;
 text-align: center;
 }
+
+.search-input{
+  width: 700rpx;
+  height: 300rpx;
+  border-radius: 2%;
+  margin-left: 25rpx;
+  margin-top: 15px;
+  background-color:whitesmoke;
+}
+
+.hide{
+  display: none;
+}
+
+.moveToPosition{
+  width:40px;
+  height: 40px;
+  position:fixed;
+  top: 1050rpx;
+  left: 50rpx;
+}
+
+.searchShop{
+  width: 240rpx;
+  height: 240rpx;
+  position: fixed;
+  top: 950rpx;
+  left: 255rpx;
+}
+
+.checkOrder{
+  width:40px;
+  height: 40px;
+  position:fixed;
+  top: 1050rpx;
+  right: 50rpx;
+}
+
+.buttonClick{
+  display: flex;
+  justify-content: space-around;
+}
+.buttonClickSearch{
+  width: 65%;
+}
+
+.buttonClickBack{
+  width:30%;
+}

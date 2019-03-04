@@ -1,5 +1,6 @@
 // page/search-shop/search-shop.js
 var app=getApp();
+
 Page({
 
   /**
@@ -13,7 +14,11 @@ Page({
     maxlat:null,
     minlng:null,
     minlat:null,
-    markers: []
+    markers: [],
+
+    openSearch: false,
+    shopName: '',
+    shopAddress:'',
   },
 
   /**
@@ -55,31 +60,7 @@ Page({
       success: (res) => {
         this.setData({
           controls: [
-            //使当前定位位置处于屏幕中间的图标
-            {
-              id: 1,
-              iconPath: '/images/heavy-black-heart_2764.png',
-              position: {
-                left: 10,
-                top: res.windowHeight - 75,
-                width: 50,
-                height: 50
-              },
-              clickable: true,
-            },
-            //搜索功能按钮图
-            {
-              id: 2,
-              iconPath: '/images/search_buck.png',
-              position: {
-                left: res.windowWidth / 2 - 60,
-                top: res.windowHeight - 130,
-                width: 120,
-                height: 120
-              },
-              clickable: true,
-            },
-            //中心位置图标（用中心位置去计算距离弥补定位不准确）
+            //中心位置图标
             {
               id: 3,
               iconPath: '/images/round-pushpin_1f4cd.png',
@@ -90,19 +71,6 @@ Page({
                 height: 40
               },
               clickable: false,
-            },
-
-            //进入我的订单界面按钮图标
-            {
-              id: 4,
-              iconPath: '/images/clipboard_1f4cb.png',
-              position: {
-                left: res.windowWidth-60,
-                top: res.windowHeight - 75,
-                width: 50,
-                height: 50
-              },
-              clickable: true,
             }
 
           ]
@@ -189,18 +157,36 @@ Page({
     this.mapCtx.moveToLocation();
   },
 
+  //搜索栏打开/隐藏
+  searchShop: function (e) {
+    
+    var that=this;
+    if(!that.data.openSearch)
+    {
+      that.setData({
+        openSearch: true
+      })
+    }
+    else
+    {
+      console.log('already open it.');
+    }
+    
+  },
+
   //地图control点击事件
   bindcontroltap: function (e) {
-    switch (e.controlId) {
-      case 1: this.moveToPosition();
-        break;
-      
-      case 4: wx.navigateTo({
-        url: '../../page/shop-album/shop-album'   //等订单页面完成后修改跳转页面！
-      });
-        break;
-      default: break;
-    }
+    
+  },
+
+  //查看订单
+  checkOrder: function(e){
+    /* 订单url填入这里！！！
+    wx.navigateTo({
+      url: ' '
+    })
+    */
+    console.log('跳转订单page');
   },
 
   //地图marker点击事件
@@ -247,7 +233,37 @@ Page({
       })
     }
   },
+  //搜索框写入商铺名
+  inputShopName: function(e){
+    this.setData({
+      shopName: e.detail.detail.value
+    });
+  },
 
+  //搜索框写入商铺地址
+  inputShopAddress: function (e) {
+    this.setData({
+       shopAddress: e.detail.detail.value
+    })
+  },
+
+  //按商铺名、商铺地址搜索
+  buttonClickSearch: function(e){
+    console.log(this.data.shopName);
+    console.log(this.data.shopAddress);
+  },
+
+  buttonClickBack: function(e){
+    var that = this;
+    if (that.data.openSearch) {
+      that.setData({
+        openSearch: false
+      })
+    }
+    else {
+      console.log('impossible click this hh.');
+    }
+  },
 
   /**
    * 生命周期函数--监听页面隐藏
