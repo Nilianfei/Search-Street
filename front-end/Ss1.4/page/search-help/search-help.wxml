@@ -1,25 +1,39 @@
 <!--page/search-help/search-help.wxml-->
 <view class="container">
    <view class="shelp-hd">
-    <view class="shelp-hd1">
-     <view wx:for="{{[1,2,3,4]}}" wx:for-index='idx'>
-      <image class="shelp-photo {{show_photo ? '' : 'helpimage'}}" src="../../images/添加图片.png" bindtap='chooseImage'></image>
-      <image class="shelp-photo" src='{{shelp_imgs[idx]}}' name="shelpImage"></image>  
-     </view>
-    </view>
+   
+     <!--<view wx:for-items="{{show_photo}}" wx:key="{{item.id}}" wx:for-index='idx'>
+      <image class="shelp-photo {{'item.value' ? '' : 'helpimage'}}" src="../../images/添加图片.png" bindtap='chooseImage'></image>
+      <image class="shelp-photo" src='{{shelp_imgs[idx]}}' name="shelpImage"></image>
+     </view>-->
+     <view class="weui-uploader__files">
+          <view wx:for="{{shelp_imgs}}" wx:key="*this" wx:for-item="image">
+           <view class="weui-uploader__file">
+              <image class="weui-uploader__img" src="{{image}}" data-src="{{image}}" bindtap="previewImage"></image>
+            </view>
+          </view>
+        <view class="weui-uploader__input-box morelocat">
+          <view class="weui-uploader__input" bindtap="chooseImage"></view>
+       </view>
+      </view>
+ 
       <text class="shelp-text">{{shelp_text}}</text>
     </view>
-    <text class="shelp-title">求助标题</text>
+    <form bindsubmit="formSubmit" bindreset="formReset">
+     <text class="shelp-title">求助标题</text>
       <input class="shelp-titletext" name="shelpTitle"></input>
-    <text class="shelp-title">求助内容</text>
+       <view class="show_error" wx:if="{{errorMsgs.title_error}}">errorMsgs.title_error</view>
+     <text class="shelp-title">求助内容</text>
       <textarea class="shelp-titletext shelp-content" name="shelpContent"></textarea> 
-    <image class="shelp-cost" src="../../images/钱币.png"></image>
-      <selector selectData="{{cost}}"></selector>
+       <view class="show_error" wx:if="{{errorMsgs.content_error}}">errorMsgs.content_error</view>
+     <image class="shelp-cost" src="../../images/钱币.png"></image>
+      <selector selectData="{{cost}}" bind:myget='getCost'></selector>
       <text class="shelp-costtext">搜币</text>
-    <image class="shelp-cost" src="../../images/时钟.png"></image>
-      <selector selectData="{{timelimit}}"></selector>
+     <image class="shelp-cost" src="../../images/时钟.png"></image>
+      <selector selectData="{{timelimit}}" bind:myget='getTime'></selector>
       <text class="shelp-costtext">有效</text>
-    <input class="shelp-phone" value="联系电话" type="number" placeholder="请输入手机号" name="shelpPhone"></input>
+     <input class="shelp-phone" type="number" placeholder="请输入手机号" name="shelpPhone"></input>
+     <view class="show_error" wx:if="{{errorMsgs.phone_error}}">errorMsgs.phone_error</view>
      <view class="store-locat">帮帮定位</view>
       <view class="section">
        <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
@@ -44,11 +58,12 @@
       </map>
       <view class="serach-append">地址补充</view>
        <view class="serach-append1">可以让更多人找到你哦！</view>
-        <textarea class="serach-text" name="shopMoreInfo"></textarea>
+        <textarea class="serach-text" name="shelpMoreInfo"></textarea>
         <view class="submitbo"></view>
       <view class="finsubmit">
        <button class="check" formType="submit">马上求助</button>
       </view>
+    </form>
 </view>
     
   

@@ -15,7 +15,7 @@ Component({
    */
   data: {
     selectShow: false,//控制下拉列表的显示隐藏，false隐藏、true显示
-    index: 0,//选择的下拉列表下标
+    index: -1,//选择的下拉列表下标
   },
 
   /**
@@ -29,7 +29,12 @@ Component({
       console.log(this.data.selectShow);
     },
     optionTap(e) {
+      var costgroup=this.properties.selectData;
       let Index = e.currentTarget.dataset.index;
+      var text=costgroup[Index];
+      console.log(text);
+      this.triggerEvent('myget', {text}, {})
+     
       this.setData({
         index: Index,
         selectShow: !this.data.selectShow
