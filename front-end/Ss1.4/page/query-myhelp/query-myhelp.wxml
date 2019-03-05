@@ -1,0 +1,7 @@
+<!--page/query-myhelp/query-myhelp-->
+<view class="contanier">
+  <view class="query-myhelphd">
+    <i-input value="{{ value }}" type="text"  placeholder="请输入搜索关键字" maxlength="10" bind:change="myhelpkey"/>
+    <i-button bind:click="handleClick" type="primary">搜求助</i-button>
+  </view>
+</view>

@@ -2,6 +2,7 @@
  "navigationBarTitleText": "帮帮记录",
  "usingComponents": {
   "i-tabs": "../../dist/tabs/index",
-  "i-tab": "../../dist/tab/index"
+  "i-tab": "../../dist/tab/index",
+  "i-icon": "../../dist/icon/index"
 }
 }

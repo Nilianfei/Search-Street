@@ -2,7 +2,17 @@
 <view class="contanier">
    <i-tabs current="{{ current }}" bindchange="handleChange">
     <i-tab key="tab1" title="我的服务"></i-tab>
+    <block wx:if="{{current=='tab1'}}">
+      <navigator url="" class="">
+        <i-icon type="search" size="28" color="#80848f" />
+      </navigator>
+    </block>
     <i-tab key="tab2" title="我的求助"></i-tab>
+    <block wx:if="{{current=='tab2'}}">
+      <navigator url="../query-myhelp/query-myhelp" class="">
+      <i-icon type="search" size="28" color="#80848f" />
+      </navigator>
+    </block>
    </i-tabs>
 
      <block wx:if="{{current=='tab1'}}">

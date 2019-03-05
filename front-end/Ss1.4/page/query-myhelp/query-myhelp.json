@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "搜索求助记录",
+  "usingComponents": {
+    "i-input": "../../dist/input/index",
+    "i-button":"../../dist/button/index"
+  }
+}

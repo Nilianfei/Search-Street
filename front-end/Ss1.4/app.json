@@ -18,7 +18,8 @@
     "page/search-help-response/search-help-response",
     "page/personal-center/personal-center",
     "page/personal-account/personal-account",
-    "page/personal-help/personal-help"
+    "page/personal-help/personal-help",
+    "page/query-myhelp/query-myhelp"
   ],
   "permission": {
     "scope.userLocation": {

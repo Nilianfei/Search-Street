@@ -1,45 +1,25 @@
-var search_money='40';
-var mymoney='2';
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    search_money:search_money,
-    mymoney:mymoney
+    value:'',
   },
 
+/* 获取用户输入的求助记录关键字 */
+  myhelpkey:function(e){
+    console.log(e);
+    this.setData({
+      value:e.detail.detail.value
+    })
+    console.log(this.data.value)
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options);
-    var token = null;
-    try {                    //同步获取与用户信息有关的缓存token
-      const value = wx.getStorageSync('token')
-      if (value) {
-        token = value;
-      }
-    } catch (e) {
-      console.log("error");
-    }
-    wx.request({
-      url: '',             //请求获取用户目前账户中的搜币数目和可提现金额的数目
-      data:{
-
-      },
-      method:"POST",
-      success(res){
-        console,log(res.data);
-        this.setData({
-          search_money:res.data.search_money,
-          mymoney:res.data.mymoney,
-        })
-      }
-
-
-    })
+    
   },
 
   /**
