@@ -33,3 +33,71 @@
   font-size: 30rpx;
   margin-left: 90rpx;
 }
+.perhelp-icon{
+  height: 50rpx;
+  width: 50rpx;
+  margin-left: 20rpx;
+  margin-top:20rpx;
+  float: left;
+}
+
+.perhelp-title{
+  margin-top:30rpx;
+  margin-left:20rpx;
+  display: block;
+  width: 460rpx;
+}
+.perhelp-button{
+ float:right;
+ width:220rpx;
+ height: 50rpx;
+ font-size: 20rpx;
+ background-color: #F7B45D;
+ color: #fff;
+ margin-top:10rpx;
+}
+.perhelp-cost{
+  float:left;
+  margin-left: 20rpx;
+  margin-top:20rpx;
+}
+.perhelp-buttons{
+  display: flex;
+  flex-direction: column;
+  margin-top:-80rpx;
+}
+
+.perhelp-button-small{
+  width: 105rpx;
+  height: 50rpx;
+  background-color: #7c8686b0;
+  font-size: 22rpx;
+  color: #fff;
+  margin-top:10rpx;
+  float: left;
+  margin-left: 50rpx;
+}
+.small1{
+  margin-left:20rpx;
+}
+.unuse-icon{
+  width: 150rpx;
+  height: 150rpx;
+  float: right;
+  margin-right: 40rpx;
+  margin-top: -50rpx;
+}
+.finished-icon{
+  width:30rpx;
+  height: 30rpx;
+  margin-top: 15rpx;
+}
+.personal-help-item{
+  height: 170rpx;
+  border-bottom: 1px solid #7c8686b0;
+}
+.button1{
+  padding-left: 10rpx;
+  margin-top: 20rpx;
+  height:70rpx;
+}

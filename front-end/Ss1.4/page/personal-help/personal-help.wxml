@@ -17,14 +17,14 @@
 
      <block wx:if="{{current=='tab1'}}">
        <view class="perhelp-bd">
-        <view class="perhelp-item">
+         <view class="perhelp-item">
          <image class="service-img" src="../../images/进行中.png"></image>
          <text class="service-text">进行中</text>
-        </view>
-        <view class="perhelp-item">
+         </view>
+         <view class="perhelp-item">
           <image class="service-img" src="../../images/已完成.png"></image>
           <text class="service-text">已完成</text>
-        </view>
+         </view>
        </view>
      </block>
     
@@ -42,6 +42,52 @@
           <image class="service-img1" src="../../images/已完成.png"></image>
           <text class="service-text1">已完成</text>
         </view>
+       </view>
+
+
+        <view class='personal-help-view'>
+          <block wx:for="{{list}}" wx:key="id">
+             <navigator class="personal-help-item" url="">
+              
+                <text class="perhelp-title">{{item.shelpTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                   <text class="perhelp-cost">{{item.timeLimit}}分钟</text>
+                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                   <text class="perhelp-cost">{{item.shelpCost}}搜币</text>
+             
+              <view class="perhelp-buttons">
+                <button class="perhelp-button" bindtap="finishedHelp">确认已被帮助</button>
+                <button class="perhelp-button"  bindtap="unfinishedHelp">帮助无效</button>
+               <view class="perhelp-buttons1">
+                <button class="perhelp-button-small" bindtap="withdrawHelp" >撤销</button>
+                <button class="perhelp-button-small small1" bindtap="modifyHelp">修改</button>
+               </view>
+              </view>
+             </navigator>
+             <navigator class="personal-help-item" url="">
+              
+                <text class="perhelp-title">{{item.shelpTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                   <text class="perhelp-cost">{{item.timeLimit}}分钟</text>
+                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                   <text class="perhelp-cost">{{item.shelpCost}}搜币</text>
+             
+                <image class="unuse-icon" src="../../images/订单失效.png"></image>
+             </navigator>
+             <navigator class="personal-help-item" url="">
+              
+                <text class="perhelp-title">{{item.shelpTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                   <text class="perhelp-cost">{{item.timeLimit}}分钟</text>
+                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                   <text class="perhelp-cost">{{item.shelpCost}}搜币</text>
+             
+                <view class="perhelp-buttons buttons1">
+                <button class="perhelp-button button1" bindtap=""><image class="finished-icon" src="../../images/已完成笑脸_.png"></image>给好人评</button>
+                <button class="perhelp-button button1"  bindtap=""><image class="finished-icon" src="../../images/打赏.png"></image>追加打赏</button>
+                </view>
+             </navigator>
+          </block>
        </view>
       </block>
  

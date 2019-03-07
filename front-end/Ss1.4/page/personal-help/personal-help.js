@@ -4,20 +4,29 @@ Page({
    * 页面的初始数据
    */
   data: {
-    current:'tab1'
+    current:'tab1',
+    list:[{shelpTitle:'帮忙领票',timeLimit:50,shelpCost:80}]
   },
-
+ /* 根据导航栏的选择设置目前的key值 */
   handleChange({ detail }) {
     this.setData({
       current: detail.key
     });
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+    wx.request({
+      url: '',             //请求我的求助订单信息
+      data:{
+
+      },
+      method:"POST",
+      success:function(res){
+        
+      }
+    })
   },
 
   /**
