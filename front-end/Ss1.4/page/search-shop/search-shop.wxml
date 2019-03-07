@@ -25,12 +25,29 @@
         <cover-image src='/images/search_buck.png'></cover-image>
       </cover-view>
 
-      <cover-view class="checkOrder" bindtap='checkOrder'>
+      <cover-view class="checkOrder" bindtap='checkOrder' hover-class='hover'>
         <cover-image src='/images/clipboard_1f4cb.png'></cover-image>
       </cover-view>
-      <cover-view class="search-input {{openSearch?'':'hide'}}">
-        {{shopName}}
-        {{shopAddress}}
+
+      <cover-view class="ShopInfo {{openShopInfo?'':'hide'}}">
+        <cover-view class="shopInfo-top">
+          <cover-view class= "shopInfo-top-pic">
+            <cover-image class= "shopInfo-pic" mode='aspectFit' src="{{shopInfoPic}}"></cover-image>
+          </cover-view>
+          <cover-view class="shopInfo-nameAddress">
+            <cover-view class="shopInfo-name">{{shopInfoName}}</cover-view>
+            <cover-view class="shopInfo-address">{{shopInfoAddress}}</cover-view>
+          </cover-view>
+        </cover-view>
+        <cover-view class="shopInfo-button">
+          <button class="shopInfoButton blue" hover-class='hover'>查看详情</button>
+          <button class="shopInfoButton blue" hover-class='hover'>导航</button>
+          <button class="shopInfoButton white" hover-class='hover' bindtap='shopInfoBack'>取消</button>
+        </cover-view>
+      </cover-view>
+
+      <cover-view class="testOpenShopInfo" bindtap='openInfo'>
+        <cover-image src="/images/设置.png"></cover-image>
       </cover-view>
     </map>
 

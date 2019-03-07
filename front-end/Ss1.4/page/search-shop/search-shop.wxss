@@ -33,15 +33,6 @@ border-radius: 5rpx;
 text-align: center;
 }
 
-.search-input{
-  width: 700rpx;
-  height: 300rpx;
-  border-radius: 2%;
-  margin-left: 25rpx;
-  margin-top: 15px;
-  background-color:whitesmoke;
-}
-
 .hide{
   display: none;
 }
@@ -80,4 +71,95 @@ text-align: center;
 
 .buttonClickBack{
   width:30%;
+}
+
+.testOpenShopInfo{
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  top: 900rpx;
+  left: 50rpx;
+}
+
+.ShopInfo{
+  width: 700rpx;
+  height: 330rpx;
+  border-radius: 2%;
+  margin-left: 25rpx;
+  margin-top: 15px;
+  background-color:whitesmoke;
+}
+
+.shopInfo-top{
+  width: 680rpx;
+  height: 220rpx;
+  display: flex;
+  margin-left: 10rpx;
+  margin-top: 10rpx;
+}
+
+.shopInfo-top-pic{
+  margin-top: 10rpx;
+  margin-left: 10rpx;
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.shopInfo-nameAddress{
+  margin-top: 10rpx;
+  margin-left: 20rpx;
+  width: 440rpx;
+  height: 200rpx;
+}
+
+.shopInfo-name{
+  height: 130rpx;
+  width: 440rpx;
+  font-size: 22px;
+  display: flex;
+  justify-content: left-start;
+  align-items: center;
+  border-bottom: 1px solid #99999960;
+}
+
+.shopInfo-address{
+  height: 70rpx;
+  widows: 440rpx;
+  display: flex;
+  white-space: pre-line;
+  align-items: center;
+  font-size: 12px;
+}
+
+.shopInfo-button{
+  width: 680rpx;
+  height: 70rpx;
+  margin-top: 10rpx;
+  margin-left: 10rpx;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.shopInfoButton{
+  width: 200rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+.blue{
+  background: #2d8cf0;
+  color:#fff;
+}
+
+.white{
+  background: #f8f8f9;
+  color: black;
+}
+
+.hover{
+  background: #f8f8f0;
+  color: black;
 }

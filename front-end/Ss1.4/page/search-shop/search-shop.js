@@ -15,10 +15,13 @@ Page({
     minlng:null,
     minlat:null,
     markers: [],
-
-    openSearch: false,
+    openSearch:false,
+    openShopInfo: 0,
     shopName: '',
     shopAddress:'',
+    shopInfoPic:'/images/search_buck.png',
+    shopInfoName:'华师西三小卖部',
+    shopInfoAddress:'中山大道西55号华南师范大学西三学生公寓',
   },
 
   /**
@@ -169,7 +172,9 @@ Page({
     }
     else
     {
-      console.log('already open it.');
+      that.setData({
+        openSearch: false
+      })
     }
     
   },
@@ -196,20 +201,22 @@ Page({
     let currentMarker = _markers[markerId];
 
     this.setData({
-      polyline: [{
-        points: [{
-          longitude: this.data.longitude,
-          latitude: this.data.latitude
-        },
-        {
-          longitude: currentMarker.longitude,
-          latitude: currentMarker.latitude
-        }],
-        color: "#ff7700",
-        width: 1,
-        dottedLine: true
-      }],
-      scale: 18
+      // polyline: [{
+      //   points: [{
+      //     longitude: this.data.longitude,
+      //     latitude: this.data.latitude
+      //   },
+      //   {
+      //     longitude: currentMarker.longitude,
+      //     latitude: currentMarker.latitude
+      //   }],
+      //   color: "#ff7700",
+      //   width: 1,
+      //   dottedLine: true
+      // }],
+      scale: 18,
+      openShopInfo: markerId,
+      shopName: currentMarker.name    //这里有bug！！！
     })
   },
 
@@ -263,6 +270,29 @@ Page({
     else {
       console.log('impossible click this hh.');
     }
+  },
+
+  //openInfo
+  openInfo: function(e){
+    var that = this;
+    if(that.data.openShopInfo){
+      that.setData({
+        openShopInfo:0
+      })
+    }
+    else{
+      that.setData({
+        openShopInfo: 1
+      })
+    }
+  },
+
+  //关闭shopInfo
+  shopInfoBack: function(e){
+    var that=this;
+    that.setData({
+      openShopInfo: 0
+    })
   },
 
   /**
