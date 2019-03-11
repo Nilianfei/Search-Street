@@ -5,13 +5,22 @@ Page({
    */
   data: {
     current:'tab1',
+    ifName:false,
     list:[{shelpTitle:'帮忙领票',timeLimit:50,shelpCost:80}]
   },
+
  /* 根据导航栏的选择设置目前的key值 */
   handleChange({ detail }) {
     this.setData({
       current: detail.key
     });
+  },
+
+/*根据追加打赏按钮设置打赏搜币页面的显示 */
+  inputReward:function(){
+   this.setData({
+     ifName:true
+   })
   },
   /**
    * 生命周期函数--监听页面加载

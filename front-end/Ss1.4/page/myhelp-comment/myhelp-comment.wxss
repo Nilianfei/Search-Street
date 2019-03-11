@@ -1,0 +1,54 @@
+/* page/myhelp-comment/myhelp-comment.wxss */
+@import "../../weui.wxss";
+.comment-text{
+ border-top: 1px solid #e0e0e0;
+ height:auto;
+ margin-top: 20rpx;
+}
+ .areas{
+  height:300rpx;
+  font-size: 30rpx;
+  padding-top: 10rpx;
+  margin: 0 auto;
+  overflow: auto;   
+  position: relative; 
+}
+.currentWordNumber{
+  font-size: 28rpx;
+  color: gray;
+  position: absolute;
+  left: 593rpx;
+  top: 10rpx;
+
+}
+.hint{
+   font-size: 28rpx;
+   position: absolute;
+   top: 240rpx;
+   text-align: center;
+   color: #FF6600;
+}
+.mycomment-bd{
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.mycomment-img{
+  float: left;
+  display: block;
+}
+.mycomment-text{
+ font-size: 28rpx;
+ color: gray;
+}
+.check{
+  width: 280rpx;
+  height: 80rpx;
+  line-height: 60rpx;
+  background: #F7B45D;
+  color: white;
+  border: none;
+  position: absolute;
+  margin-top: 20px;
+  margin-left: 100px;
+}

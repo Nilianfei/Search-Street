@@ -83,12 +83,40 @@
                    <text class="perhelp-cost">{{item.shelpCost}}搜币</text>
              
                 <view class="perhelp-buttons buttons1">
-                <button class="perhelp-button button1" bindtap=""><image class="finished-icon" src="../../images/已完成笑脸_.png"></image>给好人评</button>
-                <button class="perhelp-button button1"  bindtap=""><image class="finished-icon" src="../../images/打赏.png"></image>追加打赏</button>
+                <navigator url="../myhelp-comment/myhelp-comment">
+                <button class="perhelp-button button1"><image class="finished-icon" src="../../images/已完成笑脸_.png"></image>给好人评</button>
+                </navigator>
+                <button class="perhelp-button button1"  bindtap="inputReward"><image class="finished-icon" src="../../images/打赏.png"></image>追加打赏</button>
                 </view>
              </navigator>
           </block>
        </view>
       </block>
- 
+  <view class='toast-box' hidden='{{!ifName}}'>
+    <view class='toastbg'></view>
+      <view class='showToast'>
+        <view class='toast-title'>
+            <text>追加打赏</text>
+        </view>
+        <view class='toast-main'>
+          <view>
+           <image class="toast-img" src="../../images/钱币.png"></image>
+          </view>
+          <view class='toast-input'>
+            <input bindinput='setValue'data-name='stuEidtName'></input>
+          </view>
+          <view class="toast-text">
+           <text>搜币</text>
+          </view>
+        </view>
+        <view class='toast-button'>
+          <view class='button3'>
+             <button catchtap='cancel'>取消</button>
+          </view>
+          <view class='button4'>
+             <button catchtap='confirm'>确认追加</button>
+          </view>
+        </view>
+      </view>
+</view>
 </view>

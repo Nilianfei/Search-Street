@@ -1,0 +1,50 @@
+<!-- page/myhelp-comment/myhelp-comment  -->
+<view class="contanier">
+ <form bindsubmit="formSubmit" bindreset="formReset">
+  <i-cell-group>
+    <i-cell title="完成度">
+        <i-rate 
+            bind:change="onChange1" 
+            value="{{starIndex1}}">
+        </i-rate>
+    </i-cell>
+    <i-cell title="帮忙效率">
+        <i-rate 
+            bind:change="onChange2" 
+            value="{{starIndex2}}">
+        </i-rate>
+    </i-cell>
+    <i-cell title="帮忙态度">
+        <i-rate 
+            bind:change="onChange3" 
+            value="{{starIndex3}}">
+        </i-rate>
+    </i-cell>
+  </i-cell-group>
+  <view class="comment-text">
+   <textarea class="areas" placeholder='说说你对服务者的评价吧!' minlength="{{min}}" maxlength='{{max}}' bindinput='inputs'>
+    <text class="currentWordNumber">{{currentWordNumber|0}}/{{max}}</text>
+    <text class="hint">{{texts}}</text>
+   </textarea>
+  </view>
+  <view class="mycomment-bd">
+     <view class="mycomment-img">
+      <text class="mycomment-text">发布图片</text>
+     </view>
+   <view class="weui-uploader__files">
+          <view wx:for="{{shelp_imgs}}" wx:key="*this" wx:for-item="image">
+           <view class="weui-uploader__file">
+              <image class="weui-uploader__img" src="{{image}}" data-src="{{image}}" bindtap="previewImage"></image>
+            </view>
+          </view>
+        <view class="weui-uploader__input-box morelocat">
+          <view class="weui-uploader__input" bindtap="chooseImage"></view>
+        </view>
+   </view>
+  </view>
+  <view class="finsubmit">
+    <button class="check" formType="submit">发布评价</button>
+  </view>
+ </form>
+ 
+</view>
