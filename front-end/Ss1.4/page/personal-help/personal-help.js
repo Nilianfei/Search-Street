@@ -6,7 +6,10 @@ Page({
   data: {
     current:'tab1',
     ifName:false,
-    list:[{shelpTitle:'帮忙领票',timeLimit:50,shelpCost:80}]
+    list1:[{shelpTitle:'帮忙领票',timeLimit:50,shelpCost:80}],
+    list2: [{ shelpTitle: '帮忙领票', timeLimit: 50, shelpCost: 80 }],
+    list3: [{ shelpTitle: '帮忙领票', timeLimit: 50, shelpCost: 80 }],
+    currentTab:1
   },
 
  /* 根据导航栏的选择设置目前的key值 */
@@ -16,6 +19,12 @@ Page({
     });
   },
 
+  /* 根据导航栏的选择显示目前状态下的求助信息列表 */
+  switchTab(e) {
+    this.setData({ 
+      currentTab: e.currentTarget.dataset.current 
+      });
+  },
 /*根据追加打赏按钮设置打赏搜币页面的显示 */
   inputReward:function(){
    this.setData({
@@ -26,14 +35,29 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var List1,List2,List3
     wx.request({
       url: '',             //请求我的求助订单信息
       data:{
 
       },
       method:"POST",
-      success:function(res){
-        
+      success:function(res){             //根据求助信息的状态设置显示
+        console.log(res);
+        var List=res.data.appealList;
+        var j=0,m=0,k=0;
+        for(var i=0;i<List.length;i++){          
+          if(List[i].appealStatus==0||List[i].appealStatus==1){
+            List1[j++]=List[i];
+          }
+          else if(List[i].appealStatus==2) List2[m++]=List[i];
+          else List3[k++]
+        }
+        this.setData({
+         list1:List1,
+         list2:List2,
+         list3:List3
+        })
       }
     })
   },

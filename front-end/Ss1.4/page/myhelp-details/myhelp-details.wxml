@@ -1,0 +1,74 @@
+<!--page/myhelp-details/myhelp-details.wxml -->
+<view class="container">
+   <view class="perinf-hd">
+     <view class="userinfo-avatar">
+       <open-data type="userAvatarUrl"></open-data>
+     </view>
+     <open-data type="userNickName"></open-data>
+    </view>
+  <view class="helpdetails-bd1">
+   <view class="title">
+       <text class="helptitle-content">帮忙领票</text>
+   </view>
+   <view class="time">
+    <view class="item">
+     <image class="helpdetail-icon" src="../../images/时钟.png"></image>
+     </view>
+     <view>
+     <i-count-down i-class="timelimit" target="{{targetTime}}" clear-timer="{{clearTimer}}"
+     ></i-count-down>
+     </view>
+    <view class="item">
+     <image class="helpdetail-icon" src="../../images/钱币.png"></image></view>
+     <view class="item">
+     <text>80搜币</text>
+     </view>
+   </view>
+    </view>
+
+
+  <view class="helpdetails-bd2">
+   <text class="helpcontent">求助内容</text>
+   <view class="details-main">
+     <textarea>可以现在帮忙领下票吗？</textarea>
+     <!-- 求助者发布图片的url -->
+     <block wx:for="{{}}" wx:key='id'>
+       <image src="{{item}}"></image>
+     </block>
+    </view>
+  </view>
+  
+  <view class="helpdetails-bd3">
+     <text class="info">联系电话: {{}}</text>
+     <text class="info">详细地址： {{}}</text>
+  </view>
+
+  <view class="info-list">
+    帮助者列表
+  </view>
+<!-- 此处显示对本人的求助提出帮助的人信息列表 -->
+ <!--<block wx:for="{{}}" wx:key='id'> -->
+  <view class="helpers-info">
+ <!--此处要求后台提供提出帮助的人的头像，呢称，联系电话等-->
+  <view class="helper">
+    <view class="userinfo-avatar itself">
+      <open-data type="userAvatarUrl"></open-data>
+    </view>
+    <view class="name">
+      <open-data type="userNickName"></open-data>
+    </view>
+    <view>
+     <button class="choosehelper"bindtap="">选择他</button>
+    </view>
+   </view>
+   <view class="helper1">
+    <view>
+      <text >联系电话：{{}}</text>
+    </view>
+    <view>
+      <image class="helpdetail-icon icon" src="../../images/对话.png"></image>
+    </view>
+   </view>
+  </view>
+  <!--</block> -->
+  </view>

@@ -20,7 +20,8 @@
     "page/personal-account/personal-account",
     "page/personal-help/personal-help",
     "page/query-myhelp/query-myhelp",
-    "page/myhelp-comment/myhelp-comment"
+    "page/myhelp-comment/myhelp-comment",
+    "page/myhelp-details/myhelp-details"
   ],
 
   "permission": {
