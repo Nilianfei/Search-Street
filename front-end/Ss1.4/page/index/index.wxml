@@ -38,28 +38,12 @@
         </view>
       </view>
 
-      <view class="kind-list-item">
-        <view class="kind-list-item-hd {{open2 ? 'kind-list-item-hd-show' : ''}} " bindtap="kindToggle2">
+      <navigator class="kind-list-item" url="../search-help/search-help">
+        <view class="kind-list-item-hd" bindtap="kindToggle2">
           <view class="kind-list-text">寻帮助</view>
           <image class="kind-list-img" src="../../images/帮助.png"></image>
         </view>
-
-        <view class="kind-list-item-bd {{open2 ? 'kind-list-item-bd-show' : ''}}">
-          <view class="navigator-box {{open2 ? 'navigator-box-show' : ''}}">
-
-            <navigator class="navigator" url="../../page/search-help/search-help">
-              <view class="navigator-text">发布帮助</view>
-              <view class="navigator-arrow"></view>
-            </navigator>
-
-            <navigator class="navigator" url="../../page/search-help-response/search-help-response">
-              <view class="navigator-text">查看请求</view>
-              <view class="navigator-arrow"></view>
-            </navigator>
-
-          </view>
-        </view>
-      </view>
+      </navigator> 
 
 
       <navigator class="kind-list-item" id="my-help">

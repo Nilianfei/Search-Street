@@ -6,6 +6,7 @@ Page({
   data: {
     current:'tab1',
     ifName:false,
+    reward:null,
     list1:[{shelpTitle:'帮忙领票',timeLimit:50,shelpCost:80}],
     list2: [{ shelpTitle: '帮忙领票', timeLimit: 50, shelpCost: 80 }],
     list3: [{ shelpTitle: '帮忙领票', timeLimit: 50, shelpCost: 80 }],
@@ -31,6 +32,53 @@ Page({
      ifName:true
    })
   },
+  
+  /*追加打赏弹框的取消按钮功能*/
+  cancel:function(){
+    this.setData({
+      ifName:false
+    })
+  },
+
+/*获取input中的输入值 */
+  setValue:function(e){
+    console.log(e.detail);
+    this.setData({
+      reward:e.detail,
+    })
+  },
+
+/* 追加打赏弹框的提交按钮功能 */
+confirm:function(){
+  if(this.data.reward==null){
+    wx.showToast({
+      title: '请填写打赏金额',
+    })
+  }
+  else{
+    var token = null;
+    try {
+      const value = wx.getStorageSync('token')
+      if (value) {
+        token = value;
+      }
+    } catch (e) {
+      console.log("error");
+    }
+    wx.request({
+      url: app.globalData.serviceUrl + "/SearchStreet/appeal/additionsoucoin?token=" + token,         /* 将打赏金额的数值传给后台，后台据此金额改变被打赏人钱包中的搜币 */
+      data:{
+        additionSouCoin:this.data.reward,
+      },
+      success(res){
+        console.log(res.data)
+        this.setData({
+          ifName:false
+        })
+      }
+    })
+  }
+},
   /**
    * 生命周期函数--监听页面加载
    */
