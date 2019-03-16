@@ -18,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import com.graduation.ss.interceptor.superadmin.SuperAdminLoginInterceptor;
 import com.graduation.ss.interceptor.wechat.TokenInterceptor;
 
 /**
@@ -34,9 +35,11 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
 	private ApplicationContext applicationContext;
 
 	@Override
-	public void setApplicationContext(org.springframework.context.ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(org.springframework.context.ApplicationContext applicationContext)
+			throws BeansException {
 		this.applicationContext = (ApplicationContext) applicationContext;
 	}
+
 	/**
 	 * 静态资源配置
 	 * 
@@ -44,8 +47,8 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
 	 */
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		//registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/resources/");
-		//registry.addResourceHandler("/upload/**").addResourceLocations("file:/Users/baidu/work/image/upload/");
+		// registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/resources/");
+		// registry.addResourceHandler("/upload/**").addResourceLocations("file:/Users/baidu/work/image/upload/");
 	}
 
 	/**
@@ -74,7 +77,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
 		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}
-	
+
 	/**
 	 * 文件上传解析器
 	 * 
@@ -111,6 +114,17 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
 		tokenIR.excludePathPatterns("/appeal/getappealbyid");
 		tokenIR.excludePathPatterns("/help/gethelplistbyappealid");
 		tokenIR.excludePathPatterns("/help/gethelpbyhelpid");
+
+		/** 超级管理员系统拦截部分 **/
+		String interceptPath = "/superadmin/**";
+		// 注册拦截器
+		InterceptorRegistration superAdminIR = registry.addInterceptor(new SuperAdminLoginInterceptor());
+		// 配置拦截的路径
+		superAdminIR.addPathPatterns(interceptPath);
+		superAdminIR.excludePathPatterns("/superadmin/login");
+		superAdminIR.excludePathPatterns("/superadmin/logincheck");
+		superAdminIR.excludePathPatterns("/superadmin/main");
+		superAdminIR.excludePathPatterns("/superadmin/top");
 	}
 
 }
