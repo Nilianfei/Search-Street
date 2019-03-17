@@ -76,6 +76,7 @@ Page({
         that.setData({
           token:value
         })
+        console.log(that.data.token);
       }
     } catch (e) {
       console.log("error");

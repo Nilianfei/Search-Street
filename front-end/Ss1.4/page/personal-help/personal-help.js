@@ -1,3 +1,4 @@
+var app=getApp();
 Page({
 
   /**
@@ -7,10 +8,13 @@ Page({
     current:'tab1',
     ifName:false,
     reward:null,
-    list1:[{shelpTitle:'帮忙领票',timeLimit:50,shelpCost:80}],
-    list2: [{ shelpTitle: '帮忙领票', timeLimit: 50, shelpCost: 80 }],
-    list3: [{ shelpTitle: '帮忙领票', timeLimit: 50, shelpCost: 80 }],
-    currentTab:1
+    token:null,
+    current1: 1,
+    pageNum: 0,
+    pageSize: 15,
+    list:[],
+    currentTab:1,
+    phelptime:[]
   },
 
  /* 根据导航栏的选择设置目前的key值 */
@@ -26,6 +30,15 @@ Page({
       currentTab: e.currentTarget.dataset.current 
       });
   },
+
+  /* 点击跳到求助详情页 */
+  toDetails(e){
+    console.log(e.currentTarget.id);
+   wx.navigateTo({
+     url: '../myhelp-details/myhelp-details?id='+e.currentTarget.id,
+   })
+  },
+
 /*根据追加打赏按钮设置打赏搜币页面的显示 */
   inputReward:function(){
    this.setData({
@@ -83,29 +96,51 @@ confirm:function(){
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var List1,List2,List3
+    var phelptime=[];
+    var that = this ;      
+    var token = null;
+    try {
+      const value = wx.getStorageSync('token')
+      if (value) {
+        token = value;
+      }
+    } catch (e) {
+      console.log("error");
+    }
     wx.request({
-      url: '',             //请求我的求助订单信息
+      url: app.globalData.serviceUrl + "/SearchStreet/appeal/getappeallistbyuserid?token=" + token +"&pageIndex="+0+"&pageSize="+that.data.pageSize,
       data:{
 
       },
-      method:"POST",
-      success:function(res){             //根据求助信息的状态设置显示
-        console.log(res);
-        var List=res.data.appealList;
-        var j=0,m=0,k=0;
-        for(var i=0;i<List.length;i++){          
-          if(List[i].appealStatus==0||List[i].appealStatus==1){
-            List1[j++]=List[i];
+      method: 'POST',
+      success: function (res) {
+        console.log(res.data);
+        if (res.data.success) {
+          console.log(res.data);
+          var List = res.data.appealList;
+          for(var i=0;i<List.length;i++){
+            phelptime.push(Math.round((List[i].endTime-List[i].startTime)/1000/60));
           }
-          else if(List[i].appealStatus==2) List2[m++]=List[i];
-          else List3[k++]
-        }
-        this.setData({
-         list1:List1,
-         list2:List2,
-         list3:List3
+          that.setData({
+          list: List,
+          phelptime:phelptime,
+         // list2: List2, 
+          //list3: List3	         
         })
+        console.log(that.data.list);
+      } else {
+          if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+            wx.redirectTo({
+              url: '../../page/login/login'
+            })
+          }
+        }
+      },
+      fail: function (res) {
+        console.log('submit fail');
+      },
+      complete: function (res) {
+        console.log('submit complete');
       }
     })
   },

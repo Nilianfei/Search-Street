@@ -47,15 +47,15 @@
 
        
         <view class='personal-help-view'>
-         <block wx:if="{{currentTab==1}}">
-          <block wx:for="{{list1}}" wx:key="id">
-             <navigator class="personal-help-item" url="../myhelp-details/myhelp-details">
+         <block wx:for="{{list}}" wx:key='id'>
+          <block wx:if="{{(list[index].appealStatus==0||list[index].appealStatus==1)&&currentTab==1}}">
+             <view class="personal-help-item" bindtap='toDetails' id='{{item.appealId}}'>
               
-                <text class="perhelp-title">{{item.shelpTitle}}</text>
+                <text class="perhelp-title">{{item.appealTitle}}</text>
                  <image class="perhelp-icon" src="../../images/时钟.png"></image>
-                   <text class="perhelp-cost">{{item.timeLimit}}分钟</text>
+                   <text class="perhelp-cost">{{phelptime[index]}}分钟</text>
                  <image class="perhelp-icon" src="../../images/钱币.png"></image>
-                   <text class="perhelp-cost">{{item.shelpCost}}搜币</text>
+                   <text class="perhelp-cost">{{item.souCoin}}搜币</text>
              
               <view class="perhelp-buttons">
                 <button class="perhelp-button" bindtap="finishedHelp">确认已被帮助</button>
@@ -65,34 +65,29 @@
                 <button class="perhelp-button-small small1" bindtap="modifyHelp">修改</button>
                </view>
               </view>
-             </navigator>
-          </block>
-          </block>
-
-            <block wx:if="{{currentTab==3}}">
-            <block wx:for="{{list2}}" wx:key="id">
+             </view>
+           </block>
+            <block wx:if="{{list[index].appealStatus==3&&currentTab==3}}">
              <navigator class="personal-help-item" url="">
               
-                <text class="perhelp-title">{{item.shelpTitle}}</text>
+                <text class="perhelp-title">{{item.appealTitle}}</text>
                  <image class="perhelp-icon" src="../../images/时钟.png"></image>
-                   <text class="perhelp-cost">{{item.timeLimit}}分钟</text>
+                   <text class="perhelp-cost">{{phelptime[index]}}分钟</text>
                  <image class="perhelp-icon" src="../../images/钱币.png"></image>
-                   <text class="perhelp-cost">{{item.shelpCost}}搜币</text>
+                   <text class="perhelp-cost">{{item.souCoin}}搜币</text>
              
                 <image class="unuse-icon" src="../../images/订单失效.png"></image>
              </navigator>
-            </block>
            </block>
 
-           <block wx:if="{{currentTab==2}}">
-            <block wx:for="{{list3}}" wx:key="id">
+           <block wx:if="{{currentTab==2&&list[index].appealStatus==2}}">
              <navigator class="personal-help-item" url="">
               
-                <text class="perhelp-title">{{item.shelpTitle}}</text>
+                <text class="perhelp-title">{{item.appealTitle}}</text>
                  <image class="perhelp-icon" src="../../images/时钟.png"></image>
-                   <text class="perhelp-cost">{{item.timeLimit}}分钟</text>
+                   <text class="perhelp-cost">{{phelptime[index]}}分钟</text>
                  <image class="perhelp-icon" src="../../images/钱币.png"></image>
-                   <text class="perhelp-cost">{{item.shelpCost}}搜币</text>
+                   <text class="perhelp-cost">{{item.souCoin}}搜币</text>
              
                 <view class="perhelp-buttons buttons1">
                 <navigator url="../myhelp-comment/myhelp-comment">
@@ -101,7 +96,7 @@
                 <button class="perhelp-button button1"  bindtap="inputReward"><image class="finished-icon" src="../../images/打赏.png"></image>追加打赏</button>
                 </view>
              </navigator>
-          </block>
+            </block>
         </block>
        </view>
       </block>

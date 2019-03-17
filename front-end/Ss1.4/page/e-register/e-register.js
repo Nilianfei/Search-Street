@@ -213,6 +213,7 @@ Page({
         const value = wx.getStorageSync('token')
         if (value) {
           token = value;
+          console.log(token);
         }
       } catch (e) {
         console.log("error");

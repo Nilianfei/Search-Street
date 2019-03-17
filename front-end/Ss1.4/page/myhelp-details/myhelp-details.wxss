@@ -50,7 +50,7 @@ page{
 }
 .helpdetails-bd3{
   height: 150rpx;
-  margin-top: 20rpx;
+  margin-top: 50rpx;
   background-color: #fff;
   overflow: auto;
 }
@@ -64,7 +64,7 @@ page{
   background-color: #fff;
   border: 1px solid #f0f0f0;
   height: 250rpx;
-  margin-top: 50rpx;
+  margin-top: 20rpx;
   display: flex;
   flex-direction: column;
 }
@@ -120,4 +120,13 @@ position: relative;
 }
 .info-list:after{
   top: -24rpx;
+}
+.details-img{
+  width: 140rpx;
+  height: 140rpx;
+}
+.details-imgs{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
