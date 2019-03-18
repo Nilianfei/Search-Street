@@ -237,7 +237,7 @@ public class AppealController {
 
 	@RequestMapping(value = "/searchnearbyappeals", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "返回用户20km内的所有有效（没确定帮助人、没过时的）求助")
+	@ApiOperation(value = "返回用户10km内的所有有效（没确定帮助人、没过时的）求助")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "longitude", value = "用户所在的经度", required = true, dataType = "Float"),
 			@ApiImplicitParam(paramType = "query", name = "latitude", value = "用户所在的纬度", required = true, dataType = "Float"),
@@ -254,7 +254,7 @@ public class AppealController {
 
 		// 先计算查询点的经纬度范围
 		float r = 6371;// 地球半径千米
-		float dis = 20;// 距离（单位：千米），查询范围20km内的所有求助
+		float dis = 10;// 距离（单位：千米），查询范围20km内的所有求助
 		float dlng = (float) (2 * Math.asin(Math.sin(dis / (2 * r)) / Math.cos(latitude * Math.PI / 180)));
 		dlng = (float) (dlng * 180 / Math.PI);
 		float dlat = dis / r;

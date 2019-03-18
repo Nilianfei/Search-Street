@@ -63,29 +63,31 @@ public class ShopDaoTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	public void testInsertShop() {
 		Shop shop = new Shop();
-		shop.setBusinessLicenseCode("test");
-		shop.setBusinessLicenseImg("test");
-		shop.setBusinessScope("test");
-		shop.setCity("test");
-		shop.setLatitude(1f);
-		shop.setLongitude(1f);
-		shop.setCreateTime(new Date());
-		shop.setDistrict("test");
-		shop.setFullAddress("test");
-		shop.setIsMobile(1);
-		shop.setLastEditTime(new Date());
-		shop.setPhone("test");
-		shop.setProfileImg("test");
-		shop.setProvince("test");
-		shop.setShopMoreInfo("test");
-		shop.setShopName("test");
-		shop.setUserId(1L);
-		shop.setEnableStatus(0);
-		int effectedNum = shopDao.insertShop(shop);
-		assertEquals(1, effectedNum);
+		for (int i = 0; i < 10000; i++) {
+			shop.setBusinessLicenseCode("test");
+			shop.setBusinessLicenseImg("test");
+			shop.setBusinessScope("test");
+			shop.setCity("test");
+			shop.setLatitude((float) (22.930738 + Math.random() * (23.110601 - 22.930738)));
+			shop.setLongitude((float) (113.654076 + Math.random() * (113.84951 - 113.654076)));
+			shop.setCreateTime(new Date());
+			shop.setDistrict("test");
+			shop.setFullAddress("test");
+			shop.setIsMobile(1);
+			shop.setLastEditTime(new Date());
+			shop.setPhone("test");
+			shop.setProfileImg("test");
+			shop.setProvince("test");
+			shop.setShopMoreInfo("test");
+			shop.setShopName("test");
+			shop.setUserId(14L);
+			shop.setEnableStatus(1);
+			int effectedNum = shopDao.insertShop(shop);
+			assertEquals(1, effectedNum);
+		}
 	}
 
 	@Test

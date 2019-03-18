@@ -1,6 +1,5 @@
 package com.graduation.ss.web.wechat;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,7 +62,9 @@ public class WechatLoginController {
 				modelMap.put("token", token);
 				auth = wechatAuthService.getWechatAuthByOpenId(openId);
 			} catch (Exception e) {
-				e.printStackTrace();
+				modelMap.put("success", false);
+				modelMap.put("errMsg", e.getMessage());
+				return modelMap;
 			}
 		}
 		//如果auth为空，则此用户是第一次登录，因此要将数据写入数据库

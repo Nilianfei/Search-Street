@@ -1,18 +1,67 @@
 // page/myhelp-details/myhelp-details.js
+var app=getApp();
+var util=require("../../util/util.js");
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    helpDetail:[],
+    targetTime:0,
+    clearTimer:false,
+    fulladdress:null,
+    imgUrl: app.globalData.imgUrl,
   },
 
-  /**
+/**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that=this;
+    console.log(options);
+    wx.request({
+      url: app.globalData.serviceUrl+"/SearchStreet/appeal/getappealbyid?appealId="+options.id,
+      data:{
 
+      },
+      method:'GET',
+      success(res){
+        console.log(res.data);
+        if(res.data.success){
+          var appeal=res.data.appeal;
+          var time = util.formatTime(Math.round((appeal.endTime - new Date().getTime())/1000));
+          var address=appeal.province+appeal.city+appeal.district+appeal.fullAddress;
+          console.log(time);
+          for (var i = 0; i < appeal.appealImgList.length; i++) {
+            appeal.appealImgList[i].imgAddr = that.data.imgUrl + appeal.appealImgList[i].imgAddr;
+          }
+          if(appeal.appealMoreInfo!=""){
+            address = address + ' (' + appeal.appealMoreInfo+' )';
+          } 
+          that.setData({
+             helpDetail:appeal,
+             targetTime:time,
+             fulladdress:address
+          }),
+           
+          console.log(that.data.targetTime);
+        }
+      }
+    })
+  },
+
+  /* 图片预览函数 */
+  previewImage: function (e) {
+    var current = e.target.dataset.src;
+    var imgList=[];
+    for (var i = 0; i < this.data.helpDetail.appealImgList.length; i++){
+      imgList.push(this.data.helpDetail.appealImgList[i].imgAddr);
+    }
+    wx.previewImage({
+      current: current,
+      urls: imgList
+    })
   },
 
   /**

@@ -8,20 +8,19 @@
     </view>
   <view class="helpdetails-bd1">
    <view class="title">
-       <text class="helptitle-content">帮忙领票</text>
+       <text class="helptitle-content">{{helpDetail.appealTitle}}</text>
    </view>
    <view class="time">
     <view class="item">
      <image class="helpdetail-icon" src="../../images/时钟.png"></image>
      </view>
-     <view>
-     <i-count-down i-class="timelimit" target="{{targetTime}}" clear-timer="{{clearTimer}}"
-     ></i-count-down>
+     <view class='item'>
+     <text>{{targetTime}}</text>
      </view>
     <view class="item">
      <image class="helpdetail-icon" src="../../images/钱币.png"></image></view>
      <view class="item">
-     <text>80搜币</text>
+     <text>{{helpDetail.souCoin}}搜币</text>
      </view>
    </view>
     </view>
@@ -30,17 +29,19 @@
   <view class="helpdetails-bd2">
    <text class="helpcontent">求助内容</text>
    <view class="details-main">
-     <textarea>可以现在帮忙领下票吗？</textarea>
+     <textarea>{{helpDetail.appealContent}}</textarea>
      <!-- 求助者发布图片的url -->
-     <block wx:for="{{}}" wx:key='id'>
-       <image src="{{item}}"></image>
+     <view class="details-imgs">
+     <block wx:for="{{helpDetail.appealImgList}}" wx:key='id'>
+       <image class="details-img" src="{{item.imgAddr}}" bindtap="previewImage" data-src="{{item.imgAddr}}"></image>
      </block>
+     </view>
     </view>
   </view>
   
   <view class="helpdetails-bd3">
-     <text class="info">联系电话: {{}}</text>
-     <text class="info">详细地址： {{}}</text>
+     <text class="info">联系电话: {{helpDetail.phone}}</text>
+     <text class="info">详细地址：{{fulladdress}} </text>
   </view>
 
   <view class="info-list">

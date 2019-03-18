@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.graduation.ss.dto.LocalAuthExecution;
 import com.graduation.ss.entity.LocalAuth;
-import com.graduation.ss.entity.PersonInfo;
 import com.graduation.ss.enums.LocalAuthStateEnum;
 import com.graduation.ss.service.LocalAuthService;
 import com.graduation.ss.util.HttpServletRequestUtil;
 
 @Controller
 @RequestMapping("/superadmin")
-public class LoginController {
+public class LocalAuthController {
 	@Autowired
 	private LocalAuthService localAuthService;
 
@@ -44,9 +43,14 @@ public class LoginController {
 			if (localAuth != null) {
 				// 若帐号密码正确，则验证用户的身份是否为超级管理员
 				if (localAuth.getPersonInfo().getUserType() == 1) {
-					modelMap.put("success", true);
-					// 登录成功则设置上session信息
-					request.getSession().setAttribute("user", localAuth.getPersonInfo());
+					if (localAuth.getPersonInfo().getEnableStatus() == 1) {
+						modelMap.put("success", true);
+						// 登录成功则设置上session信息
+						request.getSession().setAttribute("user", localAuth.getPersonInfo());
+					} else {
+						modelMap.put("success", false);
+						modelMap.put("errMsg", "非法用户没有权限访问");
+					}
 				} else {
 					modelMap.put("success", false);
 					modelMap.put("errMsg", "非管理员没有权限访问");
@@ -58,25 +62,6 @@ public class LoginController {
 		} else {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", "用户名和密码均不能为空");
-		}
-		return modelMap;
-	}
-
-	@RequestMapping(value = "/maincheck", method = RequestMethod.GET)
-	@ResponseBody
-	private Map<String, Object> mainCheck(HttpServletRequest request) {
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		PersonInfo user = (PersonInfo) request.getSession().getAttribute("user");
-		if (user == null) {
-			modelMap.put("success", false);
-			modelMap.put("errMsg", "没有登录验证");
-		} else {
-			if (user.getUserType() != 1) {
-				modelMap.put("success", false);
-				modelMap.put("errMsg", "非管理员没有权限访问");
-			} else {
-				modelMap.put("success", true);
-			}
 		}
 		return modelMap;
 	}

@@ -101,6 +101,8 @@ previewImage:function (e){
       shelpTimelimit: e.detail.text
     })
     console.log(parseInt(this.data.shelpTimelimit));
+<<<<<<< HEAD
+=======
   },
 
 /* 选择地址改变值函数*/
@@ -109,6 +111,7 @@ previewImage:function (e){
     this.setData({
       region: e.detail.value
     })
+>>>>>>> b6fa5c0892cac033ec64bdb7ca85e8bdae0f08b2
   },
 
   sformSubmit(e) {
@@ -159,7 +162,10 @@ previewImage:function (e){
     var that = this;
     var errorMsg = this.data.errorMsg;
     //console.log(e.detail.text);
+<<<<<<< HEAD
+=======
    // console.log(that.data.shelp_imgs);
+>>>>>>> b6fa5c0892cac033ec64bdb7ca85e8bdae0f08b2
     if (e.detail.value.shelpTitle.length == 0) {
       this.setData({
         errorMsgs: {
@@ -244,13 +250,21 @@ previewImage:function (e){
               data: res.data.appealId
             })
             var date = new Date();
+<<<<<<< HEAD
+            var url = app.globalData.serviceUrl + "/SearchStreet/appeal/uploadimg?appealId=" + res.data.appealId + "&createTime=" + app.timeStamp2String(date) +"&token=" + token;          
+=======
             var url = app.globalData.serviceUrl + "/SearchStreet/appeal/uploadimg?appealId=" + res.data.appealId +"&token=" + token;          
+>>>>>>> b6fa5c0892cac033ec64bdb7ca85e8bdae0f08b2
             //后台保存用户发布帮助的图片的url
             for (var i = 0; i < that.data.shelp_imgs.length; i++) {
               app.uploadAImg({
                 url: url,
                 filePath: that.data.shelp_imgs[i],
+<<<<<<< HEAD
+                fileName: "appealImgList"
+=======
                 fileName: "appealImg"
+>>>>>>> b6fa5c0892cac033ec64bdb7ca85e8bdae0f08b2
               })
             }
             wx.showToast({

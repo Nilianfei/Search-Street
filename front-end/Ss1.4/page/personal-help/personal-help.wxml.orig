@@ -47,9 +47,15 @@
 
        
         <view class='personal-help-view'>
+<<<<<<< HEAD
+         <block wx:if="{{currentTab==1}}">
+          <block wx:for="{{list1}}" wx:key="id">
+             <navigator class="personal-help-item" url="../myhelp-details/myhelp-details">
+=======
          <block wx:for="{{list}}" wx:key='id'>
           <block wx:if="{{(list[index].appealStatus==0||list[index].appealStatus==1)&&currentTab==1}}">
              <view class="personal-help-item" bindtap='toDetails' id='{{item.appealId}}'>
+>>>>>>> b6fa5c0892cac033ec64bdb7ca85e8bdae0f08b2
               
                 <text class="perhelp-title">{{item.appealTitle}}</text>
                  <image class="perhelp-icon" src="../../images/时钟.png"></image>
@@ -65,9 +71,18 @@
                 <button class="perhelp-button-small small1" bindtap="modifyHelp">修改</button>
                </view>
               </view>
+<<<<<<< HEAD
+             </navigator>
+          </block>
+          </block>
+
+            <block wx:if="{{currentTab==3}}">
+            <block wx:for="{{list2}}" wx:key="id">
+=======
              </view>
            </block>
             <block wx:if="{{list[index].appealStatus==3&&currentTab==3}}">
+>>>>>>> b6fa5c0892cac033ec64bdb7ca85e8bdae0f08b2
              <navigator class="personal-help-item" url="">
               
                 <text class="perhelp-title">{{item.appealTitle}}</text>
@@ -78,9 +93,17 @@
              
                 <image class="unuse-icon" src="../../images/订单失效.png"></image>
              </navigator>
+<<<<<<< HEAD
+            </block>
+           </block>
+
+           <block wx:if="{{currentTab==2}}">
+            <block wx:for="{{list3}}" wx:key="id">
+=======
            </block>
 
            <block wx:if="{{currentTab==2&&list[index].appealStatus==2}}">
+>>>>>>> b6fa5c0892cac033ec64bdb7ca85e8bdae0f08b2
              <navigator class="personal-help-item" url="">
               
                 <text class="perhelp-title">{{item.appealTitle}}</text>
@@ -96,7 +119,11 @@
                 <button class="perhelp-button button1"  bindtap="inputReward"><image class="finished-icon" src="../../images/打赏.png"></image>追加打赏</button>
                 </view>
              </navigator>
+<<<<<<< HEAD
+          </block>
+=======
             </block>
+>>>>>>> b6fa5c0892cac033ec64bdb7ca85e8bdae0f08b2
         </block>
        </view>
       </block>

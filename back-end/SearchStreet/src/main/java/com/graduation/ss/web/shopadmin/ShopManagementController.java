@@ -253,7 +253,7 @@ public class ShopManagementController {
 
 	@RequestMapping(value = "/searchnearbyshops", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "返回用户20km内的所有店铺")
+	@ApiOperation(value = "返回用户10km内的所有店铺")
 	@ApiImplicitParams({
 		@ApiImplicitParam(paramType = "query", name = "longitude", value = "用户所在的经度", required = true, dataType = "Float"),
 		@ApiImplicitParam(paramType = "query", name = "latitude", value = "用户所在的纬度", required = true, dataType = "Float"),
@@ -271,7 +271,7 @@ public class ShopManagementController {
 
 		// 先计算查询点的经纬度范围
 		float r = 6371;// 地球半径千米
-		float dis = 20;// 查询范围20km内的所有店铺
+		float dis = 3;// 查询范围10km内的所有店铺
 		float dlng = (float) (2 * Math.asin(Math.sin(dis / (2 * r)) / Math.cos(latitude * Math.PI / 180)));
 		dlng = (float) (dlng * 180 / Math.PI);
 		float dlat = dis / r;

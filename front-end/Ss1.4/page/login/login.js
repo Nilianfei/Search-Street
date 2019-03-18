@@ -24,6 +24,7 @@ Page({
             },
             method: "POST",
             success: res => {
+              console.log(res.data.token);
               wx.setStorage({
                 key: 'token',
                 data: res.data.token
