@@ -1,5 +1,7 @@
 package com.graduation.ss.entity;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class ServiceInfo {
@@ -7,15 +9,24 @@ public class ServiceInfo {
 	/**
 	 * 服务id 主键
 	 */
+	@ApiModelProperty(value = "服务id 主键", required = true)
 	private Long serviceId;
 	/**
-	 * 店铺id Foreign key
+	 * 店铺id 
 	 */
+	@ApiModelProperty(value = "店铺id", required = true)
 	private Long shopId;
+	@ApiModelProperty(value = "服务名称", required = true)
 	private String serviceName;
+	@ApiModelProperty(value = "服务价格", required = true)
 	private Long servicePrice;
+	@ApiModelProperty(value = "优先级", required = true)
+	private Long servicePriority;
+	@ApiModelProperty(value = "服务描述")
 	private String serviceDesc;
+	@ApiModelProperty(value = "服务内容")
 	private String serviceContent;
+	@ApiModelProperty(value = "服务相关图片")
 	private String ServiceImgAddr;
 	public Long getServiceId() {
 		return serviceId;
@@ -58,6 +69,18 @@ public class ServiceInfo {
 	}
 	public void setServiceImgAddr(String serviceImgAddr) {
 		ServiceImgAddr = serviceImgAddr;
+	}
+	public Long getServicePriority() {
+		return servicePriority;
+	}
+	public void setServicePriority(Long servicePriority) {
+		this.servicePriority = servicePriority;
+	}
+	@Override
+	public String toString() {
+		return "ServiceInfo [serviceId=" + serviceId + ", shopId=" + shopId + ", serviceName=" + serviceName
+				+ ", servicePrice=" + servicePrice + ", servicePriority=" + servicePriority + ", serviceDesc="
+				+ serviceDesc + ", serviceContent=" + serviceContent + ", ServiceImgAddr=" + ServiceImgAddr + "]";
 	}
 	
 	

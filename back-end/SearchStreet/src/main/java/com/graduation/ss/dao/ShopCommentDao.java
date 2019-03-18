@@ -27,12 +27,19 @@ public interface ShopCommentDao {
 	 * @return
 	 */
 	public int queryShopCommentCount(@Param("shopCommentCondition")ShopComment shopCommentCondition);
+	
 	/**
 	 * 通过shopCommentId查询评论
 	 * @param shopCommentId
 	 * @return
 	 */
 	public ShopComment queryByShopCommentId(long shopCommentId);
+	/**
+	 * 通过orderId查询评论
+	 * @param orderId
+	 * @return
+	 */
+	public ShopComment queryByOrderId(long orderId);
 	/**
 	 * 通过shop id查询评论
 	 * @param shopId

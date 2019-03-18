@@ -1,10 +1,10 @@
-<!--page/service-list/service-list.wxml-->
+ <!--page/service-list/service-list.wxml-->
 <view class='container'>
 <loading hidden="{{!loading}}">加载中</loading>
 <view class='service-list-view'>
   <i-cell-group>
     <block wx:for="{{list}}" wx:key="id">
-      <i-cell title="{{item.serviceName}}" value="{{item.servicePrice}}" is-link url="..//?id={{item.serviceId}}"></i-cell>
+      <i-cell title="{{item.serviceName}}" value="{{item.servicePrice}}" is-link url="../service/service?id={{item.serviceId}}"></i-cell>
     </block>
   </i-cell-group>
 </view>

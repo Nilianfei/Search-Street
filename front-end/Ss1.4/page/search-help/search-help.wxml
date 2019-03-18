@@ -22,10 +22,10 @@
     <form bindsubmit="formSubmit" bindreset="formReset">
      <text class="shelp-title">求助标题</text>
       <input class="shelp-titletext" name="shelpTitle"></input>
-       <view class="show_error" wx:if="{{errorMsgs.title_error}}">errorMsgs.title_error</view>
+       <view class="show_error" wx:if="{{errorMsgs.title_error}}">{{errorMsgs.title_error}}</view>
      <text class="shelp-title">求助内容</text>
       <textarea class="shelp-titletext shelp-content" name="shelpContent"></textarea> 
-       <view class="show_error" wx:if="{{errorMsgs.content_error}}">errorMsgs.content_error</view>
+       <view class="show_error" wx:if="{{errorMsgs.content_error}}">{{errorMsgs.content_error}}</view>
      <image class="shelp-cost" src="../../images/钱币.png"></image>
       <selector selectData="{{cost}}" bind:myget='getCost'></selector>
       <text class="shelp-costtext">搜币</text>
@@ -33,7 +33,7 @@
       <selector selectData="{{timelimit}}" bind:myget='getTime'></selector>
       <text class="shelp-costtext">有效</text>
      <input class="shelp-phone" type="number" placeholder="请输入手机号" name="shelpPhone"></input>
-     <view class="show_error" wx:if="{{errorMsgs.phone_error}}">errorMsgs.phone_error</view>
+     <view class="show_error" wx:if="{{errorMsgs.phone_error}}">{{errorMsgs.phone_error}}</view>
      <view class="store-locat">帮帮定位</view>
       <view class="section">
        <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">

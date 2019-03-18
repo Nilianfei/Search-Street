@@ -1,5 +1,6 @@
 package com.graduation.ss.web.service;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -37,7 +38,6 @@ import com.graduation.ss.entity.ServiceImg;
 import com.graduation.ss.entity.WechatAuth;
 import com.graduation.ss.enums.ServiceStateEnum;
 import com.graduation.ss.exceptions.ServiceOperationException;
-import com.graduation.ss.exceptions.ShopOperationException;
 import com.graduation.ss.service.SService;
 import com.graduation.ss.service.WechatAuthService;
 import com.graduation.ss.util.HttpServletRequestUtil;
@@ -45,6 +45,7 @@ import com.graduation.ss.util.JWT;
 
 @RestController
 @RequestMapping("/service")
+@Api(value = "ServiceController|对服务操作的控制器")
 public class ServiceController {
 	@Autowired
 	private SService sService;
@@ -55,6 +56,11 @@ public class ServiceController {
 	//通过店铺id获取服务列表 分页 
 	@RequestMapping(value = "/getservicelistbyshopid", method = RequestMethod.GET)
 	@ResponseBody
+	@ApiOperation(value = "根据shopID获取其所有服务信息（分页）")
+	@ApiImplicitParams({
+		@ApiImplicitParam(paramType = "query", name = "shopId", value = "店铺ID", required = true, dataType = "Long", example = "2"),
+			@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = true, dataType = "int"),
+			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的服务数目", required = true, dataType = "int") })
 	private Map<String, Object> getServiceListByShopId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
@@ -79,6 +85,11 @@ public class ServiceController {
 	//根据查询条件获取服务列表 分页
 	@RequestMapping(value = "/listService", method = RequestMethod.GET)
 	@ResponseBody
+	@ApiOperation(value = "根据查询条件获取其所有服务信息（分页）")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = true, dataType = "int"),
+			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的服务数目", required = true, dataType = "int"),
+			@ApiImplicitParam(paramType = "query", name = "serviceName", value = "服务名称", required = true, dataType = "String", example = "测试service店铺")})
 	private Map<String, Object> listService(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		ServiceExecution se = null;
@@ -129,13 +140,17 @@ public class ServiceController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/searchservicebyid", method = RequestMethod.POST)
+	@RequestMapping(value = "/searchservicebyid", method = RequestMethod.GET)
 	@ResponseBody
+	@ApiOperation(value = "根据serviceId获取该服务信息")
+	@ApiImplicitParam(paramType = "query", name = "serviceId", value = "服务ID", required = true, dataType = "String", example = "3")
 	private Map<String, Object> searchServiceById(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		ServiceInfo service = null;
 		// 从请求中获取serviceId
-		long serviceId = HttpServletRequestUtil.getLong(request, "serviceId");
+		long serviceId = Long.valueOf(HttpServletRequestUtil.getLong(request, "serviceId"));
+		Date date=new Date();
+		System.out.println(date.toString()+" serviceId:"+serviceId);
 		if (serviceId > 0) {
 			try {
 				// 根据Id获取服务实例
@@ -169,25 +184,18 @@ public class ServiceController {
 	//添加服务
 	@RequestMapping(value = "/addservice", method = RequestMethod.POST)
 	@ResponseBody
-	private Map<String, Object> addService(String serviceStr, HttpServletRequest request) {
+	@ApiOperation(value = "添加服务信息")
+	private Map<String, Object> addService(
+			@RequestBody @ApiParam(name = "ServiceInfo", value = "传入json格式", required = true) ServiceInfo serviceInfo, HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		ObjectMapper mapper = new ObjectMapper();
-		ServiceInfo serviceInfo = null;
-		try {
-			// 获取前端传递过来的service json字符串，将其转换成service实例
-			serviceInfo = mapper.readValue(serviceStr, ServiceInfo.class);
-		} catch (Exception e) {
-			modelMap.put("success", false);
-			modelMap.put("errMsg", e.toString());
-			return modelMap;
-		}
 		// 空值判断
-		if (serviceInfo != null && serviceInfo.getServiceId() != null) {
+		if (serviceInfo != null ) {
 			try {
 				//添加服务
 				ServiceExecution ae = sService.addService(serviceInfo);
 				if (ae.getState() == ServiceStateEnum.SUCCESS.getState()) {
 					modelMap.put("success", true);
+					modelMap.put("serviceId", serviceInfo.getServiceId());
 				} else {
 					modelMap.put("success", false);
 					modelMap.put("errMsg", ae.getStateInfo());
@@ -207,24 +215,17 @@ public class ServiceController {
 	//更新服务
 		@RequestMapping(value = "/modifyservice", method = RequestMethod.POST)
 		@ResponseBody
-		private Map<String, Object> modifyService(String serviceStr, HttpServletRequest request) {
+		@ApiOperation(value = "修改服务信息（不修改图片）")
+		private Map<String, Object> modifyService(
+				@RequestBody @ApiParam(name = "ServiceInfo", value = "传入json格式,要传serviceId", required = true) ServiceInfo serviceInfo, HttpServletRequest request) {
 			Map<String, Object> modelMap = new HashMap<String, Object>();
-			ObjectMapper mapper = new ObjectMapper();
-			ServiceInfo serviceInfo = null;
-			try {
-				// 获取前端传递过来的service json字符串，将其转换成service实例
-				serviceInfo = mapper.readValue(serviceStr, ServiceInfo.class);
-			} catch (Exception e) {
-				modelMap.put("success", false);
-				modelMap.put("errMsg", e.toString());
-				return modelMap;
-			}
 			// 空值判断
 			if (serviceInfo != null && serviceInfo.getServiceId() != null) {
 				try {
 					//更新服务
 					ServiceExecution ae = sService.modifyService(serviceInfo);
 					if (ae.getState() == ServiceStateEnum.SUCCESS.getState()) {
+						modelMap.put("serviceId", serviceInfo.getServiceId());
 						modelMap.put("success", true);
 					} else {
 						modelMap.put("success", false);
@@ -240,6 +241,40 @@ public class ServiceController {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", "请输入服务信息");
 			}
+			System.out.println(serviceInfo.toString());
+			return modelMap;
+		}
+		
+
+		//删除服务
+		@RequestMapping(value = "/deleteservice", method = RequestMethod.POST)
+		@ResponseBody
+		@ApiOperation(value = "删除服务信息")
+		@ApiImplicitParam(paramType = "query", name = "serviceId", value = "服务ID", required = true, dataType = "Long", example = "3")
+		private Map<String, Object> deleteService(HttpServletRequest request) {
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			long serviceId = HttpServletRequestUtil.getLong(request, "serviceId");
+			// 空值判断
+			if (serviceId>0) {
+				try {
+					//更新服务
+					ServiceExecution ae = sService.deleteService(serviceId);
+					if (ae.getState() == ServiceStateEnum.SUCCESS.getState()) {
+						modelMap.put("success", true);
+					} else {
+						modelMap.put("success", false);
+						modelMap.put("errMsg", ae.getStateInfo());
+					}
+				} catch (Exception e) {
+					modelMap.put("success", false);
+					modelMap.put("errMsg", e.toString());
+					return modelMap;
+				}
+
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", "错误的serveId");
+			}
 			return modelMap;
 		}
 		private void handleImage(HttpServletRequest request, ImageHolder serviceImg) throws IOException {
@@ -251,9 +286,13 @@ public class ServiceController {
 			}
 			
 		}
-
 		@RequestMapping(value = "/uploadimg", method = RequestMethod.POST)
 		@ResponseBody
+		@ApiOperation(value = "上传服务相关图片")
+		@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "serviceId", value = "服务ID", required = true, dataType = "Long", example = "3"),
+			@ApiImplicitParam(paramType = "query", name = "createTime", value = "图片创建时间", required = true, dataType = "Date")
+		})
 		private Map<String, Object> uploadImg(HttpServletRequest request) {
 			Map<String, Object> modelMap = new HashMap<String, Object>();
 			// 1.接收并转化相应的参数，包括服务id以及图片信息
@@ -270,6 +309,7 @@ public class ServiceController {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", e.getMessage());
 				System.out.println(e.getMessage());
+				System.out.println(createTime);
 				return modelMap;
 			}
 			// 2.上传服务图片

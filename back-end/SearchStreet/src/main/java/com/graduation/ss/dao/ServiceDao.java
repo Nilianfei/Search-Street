@@ -59,5 +59,5 @@ public interface ServiceDao{
 	 * @param serviceInfo
 	 * @return
 	 */
-	public int deleteService(ServiceInfo serviceInfo);
+	public int deleteService(long serviceId);
 }

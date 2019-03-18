@@ -100,9 +100,7 @@ public class SServiceTest {
 	@Test
 	@Ignore
 	public void testDeleteService() throws ServiceOperationException {
-		ServiceInfo service = new ServiceInfo();
-        service.setServiceId(2L);
-		ServiceExecution se = sService.deleteService(service);
+		ServiceExecution se = sService.deleteService(2L);
 		assertEquals(ServiceStateEnum.SUCCESS.getState(), se.getState());
 	}
 }

@@ -114,7 +114,7 @@ public class SServiceImpl implements SService {
 		}
 		return new ServiceExecution(ServiceStateEnum.SUCCESS, service);
 	}
-
+	@Transactional
 	@Override
 	public ServiceExecution modifyService(ServiceInfo service) throws ServiceOperationException{
 		// 空值判断
@@ -176,23 +176,26 @@ public class SServiceImpl implements SService {
 		return new ServiceExecution(ServiceStateEnum.SUCCESS, serviceImg);
 }
 
-
-	public ServiceExecution deleteService(ServiceInfo service) throws ServiceOperationException
+	@Override
+	public ServiceExecution deleteService(long serviceId) throws ServiceOperationException
 	{
-		// 空值判断
-				if (service == null) {
-					return new ServiceExecution(ServiceStateEnum.NULL_Service);
+				if(serviceId<=0)
+				{
+					return new ServiceExecution(ServiceStateEnum.NULL_SeriveId);
 				}
 				try {
 					// 删除服务信息
-					int effectedNum = serviceDao.deleteService(service);
+					int effectedNum = serviceDao.deleteService(serviceId);
+					
 					if (effectedNum <= 0) {
-						throw new ServiceOperationException("服务删除失败");
+						throw new ServiceOperationException("服务删除失败");					
 					}
+					ServiceImg serviceImg=serviceImgDao.getServiceImg(serviceId);
+					deleteServiceImg(serviceImg);
 				} catch (Exception e) {
 					throw new ServiceOperationException("deleteService error:" + e.getMessage());
 				}
-				return new ServiceExecution(ServiceStateEnum.SUCCESS, service);
+				return new ServiceExecution(ServiceStateEnum.SUCCESS,serviceDao.queryByServiceId(serviceId));
 	}
 
 

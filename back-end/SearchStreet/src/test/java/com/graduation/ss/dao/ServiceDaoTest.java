@@ -55,6 +55,7 @@ public class ServiceDaoTest {
 		serviceInfo.setShopId(6L);
 		serviceInfo.setServiceName("test");
 		serviceInfo.setServicePrice(2L);
+		serviceInfo.setServicePriority(4L);
 		serviceInfo.setServiceDesc("test");
 		serviceInfo.setServiceContent("test");
 		serviceInfo.setServiceImgAddr("test.png");
@@ -69,6 +70,7 @@ public class ServiceDaoTest {
 		serviceInfo2.setShopId(5L);
 		serviceInfo2.setServiceName("2测试服务名称");
 		serviceInfo2.setServicePrice(1L);
+		serviceInfo2.setServicePriority(2L);
 		serviceInfo2.setServiceDesc("2测试服务名称");
 		serviceInfo2.setServiceContent("2测试服务名称");
 		serviceInfo2.setServiceImgAddr("test.png");
@@ -77,6 +79,7 @@ public class ServiceDaoTest {
 		serviceInfo3.setShopId(6L);
 		serviceInfo3.setServiceName("A测试服务名称");
 		serviceInfo3.setServicePrice(1L);
+		serviceInfo3.setServicePriority(2L);
 		serviceInfo3.setServiceDesc("A测试服务名称");
 		serviceInfo3.setServiceContent("A测试服务名称");
 		serviceInfo3.setServiceImgAddr("test.png");
@@ -85,6 +88,7 @@ public class ServiceDaoTest {
 		serviceInfo4.setShopId(7L);
 		serviceInfo4.setServiceName("aa测试服务名称");
 		serviceInfo4.setServicePrice(1L);
+		serviceInfo4.setServicePriority(1L);
 		serviceInfo4.setServiceDesc("aa测试服务名称");
 		serviceInfo4.setServiceContent("aa测试服务名称");
 		serviceInfo4.setServiceImgAddr("test.png");
@@ -114,9 +118,7 @@ public class ServiceDaoTest {
 	@Test
 	@Ignore
 	public void testDeleteService() {
-		ServiceInfo serviceInfo = new ServiceInfo();
-		serviceInfo.setServiceId(2L);
-		int effectedNum = serviceDao.deleteService(serviceInfo);
+		int effectedNum = serviceDao.deleteService(2L);
 		assertEquals(1, effectedNum);
 	}
 }

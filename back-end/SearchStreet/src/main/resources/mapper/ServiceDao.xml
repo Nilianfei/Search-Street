@@ -5,9 +5,9 @@
 <mapper namespace="com.graduation.ss.dao.ServiceDao">
 	<select id="queryServiceList" resultType="com.graduation.ss.entity.ServiceInfo">
 		SELECT
-		service_id,shop_id,service_name,service_price,service_desc,service_content,service_img_addr
+		service_id,shop_id,service_name,service_price,service_priority,service_desc,service_content,service_img_addr
 		FROM
-		tb_service 
+		tb_service  ORDER BY ${service_price} ${DESC} 
 		<where>
 			<if test="serviceCondition.serviceName != null">
 				and service_name like '%${serviceCondition.serviceName}%'
@@ -27,7 +27,7 @@
 		SELECT
 		count(1)
 		FROM
-		tb_service t
+		tb_service t ORDER BY ${service_price} ${DESC} 
 		<where>
 				<if test="serviceCondition.serviceName != null">
 				and service_name like '%${serviceCondition.serviceName}%'
@@ -46,17 +46,17 @@
 		useGeneratedKeys="true" keyProperty="serviceId" keyColumn="service_id">
 		INSERT
 		INTO
-		tb_service(shop_id,service_name,service_price,
+		tb_service(shop_id,service_name,service_price,service_priority,
 		service_desc,service_content,service_img_addr)
 		VALUES
-		(#{shopId},#{serviceName},#{servicePrice},
+		(#{shopId},#{serviceName},#{servicePrice},#{servicePriority},
 		#{serviceDesc},#{serviceContent},#{serviceImgAddr})
 	</insert>
 	<insert id="insertServiceInfo" parameterType="java.util.List"
 		useGeneratedKeys="true" keyProperty="serviceId" keyColumn="service_id">
 		INSERT
 		INTO 
-		tb_service(shop_id,service_name,service_price,service_desc,service_content,service_img_addr)
+		tb_service(shop_id,service_name,service_price,service_priority,service_desc,service_content,service_img_addr)
 		VALUES
 		<foreach collection="list" item="serviceInfoDTO" index="index"
 			separator=",">
@@ -64,6 +64,7 @@
 			#{serviceInfoDTO.shopId},
 			#{serviceInfoDTO.serviceName},
 			#{serviceInfoDTO.servicePrice},
+			#{serviceInfoDTO.servicePriority},
 			#{serviceInfoDTO.serviceDesc},
 			#{serviceInfoDTO.serviceContent},
 			#{serviceInfoDTO.serviceImgAddr}
@@ -77,8 +78,9 @@
             <if test="shopId != null">shop_id=#{shopId},</if>
 			<if test="serviceName != null">service_name=#{serviceName},</if>
 			<if test="servicePrice != null">service_price=#{servicePrice},</if>
+			<if test="servicePriority != null">service_priority=#{servicePriority},</if>
 			<if test="serviceDesc != null">service_desc=#{serviceDesc},</if>
-			<if test="serviceContent!=null">service_content=#{serviceContent}</if>
+			<if test="serviceContent!=null">service_content=#{serviceContent},</if>
 			<if test="serviceImgAddr!=null">service_img_addr=#{serviceImgAddr}</if>
 		</set>
 		where service_id=#{serviceId}
@@ -88,7 +90,7 @@
     </delete>
 	<select id="queryByServiceId" resultType="com.graduation.ss.entity.ServiceInfo" parameterType="Long">
 		SELECT
-		service_id,shop_id,service_name,service_price,service_desc,service_content,service_img_addr
+		service_id,shop_id,service_name,service_price,service_priority,service_desc,service_content,service_img_addr
 		FROM
 		tb_service 
 		WHERE

@@ -30,24 +30,26 @@
     
      <block wx:if="{{current=='tab2'}}">
        <view class="perhelp-bd">
-        <view class="perhelp-item1">
+     
+       <view class='perhelp-item1 {{currentTab == 1 ? "active" : ""}}' data-current="1" bindtap='switchTab'>
          <image class="service-img1" src="../../images/进行中.png"></image>
          <text class="service-text1">进行中</text>
         </view>
-        <view class="perhelp-item1">
-         <image class="service-img1" src="../../images/失效.png"></image>
-         <text class="service-text1">失效单</text>
+        <view class='perhelp-item1 {{currentTab == 2 ? "active" : ""}}' data-current="2" bindtap='switchTab'>
+         <image class="service-img1" src="../../images/已完成.png"></image>
+         <text class="service-text1">已完成</text>
         </view>
-        <view class="perhelp-item1">
-          <image class="service-img1" src="../../images/已完成.png"></image>
-          <text class="service-text1">已完成</text>
+        <view class='perhelp-item1 {{currentTab == 3? "active" : ""}}' data-current="3" bindtap='switchTab'>
+          <image class="service-img1" src="../../images/失效.png"></image>
+          <text class="service-text1">失效单</text>
         </view>
        </view>
 
-
+       
         <view class='personal-help-view'>
-          <block wx:for="{{list}}" wx:key="id">
-             <navigator class="personal-help-item" url="">
+         <block wx:if="{{currentTab==1}}">
+          <block wx:for="{{list1}}" wx:key="id">
+             <navigator class="personal-help-item" url="../myhelp-details/myhelp-details">
               
                 <text class="perhelp-title">{{item.shelpTitle}}</text>
                  <image class="perhelp-icon" src="../../images/时钟.png"></image>
@@ -64,6 +66,11 @@
                </view>
               </view>
              </navigator>
+          </block>
+          </block>
+
+            <block wx:if="{{currentTab==3}}">
+            <block wx:for="{{list2}}" wx:key="id">
              <navigator class="personal-help-item" url="">
               
                 <text class="perhelp-title">{{item.shelpTitle}}</text>
@@ -74,6 +81,11 @@
              
                 <image class="unuse-icon" src="../../images/订单失效.png"></image>
              </navigator>
+            </block>
+           </block>
+
+           <block wx:if="{{currentTab==2}}">
+            <block wx:for="{{list3}}" wx:key="id">
              <navigator class="personal-help-item" url="">
               
                 <text class="perhelp-title">{{item.shelpTitle}}</text>
@@ -90,8 +102,10 @@
                 </view>
              </navigator>
           </block>
+        </block>
        </view>
       </block>
+
   <view class='toast-box' hidden='{{!ifName}}'>
     <view class='toastbg'></view>
       <view class='showToast'>

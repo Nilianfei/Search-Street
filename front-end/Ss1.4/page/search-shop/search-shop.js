@@ -1,5 +1,7 @@
-// page/search-shop/search-shop.js
+ // page/search-shop/search-shop.js
 var app=getApp();
+var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
 
 Page({
 
@@ -17,11 +19,12 @@ Page({
     markers: [],
     openSearch:false,
     openShopInfo: 0,
-    shopName: '',
-    shopAddress:'',
+    searchShopName: '',
+    searchShopAddress:'',
+    imgUrl: app.globalData.imgUrl,
     shopInfoPic:'/images/search_buck.png',
-    shopInfoName:'华师西三小卖部',
-    shopInfoAddress:'中山大道西55号华南师范大学西三学生公寓',
+    shopInfoName:'',
+    shopInfoAddress:'',
   },
 
   /**
@@ -29,6 +32,11 @@ Page({
    */
   onLoad: function () {
     var that = this;
+    //实体化qqmap(API)核心类
+    qqmapsdk = new QQMapWX({
+      key: 'GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM'
+    });
+
     console.log("初始化地图");
     wx.getSetting({
       success(res) {
@@ -113,6 +121,7 @@ Page({
       success: (res) => {
         if (res.data.success) {
           this.setMarkers(res.data.shopList);
+          console.log(res.data.shopList);
           this.setData({
             maxlat: res.data.maxlat,
             maxlng: res.data.maxlng,
@@ -133,21 +142,29 @@ Page({
   },
 
   setMarkers: function (shopList) {
+    var that=this;
     var _markers=[];
+    var shopProfileImg='';
     for (var i = 0; i < shopList.length; i++){
-      _markers[i] = {
-        id: shopList[i].shopId,
+      //markers的计数从1开始，方便控制shopInfo的打开，openShopInfo默认为0(关闭)
+      //marker的id不能使用shopId，shopId与markerId不是一一对应的关系
+      if(shopList[i].profileImg!=null){
+        shopProfileImg=that.data.imgUrl + shopList[i].profileImg;
+      }
+      else{
+        shopProfileImg='/images/search_buck.png';
+      }
+
+      _markers[i+1] = {
+        id: i+1,
+        shopId: shopList[i].shopId,
         latitude: shopList[i].latitude,
         longitude: shopList[i].longitude,
         name: shopList[i].shopName,
-
-        callout: {
-          content: shopList[i].shopName,
-          boderRadius: 1000,
-          color: "#ff7700",
-          display: 'BYCLICK'
-        }
+        profileImg: shopProfileImg,
+        address: shopList[i].city + shopList[i].district + shopList[i].fullAddress,
       }
+      
     }
     this.setData({
       markers:_markers
@@ -179,11 +196,6 @@ Page({
     
   },
 
-  //地图control点击事件
-  bindcontroltap: function (e) {
-    
-  },
-
   //查看订单
   checkOrder: function(e){
     /* 订单url填入这里！！！
@@ -200,24 +212,31 @@ Page({
     let markerId = e.markerId;
     let currentMarker = _markers[markerId];
 
+    console.log(markerId);
+    console.log(currentMarker);
+
     this.setData({
-      // polyline: [{
-      //   points: [{
-      //     longitude: this.data.longitude,
-      //     latitude: this.data.latitude
-      //   },
-      //   {
-      //     longitude: currentMarker.longitude,
-      //     latitude: currentMarker.latitude
-      //   }],
-      //   color: "#ff7700",
-      //   width: 1,
-      //   dottedLine: true
-      // }],
+      polyline: [{
+        points: [{
+          longitude: this.data.longitude,
+          latitude: this.data.latitude
+        },
+        {
+          longitude: currentMarker.longitude,
+          latitude: currentMarker.latitude
+        }],
+        color: "#ff7700",
+        width: 1,
+        dottedLine: true
+      }],
       scale: 18,
+      shopInfoName: currentMarker.name,
       openShopInfo: markerId,
-      shopName: currentMarker.name    //这里有bug！！！
+      shopInfoPic: currentMarker.profileImg,
+      shopInfoAddress: currentMarker.address,
     })
+
+    console.log(currentMarker.address);
   },
 
   //地图拖动事件
@@ -243,21 +262,93 @@ Page({
   //搜索框写入商铺名
   inputShopName: function(e){
     this.setData({
-      shopName: e.detail.detail.value
+      searchShopName: e.detail.detail.value
     });
+  },
+
+  inputShopAddress: function(e){
+    this.setData({
+      searchShopAddress: e.detail.detail.value
+    })
+  },
+
+/*
+  //getSuggest数据回填
+  backfill: function (e) {
+    var id = e.currentTarget.id;
+    for (var i = 0; i < this.data.suggestion.length; i++) {
+      if (i == id) {
+        this.setData({
+          backfill: this.data.suggestion[i].title
+        });
+      }
+    }
   },
 
   //搜索框写入商铺地址
   inputShopAddress: function (e) {
-    this.setData({
-       shopAddress: e.detail.detail.value
+    var that=this;
+    //调用关键词提示接口
+    qqmapsdk.getSuggestion({
+      keyword: e.detail.detail.value,
+      success: function(res) {
+        console.log(res);
+        var sug= [];
+        for (var i = 0; i < res.data.length; ++i) {
+          sug.push({
+            title: res.data[i].title,
+            id: res.data[i].id,
+            addr: res.data[i].address,
+            city: res.data[i].city,
+            district: res.data[i].district,
+            latitude: res.data[i].location.lat,
+            longitude: res.data[i].location.lng
+          });
+        }
+        that.setData({
+          suggestion: sug
+        })
+      },
+      fail: function(error) {
+        console.log("error");
+      },
+      complete: function(res) {
+        console.log(res);
+      }
     })
   },
-
+*/
   //按商铺名、商铺地址搜索
   buttonClickSearch: function(e){
-    console.log(this.data.shopName);
-    console.log(this.data.shopAddress);
+    console.log(this.data.searchShopName);
+    console.log(this.data.searchShopAddress);
+    var _shopName=this.data.searchShopName;
+    var _address=this.data.searchShopAddress;
+    var that=this;
+    if(_address)
+    {
+      qqmapsdk.geocoder({
+        address: _address,
+        success: function (res) {
+          //成功后的回调
+          console.log(res);
+          var res = res.result;
+          var _latitude = res.location.lat;
+          var _longitude = res.location.lng;
+          this.setData({
+            longitude: _longitude,
+            latitude: _latitude
+          })
+        },
+        fail: function (error) {
+          console.error(error);
+        },
+        complete: function (res) {
+          console.log(res);
+        }
+      })
+
+    }
   },
 
   buttonClickBack: function(e){
@@ -271,8 +362,9 @@ Page({
       console.log('impossible click this hh.');
     }
   },
-
-  //openInfo
+  
+  /*
+  //openInfo(测试功能)
   openInfo: function(e){
     var that = this;
     if(that.data.openShopInfo){
@@ -286,6 +378,7 @@ Page({
       })
     }
   },
+  */
 
   //关闭shopInfo
   shopInfoBack: function(e){

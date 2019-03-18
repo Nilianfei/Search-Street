@@ -5,7 +5,7 @@
 <mapper namespace="com.graduation.ss.dao.ShopCommentDao">
 	<select id="queryShopCommentList" resultType="com.graduation.ss.entity.ShopComment">
 		SELECT
-		shop_comment_id,shop_id,user_id,comment_content,service_rating,star_rating
+		shop_comment_id,shop_id,order_id,user_id,comment_content,service_rating,star_rating
 		FROM
 		tb_shop_comment
 		<where>
@@ -36,27 +36,32 @@
 				test="shopCommentCondition.shopId != null">
 				and shop_id = #{shopCommentCondition.shopId}
 			</if> 
+			<if
+				test="shopCommentCondition.commentContent != null">
+				and comment_content like '%${shopCommentCondition.commentContent}%'
+			</if> 
 		</where>
 	</select>
 	<insert id="insertShopComment" parameterType="com.graduation.ss.entity.ShopComment"
 		useGeneratedKeys="true" keyProperty="shopCommentId" keyColumn="shop_comment_id">
 		INSERT
 		INTO
-		tb_shop_comment(shop_id,user_id,comment_content,service_rating,star_rating)
+		tb_shop_comment(shop_id,order_id,user_id,comment_content,service_rating,star_rating)
 		VALUES
-		(#{shopId},#{userId},#{commentContent},
+		(#{shopId},#{orderId},#{userId},#{commentContent},
 		#{serviceRating},#{starRating})
 	</insert>
 	<insert id="insertShopCommentInfo" parameterType="java.util.List"
 		useGeneratedKeys="true" keyProperty="shopCommentId" keyColumn="shop_comment_id">
 		INSERT
 		INTO 
-		tb_shop_comment(shop_id,user_id,comment_content,service_rating,star_rating)
+		tb_shop_comment(shop_id,order_id,user_id,comment_content,service_rating,star_rating)
 		VALUES
 		<foreach collection="list" item="shopCommentInfoDTO" index="index"
 			separator=",">
 			(
 			#{shopCommentInfoDTO.shopId},
+			#{shopCommentInfoDTO.orderId},
 			#{shopCommentInfoDTO.userId},
 			#{shopCommentInfoDTO.commentContent},
 			#{shopCommentInfoDTO.serviceRating},
@@ -69,6 +74,7 @@
 		update tb_shop_comment
 		<set>
             <if test="shopId != null">shop_id=#{shopId},</if>
+            <if test="orderId != null">order_id=#{orderId},</if>
 			<if test="userId != null">user_id=#{userId},</if>
 			<if test="commentContent != null">comment_content=#{commentContent},</if>
 			<if test="serviceRating != null">service_rating=#{serviceRating},</if>
@@ -81,10 +87,18 @@
     </delete>
 	<select id="queryByShopCommentId" resultType="com.graduation.ss.entity.ShopComment" parameterType="Long">
 		SELECT
-		shop_id,user_id,comment_content,service_rating,star_rating
+		shop_id,order_id,user_id,comment_content,service_rating,star_rating
 		FROM
 		tb_shop_comment
 		WHERE
 		shop_comment_id=#{shopCommentId}
+	</select>
+	<select id="queryByOrderId" resultType="com.graduation.ss.entity.ShopComment" parameterType="Long">
+		SELECT
+		shop_id,order_id,user_id,comment_content,service_rating,star_rating
+		FROM
+		tb_shop_comment
+		WHERE
+		order_id=#{orderId}
 	</select>
 </mapper>

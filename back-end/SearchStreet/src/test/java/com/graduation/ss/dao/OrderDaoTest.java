@@ -28,7 +28,7 @@ public class OrderDaoTest {
 	private OrderDao orderDao;
 	
 	@Test
-	//@Ignore
+	@Ignore
 	public void testQueryOrderListAndCount() {
 		OrderInfo orderCondition2 = new OrderInfo();
 
@@ -170,7 +170,7 @@ public class OrderDaoTest {
 	public void testDeleteOrder() {
 		OrderInfo orderInfo = new OrderInfo();
 		orderInfo.setOrderId(2L);
-		int effectedNum = orderDao.deleteOrder(orderInfo);
+		int effectedNum = orderDao.deleteOrder(2L);
 		assertEquals(1, effectedNum);
 	}
 }

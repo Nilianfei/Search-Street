@@ -1,11 +1,17 @@
 package com.graduation.ss.entity;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 public class ServiceImg {
+	@ApiModelProperty(value = "服务图片Id", required = true)
 	private Long serviceImgId;
+	@ApiModelProperty(value = "图片地址", required = true)
 	private String imgAddr;
+	@ApiModelProperty(value = "图片上传时间")
 	private Date createTime;
+	@ApiModelProperty(value = "服务Id", required = true)
 	private Long serviceId;
 	public Long getServiceImgId() {
 		return serviceImgId;

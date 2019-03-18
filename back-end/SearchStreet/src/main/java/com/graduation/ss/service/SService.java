@@ -71,5 +71,5 @@ public interface SService {
 	 * @return
 	 * @throws ServiceOperationException
 	 */
-	public ServiceExecution deleteService(ServiceInfo service) throws ServiceOperationException;
+	public ServiceExecution deleteService(long serviceId) throws ServiceOperationException;
 }

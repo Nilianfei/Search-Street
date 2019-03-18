@@ -1,3 +1,5 @@
+var util=require('../../util/util.js');
+
 var app=getApp();
 var shelp_text='添加关于求助的图片会有更多人愿意帮助你哦'
 // 引入SDK核心类
@@ -37,7 +39,7 @@ Page({
       latitude: 23.099994,
       longitude: 113.324520
     },
-    errMsg:'此为必填选项哦',
+    errorMsg:'此为必填选项哦',
     errorMsgs: {
       title_error: null,
       content_error: null,
@@ -98,6 +100,7 @@ previewImage:function (e){
     this.setData({
       shelpTimelimit: e.detail.text
     })
+    console.log(parseInt(this.data.shelpTimelimit));
   },
 
   sformSubmit(e) {
@@ -147,6 +150,7 @@ previewImage:function (e){
   formSubmit: function (e) {
     var that = this;
     var errorMsg = this.data.errorMsg;
+    //console.log(e.detail.text);
     if (e.detail.value.shelpTitle.length == 0) {
       this.setData({
         errorMsgs: {
@@ -159,12 +163,22 @@ previewImage:function (e){
           content_error: errorMsg
         }
       })
-    } else if (e.detail.text) {                    /*获取用户当前钱包中搜币的数目，与之比较*/
+    } else if (that.data.shelpCost==null) {                    
        wx.showModal({
          title: '提示',
-         content: '您当前搜币不足，请前往充值',
+         content: '请您填写搜币值',
        })
-    } else if (e.detail.value.shelpPhone.length == 0) {
+    } else if (that.data.shelpCost==null) {   /*获取用户当前钱包中搜币的数目，与之比较*/
+      wx.showModal({
+        title: '提示',
+        content: '您的搜币不足，请前往充值',
+      })
+     } else if(that.data.shelpTimelimit==null){
+      wx.showModal({
+        title: '提示',
+        content: '请您填写有效时间',
+      })
+     }else if (e.detail.value.shelpPhone.length == 0) {
       this.setData({
         errorMsgs: {
           phone_error: errorMsg
@@ -177,8 +191,15 @@ previewImage:function (e){
       })
     } else {
       console.log('form发生了submit事件，携带数据为：', e.detail.value);
-      console.log(that.data.shelpCost);
-      //var that = this;
+      var date = new Date();
+      //获取当前时间戳
+      var timestamp = Date.parse(new Date());
+      timestamp = timestamp / 1000;
+      console.log("当前时间戳为：" + timestamp);
+      //获取结束时间戳
+      var end_timetamp = timestamp + parseInt(this.data.shelpTimelimit) * 60;
+      var n_to = end_timetamp * 1000;
+      var end_date = new Date(n_to);
       var token = null;
       try {
         const value = wx.getStorageSync('token')
@@ -189,36 +210,38 @@ previewImage:function (e){
         console.log("error");
       }
       wx.request({
-        url: app.globalData.serviceUrl + "/SearchStreet/" + token,      //完整的发布帮助的url
+        url: app.globalData.serviceUrl + "/SearchStreet/appeal/registerappeal?token=" + token,      //完整的发布帮助的url
         data: {
-          shelpTitle: e.detail.value.shelpTitle,
-          shelpContent:e.detail.value.shelpContent,
-          shelpPhone: e.detail.value.shelpPhone,
-          shelpCost:that.data.shelpCost,
-          shelpTimelimit:that.data.shelpTimelimit,
+          appealTitle: e.detail.value.shelpTitle,
+          appealContent:e.detail.value.shelpContent,
+          phone: e.detail.value.shelpPhone,
+          souCoin:that.data.shelpCost,
+          startTime:date,
+          endTime:end_date,
           province: that.data.region[0],
           city: that.data.region[1],
           district: that.data.region[2],
           fullAddress: e.detail.value.fullAddress,
           longitude: that.data.longitude,
           latitude: that.data.latitude,
-          shelpMoreInfo: e.detail.value.shelpMoreInfo,
+          appealMoreInfo: e.detail.value.shelpMoreInfo,
         },
         method: "POST",
         success: res => {
           console.log(res);
           if (res.data.success) {
             wx.setStorage({                 /*根据后台保存该表单的key值来存*/
-              key: 'shelpId',
-              data: res.data.shelpId
+              key: 'appealId',
+              data: res.data.appealId
             })
             var date = new Date();
-            var url = app.globalData.serviceUrl + "/SearchStreet+ ";           //后台保存用户发布帮助的图片的url
-            for (var i = 0; i < that.data.shop_imgs.length; i++) {
+            var url = app.globalData.serviceUrl + "/SearchStreet/appeal/uploadimg?appealId=" + res.data.appealId + "&createTime=" + app.timeStamp2String(date) +"&token=" + token;          
+            //后台保存用户发布帮助的图片的url
+            for (var i = 0; i < that.data.shelp_imgs.length; i++) {
               app.uploadAImg({
                 url: url,
                 filePath: that.data.shelp_imgs[i],
-                fileName: "shelpImg"
+                fileName: "appealImgList"
               })
             }
           } else {

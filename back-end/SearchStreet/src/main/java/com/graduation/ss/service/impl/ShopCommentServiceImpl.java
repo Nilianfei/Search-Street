@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.graduation.ss.dao.ShopCommentDao;
 import com.graduation.ss.dto.ShopCommentExecution;
 import com.graduation.ss.entity.ShopComment;
-
 import com.graduation.ss.exceptions.ShopCommentOperationException;
 import com.graduation.ss.service.ShopCommentService;
 import com.graduation.ss.util.PageCalculator;
@@ -68,7 +67,7 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 		// 依据查询条件，调用dao层返回相关的评论列表
 		
 		ShopComment shopCommentCondition = new ShopComment();
-		shopCommentCondition.setShopId(userId);
+		shopCommentCondition.setUserId(userId);
 		List<ShopComment> shopCommentList = shopCommentDao.queryShopCommentList(shopCommentCondition, rowIndex, pageSize);
 		ShopCommentExecution se = new ShopCommentExecution();
 		// 依据相同的查询条件，返回评论总数
@@ -103,7 +102,8 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 		}
 		return new ShopCommentExecution(ShopCommentStateEnum.SUCCESS, shopComment);
 	}
-
+	
+	@Transactional
 	@Override
 	public ShopCommentExecution modifyShopComment(ShopComment shopComment) throws ShopCommentOperationException{
 		// 空值判断
@@ -123,7 +123,7 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	}
 
 	
-	
+	@Override
 	public ShopCommentExecution deleteShopComment(ShopComment shopComment) throws ShopCommentOperationException
 	{
 		// 空值判断

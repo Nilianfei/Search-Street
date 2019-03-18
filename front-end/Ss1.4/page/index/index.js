@@ -1,11 +1,13 @@
 // page/index/index.js
+var app = getApp();
 Page({
   
   /**
    * 页面的初始数据
    */
   data: {
-    open:false
+    open:false,
+    token:null
   },
 
   /**
@@ -22,6 +24,38 @@ Page({
             if (res.authSetting['scope.userInfo']) {
               wx.getUserInfo({
                 success: function (res) {
+                  var token = null;
+                  try {
+                    const value = wx.getStorageSync('token')
+                    if (value) {
+                      token = value;
+                    }
+                  } catch (e) {
+                    console.log("error");
+                  }
+                  that.setData({
+                    token: token
+                  });
+                  wx.request({
+                    url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
+                    data: {
+                      token: token
+                    },
+                    success: function (res) {
+                      // 拿到自己后台传过来的数据，自己作处理
+                      console.log(res.data);
+                      if (null != res.data.success && res.data.success) {
+                        //用户登录成功
+                        wx.setStorage({
+                          key: 'userId',
+                          data: res.data.personInfo.userId
+                        });
+                      }
+                    }
+                    , fail: function (err) {
+                      console.log(err)
+                    }
+                  })         
                   /*console.log(res)
                   var token="dfef"
                   try {

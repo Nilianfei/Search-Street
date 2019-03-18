@@ -1,6 +1,5 @@
 {
   "pages": [
-    
     "page/index/index",
     "page/login/login",
     "page/shop-list/shop-list",
@@ -20,9 +19,12 @@
     "page/personal-account/personal-account",
     "page/personal-help/personal-help",
     "page/query-myhelp/query-myhelp",
-    "page/myhelp-comment/myhelp-comment"
+    "page/myhelp-comment/myhelp-comment",
+    "page/comment/comment",
+    "page/myhelp-details/myhelp-details",
+    "page/order/order",
+    "page/addservice/addservice"
   ],
-
   "permission": {
     "scope.userLocation": {
       "desc": "你的位置信息将用于小程序位置借口的效果显示"

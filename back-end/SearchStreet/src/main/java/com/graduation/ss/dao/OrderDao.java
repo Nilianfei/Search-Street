@@ -77,6 +77,6 @@ public interface OrderDao {
 	 * @param orderInfo
 	 * @return
 	 */
-	public int deleteOrder(OrderInfo orderInfo);
+	public int deleteOrder(long orderId);
 
 }
