@@ -14,7 +14,8 @@ Page({
     pageSize: 15,
     list:[],
     currentTab:1,
-    phelptime:[]
+    phelptime:[],
+    btnhover:false,
   },
 
  /* 根据导航栏的选择设置目前的key值 */
@@ -38,7 +39,82 @@ Page({
      url: '../myhelp-details/myhelp-details?id='+e.currentTarget.id,
    })
   },
+/* 点击确认已被帮助按钮功能 */
+finishedHelp:function(e){
+  var detail=this.data.list;
+  detail[0].appealStatus=2;
+  this.setData({
+    btnhover:true,
+    list:detail,                 //此处逻辑有错
+  }) 
+  var token = null;
+  try {
+    const value = wx.getStorageSync('token')
+    if (value) {
+      token = value;
+    }
+  } catch (e) {
+    console.log("error");
+  }
+  wx.request({
+    url: app.globalData.serviceUrl+"/SearchStreet/appeal/competeappeal?token="+token,
+    data:{
+    appealId:e.target.id,
+    helpId:1
+    },
+    method:'GET',
+    success(res){
+      console.log(res.data);
+    }
+  })
+},
 
+/*点击帮助无效按钮功能 */
+unfinishedHelp:function(e){
+  this.setData({
+    btnhover1: true,
+  }) 
+  var token = null;
+  try {
+    const value = wx.getStorageSync('token')
+    if (value) {
+      token = value;
+    }
+  } catch (e) {
+    console.log("error");
+  }
+  wx.request({
+    url: app.globalData.serviceUrl + "/SearchStreet/appeal/?token=" + token,       /*完整后台url，将此状态变为已完成（不会将搜币打到对方账户），并告知给提供服务的人 */
+    data: {
+      appealId: e.target.id,
+      helpId: 1
+    },
+    method: 'GET',
+    success(res) {
+      console.log(res.data);
+    }
+  })
+},
+/* 点击撤销按钮功能 */
+withdrawHelp:function(e){
+  wx.request({
+    url: app.globalData.serviceUrl+"/SeacrhStreet/appeal/",          /*根据求助ID查看是否有人对此求助提供了帮助，若无人接单，才可撤销，将其变为失效单 */  
+    data:{
+      appealId:e.target.id
+    },
+    method:'GET',
+   success(res){
+     console.log(res.data);
+   }
+  })
+},
+
+/* 点击修改按钮功能 */
+modifyHelp:function(e){
+  wx.navigateTo({
+    url: '../modify-myhelp/modify-myhelp',
+  })
+},
 /*根据追加打赏按钮设置打赏搜币页面的显示 */
   inputReward:function(){
    this.setData({
@@ -128,6 +204,11 @@ confirm:function(){
           //list3: List3	         
         })
         console.log(that.data.list);
+         var detail = that.data.list;
+          detail[0].appealStatus = 2;
+          that.setData({
+            list:detail
+          }) 
       } else {
           if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
             wx.redirectTo({

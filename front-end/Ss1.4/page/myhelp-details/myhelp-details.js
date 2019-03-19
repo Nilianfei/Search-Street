@@ -30,7 +30,8 @@ Page({
         console.log(res.data);
         if(res.data.success){
           var appeal=res.data.appeal;
-          var time = util.formatTime(Math.round((appeal.endTime - new Date().getTime())/1000));
+          if (appeal.endTime - new Date().getTime() == 0) var time = util.formatTime(0);
+          else var time = util.formatTime(Math.round((appeal.endTime - new Date().getTime())/1000));
           var address=appeal.province+appeal.city+appeal.district+appeal.fullAddress;
           console.log(time);
           for (var i = 0; i < appeal.appealImgList.length; i++) {

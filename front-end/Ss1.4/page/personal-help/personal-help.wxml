@@ -58,11 +58,11 @@
                    <text class="perhelp-cost">{{item.souCoin}}搜币</text>
              
               <view class="perhelp-buttons">
-                <button class="perhelp-button" bindtap="finishedHelp">确认已被帮助</button>
-                <button class="perhelp-button"  bindtap="unfinishedHelp">帮助无效</button>
+                <button class="perhelp-button" bindtap="finishedHelp" disabled='{{btnhover}}' id='{{item.appealId}}'>确认已被帮助</button>
+                <button class="perhelp-button"  bindtap="unfinishedHelp" disabled='{{btnhover1}}' id='{{item.appealId}}'>帮助无效</button>
                <view class="perhelp-buttons1">
-                <button class="perhelp-button-small" bindtap="withdrawHelp" >撤销</button>
-                <button class="perhelp-button-small small1" bindtap="modifyHelp">修改</button>
+                <button class="perhelp-button-small" bindtap="withdrawHelp"  id='{{item.appealId}}'>撤销</button>
+                <button class="perhelp-button-small small1" bindtap="modifyHelp" id='{{item.appealId}}'>修改</button>
                </view>
               </view>
              </view>
@@ -90,7 +90,7 @@
                    <text class="perhelp-cost">{{item.souCoin}}搜币</text>
              
                 <view class="perhelp-buttons buttons1">
-                <navigator url="../myhelp-comment/myhelp-comment">
+                <navigator url="../myhelp-comment/myhelp-comment?id={{list[index].appealId}}">
                 <button class="perhelp-button button1"><image class="finished-icon" src="../../images/已完成笑脸_.png"></image>给好人评</button>
                 </navigator>
                 <button class="perhelp-button button1"  bindtap="inputReward"><image class="finished-icon" src="../../images/打赏.png"></image>追加打赏</button>
