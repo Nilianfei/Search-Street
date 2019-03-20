@@ -9,9 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.graduation.ss.dao.AppealDao;
 import com.graduation.ss.dao.HelpDao;
+import com.graduation.ss.dao.PersonInfoDao;
 import com.graduation.ss.dto.HelpExecution;
 import com.graduation.ss.entity.Appeal;
 import com.graduation.ss.entity.Help;
+import com.graduation.ss.entity.PersonInfo;
 import com.graduation.ss.enums.HelpStateEnum;
 import com.graduation.ss.exceptions.HelpOperationException;
 import com.graduation.ss.service.HelpService;
@@ -23,6 +25,8 @@ public class HelpServiceImpl implements HelpService {
 	private HelpDao helpDao;
 	@Autowired
 	private AppealDao appealDao;
+	@Autowired
+	private PersonInfoDao personInfoDao;
 
 	@Override
 	public HelpExecution getHelpListFY(Help helpCondition, Date startTime, Date endTime, int pageIndex, int pageSize) {
@@ -203,6 +207,61 @@ public class HelpServiceImpl implements HelpService {
 			}
 		} catch (Exception e) {
 			throw new HelpOperationException(e.getMessage());
+		}
+	}
+	
+	@Override
+	@Transactional
+	public void additionSouCoin(Long helpId, Long appealUserId, Long additionSouCoin) throws HelpOperationException {
+		if (appealUserId == null) {
+			throw new HelpOperationException("additinoSouCoin error:" + "缺少userId");
+		}
+		if (helpId == null) {
+			throw new HelpOperationException("additinoSouCoin error:" + "缺少helpId");
+		}
+
+		try {
+			PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(appealUserId);
+			if (personInfo == null) {
+				throw new HelpOperationException("appealUserId无效");
+			}
+			Long appealerSouCoin = personInfo.getSouCoin();
+			if (additionSouCoin > appealerSouCoin) {
+				throw new HelpOperationException("搜币不够");
+			}
+			personInfo.setSouCoin(appealerSouCoin - additionSouCoin);
+			int effectedNum = personInfoDao.updatePersonInfo(personInfo);
+			if (effectedNum <= 0) {
+				throw new HelpOperationException("扣除求助者搜币失败");
+			}
+			Help help = helpDao.queryByHelpId(helpId);
+			if (help == null) {
+				throw new HelpOperationException("helpId无效");
+			}
+			if (help.getHelpStatus() != 2) {
+				throw new HelpOperationException("该状态不能追赏");
+			}
+			if (help.getAdditionalCoin()>0){
+				throw new HelpOperationException("不能多次追赏");
+			}
+			Long helpUserId = help.getUserId();
+			personInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
+			if (personInfo == null) {
+				throw new HelpOperationException("帮助者不存在");
+			}
+			appealerSouCoin = personInfo.getSouCoin();
+			personInfo.setSouCoin(appealerSouCoin + additionSouCoin);
+			effectedNum = personInfoDao.updatePersonInfo(personInfo);
+			if (effectedNum <= 0) {
+				throw new HelpOperationException("增加帮助者搜币失败");
+			}
+			help.setAdditionalCoin(additionSouCoin);
+			effectedNum = helpDao.updateHelp(help);
+			if (effectedNum <= 0) {
+				throw new HelpOperationException("修改帮助追赏金失败");
+			}
+		} catch (Exception e) {
+			throw new HelpOperationException("additinoSouCoin error:" + e.getMessage());
 		}
 	}
 

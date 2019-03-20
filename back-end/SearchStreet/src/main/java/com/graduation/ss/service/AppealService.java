@@ -75,14 +75,4 @@ public interface AppealService {
 	 * @return
 	 */
 	AppealExecution completeAppeal(Long appealId, Long helpId, Long appealUserId) throws AppealOperationException;
-
-	/**
-	 * 追赏金
-	 * 
-	 * @param helpId
-	 * @param appealUserId
-	 * @param additionSouCoin
-	 */
-	void additionSouCoin(Long helpId, Long appealUserId, Long additionSouCoin)
-			throws AppealOperationException;
 }

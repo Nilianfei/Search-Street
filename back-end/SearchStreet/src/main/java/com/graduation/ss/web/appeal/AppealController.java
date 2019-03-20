@@ -330,47 +330,4 @@ public class AppealController {
 		return modelMap;
 	}
 
-	@RequestMapping(value = "/additionsoucoin", method = RequestMethod.GET)
-	@ResponseBody
-	@ApiOperation(value = "求助者追赏")
-	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
-			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助ID", required = true, dataType = "Long"),
-			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助ID", required = true, dataType = "Long"),
-			@ApiImplicitParam(paramType = "query", name = "additionSouCoin", value = "追赏金数", required = true, dataType = "Long") })
-	private Map<String, Object> additionSouCoin(HttpServletRequest request) {
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		String token = HttpServletRequestUtil.getString(request, "token");
-		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
-		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
-		Long additionSouCoin = HttpServletRequestUtil.getLong(request, "additionSouCoin");
-		Help help = helpservice.getByHelpId(helpId);
-		if (help.getAppealId() != appealId) {
-			modelMap.put("success", false);
-			modelMap.put("errMsg", "appealId和helpId不对应");
-			return modelMap;
-		}
-		Long appealUserId = null;
-		UserCode2Session userCode2Session = null;
-		// 将token解密成openId 和session_key
-		userCode2Session = JWT.unsign(token, UserCode2Session.class);
-		// 获取个人ID
-		String openId = userCode2Session.getOpenId();
-		try {
-			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
-			appealUserId = wechatAuth.getUserId();
-		} catch (Exception e) {
-			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
-			return modelMap;
-		}
-		try {
-			appealService.additionSouCoin(helpId, appealUserId, additionSouCoin);
-		} catch (Exception e) {
-			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
-		}
-		modelMap.put("success", true);
-		return modelMap;
-	}
 }

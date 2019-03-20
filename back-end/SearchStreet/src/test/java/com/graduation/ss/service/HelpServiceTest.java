@@ -64,4 +64,10 @@ public class HelpServiceTest {
 	public void testSelectHelp() throws HelpOperationException {
 		helpService.selectHelp(13l, 3l);
 	}
+	
+	@Test
+	@Ignore
+	public void testAdditionSouCoin() throws HelpOperationException{
+		helpService.additionSouCoin(9l, 1l, 1l);
+	}
 }

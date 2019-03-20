@@ -51,5 +51,22 @@ public interface HelpService {
 	 */
 	HelpExecution addHelp(Help help) throws HelpOperationException;
 
+	/**
+	 * 选择帮助者
+	 * 
+	 * @param helpId
+	 * @param appealId
+	 * @throws HelpOperationException
+	 */
 	void selectHelp(Long helpId, Long appealId) throws HelpOperationException;
+	
+	/**
+	 * 追赏金
+	 * 
+	 * @param helpId
+	 * @param appealUserId
+	 * @param additionSouCoin
+	 */
+	void additionSouCoin(Long helpId, Long appealUserId, Long additionSouCoin)
+			throws HelpOperationException;
 }
