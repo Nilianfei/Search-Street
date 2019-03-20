@@ -1,7 +1,9 @@
  // page/search-shop/search-shop.js
 var app=getApp();
+
 var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
 var qqmapsdk;
+
 
 Page({
 
@@ -11,6 +13,7 @@ Page({
   data: {
     latitude: 23.139317,
     longitude: 113.352354,
+    city:'',
     scale: 18,
     maxlng: null,
     maxlat:null,
@@ -34,7 +37,7 @@ Page({
     var that = this;
     //实体化qqmap(API)核心类
     qqmapsdk = new QQMapWX({
-      key: 'GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM'
+      key: 'DQYBZ-AQFK6-6JDSI-EHRZV-EFRCJ-TDFZU'
     });
 
     console.log("初始化地图");
@@ -50,6 +53,22 @@ Page({
         }
       }
     })
+
+    qqmapsdk.reverseGeocoder({
+      success(res) {
+        console.log(res);
+        that.setData({
+          city: res.result.address_component.city
+        })
+      },
+      fail: function (error) {
+        console.error(error);
+      },
+      complete: function (res) {
+        console.log(res);
+      }
+    })
+    
 
     //获取当前位置
     wx.getLocation({
@@ -174,6 +193,16 @@ Page({
 
   //移动地图到当前所在位置
   moveToPosition: function () {
+    var that = this;
+    wx.getLocation({
+      type: "gcj02",
+      success: function (res) {
+        that.setData({
+          latitude: res.latitude,
+          longitude: res.longitude
+        });
+      },
+    })
     this.mapCtx.moveToLocation();
   },
 
@@ -265,21 +294,27 @@ Page({
       searchShopName: e.detail.detail.value
     });
   },
-
-  inputShopAddress: function(e){
-    this.setData({
-      searchShopAddress: e.detail.detail.value
-    })
-  },
-
-/*
+  
+  
+  // inputShopAddress: function(e){
+  //   this.setData({
+  //     searchShopAddress: e.detail.detail.value
+  //   })
+  //   console.log(searchShopAddress);
+  // },
+  
+  
   //getSuggest数据回填
   backfill: function (e) {
+    var that=this;
     var id = e.currentTarget.id;
     for (var i = 0; i < this.data.suggestion.length; i++) {
-      if (i == id) {
-        this.setData({
-          backfill: this.data.suggestion[i].title
+      if (this.data.suggestion[i].title == id) {
+        that.setData({
+          searchShopAddress: this.data.suggestion[i].title,
+          latitude: this.data.suggestion[i].latitude,
+          longitude: this.data.suggestion[i].longitude,
+          openSearch: false
         });
       }
     }
@@ -288,9 +323,15 @@ Page({
   //搜索框写入商铺地址
   inputShopAddress: function (e) {
     var that=this;
+    var _keyword= e.detail.detail.value;
+
+    that.setData({
+      searchShopAddress: e.detail.detail.value
+    })
     //调用关键词提示接口
     qqmapsdk.getSuggestion({
-      keyword: e.detail.detail.value,
+      keyword: _keyword,
+      region: that.data.city,
       success: function(res) {
         console.log(res);
         var sug= [];
@@ -306,7 +347,7 @@ Page({
           });
         }
         that.setData({
-          suggestion: sug
+          suggestion: sug,
         })
       },
       fail: function(error) {
@@ -317,28 +358,37 @@ Page({
       }
     })
   },
-*/
+
+  addAddress: function(e) {
+    console.log(e.currentTarget.id);
+  },
+
   //按商铺名、商铺地址搜索
   buttonClickSearch: function(e){
     console.log(this.data.searchShopName);
     console.log(this.data.searchShopAddress);
+    var that=this;
+    
     var _shopName=this.data.searchShopName;
     var _address=this.data.searchShopAddress;
     var that=this;
+
     if(_address)
     {
       qqmapsdk.geocoder({
         address: _address,
+        region: that.data.city,
         success: function (res) {
           //成功后的回调
           console.log(res);
           var res = res.result;
           var _latitude = res.location.lat;
           var _longitude = res.location.lng;
-          this.setData({
+          that.setData({
             longitude: _longitude,
             latitude: _latitude
           })
+          this.moveToPosition;
         },
         fail: function (error) {
           console.error(error);
