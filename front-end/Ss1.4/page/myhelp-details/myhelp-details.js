@@ -1,6 +1,23 @@
 // page/myhelp-details/myhelp-details.js
 var app=getApp();
 var util=require("../../util/util.js");
+
+function countdown(that) {
+  that.setData({
+    targetTime:util.formatTime(that.data.clock),
+  })
+  var second = that.data.clock;
+  //console.log(second);
+  if (second == 0) {
+    
+    return;
+  }
+  var time = setTimeout(function () {
+    that.data.clock-=1;
+    countdown(that);
+  }
+  , 1000)
+}
 Page({
 
   /**
@@ -12,6 +29,9 @@ Page({
     clearTimer:false,
     fulladdress:null,
     imgUrl: app.globalData.imgUrl,
+    btn_helper:'选择他',
+    disabled:false,
+    clock:0,
   },
 
 /**
@@ -30,10 +50,11 @@ Page({
         console.log(res.data);
         if(res.data.success){
           var appeal=res.data.appeal;
-          if (appeal.endTime - new Date().getTime() == 0) var time = util.formatTime(0);
-          else var time = util.formatTime(Math.round((appeal.endTime - new Date().getTime())/1000));
+          if (appeal.endTime - new Date().getTime() <= 0)  that.data.clock=3600*24;      //此处有错误
+          else that.data.clock= Math.floor((appeal.endTime - new Date().getTime())/1000);
           var address=appeal.province+appeal.city+appeal.district+appeal.fullAddress;
-          console.log(time);
+          console.log(that.data.clock);
+          countdown(that);
           for (var i = 0; i < appeal.appealImgList.length; i++) {
             appeal.appealImgList[i].imgAddr = that.data.imgUrl + appeal.appealImgList[i].imgAddr;
           }
@@ -42,11 +63,12 @@ Page({
           } 
           that.setData({
              helpDetail:appeal,
-             targetTime:time,
+            // clock:util.formatTime(that.data.clock),
              fulladdress:address
+             
           }),
            
-          console.log(that.data.targetTime);
+          console.log(that.data.clock);
         }
       }
     })
@@ -65,6 +87,18 @@ Page({
     })
   },
 
+/* 点击"选择他"按钮功能函数 */
+
+choosehelper:function(e){
+  this.setData({
+    disabled:true,
+    btn_helper:'已选择'
+  })
+  /*同时给后台发一个消息，让其告知提供帮助的人，他已经被选定 */
+
+},
+  
+ 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

@@ -1,4 +1,22 @@
 var app=getApp();
+var util=require('../../util/util.js');
+function countdown(that) {
+  that.setData({
+    targetTime: util.formatTime(that.data.second),
+  })
+  var second = that.data.second;
+  console.log(second);
+  if (second == 0) {
+
+    return;
+  }
+  var time = setTimeout(function () {
+    that.data.second -= 1;
+    countdown(that);
+  }
+    , 1000)
+}
+
 Page({
 
   /**
@@ -14,8 +32,11 @@ Page({
     pageSize: 15,
     list:[],
     currentTab:1,
+    currentTab1:1,
     phelptime:[],
     btnhover:false,
+    targetTime:0,
+    second:0,
   },
 
  /* 根据导航栏的选择设置目前的key值 */
@@ -30,6 +51,13 @@ Page({
     this.setData({ 
       currentTab: e.currentTarget.dataset.current 
       });
+      //console.log(this.data.currentTab);
+  },
+  switchTab1(e) {
+    this.setData({
+      currentTab1: e.currentTarget.dataset.current
+    });
+    //console.log(this.data.currentTab1);
   },
 
   /* 点击跳到求助详情页 */
@@ -197,6 +225,10 @@ confirm:function(){
           for(var i=0;i<List.length;i++){
             phelptime.push(Math.round((List[i].endTime-List[i].startTime)/1000/60));
           }
+          if (List[0].endTime - new Date().getTime() <= 0) that.data.second = 3600 * 24;      //此处有错误
+          else that.data.second = Math.floor((List.endTime - new Date().getTime()) / 1000);
+          countdown(that);
+         // console.log(that.data.second);
           that.setData({
           list: List,
           phelptime:phelptime,

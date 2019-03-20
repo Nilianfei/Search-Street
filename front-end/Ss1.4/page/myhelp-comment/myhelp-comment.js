@@ -1,3 +1,4 @@
+var app=getApp();
 Page({
 
   /**
@@ -12,7 +13,8 @@ Page({
     max: 500, 
     currentWordNumber:0,
     helpcomment_imgs:[],
-    comment_content:null
+    comment_content:null,
+    id:0
   },
   /*改变评分星星*/
   onChange1(e) {
@@ -116,7 +118,7 @@ Page({
       content: '请为此次帮助的态度打分',
     })
  } else {
-  console.log('form发生了submit事件，携带数据为：', e.detail.value);
+  //console.log('form发生了submit事件，携带数据为：', e.detail.value);
   //var that = this;
   var token = null;
   try {
@@ -129,7 +131,7 @@ Page({
     console.log("error");
   }
   wx.request({
-    url: app.globalData.serviceUrl + "/SearchStreet/appeal/?token=" + token+'&appealId',
+    url: app.globalData.serviceUrl + "/SearchStreet/appeal/?token=" + token+'&appealId'+id+'&helpId',
     data: {
       completion: that.data.starIndex1,
       efficiency: that.data.starIndex2,
@@ -140,27 +142,13 @@ Page({
     success: res => {
       console.log(res);
       if (res.data.success) {
-        wx.setStorage({
-          key: 'shopId',
-          data: res.data.shopId
-        })
         var date = new Date();
-        var url = app.globalData.serviceUrl + "/SearchStreet/shopadmin/uploadimg?shopId=" + res.data.shopId + "&createTime=" + app.timeStamp2String(date) + "&token=" + token;
-        app.uploadAImg({
-          url: url,
-          filePath: that.data.business_img[0],
-          fileName: "businessLicenseImg"
-        })
-        app.uploadAImg({
-          url: url,
-          filePath: that.data.business_logo[0],
-          fileName: "profileImg"
-        })
-        for (var i = 0; i < that.data.shop_imgs.length; i++) {
+        var url = app.globalData.serviceUrl + "/SearchStreet/appeal/uploadimg?shopId=" + res.data.shopId + "&createTime=" + app.timeStamp2String(date) + "&token=" + token;                /*完整的后台接收评价图片的url */
+        for (var i = 0; i < that.data.helpcomment_imgs.length; i++) {
           app.uploadAImg({
             url: url,
-            filePath: that.data.shop_imgs[i],
-            fileName: "shopImg"
+            filePath: that.data.helpcomment_imgs[i],
+            fileName: "commentImg"
           })
         }
       } else {
@@ -179,6 +167,9 @@ Page({
    */
   onLoad: function (options) {
     console.log(options);
+    this.setData({
+      id:options.id,
+    })
   },
 
   /**

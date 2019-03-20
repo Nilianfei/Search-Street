@@ -130,3 +130,10 @@ position: relative;
   flex-direction: row;
   justify-content: space-between;
 }
+.unused-img{
+  width: 200rpx;
+  height: 200rpx;
+  float: right;
+  margin-right: 100rpx;
+  margin-top: -200rpx;
+}
