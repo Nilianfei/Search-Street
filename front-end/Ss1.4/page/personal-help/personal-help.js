@@ -5,7 +5,7 @@ function countdown(that) {
     targetTime: util.formatTime(that.data.second),
   })
   var second = that.data.second;
-  console.log(second);
+ // console.log(second);
   if (second == 0) {
 
     return;
@@ -37,6 +37,8 @@ Page({
     btnhover:false,
     targetTime:0,
     second:0,
+    id:0,
+    ifadditioncoin:false,
   },
 
  /* 根据导航栏的选择设置目前的key值 */
@@ -70,7 +72,6 @@ Page({
 /* 点击确认已被帮助按钮功能 */
 finishedHelp:function(e){
   var detail=this.data.list;
-  detail[0].appealStatus=2;
   this.setData({
     btnhover:true,
     list:detail,                 //此处逻辑有错
@@ -144,9 +145,10 @@ modifyHelp:function(e){
   })
 },
 /*根据追加打赏按钮设置打赏搜币页面的显示 */
-  inputReward:function(){
+  inputReward:function(e){
    this.setData({
-     ifName:true
+     ifName:true,
+     id:e.target.id
    })
   },
   
@@ -161,15 +163,19 @@ modifyHelp:function(e){
   setValue:function(e){
     console.log(e.detail);
     this.setData({
-      reward:e.detail,
+      reward:e.detail.value,
     })
+    console.log(this.data.reward);
   },
 
 /* 追加打赏弹框的提交按钮功能 */
 confirm:function(){
+  var that=this;
+  console.log(this.data.reward);
   if(this.data.reward==null){
     wx.showToast({
       title: '请填写打赏金额',
+      icon:'none'
     })
   }
   else{
@@ -183,23 +189,31 @@ confirm:function(){
       console.log("error");
     }
     wx.request({
-      url: app.globalData.serviceUrl + "/SearchStreet/appeal/additionsoucoin?token=" + token,         /* 将打赏金额的数值传给后台，后台据此金额改变被打赏人钱包中的搜币 */
+      url: app.globalData.serviceUrl + "/SearchStreet/help/additionsoucoin?token=" + token,         /* 将打赏金额的数值传给后台 */
       data:{
-        additionSouCoin:this.data.reward,
+        additionSouCoin:parseInt(this.data.reward),
+        appealId:this.data.id,
+        helpId:1,
       },
       success(res){
-        console.log(res.data)
-        this.setData({
+        console.log(res)
+        that.setData({
           ifName:false
         })
       }
     })
   }
 },
+  showSoucoin:function(){
+    this.setData({
+      ifadditioncoin:true,
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    //console.log(options);
     var phelptime=[];
     var that = this ;      
     var token = null;
@@ -211,7 +225,9 @@ confirm:function(){
     } catch (e) {
       console.log("error");
     }
-    wx.request({
+    if(that.data.current=='tab1')
+    {
+      wx.request({
       url: app.globalData.serviceUrl + "/SearchStreet/appeal/getappeallistbyuserid?token=" + token +"&pageIndex="+0+"&pageSize="+that.data.pageSize,
       data:{
 
@@ -226,21 +242,20 @@ confirm:function(){
             phelptime.push(Math.round((List[i].endTime-List[i].startTime)/1000/60));
           }
           if (List[0].endTime - new Date().getTime() <= 0) that.data.second = 3600 * 24;      //此处有错误
-          else that.data.second = Math.floor((List.endTime - new Date().getTime()) / 1000);
+          else that.data.second = Math.floor((List[0].endTime - new Date().getTime()) / 1000);
+          console.log(that.data.second);
           countdown(that);
-         // console.log(that.data.second);
+         console.log(that.data.second);
           that.setData({
           list: List,
           phelptime:phelptime,
-         // list2: List2, 
-          //list3: List3	         
         })
         console.log(that.data.list);
-         var detail = that.data.list;
-          detail[0].appealStatus = 2;
-          that.setData({
-            list:detail
-          }) 
+         //var detail = that.data.list;
+          //detail[0].appealStatus = 2;
+          //that.setData({
+          //  list:detail
+         // }) 
       } else {
           if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
             wx.redirectTo({
@@ -256,6 +271,19 @@ confirm:function(){
         console.log('submit complete');
       }
     })
+    }
+    else if(that.data.current=='tab2'){
+      wx.request({
+        url: app.globalData.serviceUrl + "/SearchStreet/help/gethelplistbyuserid?token=" + token + "&pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
+        data: {
+          
+        },
+        method: 'POST',
+        success: function (res) {
+          console.log(res.data);
+        }
+      })
+    }
   },
 
   /**

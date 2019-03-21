@@ -32,6 +32,7 @@ Page({
     btn_helper:'选择他',
     disabled:false,
     clock:0,
+    id:0,
   },
 
 /**
@@ -40,6 +41,9 @@ Page({
   onLoad: function (options) {
     var that=this;
     console.log(options);
+    that.setData({
+      id:options.id
+    })
     wx.request({
       url: app.globalData.serviceUrl+"/SearchStreet/appeal/getappealbyid?appealId="+options.id,
       data:{
@@ -90,12 +94,33 @@ Page({
 /* 点击"选择他"按钮功能函数 */
 
 choosehelper:function(e){
-  this.setData({
-    disabled:true,
-    btn_helper:'已选择'
-  })
+  var token = null;
+  try {
+    const value = wx.getStorageSync('token')
+    if (value) {
+      token = value;
+    }
+  } catch (e) {
+    console.log("error");
+  }                               
   /*同时给后台发一个消息，让其告知提供帮助的人，他已经被选定 */
-
+  wx.request({
+    url: app.globalData.serviceUrl+"/SearchStreet/help/selectHelper?token="+token,
+    data:{
+     appealId:this.data.id,
+     helpId:1
+    },
+    method:'GET',
+    success(res){
+      console.log(res.data);
+      if(res.data.success){
+        this.setData({
+          disabled: true,
+          btn_helper: '已选择'
+        })    
+      }
+    }
+  })
 },
   
  
