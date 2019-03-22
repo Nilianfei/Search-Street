@@ -1,6 +1,6 @@
  // page/search-shop/search-shop.js
 var app=getApp();
-
+const { $Message } = require('../../dist/base/index');
 var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
 var qqmapsdk;
 
@@ -28,6 +28,7 @@ Page({
     shopInfoPic:'/images/search_buck.png',
     shopInfoName:'',
     shopInfoAddress:'',
+    shopInfoBusinessScope:'',
   },
 
   /**
@@ -134,7 +135,8 @@ Page({
       url: app.globalData.serviceUrl+'/SearchStreet/shopadmin/searchnearbyshops',    //获取商铺位置
       data: {
         longitude: res.longitude,
-        latitude: res.latitude
+        latitude: res.latitude,
+        shopName: this.data.searchShopName
       },
       method: 'GET',
       success: (res) => {
@@ -182,6 +184,7 @@ Page({
         name: shopList[i].shopName,
         profileImg: shopProfileImg,
         address: shopList[i].city + shopList[i].district + shopList[i].fullAddress,
+        businessScope: shopList[i].businessScope,
       }
       
     }
@@ -210,6 +213,11 @@ Page({
   searchShop: function (e) {
     
     var that=this;
+
+    that.setData({
+      searchShopName: '',
+      searchShopAddress: ''
+    })
     if(!that.data.openSearch)
     {
       that.setData({
@@ -263,6 +271,7 @@ Page({
       openShopInfo: markerId,
       shopInfoPic: currentMarker.profileImg,
       shopInfoAddress: currentMarker.address,
+      shopInfoBusinessScope: currentMarker.businessScope,
     })
 
     console.log(currentMarker.address);
@@ -278,6 +287,11 @@ Page({
             res.northeast.longitude > this.data.maxlng ||
             res.southwest.latitude < this.data.minlat ||
             res.southwest.longitude < this.data.minlng){
+            
+            this.setData({
+              openShopInfo: 0
+            })
+
             this.mapCtx.getCenterLocation({
               success: (res) => {
                 this.getShopLocation(res);
@@ -363,21 +377,36 @@ Page({
     console.log(e.currentTarget.id);
   },
 
+  // handleNoAddressResult() {
+  //   $Message({
+  //     content: '3秒后消失',
+  //     duration: 3
+  //   });
+  // },
+
   //按商铺名、商铺地址搜索
   buttonClickSearch: function(e){
+
     console.log(this.data.searchShopName);
     console.log(this.data.searchShopAddress);
+
     var that=this;
     
     var _shopName=this.data.searchShopName;
     var _address=this.data.searchShopAddress;
-    var that=this;
 
-    if(_address)
-    {
+    if(_shopName){
+      this.mapCtx.getCenterLocation({
+        success: (res) => {
+          this.getShopLocation(res);
+        }
+      })
+    }
+
+    if(_address){
+
       qqmapsdk.geocoder({
-        address: _address,
-        region: that.data.city,
+        address: this.data.city + _address,
         success: function (res) {
           //成功后的回调
           console.log(res);
@@ -399,6 +428,11 @@ Page({
       })
 
     }
+
+    this.setData({
+      openSearch: false
+    })
+
   },
 
   buttonClickBack: function(e){

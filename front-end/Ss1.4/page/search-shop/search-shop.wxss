@@ -105,39 +105,46 @@ text-align: center;
 }
 
 .shopInfo-name{
-  height: 130rpx;
   width: 440rpx;
   font-size: 22px;
-  display: flex;
-  justify-content: left-start;
-  align-items: center;
-  border-bottom: 1px solid #99999960;
+  display: block;
+  margin-top: 14rpx;
 }
 
 .shopInfo-address{
-  height: 70rpx;
-  widows: 440rpx;
-  display: flex;
-  white-space: pre-line;
-  align-items: center;
-  font-size: 12px;
+  height:40rpx;
+  widows:440rpx;
+  display:block;
+  white-space:pre-line;
+  font-size:12px;
+  color:#999999;
+  margin-top:6rpx;
 }
+
+.shopInfo-businessScope{
+  height: 70rpx;
+  width: 440rpx;
+  display: block;
+  font-size: 14px;
+  margin-top: 18rpx;
+}
+
 
 .shopInfo-button{
   width: 680rpx;
   height: 70rpx;
   margin-top: 10rpx;
   margin-left: 10rpx;
-  display: flex;
-  justify-content: center;
-  align-content: center;
+  
+}
+
+.shopInfoButtonSize{
+  width: 200rpx;
+  display: inline-block;
+  margin-right: 40rpx;
 }
 
 .shopInfoButton{
-  width: 200rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: 12px;
 }
 

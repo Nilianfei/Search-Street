@@ -41,12 +41,25 @@
           <cover-view class="shopInfo-nameAddress">
             <cover-view class="shopInfo-name">{{shopInfoName}}</cover-view>
             <cover-view  class="shopInfo-address">{{shopInfoAddress}}</cover-view>
+            <cover-view style="height:2rpx;background-color:grey;"></cover-view>
+            <cover-view class="shopInfo-businessScope">{{shopInfoBusinessScope}}</cover-view>
           </cover-view>
         </cover-view>
         <cover-view class="shopInfo-button">
-          <button class="shopInfoButton blue" hover-class='hover'>查看详情</button>
-          <button class="shopInfoButton blue" hover-class='hover'>导航</button>
-          <button class="shopInfoButton white" hover-class='hover' bindtap='shopInfoBack'>取消</button>
+          <cover-view class="shopInfoButtonSize">
+            <button class="shopInfoButton blue" hover-class='hover'> 查看详情 </button>
+          </cover-view>
+
+          <cover-view class="shopInfoButtonSize">
+              <button class="shopInfoButton blue" hover-class='hover'>导航</button>
+          </cover-view>
+
+          <cover-view class="shopInfoButtonSize">
+            <button class="shopInfoButton white" hover-class='hover' bindtap='shopInfoBack'>取消</button>
+          </cover-view>
+          
+          
+          
         </cover-view>
       </cover-view>
     </map>
