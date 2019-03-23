@@ -268,5 +268,7 @@ height:140rpx;
   margin-top: 40rpx;
 }
 .img{
-  margin-top: 30rpx;
+margin-top: 15rpx;
+margin-right:50rpx;
+margin-left:80rpx;
 }

@@ -74,7 +74,7 @@
                 <navigator url="">
                 <button class="perhelp-button button1" bindtap=''><image class="finished-icon" src="../../images/笑脸3.png"></image>查看评价</button>
                 </navigator>
-                <button class="perhelp-button button1"  bindtap="showSoucoin"><image class="finished-icon" src="../../images/赏金1.png"></image>有追赏</button>
+                <button class="perhelp-button button1"  bindtap="showSoucoin" disabled='{{showcoin}}'><image class="finished-icon" src="../../images/赏金1.png"></image>有追赏</button>
                 </view>
              </view>
             </block>
@@ -193,7 +193,7 @@
           <view>
            <image class="toast-img img" src="../../images/赏金2.png"></image>
           </view>
-          <view class='input'>
+          <view>
             <text class="toast-text3">80</text>
           </view>
           <view class="toast-text text4">
@@ -202,7 +202,7 @@
         </view>
         <view class='toast-button button6'>
           <view class='button5'>
-             <button catchtap='confirm'>放入钱包</button>
+             <button catchtap='addsouCoin'>放入钱包</button>
           </view>
         </view>
         </view>

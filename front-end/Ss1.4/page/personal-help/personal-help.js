@@ -39,6 +39,7 @@ Page({
     second:0,
     id:0,
     ifadditioncoin:false,
+    showcoin:false,
   },
 
  /* 根据导航栏的选择设置目前的key值 */
@@ -209,6 +210,27 @@ confirm:function(){
       ifadditioncoin:true,
     })
   },
+  addsouCoin:function(){
+      /* 根据token将本次帮助中被帮助人打赏的搜币存入本人账户 */
+     /* wx.request({
+        url: app.globalData.serviceUrl + "/SearchStreet/help/getappeallistbyuserid?token=" + this.data.token,   //此处url有误
+        data:{
+          additionCoin:helpList.additionCoin
+        },
+        method:'GET',
+        success(res){
+          console.log(res.data);
+        }
+      }) */
+      wx.showToast({
+        title: '已成功存入您的钱包',
+        icon:'none',
+      })
+      this.setData({
+        ifadditioncoin:false,
+        showcoin:true,
+      })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -221,6 +243,7 @@ confirm:function(){
       const value = wx.getStorageSync('token')
       if (value) {
         token = value;
+        that.data.token=value;
       }
     } catch (e) {
       console.log("error");
@@ -276,7 +299,7 @@ confirm:function(){
       wx.request({
         url: app.globalData.serviceUrl + "/SearchStreet/help/gethelplistbyuserid?token=" + token + "&pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
         data: {
-          
+          helpStatus:2
         },
         method: 'POST',
         success: function (res) {
