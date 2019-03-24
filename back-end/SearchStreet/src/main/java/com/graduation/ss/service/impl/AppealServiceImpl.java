@@ -192,42 +192,47 @@ public class AppealServiceImpl implements AppealService {
 		}
 		souCoin = appeal.getSouCoin();
 		try {
-			PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(appealUserId);
-			Long appealerSouCoin = personInfo.getSouCoin();
-			if (appealerSouCoin < souCoin) {
-				return new AppealExecution(AppealStateEnum.SOUCOIN_LACK);
-			}
-			personInfo.setSouCoin(appealerSouCoin - souCoin);
-			int effectedNum = personInfoDao.updatePersonInfo(personInfo);
-			if (effectedNum <= 0) {
-				throw new AppealOperationException("扣除求助者搜币失败");
-			}
+			PersonInfo appealPersonInfo = personInfoDao.queryPersonInfoByUserId(appealUserId);
+			Long appealerSouCoin = appealPersonInfo.getSouCoin();
 			Help help = helpDao.queryByHelpId(helpId);
 			if (help == null) {
 				throw new AppealOperationException("helpId无效");
 			}
 			Long helpUserId = help.getUserId();
-			personInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
-			if (personInfo == null) {
+			PersonInfo helpPersonInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
+			if (helpPersonInfo == null) {
 				throw new AppealOperationException("帮助者不存在");
 			}
-			appealerSouCoin = personInfo.getSouCoin();
-			personInfo.setSouCoin(appealerSouCoin + souCoin);
-			effectedNum = personInfoDao.updatePersonInfo(personInfo);
-			if (effectedNum <= 0) {
-				throw new AppealOperationException("增加帮助者搜币失败");
+			
+			if (appealerSouCoin < souCoin) {
+				return new AppealExecution(AppealStateEnum.SOUCOIN_LACK);
 			}
 			if (appeal.getAppealStatus() != 1) {
 				return new AppealExecution(AppealStateEnum.COMPLETE_ERR);
 			}
+			if (help.getHelpStatus() != 1) {
+				return new AppealExecution(AppealStateEnum.COMPLETE_ERR);
+			}
+			
+			appealPersonInfo.setSouCoin(appealerSouCoin - souCoin);
+			int effectedNum = personInfoDao.updatePersonInfo(appealPersonInfo);
+			if (effectedNum <= 0) {
+				throw new AppealOperationException("扣除求助者搜币失败");
+			}
+			
+			Long helperSouCoin = helpPersonInfo.getSouCoin();
+			helpPersonInfo.setSouCoin(helperSouCoin + souCoin);
+			effectedNum = personInfoDao.updatePersonInfo(helpPersonInfo);
+			if (effectedNum <= 0) {
+				throw new AppealOperationException("增加帮助者搜币失败");
+			}
+			
 			appeal.setAppealStatus(2);
 			effectedNum = appealDao.updateAppeal(appeal);
 			if (effectedNum <= 0) {
 				throw new AppealOperationException("修改求助状态失败");
 			}
-			if (help.getHelpStatus() != 1) {
-				return new AppealExecution(AppealStateEnum.COMPLETE_ERR);
-			}
+			
 			help.setHelpStatus(2);
 			effectedNum = helpDao.updateHelp(help);
 			if (effectedNum <= 0) {

@@ -249,12 +249,25 @@ public class HelpController {
 		return modelMap;
 	}
 
-	/*@RequestMapping(value = "/modifyhelp", method = RequestMethod.POST)
+	@RequestMapping(value = "/commenthelp", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "修改帮助", notes = "目前前端好像不需要用")
-	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
-	private Map<String, Object> modifyHelp(
-			@RequestBody @ApiParam(name = "help", value = "传入json格式,要传helpId", required = true) Help help) {
+	@ApiOperation(value = "帮助评论", notes = "评论帮助需要输入帮助Id、完成分、效率分和态度分")
+	@ApiImplicitParams({
+		@ApiImplicitParam(paramType = "query", name = "token", value = "包含求助者用户信息的token", required = true, dataType = "String"),
+		@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助Id", required = true, dataType = "Long"),
+		@ApiImplicitParam(paramType = "query", name = "completion", value = "完成分", required = true, dataType = "int"),
+		@ApiImplicitParam(paramType = "query", name = "efficiency", value = "效率分", required = true, dataType = "int"),
+		@ApiImplicitParam(paramType = "query", name = "attitude", value = "态度分", required = true, dataType = "int")})
+	private Map<String, Object> commentHelp(HttpServletRequest request) {
+		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
+		int completion = HttpServletRequestUtil.getInt(request, "completion");
+		int efficiency = HttpServletRequestUtil.getInt(request, "efficiency");
+		int attitude = HttpServletRequestUtil.getInt(request, "attitude");
+		Help help = new Help();
+		help.setHelpId(helpId);
+		help.setCompletion(completion);
+		help.setEfficiency(efficiency);
+		help.setAttitude(attitude);
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		HelpExecution helpExecution;
 		try {
@@ -271,7 +284,7 @@ public class HelpController {
 			modelMap.put("errMsg", e.getMessage());
 		}
 		return modelMap;
-	}*/
+	}
 
 	@RequestMapping(value = "/selectHelper", method = RequestMethod.GET)
 	@ResponseBody
