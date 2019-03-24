@@ -234,6 +234,7 @@ public class AppealServiceImpl implements AppealService {
 			}
 			
 			help.setHelpStatus(2);
+			help.setAllCoin(souCoin);
 			effectedNum = helpDao.updateHelp(help);
 			if (effectedNum <= 0) {
 				throw new AppealOperationException("修改帮助状态失败");

@@ -40,6 +40,7 @@ public class HelpServiceImpl implements HelpService {
 		if (helpList != null) {
 			he.setHelpList(helpList);
 			he.setCount(count);
+			he.setState(HelpStateEnum.SUCCESS.getState());
 		} else {
 			he.setState(HelpStateEnum.INNER_ERROR.getState());
 		}
@@ -116,6 +117,7 @@ public class HelpServiceImpl implements HelpService {
 			help.setAttitude(0);
 			help.setEfficiency(0);
 			help.setCompletion(0);
+			help.setAllCoin(0l);
 			// 添加帮助信息
 			int effectedNum = helpDao.insertHelp(help);
 			if (effectedNum <= 0) {
@@ -256,6 +258,8 @@ public class HelpServiceImpl implements HelpService {
 				throw new HelpOperationException("增加帮助者搜币失败");
 			}
 			help.setAdditionalCoin(additionSouCoin);
+			Long allCoin = help.getAllCoin();
+			help.setAllCoin(allCoin+additionSouCoin);
 			effectedNum = helpDao.updateHelp(help);
 			if (effectedNum <= 0) {
 				throw new HelpOperationException("修改帮助追赏金失败");

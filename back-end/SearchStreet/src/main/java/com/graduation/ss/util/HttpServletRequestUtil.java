@@ -13,12 +13,20 @@ public class HttpServletRequestUtil {
 			return -1;
 		}
 	}
+	
+	public static Integer getInteger(HttpServletRequest request, String key) {
+		try {
+			return Integer.decode(request.getParameter(key));
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
-	public static long getLong(HttpServletRequest request, String key) {
+	public static Long getLong(HttpServletRequest request, String key) {
 		try {
 			return Long.valueOf(request.getParameter(key));
 		} catch (Exception e) {
-			return -1;
+			return null;
 		}
 	}
 

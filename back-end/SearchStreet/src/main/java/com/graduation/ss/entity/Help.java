@@ -16,7 +16,7 @@ public class Help {
 	 */
 	@ApiModelProperty(value = "求助ID", required = true)
 	private Long appealId;
-	
+
 	@ApiModelProperty(value = "求助标题", required = true)
 	private String appealTitle;
 	/**
@@ -60,6 +60,9 @@ public class Help {
 	 */
 	@ApiModelProperty(value = "之前的平均完成态度分，范围：0-5分保留一位小数", hidden = true)
 	private Float avgAttitude;
+
+	@ApiModelProperty(value = "获得的总搜币数量")
+	private Long allCoin;
 	// 追加赏金
 	@ApiModelProperty(value = "追加赏金")
 	private Long additionalCoin;
@@ -155,6 +158,14 @@ public class Help {
 		this.attitude = attitude;
 	}
 
+	public Long getAllCoin() {
+		return allCoin;
+	}
+
+	public void setAllCoin(Long allCoin) {
+		this.allCoin = allCoin;
+	}
+
 	public Long getAdditionalCoin() {
 		return additionalCoin;
 	}
@@ -176,8 +187,8 @@ public class Help {
 		return "Help [helpId=" + helpId + ", appealId=" + appealId + ", appealTitle=" + appealTitle + ", userId="
 				+ userId + ", helpStatus=" + helpStatus + ", completion=" + completion + ", efficiency=" + efficiency
 				+ ", attitude=" + attitude + ", avgCompletion=" + avgCompletion + ", avgEfficiency=" + avgEfficiency
-				+ ", avgAttitude=" + avgAttitude + ", additionalCoin=" + additionalCoin + ", endTime=" + endTime + "]";
+				+ ", avgAttitude=" + avgAttitude + ", allCoin=" + allCoin + ", additionalCoin=" + additionalCoin
+				+ ", endTime=" + endTime + "]";
 	}
 
-	
 }

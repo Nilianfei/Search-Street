@@ -15,6 +15,7 @@
 		avg_completion,
 		avg_efficiency,
 		avg_attitude,
+		all_coin,
 		additional_coin,
 		end_time
 		FROM
@@ -43,6 +44,9 @@
 			<if test="helpCondition.additionalCoin != null">
 				and additional_coin &gt;= #{helpCondition.additionalCoin}
 			</if>
+			<if test="helpCondition.allCoin != null">
+				and all_coin &gt;= #{helpCondition.allCoin}
+			</if>
 		</where>
 		ORDER BY end_time desc
 		LIMIT #{rowIndex},#{pageSize};
@@ -59,6 +63,7 @@
 		avg_completion,
 		avg_efficiency,
 		avg_attitude,
+		all_coin,
 		additional_coin,
 		end_time
 		FROM
@@ -104,6 +109,9 @@
 			<if test="helpCondition.additionalCoin != null">
 				and additional_coin &gt;= #{helpCondition.additionalCoin}
 			</if>
+			<if test="helpCondition.allCoin != null">
+				and all_coin &gt;= #{helpCondition.allCoin}
+			</if>
 		</where>
 	</select>
 	<select id="queryByHelpId" resultType="com.graduation.ss.entity.Help"
@@ -120,6 +128,7 @@
 		avg_completion,
 		avg_efficiency,
 		avg_attitude,
+		all_coin,
 		additional_coin,
 		end_time
 		FROM
@@ -142,11 +151,12 @@
 		avg_completion,
 		avg_efficiency,
 		avg_attitude,
+		all_coin,
 		additional_coin,
 		end_time)
 		VALUES
 		(#{appealId},#{appealTitle},#{userId},#{helpStatus},#{completion},
-		#{efficiency},#{attitude},#{avgCompletion},#{avgEfficiency},#{avgAttitude},#{additionalCoin},#{endTime})
+		#{efficiency},#{attitude},#{avgCompletion},#{avgEfficiency},#{avgAttitude},#{allCoin},#{additionalCoin},#{endTime})
 	</insert>
 	<update id="updateHelp" parameterType="com.graduation.ss.entity.Help">
 		update tb_help
@@ -155,6 +165,7 @@
 			<if test="completion != null">completion=#{completion},</if>
 			<if test="efficiency != null">efficiency=#{efficiency},</if>
 			<if test="attitude != null">attitude=#{attitude},</if>
+			<if test="allCoin != null">all_coin=#{allCoin},</if>
 			<if test="additionalCoin != null">additional_coin=#{additionalCoin}</if>
 		</set>
 		where help_id=#{helpId}

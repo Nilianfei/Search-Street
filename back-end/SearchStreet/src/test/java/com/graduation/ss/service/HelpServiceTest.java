@@ -21,12 +21,12 @@ public class HelpServiceTest {
 	private HelpService helpService;
 
 	@Test
-	@Ignore
+	//@Ignore
 	public void testGetHelpList() {
 		Help helpCondition = new Help();
-		helpCondition.setUserId(1l);
+		helpCondition.setUserId(14l);
 		// helpCondition.setHelpStatus(0);
-		HelpExecution helpExecution = helpService.getHelpListFY(helpCondition, null, null, 0, 5);
+		HelpExecution helpExecution = helpService.getHelpListFY(helpCondition, null, null, 0, 4);
 		for (Help help : helpExecution.getHelpList()) {
 			System.out.println(help.getAppealTitle());
 		}
