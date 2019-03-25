@@ -22,8 +22,8 @@ public interface HelpService {
 	 * 
 	 * @param appealId
 	 * @return
-	 *//*
-	public HelpExecution getHelpList(Help helpCondition);*/
+	 */
+	public HelpExecution getHelpList(Help helpCondition);
 
 	/**
 	 * 通过帮助ID获取帮助信息

@@ -2,6 +2,7 @@ package com.graduation.ss.web.appeal;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.graduation.ss.dto.HelpExecution;
 import com.graduation.ss.dto.UserCode2Session;
 import com.graduation.ss.entity.Help;
+import com.graduation.ss.entity.PersonInfo;
 import com.graduation.ss.entity.WechatAuth;
 import com.graduation.ss.enums.HelpStateEnum;
 import com.graduation.ss.exceptions.HelpOperationException;
 import com.graduation.ss.service.HelpService;
+import com.graduation.ss.service.PersonInfoService;
 import com.graduation.ss.service.WechatAuthService;
 import com.graduation.ss.util.HttpServletRequestUtil;
 import com.graduation.ss.util.JWT;
@@ -38,6 +41,8 @@ public class HelpController {
 	private HelpService helpService;
 	@Autowired
 	private WechatAuthService wechatAuthService;
+	@Autowired
+	private PersonInfoService personInfoService;
 
 	@RequestMapping(value = "/gethelplistbyappealid", method = RequestMethod.GET)
 	@ResponseBody
@@ -59,10 +64,15 @@ public class HelpController {
 				Help helpCondition = new Help();
 				helpCondition.setAppealId(appealId);
 				HelpExecution helpExecution = helpService.getHelpListFY(helpCondition, null, null, pageIndex, pageSize);
+				List<Help> helps = helpExecution.getHelpList();
+				for(Help help2:helps) {
+					PersonInfo personInfo = personInfoService.getPersonInfoByUserId(help2.getUserId());
+					help2.setPersonInfo(personInfo);
+				}
 				int pageNum = (int) (helpExecution.getCount() / pageSize);
 				if (pageNum * pageSize < helpExecution.getCount())
 					pageNum++;
-				modelMap.put("helpList", helpExecution.getHelpList());
+				modelMap.put("helpList", helps);
 				modelMap.put("pageNum", pageNum);
 				modelMap.put("success", true);
 			} catch (Exception e) {

@@ -129,35 +129,11 @@ public class HelpServiceImpl implements HelpService {
 		return new HelpExecution(HelpStateEnum.SUCCESS, help);
 	}
 
-	/*@Override
+	@Override
 	public HelpExecution getHelpList(Help helpCondition) {
 		List<Help> helpList = helpDao.queryHelpList(helpCondition);
 		HelpExecution he = new HelpExecution();
-		if (helpCondition.getHelpStatus() != null
-				&& (helpCondition.getHelpStatus() == 1 || helpCondition.getHelpStatus() == 0)) {
-			if (helpList != null) {
-				Date today = new Date();
-				Iterator<Help> iter = helpList.iterator();
-				while (iter.hasNext()) {
-					Help value = iter.next();
-					if (value.getEndTime().getTime() < today.getTime()) {// 修改已过时失效的求助
-						value.setHelpStatus(3);
-						try {
-							int effectedNum = helpDao.updateHelp(value);
-							if (effectedNum <= 0) {
-								throw new AppealOperationException("帮助修改失败");
-							}
-						} catch (Exception e) {
-							throw new AppealOperationException("modifyAppeal error:" + e.getMessage());
-						}
-						iter.remove();
-					}
-				}
-			} else {
-				he.setState(AppealStateEnum.INNER_ERROR.getState());
-				return he;
-			}
-		}
+
 		if (helpList != null) {
 			he.setHelpList(helpList);
 			he.setCount(helpList.size());
@@ -165,7 +141,7 @@ public class HelpServiceImpl implements HelpService {
 			he.setState(HelpStateEnum.INNER_ERROR.getState());
 		}
 		return he;
-	}*/
+	}
 
 	@Override
 	@Transactional

@@ -69,6 +69,9 @@ public class Help {
 
 	@ApiModelProperty(value = "失效时间", hidden = true)
 	private Date endTime;
+	
+	@ApiModelProperty(value = "帮助者信息", hidden = true)
+	private PersonInfo personInfo;
 
 	public Float getAvgCompletion() {
 		return avgCompletion;
@@ -180,6 +183,14 @@ public class Help {
 
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
+	}
+
+	public PersonInfo getPersonInfo() {
+		return personInfo;
+	}
+
+	public void setPersonInfo(PersonInfo personInfo) {
+		this.personInfo = personInfo;
 	}
 
 	@Override

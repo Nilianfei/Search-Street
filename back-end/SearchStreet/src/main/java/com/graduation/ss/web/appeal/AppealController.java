@@ -169,29 +169,27 @@ public class AppealController {
 		return modelMap;
 	}
 
-	/*@RequestMapping(value = "/modifyappeal", method = RequestMethod.POST)
-	@ResponseBody
-	@ApiOperation(value = "修改求助信息（不修改图片）", notes = "要传appealId,目前前端好像不需要用")
-	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
-	private Map<String, Object> modifyAppeal(
-			@RequestBody @ApiParam(name = "appeal", value = "传入json格式,不用传appealId", required = true) Appeal appeal) {
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		AppealExecution ae;
-		try {
-			ae = appealService.modifyAppeal(appeal);
-			if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
-				modelMap.put("success", true);
-				modelMap.put("appealId", ae.getAppeal().getAppealId());
-			} else {
-				modelMap.put("success", false);
-				modelMap.put("errMsg", ae.getStateInfo());
-			}
-		} catch (AppealOperationException e) {
-			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
-		}
-		return modelMap;
-	}*/
+	/*
+	 * @RequestMapping(value = "/modifyappeal", method = RequestMethod.POST)
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @ApiOperation(value = "修改求助信息（不修改图片）", notes = "要传appealId,目前前端好像不需要用")
+	 * 
+	 * @ApiImplicitParam(paramType = "query", name = "token", value =
+	 * "包含用户信息的token", required = true, dataType = "String") private Map<String,
+	 * Object> modifyAppeal(
+	 * 
+	 * @RequestBody @ApiParam(name = "appeal", value = "传入json格式,不用传appealId",
+	 * required = true) Appeal appeal) { Map<String, Object> modelMap = new
+	 * HashMap<String, Object>(); AppealExecution ae; try { ae =
+	 * appealService.modifyAppeal(appeal); if (ae.getState() ==
+	 * AppealStateEnum.SUCCESS.getState()) { modelMap.put("success", true);
+	 * modelMap.put("appealId", ae.getAppeal().getAppealId()); } else {
+	 * modelMap.put("success", false); modelMap.put("errMsg", ae.getStateInfo()); }
+	 * } catch (AppealOperationException e) { modelMap.put("success", false);
+	 * modelMap.put("errMsg", e.getMessage()); } return modelMap; }
+	 */
 
 	private void handleImage(HttpServletRequest request, ImageHolder appealImg) throws IOException {
 		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
@@ -328,6 +326,90 @@ public class AppealController {
 			modelMap.put("errMsg", e.getMessage());
 		}
 		return modelMap;
+	}
+
+	@RequestMapping(value = "/disableappeal", method = RequestMethod.GET)
+	@ResponseBody
+	@ApiOperation(value = "求助者使求助失效")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助Id", required = true, dataType = "Long") })
+	private Map<String, Object> disableAppeal(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = HttpServletRequestUtil.getString(request, "token");
+		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		Long appealUserId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人ID
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			appealUserId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+
+		try {
+			AppealExecution ae = appealService.disableAppeal(appealUserId, appealId);
+			if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", true);
+				return modelMap;
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", ae.getStateInfo());
+				return modelMap;
+			}
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+	}
+
+	@RequestMapping(value = "/cancelappeal", method = RequestMethod.GET)
+	@ResponseBody
+	@ApiOperation(value = "求助者撤销求助")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助Id", required = true, dataType = "Long") })
+	private Map<String, Object> cancelAppeal(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = HttpServletRequestUtil.getString(request, "token");
+		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		Long appealUserId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人ID
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			appealUserId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+
+		try {
+			AppealExecution ae = appealService.cancelAppeal(appealUserId, appealId);
+			if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", true);
+				return modelMap;
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", ae.getStateInfo());
+				return modelMap;
+			}
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
 	}
 
 }

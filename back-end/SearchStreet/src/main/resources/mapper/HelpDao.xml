@@ -7,6 +7,7 @@
 		SELECT
 		help_id,
 		appeal_id,
+		user_id,
 		appeal_title,
 		help_status,
 		completion,

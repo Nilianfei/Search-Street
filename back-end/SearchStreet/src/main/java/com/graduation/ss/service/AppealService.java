@@ -14,7 +14,8 @@ public interface AppealService {
 	 * @param pageSize
 	 * @return
 	 */
-	public AppealExecution getAppealListFY(Appeal appealCondition, int pageIndex, int pageSize) throws AppealOperationException;
+	public AppealExecution getAppealListFY(Appeal appealCondition, int pageIndex, int pageSize)
+			throws AppealOperationException;
 
 	/**
 	 * 根据经纬范围返回附近求助列表
@@ -25,7 +26,8 @@ public interface AppealService {
 	 * @param minlng
 	 * @return
 	 */
-	public AppealExecution getNearbyAppealList(float maxlat, float minlat, float maxlng, float minlng, String appealTitle);
+	public AppealExecution getNearbyAppealList(float maxlat, float minlat, float maxlng, float minlng,
+			String appealTitle);
 
 	/**
 	 * 通过求助Id获取求助信息
@@ -33,7 +35,7 @@ public interface AppealService {
 	 * @param appealId
 	 * @return
 	 */
-	Appeal getByAppealId(Long appealId)throws AppealOperationException;
+	Appeal getByAppealId(Long appealId) throws AppealOperationException;
 
 	/**
 	 * 更新求助信息，不包括对图片的处理
@@ -75,4 +77,22 @@ public interface AppealService {
 	 * @return
 	 */
 	AppealExecution completeAppeal(Long appealId, Long helpId, Long appealUserId) throws AppealOperationException;
+
+	/**
+	 * 撤销求助
+	 * 
+	 * @param userId
+	 * @param appealId
+	 * @throws AppealOperationException
+	 */
+	AppealExecution cancelAppeal(Long userId, Long appealId) throws AppealOperationException;
+
+	/**
+	 * 使求助失效
+	 * 
+	 * @param userId
+	 * @param appealId
+	 * @throws AppealOperationException
+	 */
+	AppealExecution disableAppeal(Long userId, Long appealId) throws AppealOperationException;
 }
