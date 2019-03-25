@@ -40,13 +40,112 @@ Page({
     id:0,
     ifadditioncoin:false,
     showcoin:false,
+    helplist:[]
   },
 
  /* 根据导航栏的选择设置目前的key值 */
   handleChange({ detail }) {
+    var phelptime = [];
+    var that = this;
+    var token = null;
+    try {
+      const value = wx.getStorageSync('token')
+      if (value) {
+        token = value;
+        that.data.token = value;
+      }
+    } catch (e) {
+      console.log("error");
+    }
     this.setData({
       current: detail.key
     });
+    if (that.data.current == 'tab1') {
+      wx.request({
+        url: app.globalData.serviceUrl + "/SearchStreet/help/gethelplistbyuserid?token=" + token + "&pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
+        data: {
+
+        },
+        method: 'GET',
+        success: function (res) {
+          console.log(res.data);
+          if (res.data.success) {
+            console.log(res.data);
+            var List = res.data.helpList;
+            for (var i = 0; i < List.length; i++) {
+              phelptime.push(Math.round((List[i].endTime - List[i].startTime) / 1000 / 60));
+            }
+            if (List[0].endTime - new Date().getTime() <= 0) that.data.second = 3600 * 24;      //此处有错误
+            else that.data.second = Math.floor((List[0].endTime - new Date().getTime()) / 1000);
+            console.log(that.data.second);
+            countdown(that);
+            console.log(that.data.second);
+            that.setData({
+              list: List,
+              phelptime: phelptime,
+            })
+            console.log(that.data.list);
+            if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+              wx.redirectTo({
+                url: '../../page/login/login'
+              })
+            }
+          }
+        },
+        fail: function (res) {
+          console.log('submit fail');
+        },
+        complete: function (res) {
+          console.log('submit complete');
+        }
+      })
+    }
+    else if (that.data.current == 'tab2') {
+      wx.request({
+        url: app.globalData.serviceUrl + "/SearchStreet/appeal/getappeallistbyuserid?token=" + token + "&pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
+        data: {
+
+        },
+        method: 'POST',
+        success: function (res) {
+          console.log(res.data);
+          if (res.data.success) {
+            console.log(res.data);
+            var List = res.data.appealList;
+            for (var i = 0; i < List.length; i++) {
+              phelptime.push(Math.round((List[i].endTime - List[i].startTime) / 1000 / 60));
+            }
+            if (List[0].endTime - new Date().getTime() <= 0) that.data.second = 3600 * 24;      //此处有错误
+            else that.data.second = Math.floor((List[0].endTime - new Date().getTime()) / 1000);
+            console.log(that.data.second);
+            countdown(that);
+            console.log(that.data.second);
+            that.setData({
+              list: List,
+              phelptime: phelptime,
+            })
+            console.log(that.data.list);
+            //var detail = that.data.list;
+            //detail[0].appealStatus = 2;
+            //that.setData({
+            //  list:detail
+            // }) 
+          } else {
+            if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+              wx.redirectTo({
+                url: '../../page/login/login'
+              })
+            }
+          }
+        },
+        fail: function (res) {
+          console.log('submit fail');
+        },
+        complete: function (res) {
+          console.log('submit complete');
+        }
+      })
+    }
   },
 
   /* 根据导航栏的选择显示目前状态下的求助信息列表 */
@@ -72,11 +171,6 @@ Page({
   },
 /* 点击确认已被帮助按钮功能 */
 finishedHelp:function(e){
-  var detail=this.data.list;
-  this.setData({
-    btnhover:true,
-    list:detail,                 //此处逻辑有错
-  }) 
   var token = null;
   try {
     const value = wx.getStorageSync('token')
@@ -90,20 +184,22 @@ finishedHelp:function(e){
     url: app.globalData.serviceUrl+"/SearchStreet/appeal/competeappeal?token="+token,
     data:{
     appealId:e.target.id,
-    helpId:1
+    helpId:2
     },
     method:'GET',
     success(res){
       console.log(res.data);
+      if(res.data.success){
+        this.setData({
+          btnhover: true,
+        }) 
+      }
     }
   })
 },
 
 /*点击帮助无效按钮功能 */
 unfinishedHelp:function(e){
-  this.setData({
-    btnhover1: true,
-  }) 
   var token = null;
   try {
     const value = wx.getStorageSync('token')
@@ -114,21 +210,26 @@ unfinishedHelp:function(e){
     console.log("error");
   }
   wx.request({
-    url: app.globalData.serviceUrl + "/SearchStreet/appeal/?token=" + token,       /*完整后台url，将此状态变为已完成（不会将搜币打到对方账户），并告知给提供服务的人 */
+    url: app.globalData.serviceUrl + "/SearchStreet/appeal/disableappeal?token=" + token,       /*完整后台url，将此状态变为已完成（不会将搜币打到对方账户），并告知给提供服务的人 */
     data: {
       appealId: e.target.id,
-      helpId: 1
+      //helpId: 1
     },
     method: 'GET',
     success(res) {
       console.log(res.data);
+      if(res.data.success){
+        this.setData({
+          btnhover1: true,
+        }) 
+      }
     }
   })
 },
 /* 点击撤销按钮功能 */
 withdrawHelp:function(e){
   wx.request({
-    url: app.globalData.serviceUrl+"/SeacrhStreet/appeal/",          /*根据求助ID查看是否有人对此求助提供了帮助，若无人接单，才可撤销，将其变为失效单 */  
+    url: app.globalData.serviceUrl + "/SeacrhStreet/appeal/cancelappeal?token=" + token,          /*根据求助ID查看是否有人对此求助提供了帮助，若无人接单，才可撤销，将其变为失效单 */  
     data:{
       appealId:e.target.id
     },
@@ -141,8 +242,9 @@ withdrawHelp:function(e){
 
 /* 点击修改按钮功能 */
 modifyHelp:function(e){
+  console.log(e);
   wx.navigateTo({
-    url: '../modify-myhelp/modify-myhelp',
+    url: '../modify-myhelp/modify-myhelp?id='+e.target.id,
   })
 },
 /*根据追加打赏按钮设置打赏搜币页面的显示 */
@@ -248,66 +350,48 @@ confirm:function(){
     } catch (e) {
       console.log("error");
     }
-    if(that.data.current=='tab1')
-    {
-      wx.request({
-      url: app.globalData.serviceUrl + "/SearchStreet/appeal/getappeallistbyuserid?token=" + token +"&pageIndex="+0+"&pageSize="+that.data.pageSize,
-      data:{
-
-      },
-      method: 'POST',
-      success: function (res) {
-        console.log(res.data);
-        if (res.data.success) {
-          console.log(res.data);
-          var List = res.data.appealList;
-          for(var i=0;i<List.length;i++){
-            phelptime.push(Math.round((List[i].endTime-List[i].startTime)/1000/60));
-          }
-          if (List[0].endTime - new Date().getTime() <= 0) that.data.second = 3600 * 24;      //此处有错误
-          else that.data.second = Math.floor((List[0].endTime - new Date().getTime()) / 1000);
-          console.log(that.data.second);
-          countdown(that);
-         console.log(that.data.second);
-          that.setData({
-          list: List,
-          phelptime:phelptime,
-        })
-        console.log(that.data.list);
-         //var detail = that.data.list;
-          //detail[0].appealStatus = 2;
-          //that.setData({
-          //  list:detail
-         // }) 
-      } else {
-          if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
-            wx.redirectTo({
-              url: '../../page/login/login'
-            })
-          }
-        }
-      },
-      fail: function (res) {
-        console.log('submit fail');
-      },
-      complete: function (res) {
-        console.log('submit complete');
-      }
-    })
-    }
-    else if(that.data.current=='tab2'){
+    if(that.data.current=='tab1'){
       wx.request({
         url: app.globalData.serviceUrl + "/SearchStreet/help/gethelplistbyuserid?token=" + token + "&pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
         data: {
-          helpStatus:2
+        
         },
-        method: 'POST',
+        method: 'GET',
         success: function (res) {
           console.log(res.data);
+          if (res.data.success) {
+            console.log(res.data);
+            var List = res.data.helpList;
+            for (var i = 0; i < List.length; i++) {
+              phelptime.push(Math.round((List[i].endTime - List[i].startTime) / 1000 / 60));
+            }
+            if (List[0].endTime - new Date().getTime() <= 0) that.data.second = 3600 * 24;      //此处有错误
+            else that.data.second = Math.floor((List[0].endTime - new Date().getTime()) / 1000);
+            console.log(that.data.second);
+            countdown(that);
+            console.log(that.data.second);
+            that.setData({
+              list: List,
+              phelptime: phelptime,
+            })
+            console.log(that.data.list);
+            if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+              wx.redirectTo({
+                url: '../../page/login/login'
+              })
+            }
+          }
+        },
+        fail: function (res) {
+          console.log('submit fail');
+        },
+        complete: function (res) {
+          console.log('submit complete');
         }
       })
     }
-  },
+    },
+  
 
   /**
    * 生命周期函数--监听页面初次渲染完成

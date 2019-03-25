@@ -6,3 +6,4 @@
  .selectBox .select .select_img_rotate{ transform:rotate(180deg); } 
 .selectBox .optionBox{ position: absolute; top: calc(100%); width: 100%; box-sizing: border-box; height: 0; overflow-y: auto; background: #fff; transition: height 0.3s; border-left:2px solid black; border-right:2px solid black;border:1px solid black ;z-index:9999} 
 .selectBox .optionBox .option{ display: block; line-height: 50rpx; font-size: 35rpx; border-top: 2px solid black; padding: 10rpx;z-index:9999;} 
+.select_input{width: 90%}

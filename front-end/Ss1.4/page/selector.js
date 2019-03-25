@@ -29,12 +29,12 @@ Component({
       console.log(this.data.selectShow);
     },
     optionTap(e) {
-      var costgroup=this.properties.selectData;
+      var costgroup = this.properties.selectData;
       let Index = e.currentTarget.dataset.index;
-      var text=costgroup[Index];
+      var text = costgroup[Index];
       console.log(text);
-      this.triggerEvent('myget', {text}, {})
-     
+      this.triggerEvent('myget', { text }, {})
+
       this.setData({
         index: Index,
         selectShow: !this.data.selectShow

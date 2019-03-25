@@ -23,7 +23,8 @@
     "page/comment/comment",
     "page/myhelp-details/myhelp-details",
     "page/order/order",
-    "page/addservice/addservice"
+    "page/addservice/addservice",
+    "page/modify-myhelp/modify-myhelp"
   ],
   "permission": {
     "scope.userLocation": {

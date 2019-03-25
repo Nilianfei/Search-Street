@@ -51,30 +51,43 @@
     帮助者列表
   </view>
 <!-- 此处显示对本人的求助提出帮助的人信息列表 -->
- <!--<block wx:for="{{}}" wx:key='id'> -->
+ <block wx:for="{{helperlist}}" wx:key='id'>
   <view class="helpers-info">
  <!--此处要求后台提供提出帮助的人的头像，呢称，联系电话等-->
   <view class="helper">
-    <view class="userinfo-avatar itself">
-      <open-data type="userAvatarUrl"></open-data>
-    </view>
+    <!--<view class="userinfo-avatar itself"> -->
+      <!--<open-data type="userAvatarUrl"></open-data> -->
+    <!--</view>-->
+    <view class="helperinfo">
     <view class="name">
-      <open-data type="userNickName"></open-data>
+    <text>{{item[1].personInfo.userName}}</text>
     </view>
-    <view>
-     <button class="choosehelper" bindtap="choosehelper" disabled='{{disabled}}'>{{btn_helper}}</button>
+    <view class="score">
+    <view class="score-detail">
+     <text class="score-text">态度分：{{item[1].avgAttitude}}</text>
+     </view>
+     <view class="score-detail">
+      <text class="score-text">完成度：{{item[1].avgCompletion}}</text>
+     </view>
+     <view class="score-detail">
+      <text class="score-text">效率分：{{item[1].avgEfficiency}}</text>
     </view>
-   </view>
-   <view class="helper1">
+    </view>
+    <view class="helper1">
     <view>
-      <text >联系电话：{{}}</text>
+      <text class="helper1-text">联系帮助者：</text>
     </view>
     <view>
       <image class="helpdetail-icon icon" src="../../images/对话.png"></image>
     </view>
    </view>
+    </view>
+     <view>
+     <button class="choosehelper" bindtap="choosehelper" disabled='{{item[0].disabled}}' id='{{index}}' data-id='{{item[1].helpId}}'>{{item[0].btn_helper}}</button>
+   </view>
   </view>
-  <!--</block> -->
+  </view>
+  </block> 
  
 </block>
 
@@ -83,30 +96,44 @@
     帮助者列表
   </view>
 <!-- 此处显示这次帮助本人的人的信息 -->
- <!--<block wx:for="{{}}" wx:key='id'> -->
+<!-- 此处显示对本人的求助提出帮助的人信息列表 -->
+ <block wx:for="{{helperlist}}" wx:key='id'>
   <view class="helpers-info">
- <!--此处要求后台提供帮助的人的头像，呢称，联系电话等-->
+ <!--此处要求后台提供提出帮助的人的头像，呢称，联系电话等-->
   <view class="helper">
-    <view class="userinfo-avatar itself">
-      <open-data type="userAvatarUrl"></open-data>
-    </view>
+    <!--<view class="userinfo-avatar itself"> -->
+      <!--<open-data type="userAvatarUrl"></open-data> -->
+    <!--</view>-->
+    <view class="helperinfo">
     <view class="name">
-      <open-data type="userNickName"></open-data>
+    <text>{{item[1].personInfo.userName}}</text>
     </view>
-    <view>
-     <button class="choosehelper" bindtap="choosehelper" disabled='{{true}}'>已选择</button>
+    <view class="score">
+    <view class="score-detail">
+     <text class="score-text">态度分：{{item[1].avgAttitude}}</text>
+     </view>
+     <view class="score-detail">
+      <text class="score-text">完成度：{{item[1].avgCompletion}}</text>
+     </view>
+     <view class="score-detail">
+      <text class="score-text">效率分：{{item[1].avgEfficiency}}</text>
     </view>
-   </view>
-   <view class="helper1">
+    </view>
+    <view class="helper1">
     <view>
-      <text >联系电话：{{}}</text>
+      <text class="helper1-text">联系帮助者：</text>
     </view>
     <view>
       <image class="helpdetail-icon icon" src="../../images/对话.png"></image>
     </view>
    </view>
+    </view>
+     <view>
+     <button class="choosehelper" bindtap="choosehelper" disabled='{{true}}'>已选择</button>
+    </view>
+   </view>
   </view>
-  <!--</block> -->
+  </block> 
 </block>
 
 <block wx:if='{{helpDetail.appealStatus==3}}'>
