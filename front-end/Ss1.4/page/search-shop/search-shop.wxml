@@ -47,7 +47,7 @@
         </cover-view>
         <cover-view class="shopInfo-button">
           <cover-view class="shopInfoButtonSize">
-            <button class="shopInfoButton blue" hover-class='hover'> 查看详情 </button>
+            <button class="shopInfoButton blue" hover-class='hover' bindtap="gotoShop"> 查看详情 </button>
           </cover-view>
 
           <cover-view class="shopInfoButtonSize">

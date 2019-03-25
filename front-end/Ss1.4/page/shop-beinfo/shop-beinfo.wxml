@@ -42,11 +42,11 @@
         <i-icon type="praise" slot="icon" />
       </i-cell>
 
-      <i-cell title="商铺信息" is-link>
+      <i-cell title="商铺信息" is-link >
         <i-icon type="shop_fill" slot="icon" />
       </i-cell>
     
-      <i-cell title="设置" is-link>
+      <i-cell title="设置" is-link url="../shop-settings/shop-settings">
         <i-icon type="setup" slot="icon" />
       </i-cell>
 

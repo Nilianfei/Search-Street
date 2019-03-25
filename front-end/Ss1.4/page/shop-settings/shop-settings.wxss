@@ -1,0 +1,10 @@
+/* page/shop-settings/shop-settings.wxss */
+.containor{
+  background-color: #f8f8f9;
+}
+
+.mapContainor{
+  margin-left: 5%;
+  width: 90%;
+  height: 300rpx;
+}

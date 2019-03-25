@@ -1,0 +1,48 @@
+<!--page/shop-settings/shop-settings.wxml-->
+<view class='containor'>
+  <i-panel title="基本信息">
+    <i-input value="{{ shopName }}" type="text" title="商铺名称" />
+    <i-input value="{{ phone }}" type="number" title="联系电话 " />
+    <i-input value="{{ businessScope }}" type="textarea" title="经营范围" />
+    <i-input value="{{ perCost }}" type="number" title="人均消费" />
+    <i-input value="{{ businessLicenseCode }}" type="number" title="执照编码" />
+    <i-input value="{{ shopMoreInfo }}" type="textarea" title="详细信息" />
+  </i-panel>
+  <view style="height:40rpx;width:100%;background-color:#f8f8f9;"></view>
+  <i-panel title="固定商铺or移动商铺">
+    <i-radio-group current="{{ current }}" bindchange="handleIsMobileChange">
+      <i-radio wx:for="{{ isMobile }}" position="{{ position }}" wx:key="{{ item.id }}" value="{{ item.name }}">
+      </i-radio>
+    </i-radio-group>
+  </i-panel>
+  <view style="height:40rpx;width:100%;background-color:#f8f8f9;"></view>
+
+  <i-panel title="地址相关">
+    <i-input value="{{ province }}" type="textare" title="省份" />
+    <i-input value="{{ city }}" type="textare" title="城市" />
+    <i-input value="{{ district }}" type="textare" title="区域" />
+    <i-input value="{{ fullAddress }}" type="textarea " title="详细地址 " />
+    <i-button bind:click="buttonClickMoveMap" type="primary">定位</i-button>
+    <view style="height:10rpx;"></view>
+  </i-panel>
+
+  <view style="height:40rpx;width:100%;background-color:#f8f8f9;"></view>
+
+  <view class="mapContainor">
+    <map id="myMap" markers="{{markers}}" style="width:100%;" longitude="{{longitude}}" latitude="{{latitude}}" scale='16' show-location>
+
+    </map>
+  </view>
+  
+  <view style="height:30rpx;width:100%;background-color:#f8f8f9;"></view>
+
+  <view style="width:100%;background-color:#f8f8f9;display:flex;">
+    <view style="width:65%">
+      <i-button bind:click="buttonClickCommit" type="primary">确认修改</i-button>
+    </view>
+    <view style="width:35%">
+      <i-button bind:click="buttonClickCancel" >取消</i-button>
+    </view>
+  </view>
+
+</view>

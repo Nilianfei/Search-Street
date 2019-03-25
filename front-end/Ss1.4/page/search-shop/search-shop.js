@@ -29,6 +29,7 @@ Page({
     shopInfoName:'',
     shopInfoAddress:'',
     shopInfoBusinessScope:'',
+    shopInfoId: 12
   },
 
   /**
@@ -249,9 +250,6 @@ Page({
     let markerId = e.markerId;
     let currentMarker = _markers[markerId];
 
-    console.log(markerId);
-    console.log(currentMarker);
-
     this.setData({
       polyline: [{
         points: [{
@@ -272,11 +270,18 @@ Page({
       shopInfoPic: currentMarker.profileImg,
       shopInfoAddress: currentMarker.address,
       shopInfoBusinessScope: currentMarker.businessScope,
+      shopInfoId: currentMarker.shopId,
     })
 
-    console.log(currentMarker.address);
+    console.log(this.data.shopInfoId);
   },
 
+  gotoShop: function(e) {
+    wx.navigateTo({
+      url: '../shop/shop?shopId='+this.data.shopInfoId
+    })
+  },
+  
   //地图拖动事件
   bindregionchange: function (e) {
     //console.log(e.type);
