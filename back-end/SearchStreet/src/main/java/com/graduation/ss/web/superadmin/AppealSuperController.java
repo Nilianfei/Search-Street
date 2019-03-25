@@ -19,8 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduation.ss.dto.AppealExecution;
 import com.graduation.ss.dto.ConstantForSuperAdmin;
 import com.graduation.ss.entity.Appeal;
+import com.graduation.ss.entity.Help;
 import com.graduation.ss.enums.AppealStateEnum;
 import com.graduation.ss.service.AppealService;
+import com.graduation.ss.service.HelpService;
 import com.graduation.ss.util.HttpServletRequestUtil;
 
 @Controller
@@ -28,6 +30,8 @@ import com.graduation.ss.util.HttpServletRequestUtil;
 public class AppealSuperController {
 	@Autowired
 	private AppealService appealService;
+	@Autowired
+	private HelpService helpService;
 
 	/**
 	 * 获取求助列表
@@ -153,6 +157,13 @@ public class AppealSuperController {
 		if (appeal != null && appeal.getAppealId() != null) {
 			try {
 				AppealExecution ae = appealService.modifyAppeal(appeal);
+				Help helpCondition = new Help();
+				helpCondition.setAppealId(appeal.getAppealId());
+				List<Help> helps = helpService.getHelpList(helpCondition).getHelpList();
+				for (Help help : helps) {
+					help.setHelpStatus(4);
+					helpService.modifyHelp(help);
+				}
 				if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
 					modelMap.put("success", true);
 				} else {
