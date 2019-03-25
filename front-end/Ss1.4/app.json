@@ -25,11 +25,9 @@
     "page/myhelp-details/myhelp-details",
     "page/order/order",
     "page/addservice/addservice",
-<<<<<<< HEAD
-    "page/modify-myhelp/modify-myhelp"
-=======
+    "page/modify-myhelp/modify-myhelp",
     "page/shop-settings/shop-settings"
->>>>>>> 添加shop-settings页面，链接search-shop与shop
+    
   ],
   "permission": {
     "scope.userLocation": {

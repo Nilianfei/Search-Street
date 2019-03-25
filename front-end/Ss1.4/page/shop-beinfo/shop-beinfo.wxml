@@ -46,7 +46,7 @@
         <i-icon type="shop_fill" slot="icon" />
       </i-cell>
     
-      <i-cell title="设置" is-link url="../shop-settings/shop-settings">
+      <i-cell title="设置" is-link url="../shop-settings/shop-settings?shopId={{shopId}}">
         <i-icon type="setup" slot="icon" />
       </i-cell>
 
