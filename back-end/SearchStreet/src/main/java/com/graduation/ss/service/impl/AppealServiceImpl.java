@@ -283,6 +283,7 @@ public class AppealServiceImpl implements AppealService {
 	}
 
 	@Override
+	@Transactional
 	public AppealExecution disableAppeal(Long userId, Long appealId) throws AppealOperationException {
 		if (userId == null) {
 			return new AppealExecution(AppealStateEnum.NULL_USERID);
