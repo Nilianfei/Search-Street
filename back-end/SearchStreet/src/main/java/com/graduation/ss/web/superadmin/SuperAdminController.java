@@ -19,6 +19,12 @@ public class SuperAdminController {
 		// 店铺管理页
 		return "superadmin/shopmanage";
 	}
+	
+	@RequestMapping(value = "/appealmanage", method = RequestMethod.GET)
+	private String appealmanage() {
+		// 店铺管理页
+		return "superadmin/appealmanage";
+	}
 
 	@RequestMapping(value = "/personinfomanage", method = RequestMethod.GET)
 	private String personInfomanage() {

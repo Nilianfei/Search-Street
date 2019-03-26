@@ -108,9 +108,4 @@ public class AppealServiceTest {
 		System.out.println(ae.getStateInfo());
 	}
 	
-	@Test
-	@Ignore
-	public void testAdditionSouCoin() throws AppealOperationException{
-		appealService.additionSouCoin(9l, 1l, 1l);
-	}
 }

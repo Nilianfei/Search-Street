@@ -1,9 +1,8 @@
 package com.graduation.ss.web.appeal;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.graduation.ss.dto.HelpExecution;
 import com.graduation.ss.dto.UserCode2Session;
 import com.graduation.ss.entity.Help;
+import com.graduation.ss.entity.PersonInfo;
 import com.graduation.ss.entity.WechatAuth;
 import com.graduation.ss.enums.HelpStateEnum;
 import com.graduation.ss.exceptions.HelpOperationException;
 import com.graduation.ss.service.HelpService;
+import com.graduation.ss.service.PersonInfoService;
 import com.graduation.ss.service.WechatAuthService;
 import com.graduation.ss.util.HttpServletRequestUtil;
 import com.graduation.ss.util.JWT;
@@ -40,6 +41,8 @@ public class HelpController {
 	private HelpService helpService;
 	@Autowired
 	private WechatAuthService wechatAuthService;
+	@Autowired
+	private PersonInfoService personInfoService;
 
 	@RequestMapping(value = "/gethelplistbyappealid", method = RequestMethod.GET)
 	@ResponseBody
@@ -50,7 +53,7 @@ public class HelpController {
 			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的列数", required = true, dataType = "int") })
 	private Map<String, Object> getHelpListByAppealId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
 		int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
 		int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
 		if (appealId <= 0) {
@@ -61,10 +64,15 @@ public class HelpController {
 				Help helpCondition = new Help();
 				helpCondition.setAppealId(appealId);
 				HelpExecution helpExecution = helpService.getHelpListFY(helpCondition, null, null, pageIndex, pageSize);
+				List<Help> helps = helpExecution.getHelpList();
+				for(Help help2:helps) {
+					PersonInfo personInfo = personInfoService.getPersonInfoByUserId(help2.getUserId());
+					help2.setPersonInfo(personInfo);
+				}
 				int pageNum = (int) (helpExecution.getCount() / pageSize);
 				if (pageNum * pageSize < helpExecution.getCount())
 					pageNum++;
-				modelMap.put("helpList", helpExecution.getHelpList());
+				modelMap.put("helpList", helps);
 				modelMap.put("pageNum", pageNum);
 				modelMap.put("success", true);
 			} catch (Exception e) {
@@ -83,7 +91,7 @@ public class HelpController {
 			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String") })
 	private Map<String, Object> queryisHelp(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
 		String token = HttpServletRequestUtil.getString(request, "token");
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
@@ -123,31 +131,27 @@ public class HelpController {
 		return modelMap;
 	}
 
-	@RequestMapping(value = "/gethelplistbyuserid", method = RequestMethod.POST)
+	@RequestMapping(value = "/gethelplistbyuserid", method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value = "根据用户ID和帮助状态查询帮助（可增加输入的条件有：帮助状态，指定日期范围，搜币（大于等于输入搜币）信息(分页)", notes = "进行中:helpStatus=1（返回的helpStatus=0表示还没有被选中，helpStatus=1表示已被选中）,已完成:helpStatus=2,已失效:helpStatus=3")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "helpStatus", value = "帮助状态", required = false, dataType = "int"),
 			@ApiImplicitParam(paramType = "query", name = "startTime", value = "时间范围（下限）", required = false, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "endTime", value = "时间范围（上限）", required = false, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "souCoin", value = "搜币数量", required = false, dataType = "Long"),
 			@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = true, dataType = "int"),
 			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的数目", required = true, dataType = "int") })
-	private Map<String, Object> getHelpListByUserId(
-			@RequestBody @ApiParam(name = "help", value = "传入json格式,不用传helpId", required = true) Help help,
-			String token, String startTime, String endTime, int pageIndex, int pageSize) {
+	private Map<String, Object> getHelpListByUserId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date startTimeD;
-		Date endTimeD;
-		try {
-			startTimeD = sdf.parse(startTime);
-			endTimeD = sdf.parse(endTime);
-		} catch (ParseException e) {
-			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
-			return modelMap;
-		}
+		String token = HttpServletRequestUtil.getString(request, "token");
+		Integer helpStatus = HttpServletRequestUtil.getInteger(request, "helpStatus");
+		Date startTime = HttpServletRequestUtil.getDate(request, "startTime");
+		Date endTime = HttpServletRequestUtil.getDate(request, "endTime");
+		Long souCoin = HttpServletRequestUtil.getLong(request, "souCoin");
+		int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
+		int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
 
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
@@ -164,8 +168,12 @@ public class HelpController {
 			return modelMap;
 		}
 		try {
+			Help help = new Help();
 			help.setUserId(userId);
-			HelpExecution helpExecution = helpService.getHelpListFY(help, startTimeD, endTimeD, pageIndex, pageSize);
+			help.setHelpStatus(helpStatus);
+			help.setAllCoin(souCoin);
+			System.out.println(help);
+			HelpExecution helpExecution = helpService.getHelpListFY(help, startTime, endTime, pageIndex, pageSize);
 			if (helpExecution.getState() == HelpStateEnum.SUCCESS.getState()) {
 				int pageNum = (int) (helpExecution.getCount() / pageSize);
 				if (pageNum * pageSize < helpExecution.getCount())
@@ -249,12 +257,25 @@ public class HelpController {
 		return modelMap;
 	}
 
-	/*@RequestMapping(value = "/modifyhelp", method = RequestMethod.POST)
+	@RequestMapping(value = "/commenthelp", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "修改帮助", notes = "目前前端好像不需要用")
-	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
-	private Map<String, Object> modifyHelp(
-			@RequestBody @ApiParam(name = "help", value = "传入json格式,要传helpId", required = true) Help help) {
+	@ApiOperation(value = "帮助评论", notes = "评论帮助需要输入帮助Id、完成分、效率分和态度分")
+	@ApiImplicitParams({
+		@ApiImplicitParam(paramType = "query", name = "token", value = "包含求助者用户信息的token", required = true, dataType = "String"),
+		@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助Id", required = true, dataType = "Long"),
+		@ApiImplicitParam(paramType = "query", name = "completion", value = "完成分", required = true, dataType = "int"),
+		@ApiImplicitParam(paramType = "query", name = "efficiency", value = "效率分", required = true, dataType = "int"),
+		@ApiImplicitParam(paramType = "query", name = "attitude", value = "态度分", required = true, dataType = "int")})
+	private Map<String, Object> commentHelp(HttpServletRequest request) {
+		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
+		int completion = HttpServletRequestUtil.getInt(request, "completion");
+		int efficiency = HttpServletRequestUtil.getInt(request, "efficiency");
+		int attitude = HttpServletRequestUtil.getInt(request, "attitude");
+		Help help = new Help();
+		help.setHelpId(helpId);
+		help.setCompletion(completion);
+		help.setEfficiency(efficiency);
+		help.setAttitude(attitude);
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		HelpExecution helpExecution;
 		try {
@@ -271,7 +292,7 @@ public class HelpController {
 			modelMap.put("errMsg", e.getMessage());
 		}
 		return modelMap;
-	}*/
+	}
 
 	@RequestMapping(value = "/selectHelper", method = RequestMethod.GET)
 	@ResponseBody
@@ -288,6 +309,50 @@ public class HelpController {
 			helpService.selectHelp(helpId, appealId);
 		} catch (Exception e) {
 			modelMap.put("success", true);
+			modelMap.put("errMsg", e.getMessage());
+		}
+		modelMap.put("success", true);
+		return modelMap;
+	}
+	
+	@RequestMapping(value = "/additionsoucoin", method = RequestMethod.GET)
+	@ResponseBody
+	@ApiOperation(value = "求助者追赏")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助ID", required = true, dataType = "Long"),
+			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助ID", required = true, dataType = "Long"),
+			@ApiImplicitParam(paramType = "query", name = "additionSouCoin", value = "追赏金数", required = true, dataType = "Long") })
+	private Map<String, Object> additionSouCoin(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = HttpServletRequestUtil.getString(request, "token");
+		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
+		Long additionSouCoin = HttpServletRequestUtil.getLong(request, "additionSouCoin");
+		Help help = helpService.getByHelpId(helpId);
+		if (help.getAppealId() != appealId) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "appealId和helpId不对应");
+			return modelMap;
+		}
+		Long appealUserId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人ID
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			appealUserId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+		try {
+			helpService.additionSouCoin(helpId, appealUserId, additionSouCoin);
+		} catch (Exception e) {
+			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
 		}
 		modelMap.put("success", true);

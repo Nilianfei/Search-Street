@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/easyui/themes/icon.css">
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/easyui/js/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/easyui/js/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/commonutil.js"></script>
+<link rel="stylesheet"
+	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/errorhandle.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/appealmanage.js"></script>
+</head>
+
+<body>
+	<!-- 表格 -->
+	<table id="appealManagementTable" title="求助信息一览" border="0"
+		cellspacing="0" cellpadding="0" iconCls="icon-edit" width="98%"
+		idField="appealId" remoteSort="false" pagination="true"
+		singleSelect="false" showFooter="false" striped="true">
+		<thead>
+			<tr align="center">
+				<th field="appealId" width="50">求助ID</th>
+				<th field="appealTitle" width="100">求助标题</th>
+				<th field="appealContent" width="100">求助内容</th>
+				<th field="phone" width="100">电话</th>
+				<th field="province" width="50">省份</th>
+				<th field="city" width="50">城市</th>
+				<th field="district" width="50">地区</th>
+				<th field="fullAddress" width="150">详细地址</th>
+				<th field="appealMoreInfo" width="150">补充地址</th>
+				<th field="latitude" width="100">纬度</th>
+				<th field="longitude" width="100">经度</th>
+				<th field="souCoin" width="100">搜币</th>
+				<th field="appealStatus" width="50" formatter="statusFormater">求助状态</th>
+				<th field="startTime" width="100" formatter="timeFormater">开始时间</th>
+				<th field="endTime" width="100" formatter="timeFormater">失效时间</th>
+				<th field="opt" formatter='optFormater' width="150">操作</th>
+			</tr>
+		</thead>
+	</table>
+
+	<!-- 编辑 -->
+	<div id="appealManagementEdit" icon="icon-save"
+		style="padding: 5px; width: 600px; height: 350px;">
+		<h5 id="appealManagementEdit_message" style="color: red;"></h5>
+		<div class="ToolTip_Form" id="table_appealManagementEdit">
+			<input type="hidden" id="appealManagementEdit_appealId"></input>
+			<ul>
+				<li><label>求助标题：</label><input type="text"
+					class="easyui-validatebox" id="appealManagementEdit_appealTitle" readOnly></input></li>
+				<li><label>求助状态：</label> <select
+					id="appealManagementEdit_appealStatus">
+						<option id="appealManagementEdit_FIND" value="0">未确定帮助者</option>
+						<option id="appealManagementEdit_SELECED" value="1">已确定帮助者</option>
+						<option id="appealManagementEdit_FINISH" value="2">已完成</option>
+						<option id="appealManagementEdit_DISABLE" value="3">已失效</option>
+						<option id="appealManagementEdit_NO" value="4">禁止</option>
+				</select></li>
+				<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
+					onclick="appealManagementEdit();">提交</a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- Hidden value area -->
+	<input id="enalbeStatusHd" type="hidden" value="ALL" />
+	<input id="searchConditionHd" type="hidden" value="ALL" />
+	<input id="searchInfoHd" type="hidden" />
+	<input id="urlHd" type="hidden" value="listAppeals" />
+</body>
+</html>

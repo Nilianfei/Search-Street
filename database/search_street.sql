@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : root
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 50723
+ Source Server Version : 50724
  Source Host           : localhost:3306
  Source Schema         : search_street
 
  Target Server Type    : MySQL
- Target Server Version : 50723
+ Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 03/03/2019 23:10:53
+ Date: 24/03/2019 20:19:21
 */
 
 SET NAMES utf8mb4;
@@ -32,14 +32,14 @@ CREATE TABLE `tb_appeal`  (
   `district` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '地区',
   `full_address` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '详细地址',
   `appeal_more_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址补充',
-  `sou_coin` int(10) UNSIGNED NOT NULL COMMENT '回报的搜币',
+  `sou_coin` int(10) NOT NULL COMMENT '回报的搜币',
   `appeal_status` int(2) NOT NULL DEFAULT 0 COMMENT '求助的状态（0不确定帮助对象，1已确定帮助对象，2已完成,3已删除）',
   `latitude` double NOT NULL COMMENT '定位的纬度',
   `longitude` double NOT NULL COMMENT '定位的经度',
   `start_time` datetime(0) NOT NULL COMMENT '开始时间',
   `end_time` datetime(0) NOT NULL COMMENT '结束时间',
   PRIMARY KEY (`appeal_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '寻帮助' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '寻帮助' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for tb_appeal_img
@@ -51,7 +51,7 @@ CREATE TABLE `tb_appeal_img`  (
   `appeal_id` int(10) NOT NULL COMMENT '求助ID',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`appeal_img_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_help
@@ -69,10 +69,11 @@ CREATE TABLE `tb_help`  (
   `avg_completion` float(2, 1) UNSIGNED NOT NULL DEFAULT 0.0 COMMENT '之前的平均完成度评分',
   `avg_efficiency` float(2, 1) UNSIGNED NOT NULL DEFAULT 0.0 COMMENT '之前的平均效率评分',
   `avg_attitude` float(2, 1) UNSIGNED NOT NULL DEFAULT 0.0 COMMENT '之前的平均态度评分',
-  `additional_coin` int(10) UNSIGNED NOT NULL COMMENT '追赏金',
+  `all_coin` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '总搜币',
+  `additional_coin` int(10) NOT NULL COMMENT '追赏金',
   `end_time` datetime(0) NOT NULL,
   PRIMARY KEY (`help_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '帮把手' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '帮把手' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for tb_local_auth
@@ -87,7 +88,7 @@ CREATE TABLE `tb_local_auth`  (
   `last_edit_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`local_auth_id`) USING BTREE,
   UNIQUE INDEX `uk_local_profile`(`user_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for tb_order
@@ -102,7 +103,7 @@ CREATE TABLE `tb_order`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '订单创建时间',
   `over_time` datetime(0) NULL DEFAULT NULL COMMENT '订单结束时间',
   PRIMARY KEY (`order_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for tb_person_info
@@ -116,7 +117,7 @@ CREATE TABLE `tb_person_info`  (
   `sex` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `birth` date NULL DEFAULT NULL,
   `phone` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `sou_coin` int(10) UNSIGNED NULL DEFAULT 0,
+  `sou_coin` int(10) NULL DEFAULT 0,
   `user_type` int(2) NOT NULL DEFAULT 0 COMMENT '0:普通用户，1:管理员',
   `enable_status` int(2) NOT NULL DEFAULT 1 COMMENT '0:禁止使用搜街，1:允许使用搜街',
   `create_time` datetime(0) NULL DEFAULT NULL,
@@ -165,7 +166,7 @@ CREATE TABLE `tb_shop`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `last_edit_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`shop_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10070 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_shop_comment
@@ -191,7 +192,7 @@ CREATE TABLE `tb_shop_img`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `shop_id` int(10) NOT NULL COMMENT '店铺ID',
   PRIMARY KEY (`shop_img_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 59 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_wechat_auth

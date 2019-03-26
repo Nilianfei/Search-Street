@@ -1,3 +1,4 @@
+var app=getApp();
 Page({
 
   /**
@@ -9,8 +10,11 @@ Page({
     starIndex3: 0,
     texts: "至少15个字",
     min: 15,
-    max: 100, 
+    max: 500, 
     currentWordNumber:0,
+    helpcomment_imgs:[],
+    comment_content:null,
+    id:0
   },
   /*改变评分星星*/
   onChange1(e) {
@@ -53,14 +57,119 @@ Page({
     if (len > this.data.max) return;
     // 当输入框内容的长度大于最大长度限制（max)时，终止setData()的执行
     this.setData({
-      currentWordNumber: len //当前字数  
+      currentWordNumber: len, //当前字数
+      comment_content:value,
     });
   },
+
+/* 选择图片函数和预览图片函数 */
+  chooseImage: function () {
+    var that = this;
+    var helpcomment_imgs = this.data.helpcomment_imgs;
+
+    if (this.data.helpcomment_imgs.length < 9) {
+      wx.chooseImage({
+        count: 9,  //最多可以选择的图片总数  
+        sizeType: ['compressed','original'], // 可以指定是原图还是压缩图，默认二者都有  
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+          //console.log(res)
+          //var imgsrc = res.tempFilePaths
+          helpcomment_imgs = helpcomment_imgs.concat(res.tempFilePaths);
+          that.setData({
+            helpcomment_imgs: helpcomment_imgs,
+            //imgsrc:imgsrc
+          })
+          console.log(helpcomment_imgs);
+        }
+      })
+    } else {
+      wx.showToast({
+        title: '最多上传9张图片',
+        icon: 'loading',
+        duration: 2000
+      })
+    }
+  },
+  previewImage: function (e) {
+    var current = e.target.dataset.src
+
+    wx.previewImage({
+      current: current,
+      urls: this.data.helpcomment_imgs
+    })
+  },
+/* 提交表单 */
+  formSubmit:function(e){
+  var that = this;
+  if(that.data.starIndex1== 0) {
+  wx.showModal({
+    title: '提示',
+    content: '请为此次帮助的完成度打分',
+  })
+} else if (that.data.starIndex2== 0) {
+  wx.showModal({
+    title: '提示',
+    content: '请为此次帮助的效率打分',
+  })
+} else if (that.data.starIndex3== 0) {
+    wx.showModal({
+      title: '提示',
+      content: '请为此次帮助的态度打分',
+    })
+ } else {
+  //console.log('form发生了submit事件，携带数据为：', e.detail.value);
+  //var that = this;
+  var token = null;
+  try {
+    const value = wx.getStorageSync('token')
+    if (value) {
+      token = value;
+      console.log(token);
+    }
+  } catch (e) {
+    console.log("error");
+  }
+  wx.request({
+    url: app.globalData.serviceUrl + "/SearchStreet/appeal/?token=" + token+'&appealId'+id+'&helpId',
+    data: {
+      completion: that.data.starIndex1,
+      efficiency: that.data.starIndex2,
+      attitude:that.data.starIndex3,
+      comment:that.data.comment_content,
+    },
+    method: "POST",
+    success: res => {
+      console.log(res);
+      if (res.data.success) {
+        var date = new Date();
+        var url = app.globalData.serviceUrl + "/SearchStreet/appeal/uploadimg?shopId=" + res.data.shopId + "&createTime=" + app.timeStamp2String(date) + "&token=" + token;                /*完整的后台接收评价图片的url */
+        for (var i = 0; i < that.data.helpcomment_imgs.length; i++) {
+          app.uploadAImg({
+            url: url,
+            filePath: that.data.helpcomment_imgs[i],
+            fileName: "commentImg"
+          })
+        }
+      } else {
+        if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+          wx.redirectTo({
+            url: '../../page/login/login'
+          })
+        }
+      }
+    },
+  })
+ }},
+  
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+    console.log(options);
+    this.setData({
+      id:options.id,
+    })
   },
 
   /**
@@ -111,4 +220,4 @@ Page({
   onShareAppMessage: function () {
     
   }
-})
+  })

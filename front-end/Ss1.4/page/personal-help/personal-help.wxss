@@ -55,7 +55,7 @@
  float:right;
  width:220rpx;
  height: 50rpx;
- font-size: 20rpx;
+ font-size: 26rpx;
  background-color: #F7B45D;
  color: #fff;
  margin-top:10rpx;
@@ -69,6 +69,11 @@
   display: flex;
   flex-direction: column;
   margin-top:-80rpx;
+}
+.check-buttons{
+   display: flex;
+  flex-direction: column;
+  margin-top:-20rpx;
 }
 
 .perhelp-button-small{
@@ -94,7 +99,8 @@
 .finished-icon{
   width:30rpx;
   height: 30rpx;
-  margin-top: 15rpx;
+  margin-top: 20rpx;
+  margin-right:10rpx;
 }
 .personal-help-item{
   height: 170rpx;
@@ -203,4 +209,66 @@
 .active{
 border-bottom: 2px solid #2d8cf0;
 }
-
+.check-button{
+float:right;
+width:170rpx;
+height:60rpx;
+font-size:28rpx;
+background-color:#F7B45D;
+color:#fff;
+margin-top:10rpx;
+}
+.check-text{
+  font-size: 24rpx;
+  color: #bebebe;
+  float: right;
+  margin-top: 10rpx;
+}
+.toast-body{
+  display: flex;
+  flex-direction: column;
+  
+}
+.main{
+  padding-bottom: 350rpx;
+  background-color: #00e3e3;
+}
+.input{
+margin-left: 5%;
+margin-right: 5%;
+padding-left: 2vh;
+padding-right: 2vh;
+padding-top: 1vh;
+padding-bottom: 1vh;
+ width: 30%;
+}
+.button5{
+width:40%;
+margin-left:150rpx;
+}
+.button5 button{
+  background-color: #F7B45D;
+  color: white;
+  border-radius: 10rpx;
+}
+.button6{
+border:1px solid #00e3e3;
+background-color: #00e3e3;
+height:140rpx;
+}
+.toast-text3{
+  font-size: 40px;
+  color: #F7B45D;
+}
+.title{
+  background: #00e3e3;
+}
+.text4{
+  color: white;
+  margin-top: 40rpx;
+}
+.img{
+margin-top: 15rpx;
+margin-right:50rpx;
+margin-left:80rpx;
+}

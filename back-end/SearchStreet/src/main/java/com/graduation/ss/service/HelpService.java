@@ -22,8 +22,8 @@ public interface HelpService {
 	 * 
 	 * @param appealId
 	 * @return
-	 *//*
-	public HelpExecution getHelpList(Help helpCondition);*/
+	 */
+	public HelpExecution getHelpList(Help helpCondition);
 
 	/**
 	 * 通过帮助ID获取帮助信息
@@ -51,5 +51,22 @@ public interface HelpService {
 	 */
 	HelpExecution addHelp(Help help) throws HelpOperationException;
 
+	/**
+	 * 选择帮助者
+	 * 
+	 * @param helpId
+	 * @param appealId
+	 * @throws HelpOperationException
+	 */
 	void selectHelp(Long helpId, Long appealId) throws HelpOperationException;
+	
+	/**
+	 * 追赏金
+	 * 
+	 * @param helpId
+	 * @param appealUserId
+	 * @param additionSouCoin
+	 */
+	void additionSouCoin(Long helpId, Long appealUserId, Long additionSouCoin)
+			throws HelpOperationException;
 }

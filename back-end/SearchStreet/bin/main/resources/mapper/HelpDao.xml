@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.ss.dao.HelpDao">
+	<select id="queryHelpListFY" resultType="com.graduation.ss.entity.Help">
+		SELECT
+		help_id,
+		appeal_id,
+		appeal_title,
+		help_status,
+		completion,
+		efficiency,
+		attitude,
+		avg_completion,
+		avg_efficiency,
+		avg_attitude,
+		additional_coin,
+		end_time
+		FROM
+		tb_help
+		<where>
+			<if test="helpCondition.appealId != null">
+				and appeal_id = #{helpCondition.appealId}
+			</if>
+			<if test="helpCondition.userId != null">
+				and user_id = #{helpCondition.userId}
+			</if>
+			<if test="helpCondition.helpStatus != null">
+				and
+				<if test="helpCondition.helpStatus == 1">
+					(
+				</if>
+				help_status = #{helpCondition.helpStatus}
+				<if test="helpCondition.helpStatus == 1">
+					or help_status = 0)
+				</if>
+			</if>
+			<if test="startTime != null and endTime != null">
+				and (end_time &gt;= #{startTime} and end_time &lt;=
+				#{endTime})
+			</if>
+			<if test="helpCondition.additionalCoin != null">
+				and additional_coin &gt;= #{helpCondition.additionalCoin}
+			</if>
+		</where>
+		ORDER BY end_time desc
+		LIMIT #{rowIndex},#{pageSize};
+	</select>
+	<select id="queryHelpList" resultType="com.graduation.ss.entity.Help">
+		SELECT
+		help_id,
+		appeal_id,
+		appeal_title,
+		help_status,
+		completion,
+		efficiency,
+		attitude,
+		avg_completion,
+		avg_efficiency,
+		avg_attitude,
+		additional_coin,
+		end_time
+		FROM
+		tb_help
+		<where>
+			<if test="helpCondition.appealId != null">
+				and appeal_id = #{helpCondition.appealId}
+			</if>
+			<if test="helpCondition.userId != null">
+				and user_id = #{helpCondition.userId}
+			</if>
+			<if test="helpCondition.helpStatus != null">
+				and help_status = #{helpCondition.helpStatus}
+			</if>
+		</where>
+	</select>
+	<select id="queryHelpCount" resultType="int">
+		SELECT
+		count(1)
+		FROM
+		tb_help
+		<where>
+			<if test="helpCondition.appealId != null">
+				and appeal_id = #{helpCondition.appealId}
+			</if>
+			<if test="helpCondition.userId != null">
+				and user_id = #{helpCondition.userId}
+			</if>
+			<if test="helpCondition.helpStatus != null">
+				and
+				<if test="helpCondition.helpStatus == 1">
+					(
+				</if>
+				help_status = #{helpCondition.helpStatus}
+				<if test="helpCondition.helpStatus == 1">
+					or help_status = 0)
+				</if>
+			</if>
+			<if test="startTime != null and endTime != null">
+				and (end_time &gt;= #{startTime} and end_time &lt;=
+				#{endTime})
+			</if>
+			<if test="helpCondition.additionalCoin != null">
+				and additional_coin &gt;= #{helpCondition.additionalCoin}
+			</if>
+		</where>
+	</select>
+	<select id="queryByHelpId" resultType="com.graduation.ss.entity.Help"
+		parameterType="long">
+		SELECT
+		help_id,
+		user_id,
+		appeal_id,
+		appeal_title,
+		help_status,
+		completion,
+		efficiency,
+		attitude,
+		avg_completion,
+		avg_efficiency,
+		avg_attitude,
+		additional_coin,
+		end_time
+		FROM
+		tb_help
+		WHERE
+		help_id=#{helpId}
+	</select>
+	<insert id="insertHelp" parameterType="com.graduation.ss.entity.Help"
+		useGeneratedKeys="true" keyProperty="helpId" keyColumn="help_id">
+		INSERT
+		INTO
+		tb_help(
+		appeal_id,
+		appeal_title,
+		user_id,
+		help_status,
+		completion,
+		efficiency,
+		attitude,
+		avg_completion,
+		avg_efficiency,
+		avg_attitude,
+		additional_coin,
+		end_time)
+		VALUES
+		(#{appealId},#{appealTitle},#{userId},#{helpStatus},#{completion},
+		#{efficiency},#{attitude},#{avgCompletion},#{avgEfficiency},#{avgAttitude},#{additionalCoin},#{endTime})
+	</insert>
+	<update id="updateHelp" parameterType="com.graduation.ss.entity.Help">
+		update tb_help
+		<set>
+			<if test="helpStatus != null">help_status=#{helpStatus},</if>
+			<if test="completion != null">completion=#{completion},</if>
+			<if test="efficiency != null">efficiency=#{efficiency},</if>
+			<if test="attitude != null">attitude=#{attitude},</if>
+			<if test="additionalCoin != null">additional_coin=#{additionalCoin}</if>
+		</set>
+		where help_id=#{helpId}
+	</update>
+</mapper>

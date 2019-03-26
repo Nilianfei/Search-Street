@@ -169,29 +169,27 @@ public class AppealController {
 		return modelMap;
 	}
 
-	/*@RequestMapping(value = "/modifyappeal", method = RequestMethod.POST)
-	@ResponseBody
-	@ApiOperation(value = "修改求助信息（不修改图片）", notes = "要传appealId,目前前端好像不需要用")
-	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
-	private Map<String, Object> modifyAppeal(
-			@RequestBody @ApiParam(name = "appeal", value = "传入json格式,不用传appealId", required = true) Appeal appeal) {
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		AppealExecution ae;
-		try {
-			ae = appealService.modifyAppeal(appeal);
-			if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
-				modelMap.put("success", true);
-				modelMap.put("appealId", ae.getAppeal().getAppealId());
-			} else {
-				modelMap.put("success", false);
-				modelMap.put("errMsg", ae.getStateInfo());
-			}
-		} catch (AppealOperationException e) {
-			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
-		}
-		return modelMap;
-	}*/
+	/*
+	 * @RequestMapping(value = "/modifyappeal", method = RequestMethod.POST)
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @ApiOperation(value = "修改求助信息（不修改图片）", notes = "要传appealId,目前前端好像不需要用")
+	 * 
+	 * @ApiImplicitParam(paramType = "query", name = "token", value =
+	 * "包含用户信息的token", required = true, dataType = "String") private Map<String,
+	 * Object> modifyAppeal(
+	 * 
+	 * @RequestBody @ApiParam(name = "appeal", value = "传入json格式,不用传appealId",
+	 * required = true) Appeal appeal) { Map<String, Object> modelMap = new
+	 * HashMap<String, Object>(); AppealExecution ae; try { ae =
+	 * appealService.modifyAppeal(appeal); if (ae.getState() ==
+	 * AppealStateEnum.SUCCESS.getState()) { modelMap.put("success", true);
+	 * modelMap.put("appealId", ae.getAppeal().getAppealId()); } else {
+	 * modelMap.put("success", false); modelMap.put("errMsg", ae.getStateInfo()); }
+	 * } catch (AppealOperationException e) { modelMap.put("success", false);
+	 * modelMap.put("errMsg", e.getMessage()); } return modelMap; }
+	 */
 
 	private void handleImage(HttpServletRequest request, ImageHolder appealImg) throws IOException {
 		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
@@ -237,10 +235,10 @@ public class AppealController {
 
 	@RequestMapping(value = "/searchnearbyappeals", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "返回用户10km内的所有有效（没确定帮助人、没过时的）求助")
+	@ApiOperation(value = "返回2.5km内的所有有效（没确定帮助人、没过时的）求助")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "longitude", value = "用户所在的经度", required = true, dataType = "Float"),
-			@ApiImplicitParam(paramType = "query", name = "latitude", value = "用户所在的纬度", required = true, dataType = "Float"),
+			@ApiImplicitParam(paramType = "query", name = "longitude", value = "屏幕中心的经度", required = true, dataType = "Float"),
+			@ApiImplicitParam(paramType = "query", name = "latitude", value = "屏幕中心的纬度", required = true, dataType = "Float"),
 			@ApiImplicitParam(paramType = "query", name = "appealTitle", value = "求助标题", required = false, dataType = "String") })
 	private Map<String, Object> searchNearbyAppeals(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -254,7 +252,7 @@ public class AppealController {
 
 		// 先计算查询点的经纬度范围
 		float r = 6371;// 地球半径千米
-		float dis = 10;// 距离（单位：千米），查询范围20km内的所有求助
+		float dis = 2.5f;// 距离（单位：千米），查询范围2.5km内的所有求助
 		float dlng = (float) (2 * Math.asin(Math.sin(dis / (2 * r)) / Math.cos(latitude * Math.PI / 180)));
 		dlng = (float) (dlng * 180 / Math.PI);
 		float dlat = dis / r;
@@ -330,26 +328,16 @@ public class AppealController {
 		return modelMap;
 	}
 
-	@RequestMapping(value = "/additionsoucoin", method = RequestMethod.GET)
+	@RequestMapping(value = "/disableappeal", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "求助者追赏")
+	@ApiOperation(value = "求助者使求助失效")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
-			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助ID", required = true, dataType = "Long"),
-			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助ID", required = true, dataType = "Long"),
-			@ApiImplicitParam(paramType = "query", name = "additionSouCoin", value = "追赏金数", required = true, dataType = "Long") })
-	private Map<String, Object> additionSouCoin(HttpServletRequest request) {
+			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助Id", required = true, dataType = "Long") })
+	private Map<String, Object> disableAppeal(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		String token = HttpServletRequestUtil.getString(request, "token");
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
-		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
-		Long additionSouCoin = HttpServletRequestUtil.getLong(request, "additionSouCoin");
-		Help help = helpservice.getByHelpId(helpId);
-		if (help.getAppealId() != appealId) {
-			modelMap.put("success", false);
-			modelMap.put("errMsg", "appealId和helpId不对应");
-			return modelMap;
-		}
 		Long appealUserId = null;
 		UserCode2Session userCode2Session = null;
 		// 将token解密成openId 和session_key
@@ -364,13 +352,64 @@ public class AppealController {
 			modelMap.put("errMsg", e.getMessage());
 			return modelMap;
 		}
+
 		try {
-			appealService.additionSouCoin(helpId, appealUserId, additionSouCoin);
+			AppealExecution ae = appealService.disableAppeal(appealUserId, appealId);
+			if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", true);
+				return modelMap;
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", ae.getStateInfo());
+				return modelMap;
+			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
 		}
-		modelMap.put("success", true);
-		return modelMap;
 	}
+
+	@RequestMapping(value = "/cancelappeal", method = RequestMethod.GET)
+	@ResponseBody
+	@ApiOperation(value = "求助者撤销求助")
+	@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助Id", required = true, dataType = "Long") })
+	private Map<String, Object> cancelAppeal(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = HttpServletRequestUtil.getString(request, "token");
+		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		Long appealUserId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人ID
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			appealUserId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+
+		try {
+			AppealExecution ae = appealService.cancelAppeal(appealUserId, appealId);
+			if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", true);
+				return modelMap;
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", ae.getStateInfo());
+				return modelMap;
+			}
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+	}
+
 }

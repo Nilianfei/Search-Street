@@ -1,7 +1,9 @@
  // page/search-shop/search-shop.js
 var app=getApp();
+const { $Message } = require('../../dist/base/index');
 var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
 var qqmapsdk;
+
 
 Page({
 
@@ -11,6 +13,7 @@ Page({
   data: {
     latitude: 23.139317,
     longitude: 113.352354,
+    city:'',
     scale: 18,
     maxlng: null,
     maxlat:null,
@@ -25,6 +28,8 @@ Page({
     shopInfoPic:'/images/search_buck.png',
     shopInfoName:'',
     shopInfoAddress:'',
+    shopInfoBusinessScope:'',
+    shopInfoId: 12
   },
 
   /**
@@ -34,7 +39,7 @@ Page({
     var that = this;
     //实体化qqmap(API)核心类
     qqmapsdk = new QQMapWX({
-      key: 'GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM'
+      key: 'DQYBZ-AQFK6-6JDSI-EHRZV-EFRCJ-TDFZU'
     });
 
     console.log("初始化地图");
@@ -50,6 +55,22 @@ Page({
         }
       }
     })
+
+    qqmapsdk.reverseGeocoder({
+      success(res) {
+        console.log(res);
+        that.setData({
+          city: res.result.address_component.city
+        })
+      },
+      fail: function (error) {
+        console.error(error);
+      },
+      complete: function (res) {
+        console.log(res);
+      }
+    })
+    
 
     //获取当前位置
     wx.getLocation({
@@ -115,7 +136,8 @@ Page({
       url: app.globalData.serviceUrl+'/SearchStreet/shopadmin/searchnearbyshops',    //获取商铺位置
       data: {
         longitude: res.longitude,
-        latitude: res.latitude
+        latitude: res.latitude,
+        shopName: this.data.searchShopName
       },
       method: 'GET',
       success: (res) => {
@@ -163,6 +185,7 @@ Page({
         name: shopList[i].shopName,
         profileImg: shopProfileImg,
         address: shopList[i].city + shopList[i].district + shopList[i].fullAddress,
+        businessScope: shopList[i].businessScope,
       }
       
     }
@@ -174,6 +197,16 @@ Page({
 
   //移动地图到当前所在位置
   moveToPosition: function () {
+    var that = this;
+    wx.getLocation({
+      type: "gcj02",
+      success: function (res) {
+        that.setData({
+          latitude: res.latitude,
+          longitude: res.longitude
+        });
+      },
+    })
     this.mapCtx.moveToLocation();
   },
 
@@ -181,6 +214,11 @@ Page({
   searchShop: function (e) {
     
     var that=this;
+
+    that.setData({
+      searchShopName: '',
+      searchShopAddress: ''
+    })
     if(!that.data.openSearch)
     {
       that.setData({
@@ -219,9 +257,6 @@ Page({
     let markerId = e.markerId;
     let currentMarker = _markers[markerId];
 
-    console.log(markerId);
-    console.log(currentMarker);
-
     this.setData({
       polyline: [{
         points: [{
@@ -241,11 +276,19 @@ Page({
       openShopInfo: markerId,
       shopInfoPic: currentMarker.profileImg,
       shopInfoAddress: currentMarker.address,
+      shopInfoBusinessScope: currentMarker.businessScope,
+      shopInfoId: currentMarker.shopId,
     })
 
-    console.log(currentMarker.address);
+    console.log(this.data.shopInfoId);
   },
 
+  gotoShop: function(e) {
+    wx.navigateTo({
+      url: '../shop/shop?shopId='+this.data.shopInfoId
+    })
+  },
+  
   //地图拖动事件
   bindregionchange: function (e) {
     //console.log(e.type);
@@ -256,6 +299,11 @@ Page({
             res.northeast.longitude > this.data.maxlng ||
             res.southwest.latitude < this.data.minlat ||
             res.southwest.longitude < this.data.minlng){
+            
+            this.setData({
+              openShopInfo: 0
+            })
+
             this.mapCtx.getCenterLocation({
               success: (res) => {
                 this.getShopLocation(res);
@@ -272,21 +320,27 @@ Page({
       searchShopName: e.detail.detail.value
     });
   },
-
-  inputShopAddress: function(e){
-    this.setData({
-      searchShopAddress: e.detail.detail.value
-    })
-  },
-
-/*
+  
+  
+  // inputShopAddress: function(e){
+  //   this.setData({
+  //     searchShopAddress: e.detail.detail.value
+  //   })
+  //   console.log(searchShopAddress);
+  // },
+  
+  
   //getSuggest数据回填
   backfill: function (e) {
+    var that=this;
     var id = e.currentTarget.id;
     for (var i = 0; i < this.data.suggestion.length; i++) {
-      if (i == id) {
-        this.setData({
-          backfill: this.data.suggestion[i].title
+      if (this.data.suggestion[i].title == id) {
+        that.setData({
+          searchShopAddress: this.data.suggestion[i].title,
+          latitude: this.data.suggestion[i].latitude,
+          longitude: this.data.suggestion[i].longitude,
+          openSearch: false
         });
       }
     }
@@ -295,9 +349,15 @@ Page({
   //搜索框写入商铺地址
   inputShopAddress: function (e) {
     var that=this;
+    var _keyword= e.detail.detail.value;
+
+    that.setData({
+      searchShopAddress: e.detail.detail.value
+    })
     //调用关键词提示接口
     qqmapsdk.getSuggestion({
-      keyword: e.detail.detail.value,
+      keyword: _keyword,
+      region: that.data.city,
       success: function(res) {
         console.log(res);
         var sug= [];
@@ -313,7 +373,7 @@ Page({
           });
         }
         that.setData({
-          suggestion: sug
+          suggestion: sug,
         })
       },
       fail: function(error) {
@@ -324,28 +384,52 @@ Page({
       }
     })
   },
-*/
+
+  addAddress: function(e) {
+    console.log(e.currentTarget.id);
+  },
+
+  // handleNoAddressResult() {
+  //   $Message({
+  //     content: '3秒后消失',
+  //     duration: 3
+  //   });
+  // },
+
   //按商铺名、商铺地址搜索
   buttonClickSearch: function(e){
+
     console.log(this.data.searchShopName);
     console.log(this.data.searchShopAddress);
+
+    var that=this;
+    
     var _shopName=this.data.searchShopName;
     var _address=this.data.searchShopAddress;
-    var that=this;
-    if(_address)
-    {
+
+    if(_shopName){
+      this.mapCtx.getCenterLocation({
+        success: (res) => {
+          this.getShopLocation(res);
+        }
+      })
+    }
+
+    if(_address){
+
       qqmapsdk.geocoder({
-        address: _address,
+        address: this.data.city + _address,
         success: function (res) {
           //成功后的回调
           console.log(res);
           var res = res.result;
           var _latitude = res.location.lat;
           var _longitude = res.location.lng;
-          this.setData({
+          that.setData({
             longitude: _longitude,
             latitude: _latitude
           })
+          this.moveToPosition;
         },
         fail: function (error) {
           console.error(error);
@@ -356,6 +440,11 @@ Page({
       })
 
     }
+
+    this.setData({
+      openSearch: false
+    })
+
   },
 
   buttonClickBack: function(e){

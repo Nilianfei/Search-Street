@@ -32,7 +32,7 @@
       <text class="mycomment-text">发布图片</text>
      </view>
    <view class="weui-uploader__files">
-          <view wx:for="{{shelp_imgs}}" wx:key="*this" wx:for-item="image">
+          <view wx:for="{{helpcomment_imgs}}" wx:key="*this" wx:for-item="image">
            <view class="weui-uploader__file">
               <image class="weui-uploader__img" src="{{image}}" data-src="{{image}}" bindtap="previewImage"></image>
             </view>

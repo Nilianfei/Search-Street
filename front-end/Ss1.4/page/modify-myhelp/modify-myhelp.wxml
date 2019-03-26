@@ -1,0 +1,67 @@
+<!--page/modify-myhelp/modify-myhelp.wxml-->
+<view class="container">
+   <view class="shelp-hd">
+   
+     <!--<view wx:for-items="{{show_photo}}" wx:key="{{item.id}}" wx:for-index='idx'>
+      <image class="shelp-photo {{'item.value' ? '' : 'helpimage'}}" src="../../images/添加图片.png" bindtap='chooseImage'></image>
+      <image class="shelp-photo" src='{{shelp_imgs[idx]}}' name="shelpImage"></image>
+     </view>-->
+     <view class="weui-uploader__files">
+          <view wx:for="{{imgaddr}}" wx:key="*this" wx:for-item="image">
+           <view class="weui-uploader__file">
+              <image class="weui-uploader__img" src="{{image}}" data-src="{{image}}" bindtap="previewImage"></image>
+            </view>
+          </view>
+        <view class="weui-uploader__input-box morelocat">
+          <view class="weui-uploader__input" bindtap="chooseImage"></view>
+       </view>
+      </view>
+ 
+      <text class="shelp-text">{{shelp_text}}</text>
+    </view>
+    <form bindsubmit="formSubmit" bindreset="formReset">
+     <text class="shelp-title">求助标题</text>
+      <input class="shelp-titletext" name="shelpTitle" value='{{helpDetail.appealTitle}}'></input>
+       <view class="show_error" wx:if="{{errorMsgs.title_error}}">{{errorMsgs.title_error}}</view>
+     <text class="shelp-title">求助内容</text>
+      <textarea class="shelp-titletext shelp-content" name="shelpContent" value='{{helpDetail.appealContent}}'></textarea> 
+       <view class="show_error" wx:if="{{errorMsgs.content_error}}">{{errorMsgs.content_error}}</view>
+     <image class="shelp-cost" src="../../images/钱币.png"></image>
+      <selector selectData="{{cost}}" bind:myget='getCost'></selector>
+      <text class="shelp-costtext">搜币</text>
+     <image class="shelp-cost" src="../../images/时钟.png"></image>
+      <selector selectData="{{timelimit}}" bind:myget='getTime'></selector>
+      <text class="shelp-costtext">有效</text>
+     <input class="shelp-phone" type="number" placeholder="请输入手机号" name="shelpPhone" value='{{helpDetail.phone}}'></input>
+     <view class="show_error" wx:if="{{errorMsgs.phone_error}}">{{errorMsgs.phone_error}}</view>
+     <view class="store-locat">帮帮定位</view>
+      <view class="section">
+       <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+       <view class="picker">当前选择：{{region[0]}}，{{region[1]}}，{{region[2]}}</view>
+       </picker>
+      </view>
+      <view class="slocat-logo">
+        <image class="slocat-img" src="../../images/定位.png"></image>
+        <form bindsubmit="sformSubmit">
+         <input class="slocat-text" placeholder="请输入详细地址" name="fullAddress" value="{{helpDetail.fullAddress}}"/>
+         <button form-type="submit" bindtap="geo">定位</button>
+        </form>
+      </view>
+      <!--地图容器-->
+      <!--longitude及latitude为设置为调转到指定地址位置，默认不显示-->
+      <map id="myMap"
+        markers="{{markers}}"
+        style="width:100%;height:200px;"
+        longitude="{{poi.longitude}}"
+        latitude="{{poi.latitude}}"
+        scale='16' show-location>
+      </map>
+      <view class="serach-append">地址补充</view>
+       <view class="serach-append1">可以让更多人找到你哦！</view>
+        <textarea class="serach-text" name="shelpMoreInfo" value="{{helpDetail.appealMoreInfo}}"></textarea>
+        <view class="submitbo"></view>
+      <view class="finsubmit">
+       <button class="check" formType="submit">提交修改</button>
+      </view>
+    </form>
+</view>

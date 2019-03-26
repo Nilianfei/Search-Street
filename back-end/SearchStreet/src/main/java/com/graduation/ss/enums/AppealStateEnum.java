@@ -5,7 +5,8 @@ import com.graduation.ss.enums.AppealStateEnum;
 public enum AppealStateEnum {
 	SUCCESS(0, "操作成功"), INNER_ERROR(-1001, "内部系统错误"), NULL_APPEALID(-1002, "AppealId为空"),
 	NULL_APPEAL(-1003, "appeal信息为空"), NULL_USERID(-1004, "userId为空"), NULL_HELPID(-1005, "缺少helpId"),
-	SOUCOIN_LACK(-1006, "搜币不够"), COMPLETE_ERR(-1007,"不能改为完成状态");
+	SOUCOIN_LACK(-1006, "搜币不够"), COMPLETE_ERR(-1007, "不能改为完成状态"), NOT_USER_APPEAL(-1008, "求助不是该用户的"),
+	NOT_CANCEL(-1009, "不能撤销求助"), NOT_DISABLE(-1010, "不能使求助失效");
 	private int state;
 	private String stateInfo;
 

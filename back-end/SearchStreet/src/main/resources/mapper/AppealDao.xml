@@ -185,7 +185,7 @@
 	<select id="queryByAppealId"
 		resultType="com.graduation.ss.entity.Appeal" parameterType="Long">
 		SELECT
-		appeal_id,appeal_title,phone,appeal_content,province,city,district,
+		appeal_id,user_id,appeal_title,phone,appeal_content,province,city,district,
 		full_address,appeal_more_info,sou_coin,latitude,longitude,
 		appeal_status,start_time,end_time
 		FROM

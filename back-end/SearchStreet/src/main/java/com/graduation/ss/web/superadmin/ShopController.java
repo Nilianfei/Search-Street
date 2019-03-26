@@ -100,7 +100,7 @@ public class ShopController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Shop shop = null;
 		// 从请求中获取店铺Id
-		long shopId = HttpServletRequestUtil.getLong(request, "shopId");
+		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
 		if (shopId > 0) {
 			try {
 				// 根据Id获取店铺实例

@@ -9,9 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.graduation.ss.dao.AppealDao;
 import com.graduation.ss.dao.HelpDao;
+import com.graduation.ss.dao.PersonInfoDao;
 import com.graduation.ss.dto.HelpExecution;
 import com.graduation.ss.entity.Appeal;
 import com.graduation.ss.entity.Help;
+import com.graduation.ss.entity.PersonInfo;
 import com.graduation.ss.enums.HelpStateEnum;
 import com.graduation.ss.exceptions.HelpOperationException;
 import com.graduation.ss.service.HelpService;
@@ -23,6 +25,8 @@ public class HelpServiceImpl implements HelpService {
 	private HelpDao helpDao;
 	@Autowired
 	private AppealDao appealDao;
+	@Autowired
+	private PersonInfoDao personInfoDao;
 
 	@Override
 	public HelpExecution getHelpListFY(Help helpCondition, Date startTime, Date endTime, int pageIndex, int pageSize) {
@@ -36,6 +40,7 @@ public class HelpServiceImpl implements HelpService {
 		if (helpList != null) {
 			he.setHelpList(helpList);
 			he.setCount(count);
+			he.setState(HelpStateEnum.SUCCESS.getState());
 		} else {
 			he.setState(HelpStateEnum.INNER_ERROR.getState());
 		}
@@ -112,6 +117,7 @@ public class HelpServiceImpl implements HelpService {
 			help.setAttitude(0);
 			help.setEfficiency(0);
 			help.setCompletion(0);
+			help.setAllCoin(0l);
 			// 添加帮助信息
 			int effectedNum = helpDao.insertHelp(help);
 			if (effectedNum <= 0) {
@@ -123,35 +129,11 @@ public class HelpServiceImpl implements HelpService {
 		return new HelpExecution(HelpStateEnum.SUCCESS, help);
 	}
 
-	/*@Override
+	@Override
 	public HelpExecution getHelpList(Help helpCondition) {
 		List<Help> helpList = helpDao.queryHelpList(helpCondition);
 		HelpExecution he = new HelpExecution();
-		if (helpCondition.getHelpStatus() != null
-				&& (helpCondition.getHelpStatus() == 1 || helpCondition.getHelpStatus() == 0)) {
-			if (helpList != null) {
-				Date today = new Date();
-				Iterator<Help> iter = helpList.iterator();
-				while (iter.hasNext()) {
-					Help value = iter.next();
-					if (value.getEndTime().getTime() < today.getTime()) {// 修改已过时失效的求助
-						value.setHelpStatus(3);
-						try {
-							int effectedNum = helpDao.updateHelp(value);
-							if (effectedNum <= 0) {
-								throw new AppealOperationException("帮助修改失败");
-							}
-						} catch (Exception e) {
-							throw new AppealOperationException("modifyAppeal error:" + e.getMessage());
-						}
-						iter.remove();
-					}
-				}
-			} else {
-				he.setState(AppealStateEnum.INNER_ERROR.getState());
-				return he;
-			}
-		}
+
 		if (helpList != null) {
 			he.setHelpList(helpList);
 			he.setCount(helpList.size());
@@ -159,7 +141,7 @@ public class HelpServiceImpl implements HelpService {
 			he.setState(HelpStateEnum.INNER_ERROR.getState());
 		}
 		return he;
-	}*/
+	}
 
 	@Override
 	@Transactional
@@ -203,6 +185,63 @@ public class HelpServiceImpl implements HelpService {
 			}
 		} catch (Exception e) {
 			throw new HelpOperationException(e.getMessage());
+		}
+	}
+	
+	@Override
+	@Transactional
+	public void additionSouCoin(Long helpId, Long appealUserId, Long additionSouCoin) throws HelpOperationException {
+		if (appealUserId == null) {
+			throw new HelpOperationException("additinoSouCoin error:" + "缺少userId");
+		}
+		if (helpId == null) {
+			throw new HelpOperationException("additinoSouCoin error:" + "缺少helpId");
+		}
+
+		try {
+			PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(appealUserId);
+			if (personInfo == null) {
+				throw new HelpOperationException("appealUserId无效");
+			}
+			Long appealerSouCoin = personInfo.getSouCoin();
+			if (additionSouCoin > appealerSouCoin) {
+				throw new HelpOperationException("搜币不够");
+			}
+			personInfo.setSouCoin(appealerSouCoin - additionSouCoin);
+			int effectedNum = personInfoDao.updatePersonInfo(personInfo);
+			if (effectedNum <= 0) {
+				throw new HelpOperationException("扣除求助者搜币失败");
+			}
+			Help help = helpDao.queryByHelpId(helpId);
+			if (help == null) {
+				throw new HelpOperationException("helpId无效");
+			}
+			if (help.getHelpStatus() != 2) {
+				throw new HelpOperationException("该状态不能追赏");
+			}
+			if (help.getAdditionalCoin()>0){
+				throw new HelpOperationException("不能多次追赏");
+			}
+			Long helpUserId = help.getUserId();
+			personInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
+			if (personInfo == null) {
+				throw new HelpOperationException("帮助者不存在");
+			}
+			appealerSouCoin = personInfo.getSouCoin();
+			personInfo.setSouCoin(appealerSouCoin + additionSouCoin);
+			effectedNum = personInfoDao.updatePersonInfo(personInfo);
+			if (effectedNum <= 0) {
+				throw new HelpOperationException("增加帮助者搜币失败");
+			}
+			help.setAdditionalCoin(additionSouCoin);
+			Long allCoin = help.getAllCoin();
+			help.setAllCoin(allCoin+additionSouCoin);
+			effectedNum = helpDao.updateHelp(help);
+			if (effectedNum <= 0) {
+				throw new HelpOperationException("修改帮助追赏金失败");
+			}
+		} catch (Exception e) {
+			throw new HelpOperationException("additinoSouCoin error:" + e.getMessage());
 		}
 	}
 

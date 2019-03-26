@@ -23,8 +23,9 @@ Page({
    */
   onLoad: function (options) {
     var that=this;
+    console.log("get"+options.shopId);
     that.setData({
-      shopId:70//options.id
+      shopId:options.shopId
     })
     //获取商铺信息
     wx.request({

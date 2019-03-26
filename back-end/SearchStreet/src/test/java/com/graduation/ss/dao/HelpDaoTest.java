@@ -41,11 +41,11 @@ public class HelpDaoTest {
 	}
 
 	@Test
-	@Ignore
+	//@Ignore
 	public void testQueryHelpListFYAndCount() {
 		Help helpCondition = new Help();
 
-		helpCondition.setAppealId(1L);
+		helpCondition.setUserId(14l);
 		List<Help> helpList = helpDao.queryHelpListFY(helpCondition, null, null, 3, 2);
 		int count = helpDao.queryHelpCount(helpCondition, null, null);
 		System.out.println("帮助列表-appealId的大小:" + helpList.size());

@@ -87,7 +87,7 @@ public class PersonInfoController {
 	private Map<String, Object> modifyPersonInfo(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		// 从前端请求中获取用户Id以及可用状态
-		long userId = HttpServletRequestUtil.getLong(request, "userId");
+		Long userId = HttpServletRequestUtil.getLong(request, "userId");
 		int enableStatus = HttpServletRequestUtil.getInt(request, "enableStatus");
 		// 非空判断
 		if (userId >= 0 && enableStatus >= 0) {
