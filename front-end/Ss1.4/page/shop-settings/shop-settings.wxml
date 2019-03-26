@@ -1,11 +1,11 @@
 <!--page/shop-settings/shop-settings.wxml-->
 <view class='containor'>
   <i-panel title="基本信息">
-    <i-input value="{{ shop.shopName }}" type="text" title="商铺名称" bind:change="inputShopName" maxlength="50" />
-    <i-input value="{{ shop.phone }}" type="number" title="联系电话 " bind:change="inputPhone" />
+    <i-input value="{{ shop.shopName }}" type="textarea" title="商铺名称" bind:change="inputShopName" maxlength="50" />
+    <i-input value="{{ shop.phone }}" type="textarea" title="联系电话 " bind:change="inputPhone" />
     <i-input value="{{ shop.businessScope }}" type="textarea" title="经营范围" bind:change="inputBusinessScope" maxlength="100" />
     <i-input value="{{ shop.perCost }}" type="number" title="人均消费" bind:change="inputPerCost" />
-    <i-input value="{{ shop.businessLicenseCode }}" type="number" title="执照编码" bind:change="inputBusinessLicenceCode" />
+    <i-input value="{{ shop.businessLicenseCode }}" type="textarea" title="执照编码" bind:change="inputBusinessLicenceCode" maxlength="20"/>
   </i-panel>
   <view style="height:40rpx;width:100%;background-color:#f8f8f9;"></view>
   <i-panel title="固定商铺or移动商铺">
@@ -17,9 +17,9 @@
   <view style="height:40rpx;width:100%;background-color:#f8f8f9;"></view>
 
   <i-panel title="地址相关">
-    <i-input value="{{ shop.province }}" type="textare" title="省份" bind:change="inputprovince" maxlength="20"/>
-    <i-input value="{{ shop.city }}" type="textare" title="城市" bind:change="inputcity" maxlength="20"/>
-    <i-input value="{{ shop.district }}" type="textare" title="区域" bind:change="inputdistrict" maxlength="20"/>
+    <i-input value="{{ tempProvince }}" type="textare" title="省份" bind:change="inputprovince" maxlength="20"/>
+    <i-input value="{{ tempCity }}" type="textare" title="城市" bind:change="inputcity" maxlength="20"/>
+    <i-input value="{{ tempDistrict }}" type="textare" title="区域" bind:change="inputdistrict" maxlength="20"/>
     <i-input value="{{ shop.fullAddress }}" type="textarea " title="详细地址 " bind:change="inputFullAddress" maxlength="100"/>
     <i-input value="{{ shop.shopMoreInfo }}" type="textarea" title="补充说明" bind:change="inputShopMoreInfo" maxlength="200"/>
     <i-button bind:click="buttonClickMoveMap" type="primary">定位</i-button>
