@@ -46,7 +46,7 @@
       </navigator> 
 
 
-      <navigator class="kind-list-item" id="my-help">
+      <navigator class="kind-list-item" id="my-help" url="../help-map/help-map">
         <view class="kind-list-item-hd">
           <view class="kind-list-text">帮把手</view>
           <image class="kind-list-img" src="../../images/帮助中心.png"></image>

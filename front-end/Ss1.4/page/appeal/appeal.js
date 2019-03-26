@@ -21,7 +21,7 @@ Page({
   onLoad: function (options) {
     var that = this;
     that.setData({
-      appealId: 2 //搜搜求助页面写好之后改为options.id
+      appealId: options.appealId //搜搜求助页面写好之后改为options.id
     })
     try {//同步获取与用户信息有关的缓存token
       const value = wx.getStorageSync('token')
