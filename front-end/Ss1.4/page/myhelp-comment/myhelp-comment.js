@@ -14,7 +14,8 @@ Page({
     currentWordNumber:0,
     helpcomment_imgs:[],
     comment_content:null,
-    id:0
+    id:0,
+    helpId:0,
   },
   /*改变评分星星*/
   onChange1(e) {
@@ -102,6 +103,7 @@ Page({
 /* 提交表单 */
   formSubmit:function(e){
   var that = this;
+
   if(that.data.starIndex1== 0) {
   wx.showModal({
     title: '提示',
@@ -131,26 +133,17 @@ Page({
     console.log("error");
   }
   wx.request({
-    url: app.globalData.serviceUrl + "/SearchStreet/appeal/?token=" + token+'&appealId'+id+'&helpId',
+    url: app.globalData.serviceUrl + "/SearchStreet/help/commenthelp?token=" + token+'&appealId'+id+'&helpId',
     data: {
       completion: that.data.starIndex1,
       efficiency: that.data.starIndex2,
       attitude:that.data.starIndex3,
-      comment:that.data.comment_content,
     },
     method: "POST",
     success: res => {
       console.log(res);
       if (res.data.success) {
-        var date = new Date();
-        var url = app.globalData.serviceUrl + "/SearchStreet/appeal/uploadimg?shopId=" + res.data.shopId + "&createTime=" + app.timeStamp2String(date) + "&token=" + token;                /*完整的后台接收评价图片的url */
-        for (var i = 0; i < that.data.helpcomment_imgs.length; i++) {
-          app.uploadAImg({
-            url: url,
-            filePath: that.data.helpcomment_imgs[i],
-            fileName: "commentImg"
-          })
-        }
+      
       } else {
         if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
           wx.redirectTo({

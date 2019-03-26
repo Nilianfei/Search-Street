@@ -36,7 +36,8 @@ Page({
     pageNum:0,
     pageSize:15,
     helperlist:[],
-    imgfilepath:[]
+    imgfilepath:[],
+    temp:0,
   },
 
   /**
@@ -93,14 +94,17 @@ Page({
           for(var i=0;i<res.data.helpList.length;i++){
             helperlistall[i]=res.data.helpList[i];
           }
+          that.setData({
+            helperlist: helperlistall
+          })
         }
           console.log(helperlistall);
          for(var i=0;i<helperlistall.length;i++){
-           if(helperlistall[i].helpStatus==0) {   /*此处有逻辑错误 */
+           if(helperlistall[i].helpStatus==0||helperlistall[i].helpStatus==3) {   /*此处有逻辑错误 */
             // that.data.disabled[i]=false;
              //that.data.btn_helper[i]='选择他';
             helperlistall[i]=[{disabled:false,btn_helper:'选择他'}].concat(helperlistall[i]);
-         }else if(helperlistall[i].helpStatus==1){
+         }else if(helperlistall[i].helpStatus==1||helperlistall[i].helpStatus==2){
            //that.data.disabled[i]=true;
            //that.data.btn_helper[i]='已选择';
            helperlistall[i] = [{ disabled: true, btn_helper: '已选择' }].concat(helperlistall[i]);
@@ -131,8 +135,12 @@ Page({
 
   choosehelper: function (e) {
     console.log(e);
+    this.setData({
+      temp:e.target.id,
+    })
     var token = null;
-    var that=this;
+    var that = this;
+    var helperlistall=that.data.helperlist;
     try {
       const value = wx.getStorageSync('token')
       if (value) {
@@ -152,16 +160,18 @@ Page({
       success(res) {
         console.log(res.data);
         if (res.data.success) {
-          that.data.helperlist[e.target.id][0].disabled=true;
-          that.data.helperlist[e.target.id][0].btn_helper='已选择'
+         helperlistall[e.target.id][0].disabled = true;
+         helperlistall[e.target.id][0].btn_helper = '已选择'
+         that.setData({
+           helperlist:helperlistall,
+         })
         }
         console.log(that.data.helperlist);
       }
     })
   },
 
-
-  /**
+ /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
@@ -172,7 +182,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+   var that=this;
+  that.setData({
+    helperlist:that.data.helperlist,
+  })
   },
 
   /**

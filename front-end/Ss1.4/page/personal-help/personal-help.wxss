@@ -62,8 +62,8 @@
 }
 .perhelp-cost{
   float:left;
-  margin-left: 20rpx;
-  margin-top:20rpx;
+  margin-left: 10rpx;
+  margin-top:30rpx;
 }
 .perhelp-buttons{
   display: flex;
@@ -263,6 +263,9 @@ height:140rpx;
 .title{
   background: #00e3e3;
 }
+.title1{
+   background:#F7B45D;
+}
 .text4{
   color: white;
   margin-top: 40rpx;
@@ -271,4 +274,77 @@ height:140rpx;
 margin-top: 15rpx;
 margin-right:50rpx;
 margin-left:80rpx;
+}
+.main1{
+  padding-bottom: 40rpx;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  float: left;
+}
+.button7{
+  background-color: #fff;
+}
+
+/* common.wxss */
+.card .card-item{
+  margin-bottom: 25rpx;
+  background-color: white;
+   border-bottom: 1rpx solid #eee;
+   padding-bottom: 10rpx;
+   margin-left: 20rpx;
+}
+ 
+.card-item .item-title,
+.card-item .item-content{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+ 
+.card-item .item-title{
+  align-items: center;
+  line-height: 70rpx;
+  font-size: 26rpx;
+}
+ 
+.card-item .item-content{
+  line-height: 70rpx;
+}
+ 
+.card-item .image-container{
+  margin-right: 25rpx;
+  width: 40rpx;
+  display: flex;
+  align-items: center;
+}
+ 
+.card-item .title-image{
+  height: 40rpx;
+}
+ 
+.card-item .content-image{
+  height: 70rpx;
+}
+ 
+.card-item .image-container image{
+  width: 40rpx;
+  height: 40rpx;
+}
+ 
+
+ 
+/* feedback.wxss */
+.card-item .content-body{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+ 
+.card-item .content-body .note{
+  line-height: 70rpx;
+  font-size: 30rpx;
+}
+.cost1{
+  font-size: 26rpx;
 }

@@ -34,6 +34,35 @@ function formatDate(inputTime) {
   return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
 }
 
+function formatDate1(time) {
+
+  var datetime = new Date();
+  datetime.setTime(time);
+  var year = datetime.getFullYear();
+  var month = datetime.getMonth() + 1;
+  var date = datetime.getDate();
+  var hour = datetime.getHours();
+  if(month<=9){
+    month="0"+month;
+  }
+  if(date<=9){
+    date="0"+date;
+  }
+  if (hour <= 9) {
+    hour = "0" + hour;
+  }
+  var minute = datetime.getMinutes();
+  if (minute <= 9) {
+    minute = "0" + minute;
+  }
+  var second = datetime.getSeconds();
+  if (second <= 9) {
+    second = "0" + second;
+  }
+  // var mseconds = datetime.getMilliseconds();
+  return  month + "-" + date + " " + hour + ":" + minute + ":" + second;//+"."+mseconds;
+}
+
 function formatLocation(longitude, latitude) {
   if (typeof longitude === 'string' && typeof latitude === 'string') {
     longitude = parseFloat(longitude)
@@ -52,5 +81,7 @@ function formatLocation(longitude, latitude) {
 module.exports = {
   formatTime: formatTime,
   formatDate: formatDate,
-  formatLocation: formatLocation
+  formatLocation: formatLocation ,
+  formatDate1:formatDate1
+
 }
