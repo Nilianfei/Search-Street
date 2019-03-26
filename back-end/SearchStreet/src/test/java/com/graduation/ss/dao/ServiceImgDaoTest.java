@@ -3,7 +3,6 @@ package com.graduation.ss.dao;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
-import java.util.List;
 
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;

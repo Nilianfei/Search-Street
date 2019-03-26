@@ -38,7 +38,7 @@
         <i-icon type="picture" slot="icon" />
       </i-cell>
 
-      <i-cell title="服务评价"  is-link>
+      <i-cell title="服务评价"  is-link url="../shop-shopcomment/shop-shopcomment?shopId={{shopId}}">
         <i-icon type="praise" slot="icon" />
       </i-cell>
 
@@ -50,11 +50,11 @@
         <i-icon type="setup" slot="icon" />
       </i-cell>
 
-      <i-cell title="订单" is-link>
+      <i-cell title="订单" is-link url="../shop-order-list/shop-order-list?shopId={{shopId}}">
         <i-icon type="task" slot="icon" />
       </i-cell>
     
-      <i-cell title="添加服务" is-link>
+      <i-cell title="服务列表" is-link url="../service-list/service-list?shopId={{shopId}}">
         <i-icon type="add" slot="icon" />
       </i-cell>
     </i-cell-group>

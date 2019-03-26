@@ -14,6 +14,25 @@ function formatTime(time) {
     return n[1] ? n : '0' + n
   }).join(':')
 }
+/*
+ * 时间戳转换为yyyy-MM-dd hh:mm:ss 格式  formatDate()
+ * inputTime   时间戳
+ */
+function formatDate(inputTime) {
+  var strlist=inputTime.split(",");
+  var y = strlist[0].substr(1,4);
+  var m = strlist[1];
+  m = m < 10 ? ('0' + m) : m;
+  var d = strlist[2];
+  d = d < 10 ? ('0' + d) : d;
+  var h = strlist[3];
+  h = h < 10 ? ('0' + h) : h;
+  var minute = strlist[4];
+  var second = strlist[5].substr(0, strlist[5].length-1);
+  minute = minute < 10 ? ('0' + minute) : minute;
+  second = second < 10 ? ('0' + second) : second;
+  return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+}
 
 function formatLocation(longitude, latitude) {
   if (typeof longitude === 'string' && typeof latitude === 'string') {
@@ -32,5 +51,6 @@ function formatLocation(longitude, latitude) {
 
 module.exports = {
   formatTime: formatTime,
+  formatDate: formatDate,
   formatLocation: formatLocation
 }

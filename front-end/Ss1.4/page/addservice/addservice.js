@@ -9,7 +9,7 @@ Page({
     isadd:undefined,
    flag:true,
    serviceId:undefined,
-   shopId:1,
+   shopId:0,
     service: {
       "serviceContent": "",
       "serviceDesc": "",
@@ -27,8 +27,12 @@ Page({
     serviceContent: '',
     serviceImg: [],
     addormodify:'更新',
+    disabletodelete:true,
+    basePath :"D:\\projectdev\\image",
+    //basePath :"\\home\\SearchStreet\\image",
     addUrl:app.globalData.serviceUrl + "/SearchStreet/service/addservice",
     modifyUrl:app.globalData.serviceUrl + "/SearchStreet/service/modifyservice",
+    deleteUrl: app.globalData.serviceUrl + "/SearchStreet/service/deleteservice?serviceId=",
     errorMsgs: {
       name_error: '',
       price_error: '',
@@ -44,8 +48,17 @@ Page({
     //页面初始化，options为页面跳转所带来的参数
     that.setData({
       serviceId: options.serviceId,
-      isadd:options.isadd
+      isadd:options.isadd,
+      shopId:options.shopId
     });
+    if(parseInt(options.isadd)==0)
+    {
+      that.setData(
+        {
+          disabletodelete:false
+        }
+      )
+    }
     if (options.serviceId == 0) {
       that.setData({
         addormodify:'添加'
@@ -60,21 +73,33 @@ Page({
         var service = res.data.rows[0];
         console.log(service);
         if (service == undefined) {
-          var toastText = "获取数据失败" + res.data.errMsg;
-          wx.showToast({
-            title: toastText,
-            icon: '',
-            duration: 2000
+          var toastText = "获取数据失败" ;
+          wx.showModal({
+            title: '警告',
+            content: toastText,
+            showCancel: false,
+            success(res) {
+              if (res.confirm) {
+                //  console.log('用户点击确定')
+                wx.navigateBack({      
+                  url: '../service-list/service-list?shopId='+that.data.shopId
+                })
+              }
+            }
           });
         }
-        else {
-          that.data.serviceImg[0]=service.serviceImgAddr;
+        else { 
           var flag=false;
           if(service.serviceImgAddr==null)
           {
             flag=true;
             that.data.serviceImg=null;
-            }
+           }
+           else
+           {
+            that.data.serviceImg[0] = service.serviceImgAddr;
+            console.log(that.data.serviceImg[0])
+           }
           that.setData({
             shopId:service.shopId,
             serviceName: service.serviceName,
@@ -239,6 +264,7 @@ changeimg: function () {
       that.data.service.servicePriority=that.data.servicePriority;
       that.data.service.serviceDesc=that.data.serviceDesc;
       that.data.service.serviceContent=that.data.serviceContent;
+      if(that.data.serviceImg!=null)
       that.data.service.serviceImgAddr=that.data.serviceImg[0];
       
 
@@ -246,7 +272,7 @@ changeimg: function () {
       
       });
       var url='';
-      if(parseInt(that.data.isadd)==0)
+      if(parseInt(that.data.isadd)==1)
       {
         url=that.data.addUrl;
       }
@@ -269,7 +295,7 @@ changeimg: function () {
               key: 'serviceId',
               data: res.data.serviceId
             })
-           if(that.data.serviceImg[0]!=undefined)
+            if (that.data.serviceImg != null && that.data.serviceImg[0] != undefined  )
            {
               var date = new Date();
             var url = app.globalData.serviceUrl + "/SearchStreet/service/uploadimg?serviceId=" + res.data.serviceId + "&createTime=" + app.timeStamp2String(date);
@@ -279,12 +305,28 @@ changeimg: function () {
               fileName: "serviceImg"
             })
             }
+            wx.navigateBack({
+              url: '../service-list/service-list?shopId='+that.data.shopId
+            })
+          } 
+        }
+      })
+    }
+  },
+   formReset: function (e) {
+    var that = this;
+      var url=that.data.deleteUrl;
+      wx.request({
+        url: url+that.data.serviceId,
+        method: 'POST',
+        success: res => {
+          console.log(res);
+          if (res.data.success) { 
             wx.redirectTo({
               url: '../personal-center/personal-center'
             })
           } 
         }
       })
-    }
   }
 })

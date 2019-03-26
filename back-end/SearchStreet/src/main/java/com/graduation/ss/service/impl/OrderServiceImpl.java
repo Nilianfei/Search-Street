@@ -1,5 +1,6 @@
 package com.graduation.ss.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 //import java.lang.annotation.Annotation;
 import java.util.List;
@@ -9,16 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.graduation.ss.dao.OrderDao;
-import com.graduation.ss.dto.ConstantForSuperAdmin;
 import com.graduation.ss.dto.OrderExecution;
-
 import com.graduation.ss.entity.OrderInfo;
-
+import com.graduation.ss.enums.OrderStateEnum;
 import com.graduation.ss.exceptions.OrderOperationException;
 import com.graduation.ss.service.OrderService;
 import com.graduation.ss.util.PageCalculator;
-import com.graduation.ss.util.PathUtil;
-import com.graduation.ss.enums.OrderStateEnum;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -42,6 +39,26 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return se;
 	}
+	@Override
+	public OrderExecution getOrderList2(long userId,int orderStatus) {
+		// 依据查询条件，调用dao层返回相关的订单列表
+		OrderInfo orderCondition=new OrderInfo();
+		orderCondition.setCreateTime(LocalDateTime.now().minusDays(90));
+		if(orderStatus!=-1)
+		orderCondition.setOrderStatus(orderStatus);
+		orderCondition.setUserId(userId);
+		List<OrderInfo > orderList = orderDao.queryOrderList2(orderCondition);
+		// 依据相同的查询条件，返回订单总数
+		int count = orderDao.queryOrderCount(orderCondition);
+		OrderExecution se = new OrderExecution();
+		if (orderList != null) {
+			se.setOrderList(orderList);
+			se.setCount(count);
+		} else {
+			se.setState(OrderStateEnum.INNER_ERROR.getState());
+		}
+		return se;
+	}
 	
 	@Override
 	public OrderExecution getByServiceId(long serviceId, int pageIndex, int pageSize){
@@ -52,6 +69,27 @@ public class OrderServiceImpl implements OrderService {
 		OrderInfo  orderCondition = new OrderInfo ();
 		orderCondition.setServiceId(serviceId);
 		List<OrderInfo > orderList = orderDao.queryOrderList(orderCondition, rowIndex, pageSize);
+		OrderExecution se = new OrderExecution();
+		// 依据相同的查询条件，返回订单总数
+		int count = orderDao.queryOrderCount(orderCondition);
+		if (orderList != null) {
+			se.setOrderList(orderList);
+			se.setCount(count);
+		} else {
+			se.setState(OrderStateEnum.INNER_ERROR.getState());
+		}
+		return se;
+	}
+	@Override
+	public OrderExecution getByServiceId2(long serviceId,int orderStatus){
+		// 依据查询条件，调用dao层返回相关的订单列表
+		
+		OrderInfo  orderCondition = new OrderInfo ();
+		orderCondition.setCreateTime(LocalDateTime.now().minusDays(90));
+		if(orderStatus!=-1)
+			orderCondition.setOrderStatus(orderStatus);
+		orderCondition.setServiceId(serviceId);
+		List<OrderInfo > orderList = orderDao.queryOrderList2(orderCondition);
 		OrderExecution se = new OrderExecution();
 		// 依据相同的查询条件，返回订单总数
 		int count = orderDao.queryOrderCount(orderCondition);
@@ -113,6 +151,28 @@ public class OrderServiceImpl implements OrderService {
 		return se;
 	}
 	@Override
+	public OrderExecution getByUserIdAndServiceId(long userId,long serviceId, int pageIndex, int pageSize){
+		// 将页码转换成行码
+		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+		// 依据查询条件，调用dao层返回相关的订单列表
+		//查询正在进行的服务订单
+		OrderInfo orderCondition = new OrderInfo();
+		orderCondition.setUserId(userId);
+		orderCondition.setServiceId(serviceId);
+		orderCondition.setOrderStatus(0);
+		List<OrderInfo> orderList = orderDao.queryOrderList(orderCondition, rowIndex, pageSize);
+		int count = orderDao.queryOrderCount(orderCondition);
+		OrderExecution se = new OrderExecution();
+		if (orderList!=null) {
+			se.setOrderList(orderList);
+			se.setCount(count);
+		} 
+		else {
+			se.setState(OrderStateEnum.INNER_ERROR.getState());
+		}
+		return se;
+	}
+	@Override
 	public OrderInfo getByOrderId(long orderId) {
 		return orderDao.queryByOrderId(orderId);
 	}
@@ -145,6 +205,7 @@ public class OrderServiceImpl implements OrderService {
 		try {
 			// 修改订单信息
 			int effectedNum = orderDao.updateOrder(order);
+			System.out.println(effectedNum);
 			if (effectedNum <= 0) {
 				throw new OrderOperationException("订单修改失败");
 			}

@@ -1,5 +1,6 @@
 package com.graduation.ss.service.impl;
 
+import java.util.Comparator;
 //import java.lang.annotation.Annotation;
 import java.util.Date;
 import java.util.List;
@@ -12,14 +13,14 @@ import com.graduation.ss.dao.ServiceDao;
 import com.graduation.ss.dao.ServiceImgDao;
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.ServiceExecution;
-import com.graduation.ss.entity.ServiceInfo;
 import com.graduation.ss.entity.ServiceImg;
+import com.graduation.ss.entity.ServiceInfo;
+import com.graduation.ss.enums.ServiceStateEnum;
 import com.graduation.ss.exceptions.ServiceOperationException;
 import com.graduation.ss.service.SService;
 import com.graduation.ss.util.ImageUtil;
 import com.graduation.ss.util.PageCalculator;
 import com.graduation.ss.util.PathUtil;
-import com.graduation.ss.enums.ServiceStateEnum;
 
 @Service
 public class SServiceImpl implements SService {
@@ -27,7 +28,22 @@ public class SServiceImpl implements SService {
 	private ServiceDao serviceDao;
 	@Autowired
 	private ServiceImgDao serviceImgDao;
+	// 字符串按照整型排序比较器
+    static class PriorityComparator implements Comparator<ServiceInfo> {
+        private boolean reverseOrder; // 是否倒序
+        public PriorityComparator(boolean reverseOrder) {
+            this.reverseOrder = reverseOrder;
+        }
+        
+        public int compare(ServiceInfo arg0, ServiceInfo arg1) {
+            if(reverseOrder) 
+                return (int)(arg1.getServicePriority() - arg0.getServicePriority());
+            else 
+                return (int)(arg0.getServicePriority() - arg1.getServicePriority());
+        }
 
+
+    }
 
 	@Override
 	public ServiceExecution getServiceList(ServiceInfo serviceCondition, int pageIndex, int pageSize) {
@@ -37,7 +53,8 @@ public class SServiceImpl implements SService {
 		List<ServiceInfo> serviceList = serviceDao.queryServiceList(serviceCondition, rowIndex, pageSize);
 		// 依据相同的查询条件，返回服务总数
 		int count = serviceDao.queryServiceCount(serviceCondition);
-		ServiceExecution se = new ServiceExecution();
+		 // Collections.sort(serviceList, new PriorityComparator(true));
+		  ServiceExecution se = new ServiceExecution();
 		if (serviceList != null) {
 			se.setServiceList(serviceList);
 			se.setCount(count);
@@ -62,6 +79,24 @@ public class SServiceImpl implements SService {
 			se.setServiceList(serviceList);
 			se.setCount(count);
 		} else {
+			se.setState(ServiceStateEnum.INNER_ERROR.getState());
+		}
+		return se;
+	}
+	@Override
+	public ServiceExecution getByShopId2(long shopId){
+		// 依据查询条件，调用dao层返回相关的服务列表
+		ServiceInfo serviceCondition = new ServiceInfo();
+		serviceCondition.setShopId(shopId);
+		List<ServiceInfo> serviceList = serviceDao.queryServiceList2(serviceCondition);
+		ServiceExecution se = new ServiceExecution();
+		// 依据相同的查询条件，返回服务总数
+		
+		if (serviceList != null) {
+			se.setServiceList(serviceList);
+			se.setCount(serviceList.size());
+		} 
+		else {
 			se.setState(ServiceStateEnum.INNER_ERROR.getState());
 		}
 		return se;

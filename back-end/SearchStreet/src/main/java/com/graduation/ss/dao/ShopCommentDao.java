@@ -19,7 +19,7 @@ public interface ShopCommentDao {
 	 */
 	public List<ShopComment> queryShopCommentList(@Param("shopCommentCondition")ShopComment shopCommentCondition, @Param("rowIndex") int rowIndex,
 			@Param("pageSize") int pageSize);
-
+	public List<ShopComment> queryShopCommentList2(@Param("shopCommentCondition")ShopComment shopCommentCondition);
 	/**
 	 * 返回queryShopCommentList总数
 	 * 

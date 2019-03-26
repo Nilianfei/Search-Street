@@ -6,19 +6,17 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bf:true,
     shopComment: {
-      "shopId": 2,
-      "orderId": 13,
-      "userId": 1,
+      "shopId": 0,
+      "orderId": 0,
+      "userId": 0,
     "commentContent": "",
     "serviceRating": 0,
     "starRating": 0,
       "commentReply": ""
     },
     shopname: '店名',
-    shopid:2,//获取shopid
-    serviceid:1, //获取serviceid
-    orderid: 1,//获取orderid
     userInfo : {},
     evaluate_content: ['服务评分','星级评分'],
     startext: [' ', ' '],
@@ -29,6 +27,8 @@ Page({
     noteMinLen: 8,
     info: "",
     noteNowLen: 0,//备注当前字数
+    service:null,
+    order:null
 
   },
   // 监听字数
@@ -43,13 +43,18 @@ Page({
     if (len < that.data.noteMinLen&&len!=0)
       text = '还需输入' + String(llen) +'个字';
     if (len >= that.data.noteMinLen)
-      text = String(len) + '/' + String(that.data.noteMaxLen);
+    {
+        text = String(len) + '/' + String(that.data.noteMaxLen);
+        that.setData({
+          bf:false
+        })
+    }
     that.setData({ info: value, texts:text })
 
   },
   formReset: function (e) 
   {
-    wx.redirectTo({
+    wx.navigateBack({
       url: '../order/order'
     })
   },
@@ -72,9 +77,6 @@ Page({
       },
       success: function (res) {
         var result = res.data.success;
-        console.log('errMsg:' + res.data.errMsg)
-        console.log('shopComment:' + res.data.shopComment.serviceRating)
-        console.log('shopCommentId:' + res.data.shopCommentId)
         var toastText = "添加评论成功";
         if (result != true) {
           toastText = "添加评论失败：" + res.data.errMsg;
@@ -85,36 +87,9 @@ Page({
           duration: 2000
         });
         if (result == true) {
-          wx.redirectTo({
-            url: '../personal-center/personal-center'
+          wx.navigateBack({
+            url: '../order/order'
           })
-        }
-      }
-    })
-  },
-  // 提交事件
-  submit_evaluate: function (e) {
-    var that = this;
-    that.data.shopComment.commentContent = that.data.info;
-    that.data.shopComment.serviceRating = that.data.flag[0];
-    that.data.shopComment.starRating = that.data.flag[1];
-    that.setData({
-      shopComment: that.data.shopComment
-    })
-    wx.request({
-      url: app.globalData.serviceUrl + '/SearchStreet/shopComment/addshopComment',
-      header: {
-        "Content-Type": 'application/json'
-      },
-      data: { "shopComment": e.target.dataset.shopComment },
-      method: 'POST',
-      success: function (res) {
-        var result = res.data.success;
-        console.log('errMsg:' + res.data.errMsg)
-        console.log('shopComment:' + res.data.shopComment.serviceRating)
-        console.log('shopCommentId:' + res.data.shopCommentId)
-        if (result == true) {
-         
         }
       }
     })
@@ -123,14 +98,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.getUserInfo({
-      success: res => {
-        app.globalData.userInfo = res.userInfo
-        this.setData({
-          userInfo: res.userInfo
-        })
-      }
-    })
+   var that=this;
+    var service = JSON.parse(options.service);
+    var order =JSON.parse(options.order);
+    var shopComment=that.data.shopComment;
+    shopComment.shopId=service.shopId;
+    shopComment.userId=order.userId;
+    shopComment.orderId=order.orderId;
+   that.setData({
+         service:service,
+         order:order,
+         shopComment:shopComment
+   })
   },
 
   /**

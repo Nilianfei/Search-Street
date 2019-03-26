@@ -13,12 +13,12 @@
 {
   padding-left: 10rpx;
 }
-.shopinfo
+.serviceinfo
 {
   justify-content: flex-start;
 }
 
-.shopimg {
+.serviceimg {
   width: 50rpx;
   height: 50rpx;
 /*  margin-left: 0rpx;*/
@@ -28,7 +28,7 @@
 .nickname {
   color: #aaa;
 }
-.shopname {
+.servicename {
   color: #000;
 }
 .star-pos {

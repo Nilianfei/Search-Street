@@ -2,8 +2,6 @@ package com.graduation.ss.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.List;
-
 public class ServiceInfo {
 
 	/**
@@ -19,7 +17,7 @@ public class ServiceInfo {
 	@ApiModelProperty(value = "服务名称", required = true)
 	private String serviceName;
 	@ApiModelProperty(value = "服务价格", required = true)
-	private Long servicePrice;
+	private Double servicePrice;
 	@ApiModelProperty(value = "优先级", required = true)
 	private Long servicePriority;
 	@ApiModelProperty(value = "服务描述")
@@ -46,10 +44,10 @@ public class ServiceInfo {
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
 	}
-	public Long getServicePrice() {
+	public Double getServicePrice() {
 		return servicePrice;
 	}
-	public void setServicePrice(Long servicePrice) {
+	public void setServicePrice(Double servicePrice) {
 		this.servicePrice = servicePrice;
 	}
 	public String getServiceDesc() {

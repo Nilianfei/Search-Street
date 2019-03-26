@@ -1,87 +1,178 @@
 // page/service/service.js
+var app = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    visible:false,
     service:null,
     bottonText:"立即预约",
     token:null,
-    serviceId:null
-  },
+    serviceId:null,
+    order: {
+      "createTime": "",
+      "orderId": 0,
+      "orderPrice": 0,
+      "orderStatus": 0,
+      "overTime": "",
+      "serviceCount": 1,
+      "serviceId": 0,
+      "serviceName": "string",
+      "userId": 0
+    },
+    shopId:null,
+    userId:null,
+    value1: 1,
+    serviceCount:1,
+    // input默认是1 
+    // 使用data数据对象设置样式名  
+    minusStatus: 'disabled' ,
+    totalprice:0 ,
+    flag:false,
 
+  },
+  handleOpen() {
+    this.setData({
+      visible: true
+    });
+  },
+  handleClose() {
+    this.setData({
+      visible: false
+    });
+    wx.navigateBack({
+      url: '../home/home',//返回服务列表页面
+    })
+  },
+  /* 点击减号 */
+  bindMinus: function () {
+    var num = this.data.serviceCount;
+    // 如果大于1时，才可以减  
+    if (num > 1) {
+      num--;
+    }
+    var servicePrice = Number(this.data.service.servicePrice) * num;
+    // 只有大于一件的时候，才能normal状态，否则disable状态  
+    var minusStatus = num <= 1 ? 'disabled' : 'normal';
+    // 将数值与状态写回  
+    this.setData({
+      serviceCount: num,
+      minusStatus: minusStatus,
+      totalprice:servicePrice
+    });
+  },
+  /* 点击加号 */
+  bindPlus: function () {
+    var num = this.data.serviceCount;
+    // 不作过多考虑自增1  
+    num++;
+    // 只有大于一件的时候，才能normal状态，否则disable状态  
+    var minusStatus = num < 1 ? 'disabled' : 'normal';
+    var servicePrice=Number(this.data.service.servicePrice)*num;
+    // 将数值与状态写回  
+    this.setData({
+      serviceCount: num,
+      minusStatus: minusStatus,
+      totalprice: servicePrice
+    });
+  },
+  /* 输入框事件 */
+  bindManual: function (e) {
+    var num = e.detail.value;
+    var servicePrice = Number(this.data.service.servicePrice) * num;
+    // 将数值与状态写回  
+    this.setData({
+      serviceCount: num,
+      totalprice: servicePrice
+    });
+  } ,
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     var that= this;
+    var service = JSON.parse(options.service);
     that.setData({
-      serviceId:options.id
+      service:service,
+      shopId: service.shopId,
+      serviceId: service.serviceId,
+      totalprice:service.servicePrice
     })
     try {//同步获取与用户信息有关的缓存token
-      const value = wx.getStorageSync('token')
+      const value = wx.getStorageSync('token');
+      const userId=wx.getStorageSync('userId');
+      const shopId= wx.getStorageSync('shopId');
       if (value) {
         that.setData({
           token:value
         })
       }
+      if (userId) {
+        that.setData({
+          userId: userId
+        })
+      }
+      if (!shopId) {
+        wx.setStorage({
+          key: 'shopId',
+          data: service.shopId
+        })
+      }
     } catch (e) {
       console.log("error");
     }
-    //获取服务信息
-    wx.request({
-      url: "" + that.data.serviceId,
-      data: {},
-      method: "GET",
-      success: res => {
-        console.log(res);   
-        that.setData(
-          {
-            service: res.data.service,//设置页面中的数据
-          }
-        )
-      }
-    })
     //查询用户是否预约过服务
     wx.request({
-      url: "" + that.data.serviceId+"&token="+that.data.token,
+      url: app.globalData.serviceUrl + '/SearchStreet/order/getOrderlistbyus?serviceId=' + that.data.serviceId+"&userId="+that.data.userId,
       data: {},
       method: "GET",
       success: res => {
         console.log(res);
-        if(res.isbook){
+        if(res.data.isbook){
           that.setData({
-            bottonText:"已预约"
+            bottonText:"已预约",
+            order:res.data.OrderList,
+            flag:true
           })
         }
       }
     })
   },
-
-  booking:function(){
+  handleChange1({ detail }) {
+    this.setData({
+      value1: detail.value
+    })
+  },
+ checkorder:function(e)
+ {
+   //查看现在正在进行的订单
+      var that=this;
+      var service =that.data.service;
+      var order=that.data.order;
+      wx.redirectTo({
+        url: '../order/order?service=' + JSON.stringify(service) + '&order=' + JSON.stringify(order),
+     })
+ },
+  booking:function(e){
     var that = this;
-    if(bottonText!="已预约"){
+    if(that.data.bottonText!="已预约"){
+      that.data.order.serviceId=that.data.serviceId;
+     // that.data.order.createTime = app.timeStamp2String(new Date());
+      that.data.order.serviceName=that.data.service.serviceName;
+      that.data.order.orderPrice=that.data.totalprice;
+      that.data.order.userId=that.data.userId;
+      that.data.order.orderCount=that.data.serviceCount;
       wx.request({
-        url: "" + that.data.serviceId + "&token=" + that.data.token,
-        data: {},
-        method: "GET",
-        success: res => {
-          that.setData({
-            bottonText: "已预约"
-          });
-          var shopId = null;
-          try {//同步获取缓存shopId
-            const value = wx.getStorageSync('shopId')
-            if (value) {
-              shopId = value;
-            }
-          } catch (e) {
-            console.log("error");
-          }
-          wx.redirectTo({
-            url: '../page/service/service?id=shopId'//返回服务列表页面
-          })
+        url: app.globalData.serviceUrl + '/SearchStreet/order/addOrder',
+        data: JSON.stringify(that.data.order),
+        method: 'POST',
+        header: {
+          "Content-Type": 'application/json'
+        },
+        success: function (res) {
+          that.handleOpen() 
         }
       })
     }

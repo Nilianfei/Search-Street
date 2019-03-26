@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.sql.Time;
 import java.util.Date;
 
 import org.junit.Ignore;
@@ -69,6 +68,7 @@ public class SServiceTest {
 		File serviceImg = new File("E:/SearchStreet/1.png");
 		InputStream is = new FileInputStream(serviceImg);
 		ImageHolder serviceImageHolder = new ImageHolder(serviceImg.getName(), is);
+		@SuppressWarnings("unused")
 		ServiceExecution serviceExecution = sService.uploadImg(1L, serviceImageHolder,new Date());
 		
 		ServiceImg sImg=serviceImgDao.getServiceImg(1L);
@@ -93,7 +93,7 @@ public class SServiceTest {
 		ServiceInfo service = new ServiceInfo();
 		service.setServiceName("测试service店铺4");
         service.setShopId(3L);
-        service.setServicePrice(12L);
+        service.setServicePrice(new Double(12));
 		ServiceExecution se = sService.addService(service);
 		assertEquals(ServiceStateEnum.SUCCESS.getState(), se.getState());
 	}

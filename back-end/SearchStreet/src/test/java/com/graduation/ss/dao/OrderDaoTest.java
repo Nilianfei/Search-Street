@@ -98,7 +98,7 @@ public class OrderDaoTest {
 		orderInfo.setServiceCount(1L);
 		orderInfo.setOrderStatus(0);
 		orderInfo.setCreateTime(LocalDateTime.now());
-		
+		orderInfo.setOrderPrice(12);
 		LocalDateTime date2=LocalDateTime.of(9999, 12, 31, 00, 00, 00);
 		orderInfo.setOverTime(date2);
 		System.out.println("OverTime: "+orderInfo.getOverTime());
@@ -115,6 +115,7 @@ public class OrderDaoTest {
 		orderInfo2.setUserId(1L);
 		orderInfo2.setServiceCount(2L);
 		orderInfo2.setOrderStatus(0);
+		orderInfo2.setOrderPrice(13);
 		orderInfo2.setCreateTime(LocalDateTime.now());
 		LocalDateTime date2=LocalDateTime.of(9999, 12, 31, 00, 00, 00);
 		orderInfo2.setOverTime(date2);
@@ -126,6 +127,7 @@ public class OrderDaoTest {
 		orderInfo3.setOrderStatus(1);   //DIFF ORDERSTATUS
 		orderInfo3.setCreateTime(LocalDateTime.now());
 		orderInfo3.setOverTime(LocalDateTime.now().plusDays(1));
+		orderInfo3.setOrderPrice(14);
 		orderInfoList.add(orderInfo3);
 		OrderInfo orderInfo4 = new OrderInfo();
 		orderInfo4.setServiceId(1L);     //DIFF USERID
@@ -134,6 +136,7 @@ public class OrderDaoTest {
 		orderInfo4.setOrderStatus(1);
 		orderInfo4.setCreateTime(LocalDateTime.now());
 		orderInfo4.setOverTime(LocalDateTime.now().plusDays(1));
+		orderInfo4.setOrderPrice(15);
 		orderInfoList.add(orderInfo4);
 		OrderInfo orderInfo5 = new OrderInfo();
 		orderInfo5.setServiceId(1L);
@@ -142,15 +145,16 @@ public class OrderDaoTest {
 		orderInfo5.setOrderStatus(1);
 		orderInfo5.setCreateTime(LocalDateTime.of(2018, 7, 12, 00, 00, 00));    //DIFF CREATETIME/OVERTIME
 		orderInfo5.setOverTime(LocalDateTime.of(2018, 7, 13, 00, 00, 00));
+		orderInfo5.setOrderPrice(16);
 		orderInfoList.add(orderInfo5);
 		int effectedNum = orderDao.insertOrderInfo(orderInfoList);
 		assertEquals(4, effectedNum);
 	}
 	@Test
-	@Ignore
+	//@Ignore
 	public void testUpdateOrder() {
 		OrderInfo orderInfo = new OrderInfo();
-		orderInfo.setOrderId(1L);
+		orderInfo.setOrderId(5L);
 		orderInfo.setOrderStatus(1);
 		orderInfo.setOverTime(LocalDateTime.now());
 		int effectedNum = orderDao.updateOrder(orderInfo);

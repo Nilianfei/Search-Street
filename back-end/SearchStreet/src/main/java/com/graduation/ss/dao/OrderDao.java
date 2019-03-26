@@ -20,8 +20,6 @@ public interface OrderDao {
 	 *            返回的条数
 	 * @return
 	 */
-	/*TODO:比较日期大小（Over_Time)不准确，仍需更改
-	 */
 	public List<OrderInfo> queryOrderList(@Param("orderCondition")OrderInfo orderCondition, @Param("rowIndex") int rowIndex,
 			@Param("pageSize") int pageSize);
 
@@ -46,11 +44,13 @@ public interface OrderDao {
 	 */
 //	public List<OrderInfo> queryByUserId(long userId);
 	/**
-	 * 通过order status查询订单
-	 * @param orderStatus
+	 * 查询订单，可输入的条件有：服务id，用户id,订单状态,订单创建时间,订单结束时间
+	 * 
+	 * @param orderCondition
 	 * @return
 	 */
-//	public List<OrderInfo> queryByOrderStatus(long orderStatus);
+	public List<OrderInfo> queryOrderList2(@Param("orderCondition")OrderInfo orderCondition);
+
 	
 	/**
 	 * 添加订单

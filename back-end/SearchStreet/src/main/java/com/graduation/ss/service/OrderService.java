@@ -19,12 +19,12 @@ public interface OrderService {
 	public OrderExecution getOrderList(OrderInfo orderCondition, int pageIndex, int pageSize);
 
 	/**
-	 * 通过shopname获取订单信息
+	 * 根据orderCondition分页返回相应订单列表
 	 * 
-	 * @param shopId
+	 * @param orderCondition
 	 * @return
 	 */
-	//public OrderExecution getByShopName(String shopName, int pageIndex, int pageSize);
+	public OrderExecution getOrderList2(long userId,int orderStatus);
 	/**
 	 * 通过serviceId获取订单信息
 	 * 
@@ -32,6 +32,7 @@ public interface OrderService {
 	 * @return
 	 */
 	public OrderExecution getByServiceId(long serviceId, int pageIndex, int pageSize);
+	public OrderExecution getByServiceId2(long serviceId,int orderStatus);
 	
 	public List<OrderExecution>  getByServiceIdList(List<Long> serviceIdList, int pageIndex, int pageSize);
 	/**
@@ -41,6 +42,13 @@ public interface OrderService {
 	 * @return
 	 */
 	public OrderExecution getByUserId(long userId, int pageIndex, int pageSize);
+	/**
+	 * 通过userId serviceId获取订单信息
+	 * 
+	 * @param userId serviceId
+	 * @return
+	 */
+	public OrderExecution getByUserIdAndServiceId(long userId, long serviceId,int pageIndex, int pageSize);
 	/**
 	 * 通过订单Id获取订单信息
 	 * 

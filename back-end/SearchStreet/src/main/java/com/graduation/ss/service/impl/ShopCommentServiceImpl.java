@@ -10,11 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.graduation.ss.dao.ShopCommentDao;
 import com.graduation.ss.dto.ShopCommentExecution;
 import com.graduation.ss.entity.ShopComment;
+import com.graduation.ss.enums.ShopCommentStateEnum;
 import com.graduation.ss.exceptions.ShopCommentOperationException;
 import com.graduation.ss.service.ShopCommentService;
 import com.graduation.ss.util.PageCalculator;
-import com.graduation.ss.util.PathUtil;
-import com.graduation.ss.enums.ShopCommentStateEnum;
 
 @Service
 public class ShopCommentServiceImpl implements ShopCommentService {
@@ -49,6 +48,43 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 		ShopComment shopCommentCondition = new ShopComment();
 		shopCommentCondition.setShopId(shopId);
 		List<ShopComment> shopCommentList = shopCommentDao.queryShopCommentList(shopCommentCondition, rowIndex, pageSize);
+		ShopCommentExecution se = new ShopCommentExecution();
+		// 依据相同的查询条件，返回评论总数
+		int count = shopCommentDao.queryShopCommentCount(shopCommentCondition);
+		if (shopCommentList != null) {
+			se.setShopCommentList(shopCommentList);
+			se.setCount(count);
+		} else {
+			se.setState(ShopCommentStateEnum.INNER_ERROR.getState());
+		}
+		return se;
+	}
+	@Override
+	public ShopCommentExecution getByShopId2(long shopId){
+		// 依据查询条件，调用dao层返回相关的评论列表
+		
+		ShopComment shopCommentCondition = new ShopComment();
+		shopCommentCondition.setShopId(shopId);
+		List<ShopComment> shopCommentList = shopCommentDao.queryShopCommentList2(shopCommentCondition);
+		ShopCommentExecution se = new ShopCommentExecution();
+		// 依据相同的查询条件，返回评论总数
+		int count = shopCommentDao.queryShopCommentCount(shopCommentCondition);
+		if (shopCommentList != null) {
+			se.setShopCommentList(shopCommentList);
+			se.setCount(count);
+		} else {
+			se.setState(ShopCommentStateEnum.INNER_ERROR.getState());
+		}
+		return se;
+	}
+	@Override
+	public ShopCommentExecution getByUserId2(long userId){
+		// 依据查询条件，调用dao层返回相关的评论列表
+		
+		ShopComment shopCommentCondition = new ShopComment();
+		shopCommentCondition.setUserId(userId);
+
+		List<ShopComment> shopCommentList = shopCommentDao.queryShopCommentList2(shopCommentCondition);
 		ShopCommentExecution se = new ShopCommentExecution();
 		// 依据相同的查询条件，返回评论总数
 		int count = shopCommentDao.queryShopCommentCount(shopCommentCondition);

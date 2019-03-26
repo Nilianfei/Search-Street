@@ -33,6 +33,12 @@ public interface ServiceDao{
 	 * @return
 	 */
 	public ServiceInfo queryByServiceId(long serviceId);
+	/**
+	 * 通过serviceCondition查询服务
+	 * @param serviceCondition
+	 * @return
+	 */
+	public List<ServiceInfo> queryServiceList2(@Param("serviceCondition")ServiceInfo serviceCondition);
 
 	/**
 	 * 添加服务

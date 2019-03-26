@@ -23,6 +23,7 @@ public interface ShopCommentService {
 	 * @return
 	 */
 	public ShopCommentExecution getByShopId(long shopId, int pageIndex, int pageSize);
+	public ShopCommentExecution getByShopId2(long shopId);
 	/**
 	 * 通过userId获取评论信息
 	 * 
@@ -30,6 +31,7 @@ public interface ShopCommentService {
 	 * @return
 	 */
 	public ShopCommentExecution getByUserId(long userId, int pageIndex, int pageSize);
+	public ShopCommentExecution getByUserId2(long userId);
 	/**
 	 * 通过评论Id获取评论信息
 	 * 

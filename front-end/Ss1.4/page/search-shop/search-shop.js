@@ -198,12 +198,19 @@ Page({
 
   //查看订单
   checkOrder: function(e){
-    /* 订单url填入这里！！！
+    //订单url填入这里！！！
     wx.navigateTo({
-      url: ' '
+      url: '../user-order-list/user-order-list',
     })
-    */
     console.log('跳转订单page');
+  },
+  //查看服务
+  checkService:function(e)
+  {
+    var that=this;
+    wx.navigateTo({
+      url: '../user-service-list/user-service-list?shopId='+that.data.shopId,
+    })
   },
 
   //地图marker点击事件

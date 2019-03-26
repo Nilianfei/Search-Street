@@ -9,7 +9,17 @@
   <view class='little-bottom'>
     <i-panel>
       <view class='text-view'><text style='font-size:20px'>{{service.serviceName}}</text></view>
+     <view class="price">
       <view class='text-view'><text style='color:#ff9900;'>{{service.servicePrice}}元</text></view>
+       <view class="stepper {{flag==true?'nodisplay':''}}">  
+    <!-- 减号 -->  
+    <text class="{{minusStatus}}" bindtap="bindMinus">-</text>  
+    <!-- 数值 -->  
+    <input type="number" bindchange="bindManual" value="{{serviceCount}}" />  
+    <!-- 加号 -->  
+    <text class="normal" bindtap="bindPlus">+</text>  
+</view>  
+  </view>
     </i-panel>
     <i-panel>
       <view class='text-view'>{{service.serviceDesc}}</view>
@@ -21,7 +31,20 @@
       <view class='service-content'>{{service.serviceContent}}</view>
     </i-panel>
   </view>
-  <view class='botton-view'>
-    <i-button type="primary" long="true" bind:click="booking">{{bottonText}}</i-button>
+
+<view class="buy_btn_box {{flag==true?'nodisplay':''}}">
+<view class="collect_bottom">
+<view class="collect_right">
+<text class="collect_one">共{{serviceCount}}件商品</text>
+<text class="collect_two" style='padding-left:20rpx;'>¥ {{totalprice}}</text>
+</view>
+<text class='buy_btn' bindtap="booking">提交订单</text>
+</view>
+</view>
+ <view class="botton-view {{flag==false?'nodisplay':''}}">
+    <i-button type="primary" long="true" bind:click="checkorder">{{bottonText}}</i-button>
   </view>
 </view>
+<i-modal visible="{{ visible }}" bind:ok="handleClose" show-cancel="{{!visible }}">
+    <view>提交成功</view>
+</i-modal>

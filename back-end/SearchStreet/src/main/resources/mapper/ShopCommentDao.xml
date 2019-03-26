@@ -23,6 +23,25 @@
 		</where>
 		LIMIT #{rowIndex},#{pageSize};
 	</select>
+	<select id="queryShopCommentList2" resultType="com.graduation.ss.entity.ShopComment">
+		SELECT
+		shop_comment_id,shop_id,order_id,user_id,comment_content,service_rating,star_rating
+		FROM
+		tb_shop_comment
+		<where>
+			<if test="shopCommentCondition.userId != null">
+				and user_id = #{shopCommentCondition.userId }
+			</if>
+			<if
+				test="shopCommentCondition.shopId != null">
+				and shop_id = #{shopCommentCondition.shopId}
+			</if> 
+			<if
+				test="shopCommentCondition.commentContent != null">
+				and comment_content like '%${shopCommentCondition.commentContent}%'
+			</if> 
+		</where>
+	</select>
 	<select id="queryShopCommentCount" resultType="int">
 		SELECT
 		count(1)

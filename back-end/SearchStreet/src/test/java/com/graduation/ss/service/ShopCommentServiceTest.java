@@ -2,13 +2,6 @@ package com.graduation.ss.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.sql.Time;
-import java.util.Date;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;

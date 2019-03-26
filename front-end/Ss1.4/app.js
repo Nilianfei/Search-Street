@@ -2,7 +2,14 @@
 
 App({
   onLaunch: function () {
-   
+    wx.getSystemInfo({
+      success: e => {
+        this.globalData.StatusBar = e.statusBarHeight;
+        let custom = wx.getMenuButtonBoundingClientRect();
+        this.globalData.Custom = custom;
+        this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+      }
+    })
   },
    
   onShow: function () {
@@ -53,8 +60,8 @@ App({
        */
   globalData: {
     imgUrl: "http://139.196.101.84:8080/image",
-    serviceUrl: "http://139.196.101.84:8080"
-    //serviceUrl: "http://localhost:8080"
+    //serviceUrl: "http://139.196.101.84:8080"
+    serviceUrl: "http://localhost:8080"
   }
 
 })

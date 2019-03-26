@@ -21,17 +21,17 @@ public class ServiceDaoTest {
 	private ServiceDao serviceDao;
 	
 	@Test
-	@Ignore
+	//@Ignore
 	public void testQueryServiceListAndCount() {
 		ServiceInfo serviceCondition2 = new ServiceInfo();
 		
-		serviceCondition2.setShopId(7L);
+		serviceCondition2.setShopId(1L);
 		List<ServiceInfo> serviceInfoList = serviceDao.queryServiceList(serviceCondition2, 0, 4);
 		int count = serviceDao.queryServiceCount(serviceCondition2);
 		System.out.println("服务列表-shopid的大小：" + serviceInfoList.size());
 		System.out.println("服务总数-shopid：" + count);	
 		serviceInfoList.clear();
-		serviceCondition2.setServicePrice(2L);
+		serviceCondition2.setServicePrice(new Double(22));
 		serviceInfoList = serviceDao.queryServiceList(serviceCondition2, 0, 3);
 		count = serviceDao.queryServiceCount(serviceCondition2);
 		System.out.println("服务列表-price的大小：" + serviceInfoList.size());
@@ -54,7 +54,7 @@ public class ServiceDaoTest {
 		ServiceInfo serviceInfo = new ServiceInfo();
 		serviceInfo.setShopId(6L);
 		serviceInfo.setServiceName("test");
-		serviceInfo.setServicePrice(2L);
+		serviceInfo.setServicePrice(new Double(22));
 		serviceInfo.setServicePriority(4L);
 		serviceInfo.setServiceDesc("test");
 		serviceInfo.setServiceContent("test");
@@ -69,7 +69,7 @@ public class ServiceDaoTest {
 		ServiceInfo serviceInfo2 = new ServiceInfo();
 		serviceInfo2.setShopId(5L);
 		serviceInfo2.setServiceName("2测试服务名称");
-		serviceInfo2.setServicePrice(1L);
+		serviceInfo2.setServicePrice(new Double(11));
 		serviceInfo2.setServicePriority(2L);
 		serviceInfo2.setServiceDesc("2测试服务名称");
 		serviceInfo2.setServiceContent("2测试服务名称");
@@ -78,7 +78,7 @@ public class ServiceDaoTest {
 		ServiceInfo serviceInfo3 = new ServiceInfo();
 		serviceInfo3.setShopId(6L);
 		serviceInfo3.setServiceName("A测试服务名称");
-		serviceInfo3.setServicePrice(1L);
+		serviceInfo3.setServicePrice(new Double(23));
 		serviceInfo3.setServicePriority(2L);
 		serviceInfo3.setServiceDesc("A测试服务名称");
 		serviceInfo3.setServiceContent("A测试服务名称");
@@ -87,7 +87,7 @@ public class ServiceDaoTest {
 		ServiceInfo serviceInfo4 = new ServiceInfo();
 		serviceInfo4.setShopId(7L);
 		serviceInfo4.setServiceName("aa测试服务名称");
-		serviceInfo4.setServicePrice(1L);
+		serviceInfo4.setServicePrice(new Double(24));
 		serviceInfo4.setServicePriority(1L);
 		serviceInfo4.setServiceDesc("aa测试服务名称");
 		serviceInfo4.setServiceContent("aa测试服务名称");

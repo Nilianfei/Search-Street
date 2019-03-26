@@ -25,6 +25,7 @@ public interface SService {
 	 * @return
 	 */
 	public ServiceExecution getByShopId(long shopId, int pageIndex, int pageSize);
+	public ServiceExecution getByShopId2(long shopId);
 	/**
 	 * 通过服务Id获取服务信息
 	 * 

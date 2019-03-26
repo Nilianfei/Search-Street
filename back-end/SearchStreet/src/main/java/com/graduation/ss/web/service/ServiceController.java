@@ -1,11 +1,5 @@
 package com.graduation.ss.web.service;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -27,21 +21,21 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduation.ss.dao.ServiceImgDao;
 import com.graduation.ss.dto.ConstantForSuperAdmin;
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.ServiceExecution;
-import com.graduation.ss.dto.UserCode2Session;
 import com.graduation.ss.entity.ServiceInfo;
-import com.graduation.ss.entity.ServiceImg;
-import com.graduation.ss.entity.WechatAuth;
 import com.graduation.ss.enums.ServiceStateEnum;
 import com.graduation.ss.exceptions.ServiceOperationException;
 import com.graduation.ss.service.SService;
-import com.graduation.ss.service.WechatAuthService;
 import com.graduation.ss.util.HttpServletRequestUtil;
-import com.graduation.ss.util.JWT;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/service")
@@ -51,8 +45,7 @@ public class ServiceController {
 	private SService sService;
 	@Autowired
 	private ServiceImgDao serviceImgDao;
-	@Autowired
-	private WechatAuthService wechatAuthService;
+
 	//通过店铺id获取服务列表 分页 
 	@RequestMapping(value = "/getservicelistbyshopid", method = RequestMethod.GET)
 	@ResponseBody
@@ -70,16 +63,24 @@ public class ServiceController {
 			ServiceInfo serviceCondition = new ServiceInfo();
 			serviceCondition.setShopId(shopId);
 			ServiceExecution se = sService.getServiceList(serviceCondition, pageIndex, pageSize);
+			//ServiceExecution se = sService.getByShopId(shopId, pageIndex, pageSize);
 			int pageNum = (int) (se.getCount() / pageSize);
 			if (pageNum * pageSize < se.getCount())
 				pageNum++;
-			modelMap.put("serviceList", se.getServiceList());
+			List<ServiceInfo> serviceList=se.getServiceList();
+			modelMap.put("serviceList", serviceList);
+			modelMap.put("pageSize", pageSize);
 			modelMap.put("pageNum", pageNum);
 			modelMap.put("success", true);
+			for(ServiceInfo service:serviceList)
+			{
+			System.out.println(service.toString());
+			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
 		}
+		
 		return modelMap;
 	}
 	//根据查询条件获取服务列表 分页
@@ -143,12 +144,12 @@ public class ServiceController {
 	@RequestMapping(value = "/searchservicebyid", method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value = "根据serviceId获取该服务信息")
-	@ApiImplicitParam(paramType = "query", name = "serviceId", value = "服务ID", required = true, dataType = "String", example = "3")
+	@ApiImplicitParam(paramType = "query", name = "serviceId", value = "服务ID", required = true, dataType = "Long", example = "3")
 	private Map<String, Object> searchServiceById(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		ServiceInfo service = null;
 		// 从请求中获取serviceId
-		long serviceId = Long.valueOf(HttpServletRequestUtil.getLong(request, "serviceId"));
+		long serviceId = HttpServletRequestUtil.getLong(request, "serviceId");
 		Date date=new Date();
 		System.out.println(date.toString()+" serviceId:"+serviceId);
 		if (serviceId > 0) {

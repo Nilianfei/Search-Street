@@ -1,10 +1,5 @@
 package com.graduation.ss.dao;
 
-import java.util.Date;
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.graduation.ss.entity.ServiceImg;
 
 public interface ServiceImgDao {

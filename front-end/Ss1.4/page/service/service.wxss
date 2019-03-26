@@ -8,7 +8,7 @@
 }
 
 .big-bottom{
-  margin-bottom:60px;
+  margin-bottom:20rpx;
 }
 
 .image{
@@ -41,4 +41,97 @@
   position:fixed;
   width:100%;
 }
+.price
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+/*主容器*/  
+.stepper {  
+    width: 80px;  
+    height: 26px;  
+    /*给主容器设一个边框*/  
+    border: 1px solid #ccc;  
+    border-radius: 3px;  
+    margin-right:20rpx;  
+}  
+  
+/*加号和减号*/  
+.stepper text {  
+    width: 19px;  
+    line-height: 26px;  
+    text-align: center;  
+    float: left;  
+}  
+  
+/*数值*/  
+.stepper input {  
+    width: 40px;  
+    height: 26px;  
+    float: left;  
+    margin: 0 auto;  
+    text-align: center;  
+    font-size: 12px;  
+    /*给中间的input设置左右边框即可*/  
+    border-left: 1px solid #ccc;  
+    border-right: 1px solid #ccc;  
+}  
+  
+/*普通样式*/  
+.stepper .normal{  
+    color: black;  
+}  
+  
+/*禁用样式*/  
+.stepper .disabled{  
+    color: #ccc;  
+}  
+.collect_right {
+position: absolute;
+width: 350rpx;
+height: 90rpx;
+left: 20rpx;
+color: #fff;
+font-size: 35rpx;
+}
+ 
+ 
+ 
+.buy_btn{
+position: absolute;
+width: 200rpx;
+height: 90rpx;
+line-height: 90rpx;
+right: 0rpx;
+font-size: 35rpx;
+background-color:#f55212;
+}
+ 
+.buy_btn_box {
+position: absolute;
+bottom: 0rpx;
+color: #fff;
+width: 100%;
+height: 90rpx; 
+line-height: 90rpx;
+text-align: center;
+background-color: #323232b9;
+ 
+}
+ 
+ 
+ 
+.collect_big_box {
+ 
+width: 100%;
+ 
+height: 100%;
+ 
+/* position: relative; */
+ 
+}
 
+.nodisplay{
+  display: none;
+}

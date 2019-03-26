@@ -5,7 +5,7 @@
 <mapper namespace="com.graduation.ss.dao.OrderDao">
 	<select id="queryOrderList" resultType="com.graduation.ss.entity.OrderInfo">
 		SELECT
-		order_id,service_id,user_id,service_count,order_status,create_time,over_time
+		order_id,service_id,user_id,service_count,order_status,create_time,over_time,service_name,order_price
 		FROM
 		tb_order 
 		<where>
@@ -27,7 +27,7 @@
 			    and DATE_FORMAT(over_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.overTime},'%Y %m %d')
 		</if>
 		</where>
-		ORDER BY order_id DESC
+		ORDER BY order_id desc
 		LIMIT #{rowIndex},#{pageSize};
 	</select>
 	<select id="queryOrderCount" resultType="int">
@@ -59,15 +59,15 @@
 		useGeneratedKeys="true" keyProperty="orderId" keyColumn="order_id">
 		INSERT
 		INTO
-		tb_order(service_id,user_id,service_count,order_status,create_time,over_time)
+		tb_order(order_id,service_id,user_id,service_count,order_status,create_time,over_time,service_name,order_price)
 		VALUES
-		(#{serviceId},#{userId},#{serviceCount},#{orderStatus},#{createTime},#{overTime})
+		(#{serviceId},#{userId},#{serviceCount},#{orderStatus},#{createTime},#{overTime},#{serviceName},#{orderPrice})
 	</insert>
 	<insert id="insertOrderInfo" parameterType="java.util.List"
 		useGeneratedKeys="true" keyProperty="orderId" keyColumn="order_id">
 		INSERT
 		INTO 
-		tb_order(service_id,user_id,service_count,order_status,create_time,over_time)
+		tb_order(order_id,service_id,user_id,service_count,order_status,create_time,over_time,service_name,order_price)
 		VALUES
 		<foreach collection="list" item="orderInfoDTO" index="index"
 			separator=",">
@@ -77,7 +77,9 @@
 			#{orderInfoDTO.serviceCount},
 			#{orderInfoDTO.orderStatus},
 			#{orderInfoDTO.createTime},
-			#{orderInfoDTO.overTime}
+			#{orderInfoDTO.overTime},
+			#{orderInfoDTO.serviceName},
+			#{orderInfoDTO.orderPrice}
 			)
 		</foreach>
 	</insert>
@@ -90,7 +92,9 @@
 			<if test="serviceCount != null">service_count=#{serviceCount},</if>
 			<if test="orderStatus != null">order_status=#{orderStatus},</if>
 			<if test="createTime!=null">create_time=#{createTime},</if>
-			<if test="overTime!= null">over_time=#{overTime}</if>	
+			<if test="overTime!= null">over_time=#{overTime},</if>	
+			<if test="serviceName!= null">service_name=#{serviceName},</if>	
+			<if test="orderPrice!= null">order_price=#{orderPrice}</if>	
 		</set>
 		where order_id=#{orderId}
 	</update>
@@ -99,10 +103,36 @@
     </delete>
 	<select id="queryByOrderId" resultType="com.graduation.ss.entity.OrderInfo" parameterType="Long">
 		SELECT
-		service_id,user_id,service_count,order_status,create_time,over_time
+		order_id,service_id,user_id,service_count,order_status,create_time,over_time,service_name,order_price
 		FROM
 		tb_order 
 		WHERE
 		order_id=#{orderId}
+	</select>
+		<select id="queryOrderList2" resultType="com.graduation.ss.entity.OrderInfo">
+		SELECT
+		order_id,service_id,user_id,service_count,order_status,create_time,over_time,service_name,order_price
+		FROM
+		tb_order 
+		<where>
+			<if test="orderCondition.orderStatus != null">
+				and order_status= #{orderCondition.orderStatus}
+			</if>
+			<if
+				test="orderCondition.userId != null">
+				and user_id = #{orderCondition.userId}
+			</if> 
+			<if
+				test="orderCondition.serviceId != null">
+				and service_id = #{orderCondition.serviceId}
+			</if> 
+			<if test="orderCondition.createTime != null">
+			    and DATE_FORMAT(create_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.createTime},'%Y %m %d')
+		   </if>
+			<if test="orderCondition.overTime != null">
+			    and DATE_FORMAT(over_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.overTime},'%Y %m %d')
+		</if>
+		</where>
+		ORDER BY order_status asc
 	</select>
 </mapper>

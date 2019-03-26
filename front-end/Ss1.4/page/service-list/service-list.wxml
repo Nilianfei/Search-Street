@@ -3,8 +3,11 @@
 <loading hidden="{{!loading}}">加载中</loading>
 <view class='service-list-view'>
   <i-cell-group>
+     <i-cell title="添加" is-link url="../addservice/addservice?serviceId=0&isadd=1&shopId={{shopId}}">
+        <i-icon type="add" slot="icon" />
+      </i-cell>
     <block wx:for="{{list}}" wx:key="id">
-      <i-cell title="{{item.serviceName}}" value="{{item.servicePrice}}" is-link url="../service/service?id={{item.serviceId}}"></i-cell>
+      <i-cell title="{{item.serviceName}}" value="￥{{item.servicePrice}}" is-link url="../addservice/addservice?serviceId={{item.serviceId}}&isadd=0&shopId={{shopId}}"></i-cell>
     </block>
   </i-cell-group>
 </view>

@@ -43,7 +43,7 @@ public class ServiceExecution {
 	public ServiceExecution(ServiceStateEnum stateEnum, ServiceImg serviceImg) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
-		this.serviceImg = serviceImg;
+		this.setServiceImg(serviceImg);
 	}
 
 	// 查询服务操作成功的时候使用的构造器
@@ -92,4 +92,13 @@ public class ServiceExecution {
 	public void setServiceList(List<ServiceInfo> serviceInfoList) {
 		this.serviceInfoList = serviceInfoList;
 	}
+
+	public ServiceImg getServiceImg() {
+		return serviceImg;
+	}
+
+	public void setServiceImg(ServiceImg serviceImg) {
+		this.serviceImg = serviceImg;
+	}
+	
 }

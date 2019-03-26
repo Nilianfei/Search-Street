@@ -1,16 +1,6 @@
 package com.graduation.ss.web.service;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,24 +15,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduation.ss.dto.ConstantForSuperAdmin;
-import com.graduation.ss.dto.ImageHolder;
+import com.graduation.ss.dto.OrderExecution;
+import com.graduation.ss.dto.ServiceExecution;
 import com.graduation.ss.dto.ShopCommentExecution;
-import com.graduation.ss.dto.UserCode2Session;
+import com.graduation.ss.entity.OrderInfo;
+import com.graduation.ss.entity.ServiceInfo;
 import com.graduation.ss.entity.ShopComment;
-import com.graduation.ss.entity.WechatAuth;
+import com.graduation.ss.enums.OrderStateEnum;
 import com.graduation.ss.enums.ShopCommentStateEnum;
-import com.graduation.ss.exceptions.ShopCommentOperationException;
+import com.graduation.ss.service.OrderService;
+import com.graduation.ss.service.SService;
 import com.graduation.ss.service.ShopCommentService;
 import com.graduation.ss.service.WechatAuthService;
 import com.graduation.ss.util.HttpServletRequestUtil;
-import com.graduation.ss.util.JWT;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/shopComment")
@@ -52,6 +45,10 @@ public class ShopCommentController {
 	private ShopCommentService shopCommentService;
 	@Autowired
 	private WechatAuthService wechatAuthService;
+	@Autowired
+	private SService sService;
+	@Autowired
+	private OrderService OrderService;
 	private static final Logger log = LogManager.getLogger(ShopCommentController.class);
 
 	//通过店铺id获取评论列表 分页 
@@ -81,6 +78,35 @@ public class ShopCommentController {
 		}
 		return modelMap;
 	}
+
+	//通过店铺id获取评论列表 分页 
+	@RequestMapping(value = "/getshopCommentlistbysid", method = RequestMethod.GET)
+	@ResponseBody
+	@ApiOperation(value = "根据shopID获取其所有服务评论信息（分页）")
+	@ApiImplicitParams({
+		@ApiImplicitParam(paramType = "query", name = "shopId", value = "店铺ID", required = true, dataType = "Long", example = "3") })
+	private Map<String, Object> getShopCommentListBySId(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
+		try {
+			ShopCommentExecution se = shopCommentService.getByShopId2(shopId);
+			List<ShopComment> shopCommentList=se.getShopCommentList();
+			List<ServiceInfo> servicelist=new ArrayList<ServiceInfo>();
+			for(int i=0;i<shopCommentList.size();i++)
+			{
+				 OrderInfo order=OrderService.getByOrderId(shopCommentList.get(i).getOrderId());
+				ServiceInfo serviceInfo=sService.getByServiceId(order.getServiceId());
+				servicelist.add(serviceInfo);
+			}
+			modelMap.put("serviceList", servicelist);
+			modelMap.put("shopCommentList", se.getShopCommentList());
+			modelMap.put("success", true);
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+		}
+		return modelMap;
+	}
 	//通过userId获取评论列表 分页 
 		@RequestMapping(value = "/getshopCommentlistbyuserid", method = RequestMethod.GET)
 		@ResponseBody
@@ -101,6 +127,34 @@ public class ShopCommentController {
 					pageNum++;
 				modelMap.put("shopCommentList", se.getShopCommentList());
 				modelMap.put("pageNum", pageNum);
+				modelMap.put("success", true);
+			} catch (Exception e) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", e.getMessage());
+			}
+			return modelMap;
+		}
+		//通过userId获取评论列表  
+		@RequestMapping(value = "/getshopCommentlistbyuid", method = RequestMethod.GET)
+		@ResponseBody
+		@ApiOperation(value = "根据userID获取其所有服务评论信息")
+		@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "userId", value = "用户ID", required = true, dataType = "Long", example = "1")})
+		private Map<String, Object> getShopCommentListByUId(HttpServletRequest request) {
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			Long userId = HttpServletRequestUtil.getLong(request, "userId");
+			try {
+				ShopCommentExecution se = shopCommentService.getByUserId2(userId);
+				List<ShopComment> shopCommentList=se.getShopCommentList();
+				List<ServiceInfo> servicelist=new ArrayList<ServiceInfo>();
+				for(int i=0;i<shopCommentList.size();i++)
+				{
+					 OrderInfo order=OrderService.getByOrderId(shopCommentList.get(i).getOrderId());
+					ServiceInfo serviceInfo=sService.getByServiceId(order.getServiceId());
+					servicelist.add(serviceInfo);
+				}
+				modelMap.put("serviceList", servicelist);
+				modelMap.put("shopCommentList", se.getShopCommentList());
 				modelMap.put("success", true);
 			} catch (Exception e) {
 				modelMap.put("success", false);
@@ -167,7 +221,7 @@ public class ShopCommentController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/searchshopCommentbyid", method = RequestMethod.POST)
+	@RequestMapping(value = "/searchshopCommentbyid", method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value = "根据shopCommentId获取服务评论信息")
 		@ApiImplicitParam(paramType = "query", name = "shopCommentId", value = "服务评价ID", required = true, dataType = "Long", example = "3")
@@ -216,6 +270,24 @@ public class ShopCommentController {
 			try {
 				//添加评论		
 				ShopCommentExecution ae = shopCommentService.addShopComment(shopComment);
+				OrderInfo order=OrderService.getByOrderId(shopComment.getOrderId());
+				order.setOrderId(shopComment.getOrderId());
+				order.setOrderStatus(2);
+				try {
+					//更新订单
+					OrderExecution a = OrderService.modifyOrder(order);
+					if (a.getState() == OrderStateEnum.SUCCESS.getState()) {
+						
+					} 
+					else {
+						modelMap.put("success", false);
+						modelMap.put("errMsg", a.getStateInfo());
+					}
+				} catch (Exception e) {
+					modelMap.put("success", false);
+					modelMap.put("errMsg", e.toString());
+					return modelMap;
+				}
 				if (ae.getState() == ShopCommentStateEnum.SUCCESS.getState()) {
 					modelMap.put("success", true);
 				} else {

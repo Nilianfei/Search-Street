@@ -38,6 +38,7 @@
       </view>
    <view class='row-button'>
     <button type="primary" form-type="submit">{{addormodify}}</button>
+    <button type="primary" form-type="reset" disabled="{{disabletodelete}}">删除</button>
    </view>
  </form>
 </view>
