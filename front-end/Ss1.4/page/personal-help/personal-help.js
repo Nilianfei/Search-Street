@@ -598,7 +598,7 @@ confirm:function(e){
       showcomment:that.data.showcomment,
       //phelptime1:that.data.phelptime1,
     })
-    console.log(this.data.phelptime1);
+    console.log(this.data.list2);
     },
   
 
