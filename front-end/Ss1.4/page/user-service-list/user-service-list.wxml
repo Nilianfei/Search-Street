@@ -48,7 +48,7 @@
   price="{{item.servicePrice}}"
   desc="{{item.serviceContent}}"
   title="{{item.serviceName}}"
-  thumb="../../images/shop.png"
+  thumb="{{imgUrl+item.serviceImgAddr}}"
 />
 </view>
     </block>

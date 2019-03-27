@@ -59,7 +59,7 @@
 		useGeneratedKeys="true" keyProperty="orderId" keyColumn="order_id">
 		INSERT
 		INTO
-		tb_order(order_id,service_id,user_id,service_count,order_status,create_time,over_time,service_name,order_price)
+		tb_order(service_id,user_id,service_count,order_status,create_time,over_time,service_name,order_price)
 		VALUES
 		(#{serviceId},#{userId},#{serviceCount},#{orderStatus},#{createTime},#{overTime},#{serviceName},#{orderPrice})
 	</insert>
@@ -67,7 +67,7 @@
 		useGeneratedKeys="true" keyProperty="orderId" keyColumn="order_id">
 		INSERT
 		INTO 
-		tb_order(order_id,service_id,user_id,service_count,order_status,create_time,over_time,service_name,order_price)
+		tb_order(service_id,user_id,service_count,order_status,create_time,over_time,service_name,order_price)
 		VALUES
 		<foreach collection="list" item="orderInfoDTO" index="index"
 			separator=",">

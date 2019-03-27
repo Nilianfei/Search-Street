@@ -45,10 +45,10 @@
       <i-cell title="相册"  is-link url="../shop-album/shop-album?id={{shopId}}">
         <i-icon type="picture" slot="icon"/>
       </i-cell>
-      <i-cell title="服务列表"  is-link>
+      <i-cell title="服务列表"  is-link url="../user-service-list/user-service-list?shopId={{shopId}}">
         <i-icon type="service" slot="icon" />
       </i-cell>
-      <i-cell title="服务评价"  is-link>
+      <i-cell title="服务评价"  is-link url="../shop-shopcomment/shop-shopcomment?shopId={{shopId}}">
         <i-icon type="praise" slot="icon" />
       </i-cell>
     </i-cell-group>

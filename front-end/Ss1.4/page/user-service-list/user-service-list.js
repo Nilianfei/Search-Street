@@ -7,6 +7,7 @@ Page({
     forksCount: 0,
     visitTotal: 0,
     shop: null,
+    imgUrl: "http://139.196.101.84:8080/image",
     shopId: 0,
     profileImgUrl: '',
     //全局变量
@@ -69,7 +70,7 @@ Page({
   onLoad: function (options) {
     var that = this;
     that.setData({
-      shopId: options.id//options.id
+      shopId: options.shopId//options.id
     })
     try {//同步获取与用户信息有关的缓存token
       const value = wx.getStorageSync('token');

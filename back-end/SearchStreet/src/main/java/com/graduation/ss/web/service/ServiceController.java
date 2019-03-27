@@ -330,7 +330,7 @@ public class ServiceController {
 				}
 			} catch (ServiceOperationException e) {
 				modelMap.put("success", false);
-				modelMap.put("errMsg", e.getMessage());
+				modelMap.put("errMsg",e.getMessage());
 			}
 			return modelMap;
 		}

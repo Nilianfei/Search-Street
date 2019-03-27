@@ -47,6 +47,7 @@ Page({
           for (var i = 0; i < shopComment.length; i++) {
             if (service[i].serviceImgAddr != null) {
               img[i] = app.globalData.imgUrl + service[i].serviceImgAddr;
+              console.log(img[i])
             }
           }
 
@@ -64,6 +65,9 @@ Page({
    */
   onLoad: function (options) {
     var that = this
+    that.setData({
+      shopId:options.shopId
+    })
     try {//同步获取与用户信息有关的缓存token
       const value = wx.getStorageSync('token');
       const userId = wx.getStorageSync('userId');

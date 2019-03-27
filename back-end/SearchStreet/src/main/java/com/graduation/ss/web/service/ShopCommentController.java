@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.graduation.ss.dto.ConstantForSuperAdmin;
 import com.graduation.ss.dto.OrderExecution;
-import com.graduation.ss.dto.ServiceExecution;
 import com.graduation.ss.dto.ShopCommentExecution;
 import com.graduation.ss.entity.OrderInfo;
 import com.graduation.ss.entity.ServiceInfo;
@@ -28,7 +27,6 @@ import com.graduation.ss.enums.ShopCommentStateEnum;
 import com.graduation.ss.service.OrderService;
 import com.graduation.ss.service.SService;
 import com.graduation.ss.service.ShopCommentService;
-import com.graduation.ss.service.WechatAuthService;
 import com.graduation.ss.util.HttpServletRequestUtil;
 
 import io.swagger.annotations.Api;
@@ -43,8 +41,7 @@ import io.swagger.annotations.ApiParam;
 public class ShopCommentController {
 	@Autowired
 	private ShopCommentService shopCommentService;
-	@Autowired
-	private WechatAuthService wechatAuthService;
+
 	@Autowired
 	private SService sService;
 	@Autowired

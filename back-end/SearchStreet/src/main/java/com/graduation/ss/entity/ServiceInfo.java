@@ -25,7 +25,7 @@ public class ServiceInfo {
 	@ApiModelProperty(value = "服务内容")
 	private String serviceContent;
 	@ApiModelProperty(value = "服务相关图片")
-	private String ServiceImgAddr;
+	private String serviceImgAddr;
 	public Long getServiceId() {
 		return serviceId;
 	}
@@ -63,10 +63,10 @@ public class ServiceInfo {
 		this.serviceContent = serviceContent;
 	}
 	public String getServiceImgAddr() {
-		return ServiceImgAddr;
+		return serviceImgAddr;
 	}
 	public void setServiceImgAddr(String serviceImgAddr) {
-		ServiceImgAddr = serviceImgAddr;
+		this.serviceImgAddr = serviceImgAddr;
 	}
 	public Long getServicePriority() {
 		return servicePriority;
@@ -78,7 +78,7 @@ public class ServiceInfo {
 	public String toString() {
 		return "ServiceInfo [serviceId=" + serviceId + ", shopId=" + shopId + ", serviceName=" + serviceName
 				+ ", servicePrice=" + servicePrice + ", servicePriority=" + servicePriority + ", serviceDesc="
-				+ serviceDesc + ", serviceContent=" + serviceContent + ", ServiceImgAddr=" + ServiceImgAddr + "]";
+				+ serviceDesc + ", serviceContent=" + serviceContent + ", ServiceImgAddr=" +serviceImgAddr + "]";
 	}
 	
 	
