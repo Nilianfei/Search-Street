@@ -3,7 +3,7 @@
    <i-tabs current="{{ current }}" bindchange="handleChange">
     <i-tab key="tab1" title="我的服务"></i-tab>
     <block wx:if="{{current=='tab1'}}">
-      <navigator url="" class="">
+      <navigator url="../query-myhelp/query-myhelp" class="">
         <i-icon type="search" size="28" color="#80848f" />
       </navigator>
     </block>
@@ -34,7 +34,7 @@
         <view class='personal-help-view'>
          <block wx:for="{{list2}}" wx:key='id'>
           <block wx:if="{{(List1[index].helpStatus==0||List1[index].helpStatus==1)&&currentTab==1}}">
-             <view class="personal-help-item" bindtap='' id='{{item.helpId}}'>
+             <navigator class="personal-help-item" url='../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{List1[index].helpId}}'>
                <view>
                 <text class="perhelp-title">{{item.appealTitle}}</text>
                  <image class="perhelp-icon" src="../../images/时钟.png"></image>
@@ -46,10 +46,10 @@
                 <button class="check-button" bindtap="" disabled='{{btnhover}}' id='{{item.appealId}}'>监控投诉</button>
               </view>
               <view class="check-text">若求助者未点击确认，还有{{targetTime}}系统将自动确认</view>
-             </view>
+             </navigator>
            </block>
            <block wx:if="{{List1[index].helpStatus==3&&currentTab==3}}">
-             <navigator class="personal-help-item" url="">
+             <navigator class="personal-help-item" url="../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{List1[index].helpId}}">
               
                 <text class="perhelp-title">{{item.appealTitle}}</text>
                  <image class="perhelp-icon" src="../../images/时钟.png"></image>
@@ -63,7 +63,7 @@
 
            <block wx:if="{{currentTab==2&&List1[index].helpStatus==2}}">
              <view class="personal-help-item">
-              <navigator url="">
+              <navigator url="../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{List1[index].helpId}}">
                 <text class="perhelp-title">{{item.appealTitle}}</text>
                  <image class="perhelp-icon" src="../../images/时钟.png"></image>
                    <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
