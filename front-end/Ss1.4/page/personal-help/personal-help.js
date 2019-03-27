@@ -122,20 +122,16 @@ Page({
             console.log(res.data);
             var List = res.data.appealList;
             for (var i = 0; i < List.length; i++) {
-              phelptime.push(Math.round((List[i].endTime - List[i].startTime) / 1000 / 60));
+              var format = List[i];
+              format.endTime = util.formatDate1(List[i].endTime);
+              List[i]=format;
             }
-            if (List[0].endTime - new Date().getTime() <= 0) that.data.second = 3600 * 24;      //此处有错误
-            else that.data.second = Math.floor((List[0].endTime - new Date().getTime()) / 1000);
-            console.log(that.data.second);
-            countdown(that);
-            console.log(that.data.second);
             for(var i=0;i<List.length;i++){
               disabled[i]=false;
               disabled1[i]=false;
             }
             that.setData({
               list: List,
-              phelptime: phelptime,
               disabled:disabled,
             })
             console.log(that.data.list);
@@ -453,9 +449,11 @@ confirm:function(e){
 },
 /* 有追赏页面显示 */
   showSoucoin:function(e){
+    console.log(e);
     this.setData({
       ifadditioncoin:true,
     })
+    console.log(this.data.ifadditioncoin);
   },
   /*查看评价页面显示 */
   showMycomment:function(e){
@@ -614,7 +612,7 @@ confirm:function(e){
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+  
   },
 
   /**

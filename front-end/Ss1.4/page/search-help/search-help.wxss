@@ -28,6 +28,7 @@
   margin-top: 20rpx;
   width: 90%;
   height:60rpx;
+  overflow: auto;
 }
 .shelp-content{
   height: 200rpx;
@@ -43,12 +44,13 @@
   float: left;
   margin-top:25rpx;
   margin-left:10rpx;
+  font-size: 30rpx;
 }
 .shelp-phone{
   border: 1px solid #132627b0;
   height:80rpx;
   width: 100%;
-  margin-top:100rpx;
+  margin-top:20rpx;
 }
 .store-locat{
   font-size: 17px;
@@ -121,4 +123,34 @@
 .morelocat{
   margin-left: 10rpx;
   margin-top: 10rpx;
+}
+.costnum{
+border:1px solid;
+width:20%;
+margin-top:20rpx;
+}
+.cost{
+  display: flex;
+}
+.time{
+width:24%;
+font-size:26rpx;
+background-color: #F7B45D;
+color: #fff;
+height: 65rpx;
+margin-left:10rpx;
+margin-top:20rpx;
+margin-right: 10rpx;
+}
+.timenum{
+  font-size: 26rpx;
+  margin-top: 25rpx;
+  margin-left: 10rpx;
+}
+.timenum1{
+border:1px solid;
+height:60rpx;
+width:280rpx;
+text-align:center;
+margin-top:10rpx;
 }

@@ -1,5 +1,6 @@
 var search_money='40';
 var mymoney='2';
+var app=getApp();
 Page({
 
   /**
@@ -16,6 +17,7 @@ Page({
   onLoad: function (options) {
     console.log(options);
     var token = null;
+    var that=this;
     try {                    //同步获取与用户信息有关的缓存token
       const value = wx.getStorageSync('token')
       if (value) {
@@ -25,19 +27,20 @@ Page({
       console.log("error");
     }
     wx.request({
-      url: '',             //请求获取用户目前账户中的搜币数目和可提现金额的数目
-      data:{
-
+      url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
+      data: {
+        token: token
       },
-      method:"POST",
-      success(res){
-        console,log(res.data);
-        this.setData({
-          search_money:res.data.search_money,
-          mymoney:res.data.mymoney,
+      success: function (res) {
+        // 拿到自己后台传过来的数据，自己作处理
+        console.log(res.data);
+        if (res.data.success) {
+        that.setData({
+          search_money: res.data.personInfo.souCoin,
+          mymoney: res.data.personInfo.souCoin/20,
         })
       }
-
+      }
 
     })
   },

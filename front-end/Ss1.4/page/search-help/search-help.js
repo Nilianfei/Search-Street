@@ -46,8 +46,35 @@ Page({
       phone_error: null
     },
     persoucoin:0,
+    minHour: 10,
+    maxHour: 20,
+    minDate: new Date().getTime(),
+    maxDate: new Date(2019, 10, 1).getTime(),
+    currentDate: new Date().getTime(),
+    show: false,
+    currenttime: app.timeStamp2String(new Date().getTime()),
   },
-
+  showtime(){
+    this.setData({ show: true });
+  },
+  /* 弹出组件取消 */
+  onClose() {
+    this.setData({ show: false });
+  },
+/*时间选择器 */
+  onInput(e) {
+    console.log(e.detail);
+     this.setData({
+      currentDate: e.detail
+    });
+  },
+  onConfirm(e){
+    console.log(e);
+  this.setData({
+    show:false,
+    currenttime: app.timeStamp2String(e.detail),
+  })
+  },
   /* 上传求助图片 */
   chooseImage: function () {
     var that = this;
@@ -173,12 +200,12 @@ previewImage:function (e){
           content_error: errorMsg
         }
       })
-    } else if (that.data.shelpCost==null) {                    
+    } else if (e.detail.value.shelpCost==null) {                    
        wx.showModal({
          title: '提示',
          content: '请您填写搜币值',
        })
-    } else if (that.data.persoucoin-that.data.shelpCost<0) {   /*获取用户当前钱包中搜币的数目，与之比较*/
+    } else if (that.data.persoucoin-e.detail.value.shelpCost<0) {   /*获取用户当前钱包中搜币的数目，与之比较*/
       wx.showModal({
         title: '提示',
         content: '您的搜币不足，请前往充值',
@@ -193,10 +220,10 @@ previewImage:function (e){
           }
         }
       })
-     } else if(that.data.shelpTimelimit==null){
+     } else if(that.data.currentDate-(new Date().getTime)<=0){
       wx.showModal({
         title: '提示',
-        content: '请您填写有效时间',
+        content: '请您选择结束时间',
       })
      }else if (e.detail.value.shelpPhone.length == 0) {
       this.setData({
@@ -217,9 +244,9 @@ previewImage:function (e){
       timestamp = timestamp / 1000;
       console.log("当前时间戳为：" + timestamp);
       //获取结束时间戳
-      var end_timetamp = timestamp + parseInt(this.data.shelpTimelimit) * 60;
-      var n_to = end_timetamp * 1000;
-      var end_date = new Date(n_to);
+      //var end_timetamp = timestamp + parseInt(this.data.shelpTimelimit) * 60;
+      //var n_to = end_timetamp * 1000;
+      var end_date = new Date(that.data.currentDate);
       var token = null;
       try {
         const value = wx.getStorageSync('token')
@@ -235,7 +262,7 @@ previewImage:function (e){
           appealTitle: e.detail.value.shelpTitle,
           appealContent:e.detail.value.shelpContent,
           phone: e.detail.value.shelpPhone,
-          souCoin:that.data.shelpCost,
+          souCoin:e.detail.value.shelpCost,
           startTime:date,
           endTime:end_date,
           province: that.data.region[0],
@@ -288,6 +315,7 @@ previewImage:function (e){
    */
   onLoad: function (options) {
     var token = null;
+    var that=this;
     try {
       const value = wx.getStorageSync('token')
       if (value) {
@@ -308,7 +336,7 @@ previewImage:function (e){
         // 拿到自己后台传过来的数据，自己作处理
         console.log(res.data);
         if(res.data.success){
-          this.setData({
+          that.setData({
             persoucoin:res.data.personInfo.souCoin,
           })
         }
@@ -327,7 +355,7 @@ previewImage:function (e){
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+  
   },
 
   /**

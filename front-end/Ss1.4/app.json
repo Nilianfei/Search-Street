@@ -19,6 +19,7 @@
     "page/personal-account/personal-account",
     "page/personal-help/personal-help",
     "page/query-myhelp/query-myhelp",
+    "page/query-myappeal/query-myappeal",
     "page/myhelp-comment/myhelp-comment",
     "page/comment/comment",
     "page/myhelp-details/myhelp-details",
