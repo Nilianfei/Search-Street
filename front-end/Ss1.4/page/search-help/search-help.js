@@ -44,7 +44,8 @@ Page({
       title_error: null,
       content_error: null,
       phone_error: null
-    }
+    },
+    persoucoin:0,
   },
 
   /* 上传求助图片 */
@@ -177,10 +178,20 @@ previewImage:function (e){
          title: '提示',
          content: '请您填写搜币值',
        })
-    } else if (that.data.shelpCost==null) {   /*获取用户当前钱包中搜币的数目，与之比较*/
+    } else if (that.data.persoucoin-that.data.shelpCost<0) {   /*获取用户当前钱包中搜币的数目，与之比较*/
       wx.showModal({
         title: '提示',
         content: '您的搜币不足，请前往充值',
+        confirmText:'确定充值',
+        success(res) {
+          if (res.confirm) {
+            wx.navigateTo({
+              url: '../personal-account/personal-account',
+            })
+          } else if (res.cancel) {
+            //console.log('用户点击取消')
+          }
+        }
       })
      } else if(that.data.shelpTimelimit==null){
       wx.showModal({
@@ -276,7 +287,33 @@ previewImage:function (e){
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    var token = null;
+    try {
+      const value = wx.getStorageSync('token')
+      if (value) {
+        token = value;
+      }
+    } catch (e) {
+      console.log("error");
+    }
+    that.setData({
+      token: token
+    });
+    wx.request({
+      url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
+      data: {
+        token: token
+      },
+      success: function (res) {
+        // 拿到自己后台传过来的数据，自己作处理
+        console.log(res.data);
+        if(res.data.success){
+          this.setData({
+            persoucoin:res.data.personInfo.souCoin,
+          })
+        }
+      }
+      })
   },
 
   /**

@@ -556,16 +556,17 @@ confirm:function(e){
                 success(res) {
                   console.log(res.data);
                   if(res.data.success){
-                  var format=res.data.appeal;
-                    format.endTime = util.formatDate1(res.data.appeal.endTime);
-                   console.log(format.endTime);
-                  that.data.list2.push(format);
-                  if (res.data.appeal.endTime - new Date().getTime() <= 0) that.data.second = 3600 * 24;      //此处有错误
-                  else that.data.second = Math.floor((res.data.appeal.endTime - new Date().getTime()) / 1000);
+                  if (res.data.appeal.endTime+3600*24*1000 - new Date().getTime() <= 0) that.data.targetTime=0;      //此处有错误               
+                  else {
+                  that.data.second = Math.floor((res.data.appeal.endTime+3600*24*1000 - new Date().getTime()) / 1000);
                   console.log(that.data.second);
                   countdown(that);
+                  }
                   console.log(that.data.second);
-
+                    var format = res.data.appeal;
+                    format.endTime = util.formatDate1(res.data.appeal.endTime);
+                    console.log(format.endTime);
+                    that.data.list2.push(format);
                 }
                 }
               })
