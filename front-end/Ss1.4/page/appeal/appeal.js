@@ -90,7 +90,7 @@ Page({
             bottonText: "已求助"
           });
           wx.redirectTo({
-            url: ''//返回搜搜求助页面
+            url: '../help-map/help-map'//返回搜搜求助页面
           })
         }
       })

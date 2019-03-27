@@ -29,7 +29,8 @@ Page({
     shopInfoPic: '/images/search_buck.png',
     appealInfoTitle: '',
     appealInfoAddress: '',
-    appealInfoContent: '',
+    appealInfoSouCoin: '',
+    appealInfoEndTime: '',
     appealInfoId: 12
   },
 
@@ -229,15 +230,6 @@ Page({
 
   },
 
-  //查看订单
-  checkOrder: function (e) {
-    //订单url填入这里！！！
-    wx.navigateTo({
-      url: '../user-order-list/user-order-list',
-    })
-    console.log('跳转订单page');
-  },
-
   /*
   //查看服务
   checkService: function (e) {
@@ -253,7 +245,7 @@ Page({
     let _markers = this.data.markers;
     let markerId = e.markerId;
     let currentMarker = _markers[markerId];
-
+    
     this.setData({
       polyline: [{
         points: [{
@@ -272,14 +264,15 @@ Page({
       appealInfoTitle: currentMarker.appealTitle,
       openAppealInfo: markerId,
       appealInfoAddress: currentMarker.address,
-      appealInfoContent: currentMarker.appealContent,
+      appealInfoSouCoin: currentMarker.souCoin,
       appealInfoId: currentMarker.appealId,
+      appealInfoEndTime: app.timeStamp2String(currentMarker.endTime),
     })
 
     console.log(this.data.appealInfoId);
   },
 
-  gotoShop: function (e) {
+  gotoAppeal: function (e) {
     wx.navigateTo({
       url: '../appeal/appeal?appealId=' + this.data.appealInfoId
     })
@@ -473,7 +466,7 @@ Page({
   */
 
   //关闭shopInfo
-  shopInfoBack: function (e) {
+  appealInfoBack: function (e) {
     var that = this;
     that.setData({
       openAppealInfo: 0

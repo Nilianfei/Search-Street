@@ -74,45 +74,38 @@ text-align: center;
   width:30%;
 }
 
-.ShopInfo{
+.appealInfo{
   width: 700rpx;
-  height: 330rpx;
+  height: 300rpx;
   border-radius: 2%;
   margin-left: 25rpx;
   margin-top: 15px;
   background-color:whitesmoke;
 }
 
-.shopInfo-top{
+.appealInfo-top{
   width: 680rpx;
-  height: 220rpx;
+  height: 200rpx;
   display: flex;
   margin-left: 10rpx;
   margin-top: 10rpx;
 }
 
-.shopInfo-top-pic{
-  margin-top: 10rpx;
-  margin-left: 10rpx;
-  width: 200rpx;
-  height: 200rpx;
-}
-
-.shopInfo-nameAddress{
+.appealInfo-nameAddress{
   margin-top: 10rpx;
   margin-left: 20rpx;
-  width: 440rpx;
-  height: 200rpx;
+  width: 660rpx;
+  height: 180rpx;
 }
 
-.shopInfo-name{
-  width: 440rpx;
+.appealInfo-name{
+  width: 660rpx;
   font-size: 22px;
   display: block;
   margin-top: 14rpx;
 }
 
-.shopInfo-address{
+.appealInfo-address{
   height:40rpx;
   widows:440rpx;
   display:block;
@@ -122,30 +115,33 @@ text-align: center;
   margin-top:6rpx;
 }
 
-.shopInfo-businessScope{
-  height: 70rpx;
-  width: 440rpx;
+.appealInfo-bottom{
+  height: 50rpx;
+  width: 660rpx;
   display: block;
   font-size: 14px;
   margin-top: 18rpx;
 }
 
-
-.shopInfo-button{
+.appealInfo-icon{
+  height: 40rpx;
+  width: 40rpx;
+  display: inline-block;
+}
+.appealInfo-button{
   width: 680rpx;
   height: 70rpx;
-  margin-top: 10rpx;
   margin-left: 10rpx;
-  
+  margin-top: 10rpx;
 }
 
-.shopInfoButtonSize{
+.appealInfoButtonSize{
   width: 200rpx;
   display: inline-block;
   margin-right: 40rpx;
 }
 
-.shopInfoButton{
+.appealInfoButton{
   font-size: 12px;
 }
 
