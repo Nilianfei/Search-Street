@@ -1,0 +1,2 @@
+/* page/query-myappeal/query-myappeal.wxss */ 
+@import "../personal-help/personal-help.wxss";

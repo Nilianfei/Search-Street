@@ -9,7 +9,7 @@
   </view> 
   <view wx:if="{{selectShow}}">
   <view class='optionBox'
-  		style='height:300rpx;'>     
+  		style='height:220rpx;'>     
   	<text class='option' 
           wx:for='{{selectData}}' 
           wx:key='this' 

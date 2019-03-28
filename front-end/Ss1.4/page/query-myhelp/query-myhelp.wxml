@@ -1,7 +1,77 @@
-<!--page/query-myhelp/query-myhelp-->
+<!--page/query-myhelp/query-myhelp.wxml-->
 <view class="contanier">
   <view class="query-myhelphd">
-    <i-input value="{{ value }}" type="text"  placeholder="请输入搜索关键字" maxlength="10" bind:change="myhelpkey"/>
-    <i-button bind:click="handleClick" type="primary">搜求助</i-button>
+   <view class="check1">
+   <text class="shelp-costtext costtext1">帮助状态</text>
+    <selector selectData="{{helpstatus}}" bind:myget='getStatus'></selector>
+     <image class="shelp-cost" src="../../images/钱币.png"></image>
+      <!--<selector selectData="{{cost}}" bind:myget='getCost'></selector> -->
+      <input class='costnum num1' value='{{costnum}}' type='number' bindinput='inputcost'></input>
+      <text class="shelp-costtext">搜币</text>
+      </view>
+      <view class="check2">
+     <button class="time time1" bindtap='choosetime1'>开始时间</button>
+    <van-popup show="{{ show1 }}" position='bottom' bind:close="onClose1">
+      <van-datetime-picker type="datetime" value="{{ currentDate1 }}" bind:input="onInput1"     bind:confirm="onConfirm1" bind:cancel="cancel1"/>
+      </van-popup>
+        <text class="timenum timenum2">{{starttime}}</text>
+       <button class="time time1" bindtap='choosetime2'>结束时间</button>
+       <van-popup show="{{ show2 }}" position='bottom' bind:close="onClose2">
+      <van-datetime-picker type="datetime" value="{{ currentDate2 }}"bind:input="onInput2" bind:confirm="onConfirm2" bind:cancel="cancel2"/>
+      </van-popup>
+      <text class="timenum timenum2">{{endtime}}</text>
+      </view>
+      <view>
+    <i-button bind:click="handleClick" type="primary">搜服务</i-button>
+    </view>
   </view>
+  <view class='personal-help-view'>
+         <block wx:for="{{helpList}}" wx:key='id'>
+          <block wx:if="{{(item.helpStatus==0||item.helpStatus==1)}}">
+             <navigator class="personal-help-item" url='../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{item.helpId}}'>
+               <view>
+                <text class="perhelp-title">{{item.appealTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
+                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                   <text class="perhelp-cost cost1">{{item.allCoin}}搜币</text>
+               </view>
+              <view class="check-buttons">
+                <button class="check-button" bindtap="" disabled='{{btnhover}}' id='{{item.appealId}}'>监控投诉</button>
+              </view>
+              <view class="check-text">若求助者未点击确认，还有{{targetTime}}系统将自动确认</view>
+             </navigator>
+           </block>
+           <block wx:if="{{item.helpStatus==3}}">
+             <navigator class="personal-help-item" url="../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{item.helpId}}">
+              
+                <text class="perhelp-title">{{item.appealTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
+                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                   <text class="perhelp-cost cost1">{{item.allCoin}}搜币</text>
+             
+                <image class="unuse-icon" src="../../images/订单失效.png"></image>
+             </navigator>
+           </block>
+
+           <block wx:if="{{item.helpStatus==2}}">
+             <view class="personal-help-item">
+              <navigator url="../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{item.helpId}}">  
+                <text class="perhelp-title">{{item.appealTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
+                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                   <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
+              </navigator> 
+                <view class="perhelp-buttons buttons1">
+                
+                <button class="perhelp-button button1" bindtap='showMycomment' disabled='{{showcomment[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/笑脸3.png"></image>查看评价</button>
+                
+                <button class="perhelp-button button1"  bindtap="showSoucoin" disabled='{{showcoin[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/赏金1.png"></image>有追赏</button>
+                </view>
+             </view>
+            </block>
+          </block>
+        </view>
 </view>

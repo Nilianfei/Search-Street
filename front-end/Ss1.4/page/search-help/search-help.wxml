@@ -21,17 +21,25 @@
     </view>
     <form bindsubmit="formSubmit" bindreset="formReset">
      <text class="shelp-title">求助标题</text>
-      <input class="shelp-titletext" name="shelpTitle"></input>
+      <input class="shelp-titletext" name="shelpTitle" maxlength='20'></input>
        <view class="show_error" wx:if="{{errorMsgs.title_error}}">{{errorMsgs.title_error}}</view>
      <text class="shelp-title">求助内容</text>
-      <textarea class="shelp-titletext shelp-content" name="shelpContent"></textarea> 
+      <textarea class="shelp-titletext shelp-content" name="shelpContent" maxlength='500'></textarea> 
        <view class="show_error" wx:if="{{errorMsgs.content_error}}">{{errorMsgs.content_error}}</view>
+     <view class="cost">
      <image class="shelp-cost" src="../../images/钱币.png"></image>
-      <selector selectData="{{cost}}" bind:myget='getCost'></selector>
+      <!--<selector selectData="{{cost}}" bind:myget='getCost'></selector> -->
+      <input class='costnum' name="shelpCost" type='number'></input>
       <text class="shelp-costtext">搜币</text>
-     <image class="shelp-cost" src="../../images/时钟.png"></image>
-      <selector selectData="{{timelimit}}" bind:myget='getTime'></selector>
-      <text class="shelp-costtext">有效</text>
+      <image class="shelp-cost" src="../../images/时钟.png"></image>
+     <van-popup show="{{ show }}" position='bottom' bind:close="onClose">
+      <van-datetime-picker type="datetime" value="{{ currentDate }}" min-date="{{ minDate }}"max-date="{{ maxDate }}" visible-item-count='{{6}}' bind:input="onInput" bind:confirm="onConfirm"/>
+      </van-popup>
+      <view class="timenum1">
+      <button class="time" bindtap='showtime'>{{currenttime}}</button>
+      </view>
+      <text class="shelp-costtext">结束</text>
+      </view>
      <input class="shelp-phone" type="number" placeholder="请输入手机号" name="shelpPhone"></input>
      <view class="show_error" wx:if="{{errorMsgs.phone_error}}">{{errorMsgs.phone_error}}</view>
      <view class="store-locat">帮帮定位</view>
@@ -43,8 +51,15 @@
       <view class="slocat-logo">
         <image class="slocat-img" src="../../images/定位.png"></image>
         <form bindsubmit="sformSubmit">
-         <input class="slocat-text" placeholder="请输入详细地址" name="fullAddress"/>
-         <button form-type="submit" bindtap="geo">定位</button>
+         <input class="slocat-text" placeholder="请输入详细地址" name="fullAddress" value='{{backfill}}' bindinput='getsuggest'/>
+         <view wx:if="{{showkeyword}}">
+         <view wx:for="{{suggestion}}" wx:key="index">
+        <view style="text-align:center;font-size:15px;" bindtap="backfill" id="{{index}}">{{item.title}}</view>
+      </view>
+      </view>
+       <view class="posi">
+         <button class="position" form-type="submit" bindtap="geo">定位</button>
+        </view>
         </form>
       </view>
       <!--地图容器-->

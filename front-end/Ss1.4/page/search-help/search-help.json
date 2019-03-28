@@ -3,6 +3,8 @@
   "usingComponents": {
     "i-input": "../../dist/input/index",
     "i-panel": "../../dist/panel/index",
-    "selector": "/page/selector"
+    "selector": "/page/selector",
+    "van-datetime-picker": "../../vant-weapp/dist/datetime-picker/index",
+    "van-popup": "../../vant-weapp/dist/popup/index"
   }
 }

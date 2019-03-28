@@ -9,7 +9,7 @@
     </block>
     <i-tab key="tab2" title="我的求助"></i-tab>
     <block wx:if="{{current=='tab2'}}">
-      <navigator url="../query-myhelp/query-myhelp" class="">
+      <navigator url="../query-myappeal/query-myappeal" class="">
       <i-icon type="search" size="28" color="#80848f" />
       </navigator>
     </block>
@@ -71,12 +71,38 @@
                    <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
               </navigator>
                 <view class="perhelp-buttons buttons1">
-                <navigator url="">
+                
                 <button class="perhelp-button button1" bindtap='showMycomment' disabled='{{showcomment[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/笑脸3.png"></image>查看评价</button>
-                </navigator>
+                
                 <button class="perhelp-button button1"  bindtap="showSoucoin" disabled='{{showcoin[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/赏金1.png"></image>有追赏</button>
                 </view>
              </view>
+              <view class='toast-box' hidden='{{!ifadditioncoin}}'>
+               <view class='toastbg'></view>
+                 <view class='showToast'>
+                   <view class='toast-title title'>
+                      <text>大大地赏</text>
+                   </view>
+                   <view class="toast-body">
+                   <view class='toast-main main'>
+                   <view>
+                   <image class="toast-img img" src="../../images/赏金2.png"></image>
+                   </view>
+                  <view>
+                    <text class="toast-text3">{{List1[index].additionalCoin}}</text>
+                  </view>
+                  <view class="toast-text text4">
+                   <text>搜币</text>
+                  </view>
+                  </view>
+                  <view class='toast-button button6'>
+                   <view class='button5'>
+                    <button catchtap='addsouCoin'>放入钱包</button>
+                  </view>
+                  </view>
+                 </view>
+                 </view>
+                </view>
              <view class='toast-box' hidden='{{!ifmycomment}}'>
                <view class='toastbg'></view>
               <view class='showToast'>
@@ -134,38 +160,13 @@
              </view>
            <view class='toast-button button7'>
               <view class='button5'>
-           <button catchtap='cancelcomment'>取消评价</button>
+           <button catchtap='cancelcomment'>取消查看</button>
            </view>
         </view>
       </view>
       </view>
       </view>
-                <view class='toast-box' hidden='{{!ifadditioncoin}}'>
-               <view class='toastbg'></view>
-                 <view class='showToast'>
-                   <view class='toast-title title'>
-                      <text>大大地赏</text>
-                   </view>
-                   <view class="toast-body">
-                   <view class='toast-main main'>
-                   <view>
-                   <image class="toast-img img" src="../../images/赏金2.png"></image>
-                   </view>
-                  <view>
-                    <text class="toast-text3">{{List1[index].additionalCoin}}</text>
-                  </view>
-                  <view class="toast-text text4">
-                   <text>搜币</text>
-                  </view>
-                  </view>
-                  <view class='toast-button button6'>
-                   <view class='button5'>
-                    <button catchtap='addsouCoin'>放入钱包</button>
-                  </view>
-                  </view>
-                 </view>
-                 </view>
-                </view>
+               
               </view>
             </block>
           </block>
@@ -196,9 +197,9 @@
               
                 <text class="perhelp-title">{{item.appealTitle}}</text>
                  <image class="perhelp-icon" src="../../images/时钟.png"></image>
-                   <text class="perhelp-cost">{{phelptime[index]}}分钟</text>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
                  <image class="perhelp-icon" src="../../images/钱币.png"></image>
-                   <text class="perhelp-cost">{{item.souCoin}}搜币</text>
+                   <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
              
               <view class="perhelp-buttons">
                 <button class="perhelp-button" bindtap="finishedHelp" disabled='{{btnhover}}' id='{{item.appealId}}'>确认已被帮助</button>
@@ -215,9 +216,9 @@
               
                 <text class="perhelp-title">{{item.appealTitle}}</text>
                  <image class="perhelp-icon" src="../../images/时钟.png"></image>
-                   <text class="perhelp-cost">{{phelptime[index]}}分钟</text>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
                  <image class="perhelp-icon" src="../../images/钱币.png"></image>
-                   <text class="perhelp-cost">{{item.souCoin}}搜币</text>
+                   <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
              
                 <image class="unuse-icon" src="../../images/订单失效.png"></image>
              </navigator>
@@ -228,9 +229,9 @@
               <navigator  url="../myhelp-details/myhelp-details?id={{list[index].appealId}}" >
                 <text class="perhelp-title">{{item.appealTitle}}</text>
                  <image class="perhelp-icon" src="../../images/时钟.png"></image>
-                   <text class="perhelp-cost">{{phelptime[index]}}分钟</text>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
                  <image class="perhelp-icon" src="../../images/钱币.png"></image>
-                   <text class="perhelp-cost">{{item.souCoin}}搜币</text>
+                   <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
              </navigator>
                 <view class="perhelp-buttons buttons1">
                 <button class="perhelp-button button1" bindtap='inputComment' id='{{list[index].appealId}}' data-id='{{index}}' disabled='{{disabled1[index]}}'><image class="finished-icon" src="../../images/笑脸3.png"></image>给好人评</button>

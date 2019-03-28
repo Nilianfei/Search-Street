@@ -84,7 +84,7 @@
   color: #fff;
   margin-top:10rpx;
   float: left;
-  margin-left: 50rpx;
+  margin-left: 20rpx;
 }
 .small1{
   margin-left:20rpx;
