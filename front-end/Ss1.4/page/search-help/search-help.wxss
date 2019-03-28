@@ -1,8 +1,9 @@
 /* page/search-help/search-help.wxss */
 @import "../../weui.wxss";
 .shelp-hd{
-  background-color: #ec7d16d8;
+  background-color: #F7B45D;
   height: 280rpx;
+  overflow: auto;
 }
 .shelp-hd1{
   height: 220rpx;
@@ -16,6 +17,8 @@
 .shelp-text{
   font-size: 16px;
   float: left;
+  color: #fff;
+  margin-left: 10rpx;
 }
 .shelp-title{
   margin-left: 30rpx;
@@ -54,10 +57,11 @@
 }
 .store-locat{
   font-size: 17px;
-  color: #000;
-  background-color: #ec7d16d8;
+  color: #fff;
+  background-color: #F7B45D;
   text-align: center;
   padding: 10px;
+  margin-top:30rpx;
 }
 .slocat-img{
   height: 40px;
@@ -68,9 +72,10 @@
   border: 1px solid #132627b0;
   border-radius: 5px;
   float:left;
-  width: 70%;
+  width: 85%;
   height: 60rpx;
   margin-top: 5px;
+  margin-bottom:20rpx
 }
 .check{
   width: 320rpx;
@@ -133,14 +138,15 @@ margin-top:20rpx;
   display: flex;
 }
 .time{
-width:24%;
 font-size:26rpx;
 background-color: #F7B45D;
 color: #fff;
 height: 65rpx;
 margin-left:10rpx;
-margin-top:20rpx;
+margin-top:10rpx;
 margin-right: 10rpx;
+padding-left: 0rpx;
+padding-right: 0rpx;
 }
 .timenum{
   font-size: 26rpx;
@@ -148,9 +154,15 @@ margin-right: 10rpx;
   margin-left: 10rpx;
 }
 .timenum1{
-border:1px solid;
-height:60rpx;
 width:280rpx;
 text-align:center;
 margin-top:10rpx;
+}
+.position{
+ width:100%;
+background:#F7B45D;
+color:#fff;
+}
+.posi{
+margin-bottom:20rpx
 }

@@ -34,8 +34,6 @@ Page({
     list2:[],
     currentTab:0,
     currentTab1:1,
-    phelptime:[],
-    phelptime1:[],
     btnhover:false,
     targetTime:0,
     second:0,
@@ -554,7 +552,7 @@ confirm:function(e){
                 success(res) {
                   console.log(res.data);
                   if(res.data.success){
-                  if (res.data.appeal.endTime+3600*24*1000 - new Date().getTime() <= 0) that.data.targetTime=0;      //此处有错误               
+                  if (res.data.appeal.endTime+3600*24*1000 - new Date().getTime() <= 0) that.data.targetTime=0;                  
                   else {
                   that.data.second = Math.floor((res.data.appeal.endTime+3600*24*1000 - new Date().getTime()) / 1000);
                   console.log(that.data.second);

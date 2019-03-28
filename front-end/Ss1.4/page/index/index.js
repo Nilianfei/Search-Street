@@ -50,6 +50,10 @@ Page({
                           key: 'userId',
                           data: res.data.personInfo.userId
                         });
+                      }else {
+                        wx.redirectTo({
+                          url: '../../page/login/login'
+                        })
                       }
                     }
                     , fail: function (err) {

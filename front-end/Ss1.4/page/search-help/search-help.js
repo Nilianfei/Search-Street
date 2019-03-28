@@ -8,7 +8,7 @@ var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
 var md5 = require('../../util/md5.min.js');
 // 实例化API核心类
 var qqmapsdk = new QQMapWX({
-  key: 'GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM' // 必填
+  key: 'DQYBZ-AQFK6-6JDSI-EHRZV-EFRCJ-TDFZU' // 必填
 });
 Page({
 
@@ -39,6 +39,8 @@ Page({
       latitude: 23.099994,
       longitude: 113.324520
     },
+    suggestion:[],
+    backfill:null,
     errorMsg:'此为必填选项哦',
     errorMsgs: {
       title_error: null,
@@ -52,7 +54,8 @@ Page({
     maxDate: new Date(2019, 10, 1).getTime(),
     currentDate: new Date().getTime(),
     show: false,
-    currenttime: app.timeStamp2String(new Date().getTime()),
+    currenttime: '选择时间',
+    showkeyword:false,
   },
   showtime(){
     this.setData({ show: true });
@@ -81,9 +84,9 @@ Page({
     var shelp_imgs = this.data.shelp_imgs;
   
 
-    if (this.data.shelp_imgs.length < 3) {
+    if (this.data.shelp_imgs.length < 9) {
       wx.chooseImage({
-        count: 3,  //最多可以选择的图片总数  
+        count: 9,  //最多可以选择的图片总数  
         sizeType: ['compressed','original'], // 可以指定是原图还是压缩图，默认二者都有  
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
@@ -99,7 +102,7 @@ Page({
       })
     } else {
       wx.showToast({
-        title: '最多上传3张图片',
+        title: '最多上传9张图片',
         icon: 'loading',
         duration: 2000
       })
@@ -139,10 +142,71 @@ previewImage:function (e){
     })
   },
 
+  //数据回填方法
+  backfill: function (e) {
+    console.log(e);
+    var id = e.currentTarget.id;
+    for (var i = 0; i < this.data.suggestion.length; i++) {
+      if (i == id) {
+        this.setData({
+          backfill: this.data.suggestion[i].title
+        });
+        console.log(this.data.backfill);
+      }
+    }
+    this.setData({
+      showkeyword:false,
+    })
+  },
+
+  //触发关键词输入提示事件
+  getsuggest: function (e) {
+    this.setData({
+      showkeyword:true,
+    })
+    console.log(e);
+    var _this = this;
+    var _keyword=e.detail.value;
+   // var sig = md5("/ws/place/v1/suggestion?keyword=" + _keyword + "&key=X2DBZ-4TCHU-T43VA-BRN5Y-T7LY7-MVBXT&output=jsonSvqdT7KldVKgkNjH86dXvaViwQzTy2X" + "&policy=0&region=" + _this.data.region[1] +"&region_fix=0");
+    //console.log(sig);
+    //调用关键词提示接口
+    qqmapsdk.getSuggestion({
+     // sig: sig,
+      //获取输入框值并设置keyword参数
+      keyword: _keyword, //用户输入的关键词，可设置固定值,如keyword:'KFC'
+      region:_this.data.region[1], //设置城市名，限制关键词所示的地域范围，非必填参数
+      success: function (res) {//搜索成功后的回调
+        console.log(res);
+        var sug = [];
+        for (var i = 0; i < res.data.length; i++) {
+          sug.push({ // 获取返回结果，放到sug数组中
+            title: res.data[i].title,
+            id: res.data[i].id,
+            addr: res.data[i].address,
+            city: res.data[i].city,
+            district: res.data[i].district,
+            latitude: res.data[i].location.lat,
+            longitude: res.data[i].location.lng
+          });
+        }
+        _this.setData({ //设置suggestion属性，将关键词搜索结果以列表形式展示
+          suggestion: sug
+        });
+      },
+      fail: function (error) {
+        console.error(error);
+      },
+      complete: function (res) {
+        console.log(res);
+      }
+    });
+  },
+
   sformSubmit(e) {
     var _this = this;
     var fulladdress = _this.data.region[0] + _this.data.region[1] + _this.data.region[2] + e.detail.value.fullAddress;
-    var sig = md5("/ws/geocoder/v1/?address=" + fulladdress + "&key=GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM&output=jsonPPxq4x9BswKT7fyXshwNjUOfacWkNbxJ");
+    var sig = md5("/ws/geocoder/v1/?address=" + fulladdress + "&key=X2DBZ-4TCHU-T43VA-BRN5Y-T7LY7-MVBXT&output=jsonSvqdT7KldVKgkNjH86dXvaViwQzTy2X");
+    console.log(sig);
     //调用地址解析接口
     qqmapsdk.geocoder({
       sig: sig,
