@@ -3,9 +3,10 @@ var app = getApp();
 Page({
   data: {
     TabCur: 0,
-    starCount: 0,
-    forksCount: 0,
-    visitTotal: 0,
+    starRating: 0,
+    serviceRating: 0,
+    successRate: 0,
+    service:[],
     shop: null,
     imgUrl: "http://139.196.101.84:8080/image",
     shopId: 0,
@@ -72,81 +73,36 @@ Page({
     that.setData({
       shopId: options.shopId//options.id
     })
-    try {//同步获取与用户信息有关的缓存token
-      const value = wx.getStorageSync('token');
-      const userId = wx.getStorageSync('userId');
-      const shopId = wx.getStorageSync('shopId');
-      if (value) {
-        that.setData({
-          token: value
-        })
-      }
-      if (userId) {
-        that.setData({
-          userId: userId
-        })
-      }
-      else {
-        wx.request({
-          url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
-          data: {
-            token: token
-          },
-          success: function (res) {
-            // 拿到自己后台传过来的数据，自己作处理
-            console.log(res.data);
-            if (null != res.data.success && res.data.success) {
-              //用户登录成功
-              wx.setStorage({
-                key: 'userId',
-                data: res.data.personInfo.userId
-              });
-              that.setData(
-                {
-                  userId: res.data.personInfo.userId
-                }
-              )
-            }
-          }
-          , fail: function (err) {
-            console.log(err)
-          }
-        })
-      }
-      if (!shopId) {
-        wx.setStorage({
-          key: 'shopId',
-          data: that.data.shopId
-        })
-      }
-    } catch (e) {
-      console.log("error");
-    }
     //获取商铺信息
     wx.request({
-      url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/getshopbyid?shopId=" + that.data.shopId,
+      url: app.globalData.serviceUrl + "/SearchStreet/shopComment/getAvgScorebyshopid?shopId=" + that.data.shopId,
       data: {},
       method: "GET",
       success: res => {
         console.log(res);
         var shop = res.data.shop;
         var tower = that.data.tower;
-        var length = shop.shopImgList.length;
         var businessLicenseImg = app.globalData.imgUrl + shop.businessLicenseImg;
+        var url = app.globalData.imgUrl + shop.profileImg;
+        that.setData(
+          {
+            shop: shop,//设置页面中的数据
+            profileImgUrl: url,
+            tower: tower,
+            tower2: tower,
+            businessLicenseImg: businessLicenseImg,
+            serviceRating: res.data.serviceAvg,
+            starRating: res.data.starAvg,
+            successRate: res.data.successRate
+          }
+        )
+        
+        var length = shop.shopImgList.length;
         for (var i = 0; i < shop.shopImgList.length; i++) {
           shop.shopImgList[i].imgAddr = app.globalData.imgUrl + shop.shopImgList[i].imgAddr;
           tower[i].url = shop.shopImgList[i].imgAddr;
         }
-        var url = app.globalData.imgUrl + shop.profileImg;
-        that.setData(
-          {
-            shop: res.data.shop,//设置页面中的数据
-            profileImgUrl: url,
-            tower: tower,
-            tower2: tower,
-            businessLicenseImg: businessLicenseImg
-          }
-        )
+        
         // 初始化towerSwiper 传已有的数组名即可
         that.towerSwiper('tower2', length);
       }
@@ -159,6 +115,7 @@ Page({
     var pageIndex = options;
     if (that.data.TabCur == 0) {
       wx.request({
+        //点击服务时 获得服务列表 
         url: app.globalData.serviceUrl + '/SearchStreet/service/getservicelistbyshopid?shopId=' + that.data.shopId + '&pageIndex=' + pageIndex + '&pageSize=' + that.data.pageSize,
         method: 'GET',
         success: function (res) {
@@ -178,13 +135,15 @@ Page({
       })
     }
     else if (that.data.TabCur == 1) {
+      //点击评论时，获得评论
       wx.request({
-        url: app.globalData.serviceUrl + '/SearchStreet/shopComment/getshopCommentlistbyshopid?shopId=' + that.data.shopId + '&pageIndex=' + 0 + '&pageSize=' + that.data.pageSize,
+        url: app.globalData.serviceUrl + '/SearchStreet/shopComment/getshopCommentlistbyshopid?shopId=' + that.data.shopId + '&pageIndex=' + pageIndex + '&pageSize=' + that.data.pageSize,
         method: 'GET',
         success: function (res) {
           var shopCommentList = res.data.shopCommentList;//res.data就是从后台接收到的值
           that.setData({
             list: shopCommentList,
+            service:res.data.serviceList,
             loading: false,
             pageNum: res.data.pageNum
           })

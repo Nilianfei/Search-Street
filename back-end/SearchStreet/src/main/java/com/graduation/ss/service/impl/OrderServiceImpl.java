@@ -176,7 +176,6 @@ public class OrderServiceImpl implements OrderService {
 	public OrderInfo getByOrderId(long orderId) {
 		return orderDao.queryByOrderId(orderId);
 	}
-   
 	@Override
 	public OrderExecution addOrder(OrderInfo order) throws OrderOperationException {
 		// 空值判断

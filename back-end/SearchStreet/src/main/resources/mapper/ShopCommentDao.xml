@@ -61,6 +61,20 @@
 			</if> 
 		</where>
 	</select>
+	<select id="queryAvgStarRating" resultType="int">
+		SELECT
+		AVG(star_rating) as star_avg
+		FROM
+		tb_shop_comment
+		where shop_id=#{shopId}
+	</select>
+		<select id="queryAvgServiceRating" resultType="int">
+		SELECT
+		AVG(service_rating) as service_avg
+		FROM
+		tb_shop_comment
+		where shop_id=#{shopId}
+	</select>
 	<insert id="insertShopComment" parameterType="com.graduation.ss.entity.ShopComment"
 		useGeneratedKeys="true" keyProperty="shopCommentId" keyColumn="shop_comment_id">
 		INSERT

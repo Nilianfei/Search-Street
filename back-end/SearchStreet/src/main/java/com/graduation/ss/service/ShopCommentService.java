@@ -3,6 +3,7 @@ package com.graduation.ss.service;
 
 import com.graduation.ss.dto.ShopCommentExecution;
 import com.graduation.ss.exceptions.ShopCommentOperationException;
+import com.graduation.ss.entity.Shop;
 import com.graduation.ss.entity.ShopComment;
 
 public interface ShopCommentService {
@@ -24,6 +25,13 @@ public interface ShopCommentService {
 	 */
 	public ShopCommentExecution getByShopId(long shopId, int pageIndex, int pageSize);
 	public ShopCommentExecution getByShopId2(long shopId);
+	/**
+	 * 通过shopId获取服务评分，星级评分平均分
+	 * 
+	 * @param shopId
+	 * @return
+	 */
+	public Shop getAvgByShopId(long shopId);
 	/**
 	 * 通过userId获取评论信息
 	 * 

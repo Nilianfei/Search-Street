@@ -21,7 +21,7 @@ public interface ServiceDao{
 			@Param("pageSize") int pageSize);
 
 	/**
-	 * 返回queryServiceList总数
+	 * 返回service数量
 	 * 
 	 * @param serviceCondition
 	 * @return

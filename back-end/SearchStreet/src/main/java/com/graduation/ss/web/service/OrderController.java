@@ -258,12 +258,12 @@ public class OrderController {
 			List<ServiceInfo> servicelist=se.getServiceList();
 			for(int i=0;i<se.getCount();i++)
 			{
-			   System.out.println(servicelist.get(i).getServiceId());
 				OrderExecution ore = OrderService.getByServiceId2(servicelist.get(i).getServiceId(),orderStatus);
 				orderlist.addAll(ore.getOrderList());
 			}
 			
 			modelMap.put("OrderList",orderlist );
+			modelMap.put("orderNum",orderlist.size() );
 			modelMap.put("serviceList",servicelist);
 			modelMap.put("success", true);
 		} catch (Exception e) {

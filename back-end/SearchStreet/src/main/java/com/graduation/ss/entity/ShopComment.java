@@ -76,4 +76,5 @@ public class ShopComment {
 				+ ", userId=" + userId + ", commentContent=" + commentContent + ", serviceRating=" + serviceRating
 				+ ", starRating=" + starRating + ", commentReply=" + commentReply + "]";
 	}
+	
 }

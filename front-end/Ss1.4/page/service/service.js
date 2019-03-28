@@ -103,7 +103,6 @@ Page({
     try {//同步获取与用户信息有关的缓存token
       const value = wx.getStorageSync('token');
       const userId=wx.getStorageSync('userId');
-      const shopId= wx.getStorageSync('shopId');
       if (value) {
         that.setData({
           token:value
@@ -114,10 +113,31 @@ Page({
           userId: userId
         })
       }
-      if (!shopId) {
-        wx.setStorage({
-          key: 'shopId',
-          data: service.shopId
+      else {
+        wx.request({
+          url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
+          data: {
+            token: token
+          },
+          success: function (res) {
+            // 拿到自己后台传过来的数据，自己作处理
+            console.log(res.data);
+            if (null != res.data.success && res.data.success) {
+              //用户登录成功
+              wx.setStorage({
+                key: 'userId',
+                data: res.data.personInfo.userId
+              });
+              that.setData(
+                {
+                  userId: res.data.personInfo.userId
+                }
+              )
+            }
+          }
+          , fail: function (err) {
+            console.log(err)
+          }
         })
       }
     } catch (e) {

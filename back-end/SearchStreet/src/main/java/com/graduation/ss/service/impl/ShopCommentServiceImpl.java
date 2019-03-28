@@ -1,5 +1,6 @@
 package com.graduation.ss.service.impl;
 
+import java.util.ArrayList;
 //import java.lang.annotation.Annotation;
 import java.util.List;
 
@@ -7,8 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.graduation.ss.dao.OrderDao;
+import com.graduation.ss.dao.ServiceDao;
 import com.graduation.ss.dao.ShopCommentDao;
+import com.graduation.ss.dao.ShopDao;
 import com.graduation.ss.dto.ShopCommentExecution;
+import com.graduation.ss.entity.OrderInfo;
+import com.graduation.ss.entity.ServiceInfo;
+import com.graduation.ss.entity.Shop;
 import com.graduation.ss.entity.ShopComment;
 import com.graduation.ss.enums.ShopCommentStateEnum;
 import com.graduation.ss.exceptions.ShopCommentOperationException;
@@ -19,8 +26,12 @@ import com.graduation.ss.util.PageCalculator;
 public class ShopCommentServiceImpl implements ShopCommentService {
 	@Autowired
 	private ShopCommentDao shopCommentDao;
-
-
+	@Autowired
+	private ShopDao shopDao;
+	@Autowired
+	private ServiceDao serviceDao;
+	@Autowired
+	private OrderDao orderDao;
 
 	@Override
 	public ShopCommentExecution getShopCommentList(ShopComment shopCommentCondition, int pageIndex, int pageSize) {
@@ -76,6 +87,38 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 			se.setState(ShopCommentStateEnum.INNER_ERROR.getState());
 		}
 		return se;
+	}
+	@Override
+	public Shop getAvgByShopId(long shopId)
+	{
+		int serviceAvg = shopCommentDao.queryAvgServiceRating(shopId);
+		int starAvg=shopCommentDao.queryAvgStarRating(shopId);
+		Shop shop=shopDao.queryByShopId(shopId);
+		List<OrderInfo> orderlist=new ArrayList<OrderInfo>();
+		ServiceInfo service=new ServiceInfo();
+		service.setShopId(shopId);
+		List<ServiceInfo> servicelist=serviceDao.queryServiceList2(service);
+		List<OrderInfo> torderlist=new ArrayList<OrderInfo>();
+		for(int i=0;i<servicelist.size();i++)
+		{
+			OrderInfo  orderCondition = new OrderInfo ();
+			orderCondition.setServiceId(servicelist.get(i).getServiceId());
+			torderlist.addAll(orderDao.queryOrderList3(orderCondition));
+			orderCondition.setOrderStatus(3);
+			orderlist.addAll(orderDao.queryOrderList2(orderCondition));
+		}
+		int torderNum=torderlist.size();
+		if(torderNum!=0)
+		{
+			int forderNum=torderNum-orderlist.size();
+			float s=((float)forderNum/torderNum)*100;
+			int successRate=(int)s;
+			shop.setSuccessRate(successRate);
+		}
+		shop.setServiceAvg(serviceAvg);
+		shop.setStarAvg(starAvg);
+		return shop;
+		
 	}
 	@Override
 	public ShopCommentExecution getByUserId2(long userId){

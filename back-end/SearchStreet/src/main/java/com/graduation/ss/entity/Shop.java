@@ -52,7 +52,12 @@ public class Shop {
 	private Date lastEditTime;
 	@ApiModelProperty(value = "用户ID，用token来获取", hidden = true)
 	private Long userId;
-
+	@ApiModelProperty(value = "服务评分平均分")
+	private int serviceAvg;
+	@ApiModelProperty(value = "星级评分平均分")
+	private int starAvg;
+	@ApiModelProperty(value = "搜街成功率，完成的订单数除以完成的订单数加取消的订单数")
+	private int successRate;
 	public Integer getPerCost() {
 		return perCost;
 	}
@@ -221,6 +226,31 @@ public class Shop {
 		this.userId = userId;
 	}
 
+	public int getServiceAvg() {
+		return serviceAvg;
+	}
+
+	public void setServiceAvg(int serviceAvg) {
+		this.serviceAvg = serviceAvg;
+	}
+
+	public int getStarAvg() {
+		return starAvg;
+	}
+
+	public void setStarAvg(int starAvg) {
+		this.starAvg = starAvg;
+	}
+
+
+	public int getSuccessRate() {
+		return successRate;
+	}
+
+	public void setSuccessRate(int successRate) {
+		this.successRate = successRate;
+	}
+
 	@Override
 	public String toString() {
 		return "Shop [shopId=" + shopId + ", shopName=" + shopName + ", shopImgList=" + shopImgList
@@ -229,7 +259,12 @@ public class Shop {
 				+ ", district=" + district + ", fullAddress=" + fullAddress + ", shopMoreInfo=" + shopMoreInfo
 				+ ", isMobile=" + isMobile + ", profileImg=" + profileImg + ", latitude=" + latitude + ", longitude="
 				+ longitude + ", enableStatus=" + enableStatus + ", businessScope=" + businessScope + ", createTime="
-				+ createTime + ", lastEditTime=" + lastEditTime + ", userId=" + userId + "]";
+				+ createTime + ", lastEditTime=" + lastEditTime + ", userId=" + userId + ", serviceAvg=" + serviceAvg
+				+ ", starAvg=" + starAvg + ", successRate=" + successRate + "]";
 	}
+
+
+
+	
 
 }

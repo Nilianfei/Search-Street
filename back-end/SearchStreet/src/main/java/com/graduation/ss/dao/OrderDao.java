@@ -36,7 +36,6 @@ public interface OrderDao {
 	 * @return
 	 */
 	public OrderInfo queryByOrderId(long orderId);
-	
 	/**
 	 * 通过user id查询订单
 	 * @param userId
@@ -50,7 +49,12 @@ public interface OrderDao {
 	 * @return
 	 */
 	public List<OrderInfo> queryOrderList2(@Param("orderCondition")OrderInfo orderCondition);
-
+	 /* 查询除正在进行的订单
+	 * 
+	 * @param orderCondition
+	 * @return
+	 */
+	public List<OrderInfo> queryOrderList3(@Param("orderCondition")OrderInfo orderCondition);
 	
 	/**
 	 * 添加订单

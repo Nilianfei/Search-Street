@@ -1,5 +1,6 @@
 package com.graduation.ss.web.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.graduation.ss.dto.OrderExecution;
 import com.graduation.ss.dto.ShopCommentExecution;
 import com.graduation.ss.entity.OrderInfo;
 import com.graduation.ss.entity.ServiceInfo;
+import com.graduation.ss.entity.Shop;
 import com.graduation.ss.entity.ShopComment;
 import com.graduation.ss.enums.OrderStateEnum;
 import com.graduation.ss.enums.ShopCommentStateEnum;
@@ -66,6 +68,15 @@ public class ShopCommentController {
 			int pageNum = (int) (se.getCount() / pageSize);
 			if (pageNum * pageSize < se.getCount())
 				pageNum++;
+			List<ShopComment> shopCommentList=se.getShopCommentList();
+			List<ServiceInfo> servicelist=new ArrayList<ServiceInfo>();
+			for(int i=0;i<shopCommentList.size();i++)
+			{
+				 OrderInfo order=OrderService.getByOrderId(shopCommentList.get(i).getOrderId());
+				ServiceInfo serviceInfo=sService.getByServiceId(order.getServiceId());
+				servicelist.add(serviceInfo);
+			}
+			modelMap.put("serviceList", servicelist);
 			modelMap.put("shopCommentList", se.getShopCommentList());
 			modelMap.put("pageNum", pageNum);
 			modelMap.put("success", true);
@@ -75,13 +86,35 @@ public class ShopCommentController {
 		}
 		return modelMap;
 	}
+	//通过店铺id获取店铺信息（包括 店铺评分平均分 搜街成功率 ）
+		@RequestMapping(value = "/getAvgScorebyshopid", method = RequestMethod.GET)
+		@ResponseBody
+		@ApiOperation(value = "根据shopID获取店铺信息（包括 店铺评分平均分 搜街成功率 ）")
+		@ApiImplicitParams({
+			@ApiImplicitParam(paramType = "query", name = "shopId", value = "店铺ID", required = true, dataType = "Long", example = "3") })
+		private Map<String, Object> getAvgScoreByShopId(HttpServletRequest request) {
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
+			try {
+				Shop shop= shopCommentService.getAvgByShopId(shopId);
+				modelMap.put("shop", shop);
+				modelMap.put("successRate", shop.getSuccessRate());
+				modelMap.put("serviceAvg", shop.getServiceAvg());
+				modelMap.put("starAvg", shop.getStarAvg());
+				modelMap.put("success", true);
+			} catch (Exception e) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", e.getMessage());
+			}
+			return modelMap;
+		}
 
-	//通过店铺id获取评论列表 分页 
+	//通过店铺id获取过去三个月评论列表 和服务列表 
 	@RequestMapping(value = "/getshopCommentlistbysid", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "根据shopID获取其所有服务评论信息（分页）")
+	@ApiOperation(value = "根据shopID获取过去三个月评论列表 和服务列表")
 	@ApiImplicitParams({
-		@ApiImplicitParam(paramType = "query", name = "shopId", value = "店铺ID", required = true, dataType = "Long", example = "3") })
+		@ApiImplicitParam(paramType = "query", name = "shopId", value = "店铺ID", required = true, dataType = "Long", example = "3")})
 	private Map<String, Object> getShopCommentListBySId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
@@ -89,11 +122,23 @@ public class ShopCommentController {
 			ShopCommentExecution se = shopCommentService.getByShopId2(shopId);
 			List<ShopComment> shopCommentList=se.getShopCommentList();
 			List<ServiceInfo> servicelist=new ArrayList<ServiceInfo>();
-			for(int i=0;i<shopCommentList.size();i++)
+			int n=shopCommentList.size();
+			for(int i=0;i<n;)
 			{
 				 OrderInfo order=OrderService.getByOrderId(shopCommentList.get(i).getOrderId());
-				ServiceInfo serviceInfo=sService.getByServiceId(order.getServiceId());
-				servicelist.add(serviceInfo);
+				 LocalDateTime t1=LocalDateTime.now().minusDays(90);
+				 LocalDateTime t2=order.getCreateTime();
+				 if(t1.isBefore(t2))
+				 {
+					 ServiceInfo serviceInfo=sService.getByServiceId(order.getServiceId());
+					 servicelist.add(serviceInfo);		
+					 i++;
+			     }		
+				 else
+				 {
+					 shopCommentList.remove(i);
+					 n=n-1;
+				 }
 			}
 			modelMap.put("serviceList", servicelist);
 			modelMap.put("shopCommentList", se.getShopCommentList());
@@ -131,10 +176,10 @@ public class ShopCommentController {
 			}
 			return modelMap;
 		}
-		//通过userId获取评论列表  
+		//通过userId获取过去三个月评论列表  
 		@RequestMapping(value = "/getshopCommentlistbyuid", method = RequestMethod.GET)
 		@ResponseBody
-		@ApiOperation(value = "根据userID获取其所有服务评论信息")
+		@ApiOperation(value = "根据userID获取过去三个月其所有服务评论信息")
 		@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "userId", value = "用户ID", required = true, dataType = "Long", example = "1")})
 		private Map<String, Object> getShopCommentListByUId(HttpServletRequest request) {
@@ -144,11 +189,23 @@ public class ShopCommentController {
 				ShopCommentExecution se = shopCommentService.getByUserId2(userId);
 				List<ShopComment> shopCommentList=se.getShopCommentList();
 				List<ServiceInfo> servicelist=new ArrayList<ServiceInfo>();
-				for(int i=0;i<shopCommentList.size();i++)
+				int n=shopCommentList.size();
+				for(int i=0;i<n;)
 				{
 					 OrderInfo order=OrderService.getByOrderId(shopCommentList.get(i).getOrderId());
-					ServiceInfo serviceInfo=sService.getByServiceId(order.getServiceId());
-					servicelist.add(serviceInfo);
+					 LocalDateTime t1=LocalDateTime.now().minusDays(90);
+					 LocalDateTime t2=order.getCreateTime();
+					 if(t1.isBefore(t2))
+					 {
+						 ServiceInfo serviceInfo=sService.getByServiceId(order.getServiceId());
+						 servicelist.add(serviceInfo);		
+						 i++;
+				     }		
+					 else
+					 {
+						 shopCommentList.remove(i);
+						 n=n-1;
+					 }
 				}
 				modelMap.put("serviceList", servicelist);
 				modelMap.put("shopCommentList", se.getShopCommentList());

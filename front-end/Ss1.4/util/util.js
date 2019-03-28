@@ -27,8 +27,18 @@ function formatDate(inputTime) {
   d = d < 10 ? ('0' + d) : d;
   var h = strlist[3];
   h = h < 10 ? ('0' + h) : h;
-  var minute = strlist[4];
-  var second = strlist[5].substr(0, strlist[5].length-1);
+  var minute='0';
+  var second = '0';
+  //它会自动把秒等于0的时间传值过程中忽略掉
+  if(strlist.length==5)
+  {
+    minute = strlist[4].substr(0, strlist[4].length - 1);
+  }
+  else
+  {
+    minute = strlist[4];
+    second = strlist[5].substr(0, strlist[5].length - 1);
+  }   
   minute = minute < 10 ? ('0' + minute) : minute;
   second = second < 10 ? ('0' + second) : second;
   return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;

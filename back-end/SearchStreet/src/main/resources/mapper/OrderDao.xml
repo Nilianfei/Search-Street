@@ -135,4 +135,27 @@
 		</where>
 		ORDER BY order_status asc
 	</select>
+			<select id="queryOrderList3" resultType="com.graduation.ss.entity.OrderInfo">
+		SELECT
+		order_id,service_id,user_id,service_count,order_status,create_time,over_time,service_name,order_price
+		FROM
+		tb_order 
+	    <where>
+			<if
+				test="orderCondition.userId != null">
+				and user_id = #{orderCondition.userId}
+			</if> 
+			<if
+				test="orderCondition.serviceId != null">
+				and service_id = #{orderCondition.serviceId}
+			</if> 
+			<if test="orderCondition.createTime != null">
+			    and DATE_FORMAT(create_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.createTime},'%Y %m %d')
+		   </if>
+			<if test="orderCondition.overTime != null">
+			    and DATE_FORMAT(over_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.overTime},'%Y %m %d')
+		</if>
+				and order_status!=0
+		</where>
+	</select>
 </mapper>

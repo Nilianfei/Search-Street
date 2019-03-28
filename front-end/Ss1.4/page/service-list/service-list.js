@@ -55,14 +55,6 @@ Page({
     that.setData({
       shopId: options.shopId,
     });
-    try {
-      const value = wx.getStorageSync('token')
-      if (value) {
-        token = value;
-      }
-    } catch (e) {
-      console.log("error");
-    }
     wx.request({
       url: app.globalData.serviceUrl + '/SearchStreet/service/getservicelistbyshopid?shopId=' + that.data.shopId + '&pageIndex=0' + '&pageSize=' + that.data.pageSize,
       method: 'GET',

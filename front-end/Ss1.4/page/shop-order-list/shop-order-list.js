@@ -42,49 +42,6 @@ Page({
     that.setData({
       shopId:options.shopId
     })
-    try {//同步获取与用户信息有关的缓存token
-      const value = wx.getStorageSync('token');
-      const userId = wx.getStorageSync('userId');
-      if (value) {
-        that.setData({
-          token: value
-        })
-      }
-      if (userId) {
-        that.setData({
-          userId: userId
-        })
-      }
-      else {
-        wx.request({
-          url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
-          data: {
-            token: token
-          },
-          success: function (res) {
-            // 拿到自己后台传过来的数据，自己作处理
-            console.log(res.data);
-            if (null != res.data.success && res.data.success) {
-              //用户登录成功
-              wx.setStorage({
-                key: 'userId',
-                data: res.data.personInfo.userId
-              });
-              that.setData(
-                {
-                  userId: res.data.personInfo.userId
-                }
-              )
-            }
-          }
-          , fail: function (err) {
-            console.log(err)
-          }
-        })
-      }
-    } catch (e) {
-      console.log("error");
-    }
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -197,8 +154,12 @@ Page({
           var service = res.data.serviceList;
           for (var i = 0; i < order.length; i++) {
             id[i] = order[i].orderId;
-            //if (service[i].serviceImgAddr != null)
-           //   img[i] = app.globalData.imgUrl + service[i].serviceImgAddr;
+            for (var j = 0; j < service.length; j++)
+            if(order[i].serviceId==service[j].serviceId)
+            {
+              if (service[j].serviceImgAddr != null)
+                img[i] = app.globalData.imgUrl + service[j].serviceImgAddr;
+            }
             var time = JSON.stringify(order[i].createTime);
             order[i].createTime = util.formatDate(time);
             if (order[i].overTime != null) {
