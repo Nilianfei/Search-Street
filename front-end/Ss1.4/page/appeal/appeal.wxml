@@ -10,7 +10,11 @@
   </i-panel>
   <view class='appeal-img'>
     <i-row>
-      <i-col span="6" i-class="col-class" wx:for="{{appeal.appealImgList}}"><image class="logoinfo" src='../../images/search_buck.png'></image></i-col>
+      <i-col span="6" i-class="col-class" wx:for="{{appeal.appealImgList}}" wx:key="appealImgId">
+        <view id="{{item.appealImgId}}" bindtap="previewImg">
+          <image class="logoinfo"  src="http://139.196.101.84:8080/image{{item.imgAddr}}" ></image>
+        </view>  
+      </i-col>
     </i-row>
   </view>
   <i-panel>

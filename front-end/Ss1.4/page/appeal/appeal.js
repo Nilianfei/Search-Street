@@ -6,10 +6,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    appeal:{"appealTitle":"appealTitle","appealContent":"西欧从v解耦让老师你们的浪费口水富士康"
-    ,"phone":"123445567","province":"广东省","city":"广州市","district":"天河区"
-    ,"fullAddress":"华南师范大学","appealMoreInfo":"null","souCoin":1,"startTime":"jklk","endTime":"sdfsdf"},
-    bottonText:"立即求助",
+    appeal:{"appealTitle":"","appealContent":""
+    ,"phone":"","province":"","city":"","district":""
+    ,"fullAddress":"","appealMoreInfo":"","souCoin":0,"startTime":"","endTime":""},
+    bottonText:"立即帮忙",
     loading:true,
     appealId: null,
     token:null
@@ -95,6 +95,26 @@ Page({
         }
       })
     }
+  },
+
+  previewImg:function (e) {
+    var index = e.currentTarget.id;
+    console.log(index);
+    var _urls=[];
+    var _current;
+    var appeal=this.data.appeal;
+    for (var i=0;i< appeal.appealImgList.length; ++i){
+      if(appeal.appealImgList[i].appealImgId==index) {
+        console.log(appeal.appealImgList[i].appealImgId);
+        _current = app.globalData.imgUrl + appeal.appealImgList[i].imgAddr;
+      }
+      _urls[i] = app.globalData.imgUrl+appeal.appealImgList[i].imgAddr;
+    }
+    wx.previewImage({
+      urls:  _urls,
+      current: _current,
+    })
+
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
