@@ -79,9 +79,9 @@
 .perhelp-button-small{
   width: 105rpx;
   height: 50rpx;
-  background-color: #7c8686b0;
+  background-color: #bebebe;
   font-size: 22rpx;
-  color: #fff;
+  color: #ffffff;
   margin-top:10rpx;
   float: left;
   margin-left: 20rpx;
@@ -104,7 +104,7 @@
 }
 .personal-help-item{
   height: 170rpx;
-  border-bottom: 1px solid #7c8686b0;
+  border-bottom: 1px solid #bebebe;
 }
 .button1{
   padding-left: 10rpx;
@@ -167,7 +167,7 @@
 .toast-input {
     margin-left: 5%;
     margin-right: 5%;
-    border: 1px solid #ddd;
+    border: 1px solid #d3d3d3;
     padding-left: 2vh;
     padding-right: 2vh;
     padding-top: 1vh;
@@ -277,20 +277,20 @@ margin-left:80rpx;
 }
 .main1{
   padding-bottom: 40rpx;
-  background-color: #fff;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   float: left;
 }
 .button7{
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 /* common.wxss */
 .card .card-item{
   margin-bottom: 25rpx;
   background-color: white;
-   border-bottom: 1rpx solid #eee;
+   border-bottom: 1rpx solid #dedede;
    padding-bottom: 10rpx;
    margin-left: 20rpx;
 }

@@ -7,7 +7,8 @@ Page({
    */
   data: {
     open:false,
-    token:null
+    token:null,
+    background:"/images/index-background.jpg",
   },
 
   /**
@@ -15,6 +16,10 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
+    let base64 = wx.getFileSystemManager().readFileSync(this.data.background, 'base64');
+    that.setData({
+      'background': 'data:image/jpg;base64,' + base64
+    });
     wx.checkSession({
       success() {         // session_key 未过期，并且在本生命周期一直有效
         // 查看是否授权

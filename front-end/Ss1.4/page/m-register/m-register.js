@@ -17,8 +17,8 @@ Page({
     errorMsg: showCheck,
     region: ['广东省', '广州市', '海珠区'],
     customItem: '全部',
-    latitude: null,
-    longitude: null,
+    latitude: 23.099994,
+    longitude: 113.324520,
     flag: true,
     business_img: [],
     markers: [{
@@ -26,7 +26,7 @@ Page({
       title: 'T.I.T 创意园',
       latitude: 23.099994,
       longitude: 113.324520,
-      iconPath: '../../images/定位.png',//图标路径
+      iconPath: '../../images/locat.png',//图标路径
       width: 40,
       height: 40,
     }],
@@ -76,7 +76,7 @@ Page({
             title: res.title,
             latitude: latitude,
             longitude: longitude,
-            iconPath: '../../images/定位.png',//图标路径
+            iconPath: '../../images/locat.png',//图标路径
             width: 20,
             height: 20,
           }],

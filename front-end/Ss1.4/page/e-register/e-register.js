@@ -29,7 +29,7 @@ Page({
       title: 'T.I.T 创意园',
       latitude: 23.099994,
       longitude: 113.324520,
-      iconPath: '../../images/定位.png',//图标路径
+      iconPath: '../../images/locat.png',//图标路径
       width: 40,
       height: 40,
     }],
@@ -49,9 +49,9 @@ Page({
     var that = this;
     var shop_imgs = this.data.shop_imgs;
 
-    if (this.data.shop_imgs.length < 3) {
+    if (this.data.shop_imgs.length < 9) {
       wx.chooseImage({
-        count: 3,  //最多可以选择的图片总数  
+        count: 9,  //最多可以选择的图片总数  
         sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有  
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
@@ -67,7 +67,7 @@ Page({
       })
     } else {
       wx.showToast({
-        title: '最多上传3张图片',
+        title: '最多上传9张图片',
         icon: 'loading',
         duration: 2000
       })
@@ -136,7 +136,7 @@ Page({
             title: res.title,
             latitude: latitude,
             longitude: longitude,
-            iconPath: '../../images/定位.png',//图标路径
+            iconPath: '../../images/locat.png',//图标路径
             width: 20,
             height: 20,
           }],

@@ -8,15 +8,15 @@
   </view>
   <view class="perinf-bd1">
     <navigator class="perinf-item" url="../user-service-list/user-service-list?shopId=1">
-     <image class="perinf-img" src="../../images/搜索.png"></image>
+     <image class="perinf-img" src="../../images/search.png"></image>
      <text class="perinf-text">搜搜记录</text>
     </navigator>
     <navigator class="perinf-item" url="../personal-account/personal-account">
-     <image class="perinf-img" src="../../images/钱包.png"></image>
+     <image class="perinf-img" src="../../images/blackcoin.png"></image>
      <text class="perinf-text">钱包</text>
      </navigator> 
-    <navigator class="perinf-item" url="../personal-help/personal-help">
-     <image class="perinf-img" src="../../images/手掌.png"></image>
+    <navigator class="perinf-item item1" url="../personal-help/personal-help">
+     <image class="perinf-img" src="../../images/hand.png"></image>
      <text class="perinf-text">求帮记录</text>
     </navigator>
   </view>

@@ -24,13 +24,13 @@
    </view>
    <view class="time">
     <view class="item">
-     <image class="helpdetail-icon" src="../../images/时钟.png"></image>
+     <image class="helpdetail-icon" src="../../images/time.png"></image>
      </view>
      <view class='item'>
      <text>{{targetTime}}</text>
      </view>
     <view class="item">
-     <image class="helpdetail-icon" src="../../images/钱币.png"></image></view>
+     <image class="helpdetail-icon" src="../../images/yellowcoin.png"></image></view>
      <view class="item">
      <text>{{helpDetail.souCoin}}搜币</text>
      </view>
@@ -43,7 +43,7 @@
    <view class="details-main">
      <textarea>{{helpDetail.appealContent}}</textarea>
      <view wx:if='{{help.helpStatus==3}}'>
-       <image class='unused-img' src="../../images/订单失效.png"></image>
+       <image class='unused-img' src="../../images/oder1.png"></image>
       </view>
      <!-- 求助者发布图片的url -->
      <view class="details-imgs">

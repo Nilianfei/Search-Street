@@ -1,7 +1,7 @@
 @import "../../weui.wxss";
 .reg-hd{
   height: 120px;
-  background-color: #34d4dae0;
+  background-color: #00e3e3;
 }
 .userinfo-avatar {
   overflow:hidden;
@@ -9,7 +9,7 @@
   width: 160rpx;
   height: 160rpx;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: #ffffff;
   margin-left: 130px;
   margin-top: 15px;
   position: absolute;
@@ -30,8 +30,8 @@
 }
 .store-locat{
   font-size: 17px;
-  color: #000;
-  background-color: #34d4dae0;
+  color: #000000;
+  background-color: #00e3e3;
   text-align: center;
   padding: 10px;
 }
@@ -41,12 +41,13 @@
   float:left;
 }
 .slocat-text{
-  border: 1px solid #132627b0;
+  border: 1px solid #6e6e6e;
   border-radius: 5px;
   float:left;
-  width: 70%;
+  width: 85%;
   height: 60rpx;
   margin-top: 5px;
+  margin-bottom: 20rpx;
 }
 .check{
   width: 320rpx;
@@ -61,7 +62,7 @@
 }
 .submit-append{
   font-size: 15px;
-  color: #132627b0;
+  color: #6e6e6e;
   text-align: center;
   position: absolute;
   margin-top: 60px;
@@ -76,28 +77,36 @@
 .serach-append1{
   font-size: 15px;
   float: left;
-  color: #7c8686b0;
+  color: #bebebe;
   margin-top: 15px;
 }
 .serach-text{
-  border: 1px solid #132627b0;
+  border: 1px solid #6e6e6e;
   border-radius: 5px;
   height: 100px;
   margin-top: 35px;
   margin-left: 10px;
 }
 .submitbo{
-  border: 1px solid #7c868667;
+  border: 1px solid #bebebe;
   margin-top: 20px;
 }
 .finsubmit{
   width:100%;
   height: 120px;
   border: none;
-  background: #0ee9e9d0;
+  background: #00E3E3;
 }
 .show_error{
   float: right;
   color: rgb(238, 27, 27);
   font-size: 16px;
+}
+.position{
+ width:100%;
+background:#00E3E3;
+color:#fff;
+}
+.posi{
+margin-bottom:20rpx
 }

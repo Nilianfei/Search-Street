@@ -3,7 +3,7 @@
   <view class="reg-hd">
    <view class='header'>
       <view class="userinfo-avatar">
-       <image class="big-logo {{show_chlogo ? '' : 'big-logof'}}" bindtap="chooseLogo" src='../../images/添加logo.png'></image>  
+       <image class="big-logo {{show_chlogo ? '' : 'big-logof'}}" bindtap="chooseLogo" src='../../images/add-logo.png'></image>  
           <block wx:for="{{business_logo}}">  
             <view class='logoinfos'>  
               <image class="logoinfo" src='{{item}}' name="businessLogo"></image>  
@@ -14,6 +14,7 @@
     <view class="reghd-text">
      <text>{{text}}</text>
     </view>
+    <view class="weui1">
      <view class="weui-uploader__files">
           <view wx:for="{{shop_imgs}}" wx:key="*this" wx:for-item="image">
            <view class="weui-uploader__file">
@@ -24,6 +25,7 @@
           <view class="weui-uploader__input" bindtap="chooseImage"></view>
        </view>
       </view>
+    </view>
   </view>
   <view class="reg-bd">
     <form bindsubmit="formSubmit" bindreset="formReset">
@@ -54,7 +56,7 @@
       <view class="section-stimage">
         <view class="section-sttext">营业执照上传</view>
            <view class="big-logos">  
-            <image class="big-logo {{flag ? '' : 'big-logof'}}" bindtap="upimg" src='../../images/添加图片.png'></image>  
+            <image class="big-logo {{flag ? '' : 'big-logof'}}" bindtap="upimg" src='../../images/add-photo.png'></image>  
              <block wx:for="{{business_img}}">  
              <view class='logoinfos'>  
              <image class="logoinfo" src='{{business_img[0]}}' name="businessLicenseImg"></image>  
@@ -75,10 +77,12 @@
        </picker>
       </view>
       <view class="slocat-logo">
-        <image class="slocat-img" src="../../images/定位.png"></image>
+        <image class="slocat-img" src="../../images/locat.png"></image>
         <form bindsubmit="sformSubmit">
          <input class="slocat-text" placeholder="请输入详细地址" name="fullAddress"/>
-         <button form-type="submit" bindtap="geo">定位</button>
+        <view class="posi">
+         <button class="position" form-type="submit" bindtap="geo">定位</button>
+        </view>
         </form>
       </view>
       <!--地图容器-->

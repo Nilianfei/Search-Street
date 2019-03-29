@@ -4,7 +4,7 @@
    <view class="check1">
    <text class="shelp-costtext costtext1">帮助状态</text>
     <selector selectData="{{helpstatus}}" bind:myget='getStatus'></selector>
-     <image class="shelp-cost" src="../../images/钱币.png"></image>
+     <image class="shelp-cost" src="../../images/yellowcoin.png"></image>
       <!--<selector selectData="{{cost}}" bind:myget='getCost'></selector> -->
       <input class='costnum num1' value='{{costnum}}' type='number' bindinput='inputcost'></input>
       <text class="shelp-costtext">搜币</text>
@@ -31,9 +31,9 @@
              <navigator class="personal-help-item" url='../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{item.helpId}}'>
                <view>
                 <text class="perhelp-title">{{item.appealTitle}}</text>
-                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
                    <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
-                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
                    <text class="perhelp-cost cost1">{{item.allCoin}}搜币</text>
                </view>
               <view class="check-buttons">
@@ -46,12 +46,12 @@
              <navigator class="personal-help-item" url="../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{item.helpId}}">
               
                 <text class="perhelp-title">{{item.appealTitle}}</text>
-                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
                    <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
-                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
                    <text class="perhelp-cost cost1">{{item.allCoin}}搜币</text>
              
-                <image class="unuse-icon" src="../../images/订单失效.png"></image>
+                <image class="unuse-icon" src="../../images/order1.png"></image>
              </navigator>
            </block>
 
@@ -59,16 +59,16 @@
              <view class="personal-help-item">
               <navigator url="../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{item.helpId}}">  
                 <text class="perhelp-title">{{item.appealTitle}}</text>
-                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
                    <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
-                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
                    <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
               </navigator> 
                 <view class="perhelp-buttons buttons1">
                 
-                <button class="perhelp-button button1" bindtap='showMycomment' disabled='{{showcomment[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/笑脸3.png"></image>查看评价</button>
+                <button class="perhelp-button button1" bindtap='showMycomment' disabled='{{showcomment[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/smile3.png"></image>查看评价</button>
                 
-                <button class="perhelp-button button1"  bindtap="showSoucoin" disabled='{{showcoin[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/赏金1.png"></image>有追赏</button>
+                <button class="perhelp-button button1"  bindtap="showSoucoin" disabled='{{showcoin[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/soucoin1.png"></image>有追赏</button>
                 </view>
              </view>
             </block>

@@ -48,8 +48,8 @@ Page({
     disabled:[],
     disabled1:[],
     appealindex:0,
-    starCheckedImgUrl: "../../images/黄色星星.png",
-    starUnCheckedImgUrl: "../../images/灰色星星.png",
+    starCheckedImgUrl: "../../images/yellow-star.png",
+    starUnCheckedImgUrl: "../../images/gray-star.png",
     List1:[],
     soucoin:[],
     // 建议内容
@@ -158,7 +158,6 @@ Page({
       currentTab: e.currentTarget.dataset.current ,
       list2:that.data.list2,
       List1:that.data.List1,
-      phelptime:that.data.phelptime,
       });
   },
   switchTab1(e) {

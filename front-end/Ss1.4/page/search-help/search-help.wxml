@@ -27,11 +27,11 @@
       <textarea class="shelp-titletext shelp-content" name="shelpContent" maxlength='500'></textarea> 
        <view class="show_error" wx:if="{{errorMsgs.content_error}}">{{errorMsgs.content_error}}</view>
      <view class="cost">
-     <image class="shelp-cost" src="../../images/钱币.png"></image>
+     <image class="shelp-cost" src="../../images/yellowcoin.png"></image>
       <!--<selector selectData="{{cost}}" bind:myget='getCost'></selector> -->
       <input class='costnum' name="shelpCost" type='number'></input>
       <text class="shelp-costtext">搜币</text>
-      <image class="shelp-cost" src="../../images/时钟.png"></image>
+      <image class="shelp-cost" src="../../images/time.png"></image>
      <van-popup show="{{ show }}" position='bottom' bind:close="onClose">
       <van-datetime-picker type="datetime" value="{{ currentDate }}" min-date="{{ minDate }}"max-date="{{ maxDate }}" visible-item-count='{{6}}' bind:input="onInput" bind:confirm="onConfirm"/>
       </van-popup>
@@ -49,7 +49,7 @@
        </picker>
       </view>
       <view class="slocat-logo">
-        <image class="slocat-img" src="../../images/定位.png"></image>
+        <image class="slocat-img" src="../../images/locat.png"></image>
         <form bindsubmit="sformSubmit">
          <input class="slocat-text" placeholder="请输入详细地址" name="fullAddress" value='{{backfill}}' bindinput='getsuggest'/>
          <view wx:if="{{showkeyword}}">

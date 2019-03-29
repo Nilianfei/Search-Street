@@ -11,14 +11,14 @@ page{
   width: 160rpx;
   height: 160rpx;
   border-radius: 50%;
-  border: 1px solid #fff;
+  border: 1px solid #ffffff;
   margin:0 auto;
   margin-top: 30rpx;
 }
 .helpdetails-bd1{
   border:1px solid #f0f0f0;
   height: 150rpx;
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 .helptitle-content{
@@ -42,7 +42,7 @@ page{
   margin-top: 20rpx;
   overflow:auto;
   height: 500rpx;
-  background-color: #fff;
+  background-color: #ffffff;
   text-align: center;
 }
 .helpcontent{
@@ -51,7 +51,7 @@ page{
 .helpdetails-bd3{
   height: 150rpx;
   margin-top: 50rpx;
-  background-color: #fff;
+  background-color: #ffffff;
   overflow: auto;
 }
 .info{
@@ -61,7 +61,7 @@ page{
   margin-top: 20rpx;
 }
 .helpers-info{
-  background-color: #fff;
+  background-color: #ffffff;
   border: 1px solid #f0f0f0;
   height: 230rpx;
   margin-top: 20rpx;
@@ -94,7 +94,7 @@ margin-top:10rpx
 }
 .choosehelper{
   background-color: #1296db;
-  color: #fff;
+  color: #ffffff;
   margin-top:60rpx;
   margin-left: 90rpx;
   margin-right: 20rpx;
@@ -106,14 +106,14 @@ margin-top:10rpx
 .info-list:before,.info-list:after{
 height: 2px;
 width: 100rpx;
-background: #fff;
+background: #ffffff;
 display: block;
 position: relative;
 }
 .info-list:before{
   height: 2px;
   width: 100rpx;
-  background: #fff;
+  background: #ffffff;
   display: block;
   position: relative;
   top: 24rpx;

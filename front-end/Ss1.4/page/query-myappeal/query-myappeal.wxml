@@ -10,9 +10,9 @@
              <navigator class="personal-help-item" url="../myhelp-details/myhelp-details?id={{appealList[index].appealId}}">
               
                 <text class="perhelp-title">{{item.appealTitle}}</text>
-                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
                    <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
-                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
                    <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
              
               <view class="perhelp-buttons">
@@ -29,12 +29,12 @@
              <navigator class="personal-help-item" url="../myhelp-details/myhelp-details?id={{appealList[index].appealId}}">
               
                 <text class="perhelp-title">{{item.appealTitle}}</text>
-                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
                    <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
-                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
                    <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
              
-                <image class="unuse-icon" src="../../images/订单失效.png"></image>
+                <image class="unuse-icon" src="../../images/order1.png"></image>
              </navigator>
            </block>
 
@@ -42,15 +42,15 @@
              <view class="personal-help-item">
               <navigator  url="../myhelp-details/myhelp-details?id={{appealList[index].appealId}}" >
                 <text class="perhelp-title">{{item.appealTitle}}</text>
-                 <image class="perhelp-icon" src="../../images/时钟.png"></image>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
                    <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
-                 <image class="perhelp-icon" src="../../images/钱币.png"></image>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
                    <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
              </navigator>
                 <view class="perhelp-buttons buttons1">
-                <button class="perhelp-button button1" bindtap='inputComment' id='{{appealList[index].appealId}}' data-id='{{index}}' disabled='{{disabled1[index]}}'><image class="finished-icon" src="../../images/笑脸3.png"></image>给好人评</button>
+                <button class="perhelp-button button1" bindtap='inputComment' id='{{appealList[index].appealId}}' data-id='{{index}}' disabled='{{disabled1[index]}}'><image class="finished-icon" src="../../images/smile3.png"></image>给好人评</button>
                 
-                <button class="perhelp-button button1"  bindtap="inputReward" id='{{appealList[index].appealId}}' data-id='{{index}}' disabled='{{disabled[index]}}'><image class="finished-icon" src="../../images/赏金1.png"></image>追加打赏</button>
+                <button class="perhelp-button button1"  bindtap="inputReward" id='{{appealList[index].appealId}}' data-id='{{index}}' disabled='{{disabled[index]}}'><image class="finished-icon" src="../../images/soucoin2.png"></image>追加打赏</button>
                 </view>
              </view>
             </block>

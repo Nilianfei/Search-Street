@@ -3,7 +3,7 @@
   display: none;
 }
 .index-hd {
-  padding: 80rpx;
+  padding-top: 50rpx;
   text-align: center;
 }
 .index-bd {
@@ -14,13 +14,13 @@
   text-align: center;
 }
 .index-logo {
-  width: 86rpx;
-  height: 86rpx;
+  width: 150rpx;
+  height: 150rpx;
 }
 .index-desc {
-  margin-top: 20rpx;
   color: #13971a;
   font-size: 60rpx;
+  font-weight: bold;
 }
 .navigator-hover {
     color:blue;
@@ -111,4 +111,9 @@
 .kind-list-item-bd-show {
   height: auto;
 }
-page{background-color:rgba(10, 0, 0, 0);}
+.item1{
+ background-color:hsla(120,65%,75%,0.3);
+}
+.text1{
+  color: #FFFFFF;
+}
