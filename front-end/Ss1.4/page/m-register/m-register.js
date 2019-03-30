@@ -1,4 +1,4 @@
-var app = getApp();
+﻿var app = getApp();
 var showCheck = "此为必填选项哦"
 // 引入SDK核心类
 var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
@@ -6,7 +6,9 @@ var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
 var md5 = require('../../util/md5.min.js');
 // 实例化API核心类
 var qqmapsdk = new QQMapWX({
+
   key: 'DQYBZ-AQFK6-6JDSI-EHRZV-EFRCJ-TDFZU' // 必填
+
 });
 Page({
 
@@ -103,6 +105,7 @@ Page({
       region: e.detail.value
     })
   },
+
   //数据回填方法
   backfill: function (e) {
     console.log(e);
@@ -162,6 +165,7 @@ Page({
       }
     });
   },
+
   formSubmit: function (e) {
     var that = this;
     var errorMsg = this.data.errorMsg;

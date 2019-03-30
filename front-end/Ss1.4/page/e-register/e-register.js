@@ -1,4 +1,4 @@
-var app = getApp();
+﻿var app = getApp();
 
 var initData = '添加店铺环境或菜品图片审核通过率会高哦'
 var showCheck = "此为必填选项哦"
@@ -8,7 +8,9 @@ var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');
 var md5 = require('../../util/md5.min.js');
 // 实例化API核心类
 var qqmapsdk = new QQMapWX({
+
   key: 'DQYBZ-AQFK6-6JDSI-EHRZV-EFRCJ-TDFZU' // 必填
+
 });
 Page({
   data: {
@@ -87,6 +89,7 @@ Page({
       region: e.detail.value
     })
   },
+<<<<<<< HEAD
   //数据回填方法
   backfill: function (e) {
     console.log(e);
@@ -147,6 +150,8 @@ Page({
     });
   },
 
+=======
+>>>>>>> b73ae10582644668a2e354e8d84da2ace30c5c51
   upimg: function () {
     var that = this;
     var flag = this.data.flag;

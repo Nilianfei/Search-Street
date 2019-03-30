@@ -1,4 +1,4 @@
-var util=require('../../util/util.js');
+﻿var util=require('../../util/util.js');
 
 var app=getApp();
 var shelp_text='添加关于求助的图片会有更多人愿意帮助你哦'
@@ -31,7 +31,9 @@ Page({
       title: 'T.I.T 创意园',
       latitude: 23.099994,
       longitude: 113.324520,
+
       iconPath: '../../images/locat.png',//图标路径
+
       width: 40,
       height: 40,
     }],

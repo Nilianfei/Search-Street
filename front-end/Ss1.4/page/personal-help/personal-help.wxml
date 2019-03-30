@@ -1,4 +1,4 @@
-<!--page/personal-help/personal-help.wxml-->
+﻿<!--page/personal-help/personal-help.wxml-->
 <view class="contanier">
    <i-tabs current="{{ current }}" bindchange="handleChange">
     <i-tab key="tab1" title="我的服务"></i-tab>
@@ -74,7 +74,9 @@
                 
                 <button class="perhelp-button button1" bindtap='showMycomment' disabled='{{showcomment[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/smile3.png"></image>查看评价</button>
                 
+
                 <button class="perhelp-button button1"  bindtap="showSoucoin" disabled='{{showcoin[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/soucoin1.png"></image>有追赏</button>
+
                 </view>
              </view>
               <view class='toast-box' hidden='{{!ifadditioncoin}}'>

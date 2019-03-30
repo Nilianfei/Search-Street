@@ -9,6 +9,7 @@
   align-items: center;
   margin-bottom: 0.8rem;
 }
+
 .row text{                 
   text-align: left;
  
@@ -32,7 +33,9 @@
  border-radius:0.3rem;
  box-shadow: 0 0 0.15rem #aaa;
  padding: 0.5rem;
+
  width: 200rpx;
+
 }
 .row-button
 {
@@ -47,7 +50,9 @@
 }
 .section-sttext{
  flex-grow: 1;
+
  margin-bottom: 10rpx;
+
 }
 .section-stimage{
   height: 120px;
@@ -71,6 +76,7 @@
 }
 .big-logof{
   display: none;
+
 }
 .column{
   margin-right: 10rpx;
@@ -79,5 +85,5 @@
   margin-right: 40rpx;
 }
 .column2{
-  
+
 }
