@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css">
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet"
+	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/commonutil.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/errorhandle.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/shopimgmanage.js" charset="utf-8"></script>
+</head>
+
+<body>
+	<!-- 表格 -->
+	<table id="shopImgManagementTable" title="商铺图片信息一览" border="0"
+		cellspacing="0" cellpadding="0" iconCls="icon-edit" width="98%"
+		idField="shopImgId" remoteSort="false" pagination="true"
+		singleSelect="false" showFooter="false" striped="true">
+		<thead>
+			<tr align="center">
+				<th field="shopImgId" width="25%">商铺图片ID</th>
+				<th field="imgAddr" width="25%" formatter="imgFormater">商铺图片</th>
+				<th field="shopId" width="25%">商铺ID</th>
+				<th field="createTime" width="25%" formatter="timeFormater">创建时间</th>
+				<th field="opt" formatter='optFormater' width="150">操作</th>
+			</tr>
+		</thead>
+	</table>
+
+	<!-- 编辑 -->
+	<div id="shopImgManagementAdd" icon="icon-save"
+		style="padding: 5px; width: 600px; height: 350px;">
+		<h5 id="shopImgManagementAdd_message" style="color: red;"></h5>
+		<form id="form_shopImgManagementAdd" method="post" enctype="multipart/form-data">
+			<div style="margin: 5px; display: none;">
+				<label for="shopImgId">商铺图片ID：</label> <input
+					class="easyui-validatebox" id="shopImgId" type="text"
+					name="shopImgId" readOnly />
+			</div>
+			<div style="margin: 5px;">
+				<label for="shopId">商铺ID：</label> <input class="easyui-validatebox"
+					required="true" id="shopId" type="text" name="shopId" />
+			</div>
+			<div style="margin: 5px">
+				<label for="imgAddr">商铺图片：</label><input class="easyui-filebox"
+					id="imgAddr" name="imgAddr" style="width: 200px;" required="true">
+			</div>
+		</form>
+		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
+			onclick="shopImgManagementAdd();">提交</a></li>
+	</div>
+	<!-- Hidden value area -->
+	<input id="searchInfoHd" type="hidden" />
+	<input id="urlHd" type="hidden" value="listshopImgs" />
+</body>
+</html>

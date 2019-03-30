@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.ss.dao.PersonInfoDao">
+	<select id="queryPersonInfoList"
+		resultType="com.graduation.ss.entity.PersonInfo">
+		SELECT
+		user_id,
+		user_name,
+		profile_img,
+		sex,
+		birth,
+		phone,
+		sou_coin,
+		user_type,
+		email,
+		create_time,
+		last_edit_time,
+		enable_status
+		FROM
+		tb_person_info
+		<where>
+			<!-- 写like语句的时候 一般都会写成 like '% %' 在mybatis里面写就是应该是 like '%${name} %' 而不是 
+				'%#{name} %' ${name} 是不带单引号的，而#{name} 是带单引号的 -->
+			<if
+				test="personInfoCondition != null and personInfoCondition.userName != null">
+				and user_name like '%${personInfoCondition.userName}%'
+			</if>
+			<if
+				test="personInfoCondition != null and personInfoCondition.enableStatus != null">
+				and enable_status = #{personInfoCondition.enableStatus}
+			</if>
+		</where>
+		ORDER BY
+		create_time DESC
+		LIMIT #{rowIndex},#{pageSize};
+	</select>
+	<select id="queryPersonInfoCount" resultType="int">
+		SELECT
+		count(1)
+		FROM
+		tb_person_info
+		<where>
+			<!-- 写like语句的时候 一般都会写成 like '% %' 在mybatis里面写就是应该是 like '%${name} %' 而不是 
+				'%#{name} %' ${name} 是不带单引号的，而#{name} 是带单引号的 -->
+			<if
+				test="personInfoCondition != null and personInfoCondition.userName != null">
+				and user_name like '%${personInfoCondition.userName}%'
+			</if>
+			<if
+				test="personInfoCondition != null and personInfoCondition.enableStatus != null">
+				and enable_status = #{personInfoCondition.enableStatus}
+			</if>
+		</where>
+	</select>
+	<select id="queryPersonInfoByUserId"
+		resultType="com.graduation.ss.entity.PersonInfo" parameterType="Long">
+		SELECT
+		user_id,
+		user_name,
+		profile_img,
+		sex,
+		birth,
+		phone,
+		sou_coin,
+		user_type,
+		email,
+		create_time,
+		last_edit_time,
+		enable_status
+		FROM
+		tb_person_info
+		WHERE
+		user_id = #{userId}
+	</select>
+	<insert id="insertPersonInfo"
+		parameterType="com.graduation.ss.entity.PersonInfo"
+		useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+		INSERT
+		INTO
+		tb_person_info(
+		user_name,
+		profile_img,
+		sex,
+		birth,
+		phone,
+		sou_coin,
+		user_type,
+		email,
+		create_time,
+		last_edit_time,
+		enable_status)
+		VALUES
+		(#{userName},#{profileImg},#{sex},#{birth},
+		#{phone},#{souCoin},#{userType},#{email},
+		#{createTime},#{lastEditTime},#{enableStatus})
+	</insert>
+	<update id="updatePersonInfo"
+		parameterType="com.graduation.ss.entity.PersonInfo">
+		update tb_person_info
+		<set>
+			<if test="userName != null">user_name=#{userName},</if>
+			<if test="profileImg != null">profile_img=#{profileImg},</if>
+			<if test="sex != null">sex=#{sex},</if>
+			<if test="birth != null">birth=#{birth},</if>
+			<if test="phone != null">phone=#{phone},</if>
+			<if test="souCoin != null">sou_coin=#{souCoin},</if>
+			<if test="userType != null">user_type=#{userType},</if>
+			<if test="email != null">email=#{email},</if>
+			<if test="lastEditTime != null">last_edit_time=#{lastEditTime},</if>
+			<if test="enableStatus != null">enable_status=#{enableStatus}</if>
+		</set>
+		where user_id=#{userId}
+	</update>
+</mapper>

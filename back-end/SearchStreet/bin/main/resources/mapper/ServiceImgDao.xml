@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.ss.dao.ServiceImgDao">
+	<select id="getServiceImg"
+		resultType="com.graduation.ss.entity.ServiceImg">
+		SELECT
+		service_img_id,
+		img_addr,
+		create_time,
+		service_id
+		FROM
+		tb_service_img
+		WHERE service_id=#{serviceId}
+	</select>
+	<insert id="insertServiceImg" parameterType="com.graduation.ss.entity.ServiceImg"
+		useGeneratedKeys="true" keyProperty="serviceImgId" keyColumn="service_img_id">
+		INSERT
+		INTO
+		tb_service_img(img_addr,create_time,service_id)
+		VALUES
+		(#{imgAddr},#{createTime},#{serviceId})
+	</insert>
+	<update id="updateServiceImg" parameterType="com.graduation.ss.entity.ServiceImg">
+		update tb_service_img
+		<set>
+            <if test="imgAddr != null">img_addr=#{imgAddr},</if>
+			<if test="createTime != null">create_time=#{createTime},</if>
+			<if test="serviceId != null">service_id=#{serviceId}</if>
+		</set>
+		where service_img_id=#{serviceImgId}
+	</update>
+
+	<delete id="deleteServiceImg">
+		DELETE FROM
+		tb_service_img
+		WHERE
+		service_id=#{serviceId}
+	</delete>
+</mapper>

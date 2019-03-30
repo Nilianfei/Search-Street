@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css">
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet"
+	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/commonutil.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/errorhandle.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/shopmanage.js"></script>
+</head>
+
+<body>
+	<!-- 表格 -->
+	<table id="shopManagementTable" title="商铺信息一览" border="0"
+		cellspacing="0" cellpadding="0" iconCls="icon-edit" width="98%"
+		idField="shopId" remoteSort="false" pagination="true"
+		singleSelect="false" showFooter="false" striped="true">
+		<thead>
+			<tr align="center">
+				<th field="shopId" width="50">商铺ID</th>
+				<th field="userId" width="50">用户ID</th>
+				<th field="shopName" width="100">商铺名</th>
+				<th field="businessLicenseCode" width="150">营业执照编码</th>
+				<th field="businessLicenseImg" width="120" formatter="imgFormater">营业执照照片</th>
+				<th field="perCost" width="50">平均消费</th>
+				<th field="phone" width="100">电话</th>
+				<th field="province" width="50">省份</th>
+				<th field="city" width="50">城市</th>
+				<th field="district" width="50">地区</th>
+				<th field="fullAddress" width="150">详细地址</th>
+				<th field="shopMoreInfo" width="150">补充地址</th>
+				<th field="isMobile" width="50" formatter="ismobileFormater">是否移动</th>
+				<th field="profileImg" width="120" formatter="imgFormater">店铺头像</th>
+				<th field="latitude" width="100">纬度</th>
+				<th field="longitude" width="100">经度</th>
+				<th field="enableStatus" width="50" formatter="statusFormater">状态</th>
+				<th field="businessScope" width="100">营业范围</th>
+				<th field="createTime" width="100" formatter="timeFormater">创建时间</th>
+				<th field="lastEditTime" width="100" formatter="timeFormater">最近修改时间</th>
+				<th field="opt" formatter='optFormater' width="150">操作</th>
+			</tr>
+		</thead>
+	</table>
+
+	<!-- 编辑 -->
+	<div id="shopManagementEdit" icon="icon-save"
+		style="padding: 5px; width: 600px; height: 350px;">
+		<h5 id="shopManagementEdit_message" style="color: red;"></h5>
+		<form id="form_shopManagementEdit" method="post"
+			enctype="multipart/form-data">
+			<div style="margin: 5px; display: none;">
+				<label for="shopId">商铺ID：</label> <input class="easyui-validatebox"
+					id="shopId" type="text" name="shopId" readOnly />
+			</div>
+			<div style="margin: 5px;">
+				<label for="userId">用户ID：</label> <input class="easyui-validatebox"
+					required="true" id="userId" type="text" name="userId" />
+			</div>
+			<div style="margin: 5px">
+				<label for="shopName">商铺名：</label> <input class="easyui-validatebox"
+					type="text" name="shopName" required="true" />
+			</div>
+			<div style="margin: 5px">
+				<label for="businessLicenseCode">营业执照编码：</label> <input
+					class="easyui-validatebox" type="text" name="businessLicenseCode" />
+			</div>
+			<div style="margin: 5px">
+				<label>营业执照：</label><input class="easyui-filebox"
+					id="businessLicenseImg" name="businessLicenseImg"
+					style="width: 200px;">
+			</div>
+			<div style="margin: 5px">
+				<label>商铺头像：</label><input class="easyui-filebox" id="profileImg"
+					name="profileImg" style="width: 200px;">
+			</div>
+			<div style="margin: 5px">
+				<label for="perCost">平均消费：</label> <input class="easyui-validatebox"
+					type="text" name="perCost" />
+			</div>
+			<div style="margin: 5px">
+				<label for="phone">电话号码：</label> <input class="easyui-validatebox"
+					required="true" type="text" name="phone" validType="number" />
+			</div>
+			<div style="margin: 5px">
+				<label for="province">省份：</label> <input class="easyui-validatebox"
+					type="text" name="province" required="true" />
+			</div>
+			<div style="margin: 5px">
+				<label for="city">城市：</label> <input class="easyui-validatebox"
+					type="text" name="city" required="true" />
+			</div>
+			<div style="margin: 5px">
+				<label for="district">地区：</label> <input class="easyui-validatebox"
+					type="text" name="district" required="true" />
+			</div>
+			<div style="margin: 5px">
+				<label for="fullAddress">详细地址：</label> <input
+					class="easyui-textbox" data-options="multiline:true"
+					style="width: 200px; height: 50px" name="fullAddress"
+					required="true" />
+			</div>
+			<div style="margin: 5px">
+				<label for="shopMoreInfo">补充地址：</label> <input
+					class="easyui-textbox" data-options="multiline:true"
+					style="width: 200px; height: 50px" name="shopMoreInfo" />
+			</div>
+			<div style="margin: 5px">
+				<label for="isMobile">是否移动商铺：</label> <select id="isMobile"
+					required="true" class="easyui-combobox" name="isMobile"
+					style="width: 100px;">
+					<option id="yes" value="1">是</option>
+					<option id="no" value="0">否</option>
+				</select>
+			</div>
+			<div style="margin: 5px">
+				<label for="latitude">经度：</label> <input class="easyui-validatebox"
+					required="true" type="text" name="latitude" />
+			</div>
+			<div style="margin: 5px">
+				<label for="longitude">纬度：</label> <input class="easyui-validatebox"
+					required="true" type="text" name="longitude" />
+			</div>
+			<div style="margin: 5px">
+				<label for="enableStatus">商铺状态：</label> <select id="enableStatus"
+					required="true" class="easyui-combobox" name="enableStatus"
+					style="width: 100px;">
+					<option id="wait" value="0">未审核</option>
+					<option id="yes" value="1">已许可</option>
+					<option id="no" value="2">未许可</option>
+				</select>
+			</div>
+			<div style="margin: 5px">
+				<label for="businessScope">营业范围：</label> <input required="true"
+					class="easyui-validatebox" type="text" name="businessScope" />
+			</div>
+		</form>
+		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
+			onclick="shopManagementEdit();">提交</a></li>
+	</div>
+	<!-- Hidden value area -->
+	<input id="enalbeStatusHd" type="hidden" value="ALL" />
+	<input id="searchConditionHd" type="hidden" value="ALL" />
+	<input id="searchInfoHd" type="hidden" />
+	<input id="urlHd" type="hidden" value="listShops" />
+</body>
+</html>

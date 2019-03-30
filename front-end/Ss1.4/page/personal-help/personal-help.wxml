@@ -1,0 +1,318 @@
+<!--page/personal-help/personal-help.wxml-->
+<view class="contanier">
+   <i-tabs current="{{ current }}" bindchange="handleChange">
+    <i-tab key="tab1" title="我的服务"></i-tab>
+    <block wx:if="{{current=='tab1'}}">
+      <navigator url="../query-myhelp/query-myhelp" class="">
+        <i-icon type="search" size="28" color="#80848f" />
+      </navigator>
+    </block>
+    <i-tab key="tab2" title="我的求助"></i-tab>
+    <block wx:if="{{current=='tab2'}}">
+      <navigator url="../query-myappeal/query-myappeal" class="">
+      <i-icon type="search" size="28" color="#80848f" />
+      </navigator>
+    </block>
+   </i-tabs>
+
+     <block wx:if="{{current=='tab1'}}">
+       <view class="perhelp-bd">
+         <view class='"perhelp-item1 {{currentTab == 1 ? "active" : ""}}' data-current="1" bindtap='switchTab'>
+         <image class="service-img1" src="../../images/going.png"></image>
+         <text class="service-text1">进行中</text>
+         </view>
+         <view class='"perhelp-item1 {{currentTab == 2 ? "active" : ""}}' data-current="2" bindtap='switchTab'>
+          <image class="service-img1" src="../../images/finished.png"></image>
+          <text class="service-text1">已完成</text>
+         </view>
+         <view class='"perhelp-item1 {{currentTab == 3 ? "active" : ""}}' data-current="3" bindtap='switchTab'>
+          <image class="service-img1" src="../../images/unuse.png"></image>
+          <text class="service-text1">无效单</text>
+         </view>
+       </view>
+
+        <view class='personal-help-view'>
+         <block wx:for="{{list2}}" wx:key='id'>
+          <block wx:if="{{(List1[index].helpStatus==0||List1[index].helpStatus==1)&&currentTab==1}}">
+             <navigator class="personal-help-item" url='../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{List1[index].helpId}}'>
+               <view>
+                <text class="perhelp-title">{{item.appealTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
+                   <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
+               </view>
+              <view class="check-buttons">
+                <button class="check-button" bindtap="" disabled='{{btnhover}}' id='{{item.appealId}}'>监控投诉</button>
+              </view>
+              <view class="check-text">若求助者未点击确认，还有{{targetTime}}系统将自动确认</view>
+             </navigator>
+           </block>
+           <block wx:if="{{List1[index].helpStatus==3&&currentTab==3}}">
+             <navigator class="personal-help-item" url="../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{List1[index].helpId}}">
+              
+                <text class="perhelp-title">{{item.appealTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
+                   <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
+             
+                <image class="unuse-icon" src="../../images/order1.png"></image>
+             </navigator>
+           </block>
+
+           <block wx:if="{{currentTab==2&&List1[index].helpStatus==2}}">
+             <view class="personal-help-item">
+              <navigator url="../myservice-detail/myservice-detail?id={{item.appealId}}&helpid={{List1[index].helpId}}">
+                <text class="perhelp-title">{{item.appealTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
+                   <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
+              </navigator>
+                <view class="perhelp-buttons buttons1">
+                
+                <button class="perhelp-button button1" bindtap='showMycomment' disabled='{{showcomment[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/smile3.png"></image>查看评价</button>
+                
+                <button class="perhelp-button button1"  bindtap="showSoucoin" disabled='{{showcoin[index]}}' data-id='{{index}}'><image class="finished-icon" src="../../images/soucoin1.png"></image>有追赏</button>
+                </view>
+             </view>
+              <view class='toast-box' hidden='{{!ifadditioncoin}}'>
+               <view class='toastbg'></view>
+                 <view class='showToast'>
+                   <view class='toast-title title'>
+                      <text>大大地赏</text>
+                   </view>
+                   <view class="toast-body">
+                   <view class='toast-main main'>
+                   <view>
+                   <image class="toast-img img" src="../../images/soucoin1.png"></image>
+                   </view>
+                  <view>
+                    <text class="toast-text3">{{List1[index].additionalCoin}}</text>
+                  </view>
+                  <view class="toast-text text4">
+                   <text>搜币</text>
+                  </view>
+                  </view>
+                  <view class='toast-button button6'>
+                   <view class='button5'>
+                    <button catchtap='addsouCoin'>放入钱包</button>
+                  </view>
+                  </view>
+                 </view>
+                 </view>
+                </view>
+             <view class='toast-box' hidden='{{!ifmycomment}}'>
+               <view class='toastbg'></view>
+              <view class='showToast'>
+               <view class='toast-title title1'>
+                <text>我的评价</text>
+               </view>
+               <view class="toast-body">
+                <view class='toast-main main1'>
+               <view class='card'>
+               <view class='card-item'>
+                <view class='item-title'>
+                <view class='title-text'>完成度</view>
+                </view>
+               <view class='item-content'>
+               <view class='contet-text content-body'>
+               <!-- 为方便数据定位，自定义了wx:for-item为j -->
+                 <block wx:for='{{note1}}' wx:for-item='j' wx:key=''>
+                  <view class='image-container' data-index='{{i.id}}'>
+                  <image data-star='{{index + 1}}' src='{{starCheckedImgUrl}}' bin></image>
+                  </view>
+                 </block>
+                </view>
+                </view>
+              </view>
+              <view class='card-item'>
+                <view class='item-title'>
+                <view class='title-text'>帮忙效率</view>
+                </view>
+               <view class='item-content'>
+               <view class='contet-text content-body'>
+               <!-- 为方便数据定位，自定义了wx:for-item为j -->
+                 <block wx:for='{{note2}}' wx:for-item='j' wx:key=''>
+                  <view class='image-container' data-index='{{i.id}}' >
+                  <image data-star='{{index + 1}}' src='{{starCheckedImgUrl}}' bin></image>
+                  </view>
+                 </block>
+                </view>
+                </view>
+              </view>
+              <view class='card-item'>
+                <view class='item-title'>
+                <view class='title-text'>帮忙态度</view>
+                </view>
+               <view class='item-content'>
+               <view class='contet-text content-body'>
+               <!-- 为方便数据定位，自定义了wx:for-item为j -->
+                 <block wx:for='{{note3}}' wx:for-item='j' wx:key=''>
+                  <view class='image-container' data-index='{{i.id}}'>
+                  <image data-star='{{index + 1}}' src='{{starCheckedImgUrl}}' bin></image>
+                  </view>
+                 </block>
+                </view>
+                </view>
+              </view>
+             </view>
+           <view class='toast-button button7'>
+              <view class='button5'>
+           <button catchtap='cancelcomment'>取消查看</button>
+           </view>
+        </view>
+      </view>
+      </view>
+      </view>
+               
+              </view>
+            </block>
+          </block>
+          </view>
+     </block>
+     
+     <block wx:if="{{current=='tab2'}}">
+       <view class="perhelp-bd">
+     
+       <view class='perhelp-item1 {{currentTab1 == 1 ? "active" : ""}}' data-current="1" bindtap='switchTab1'>
+         <image class="service-img1" src="../../images/going.png"></image>
+         <text class="service-text1">进行中</text>
+        </view>
+        <view class='perhelp-item1 {{currentTab1 == 2 ? "active" : ""}}' data-current="2" bindtap='switchTab1'>
+         <image class="service-img1" src="../../images/finished.png"></image>
+         <text class="service-text1">已完成</text>
+        </view>
+        <view class='perhelp-item1 {{currentTab1 == 3 ? "active" : ""}}' data-current="3" bindtap='switchTab1'>
+          <image class="service-img1" src="../../images/unuse.png"></image>
+          <text class="service-text1">失效单</text>
+        </view>
+       </view>
+       
+       <view class='personal-help-view'>
+         <block wx:for="{{list}}" wx:key='id'>
+          <block wx:if="{{(list[index].appealStatus==0||list[index].appealStatus==1)&&currentTab1==1}}">
+             <view class="personal-help-item" bindtap='toDetails' id='{{item.appealId}}'>
+              
+                <text class="perhelp-title">{{item.appealTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
+                   <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
+             
+              <view class="perhelp-buttons">
+                <button class="perhelp-button" bindtap="finishedHelp" disabled='{{btnhover}}' id='{{item.appealId}}'>确认已被帮助</button>
+                <button class="perhelp-button"  bindtap="unfinishedHelp" disabled='{{btnhover1}}' id='{{item.appealId}}'>帮助无效</button>
+               <view class="perhelp-buttons1">
+                <button class="perhelp-button-small" bindtap="withdrawHelp"  id='{{item.appealId}}'>撤销</button>
+                <button class="perhelp-button-small small1" bindtap="modifyHelp" id='{{item.appealId}}'>修改</button>
+               </view>
+              </view>
+             </view>
+           </block>
+            <block wx:if="{{list[index].appealStatus==3&&currentTab1==3}}">
+             <navigator class="personal-help-item" url="../myhelp-details/myhelp-details?id={{list[index].appealId}}">
+              
+                <text class="perhelp-title">{{item.appealTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
+                   <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
+             
+                <image class="unuse-icon" src="../../images/order2.png"></image>
+             </navigator>
+           </block>
+
+           <block wx:if="{{currentTab1==2&&list[index].appealStatus==2}}">
+             <view class="personal-help-item">
+              <navigator  url="../myhelp-details/myhelp-details?id={{list[index].appealId}}" >
+                <text class="perhelp-title">{{item.appealTitle}}</text>
+                 <image class="perhelp-icon" src="../../images/time.png"></image>
+                   <text class="perhelp-cost cost1">{{item.endTime}}结束</text>
+                 <image class="perhelp-icon" src="../../images/yellowcoin.png"></image>
+                   <text class="perhelp-cost cost1">{{item.souCoin}}搜币</text>
+             </navigator>
+                <view class="perhelp-buttons buttons1">
+                <button class="perhelp-button button1" bindtap='inputComment' id='{{list[index].appealId}}' data-id='{{index}}' disabled='{{disabled1[index]}}'><image class="finished-icon" src="../../images/smile3.png"></image>给好人评</button>
+                
+                <button class="perhelp-button button1"  bindtap="inputReward" id='{{list[index].appealId}}' data-id='{{index}}' disabled='{{disabled[index]}}'><image class="finished-icon" src="../../images/soucoin2.png"></image>追加打赏</button>
+                </view>
+             </view>
+            </block>
+        </block>
+       </view>
+    </block>
+
+  <view class='toast-box' hidden='{{!ifName}}'>
+    <view class='toastbg'></view>
+      <view class='showToast'>
+        <view class='toast-title'>
+            <text>追加打赏</text>
+        </view>
+        <view class='toast-main'>
+          <view>
+           <image class="toast-img" src="../../images/yellowcoin.png"></image>
+          </view>
+          <view class='toast-input'>
+            <input bindinput='setValue'data-name='stuEidtName'></input>
+          </view>
+          <view class="toast-text">
+           <text>搜币</text>
+          </view>
+        </view>
+        <view class='toast-button'>
+          <view class='button3'>
+             <button catchtap='cancel'>取消</button>
+          </view>
+          <view class='button4'>
+             <button catchtap='confirm'>确认追加</button>
+          </view>
+        </view>
+      </view>
+  </view>
+
+ <view class='toast-box' hidden='{{!ifcomment}}'>
+   <view class='toastbg'></view>
+      <view class='showToast'>
+        <view class='toast-title title1'>
+            <text>给好人评</text>
+         </view>
+       <view class="toast-body">
+      <view class='toast-main main1'>
+     <view class='card'>
+   <!-- 为方便数据定位，自定义了wx:for-item为i -->
+    <block wx:for='{{evaluations}}' wx:for-item='i' wx:key=''>
+      <!-- 单个卡片项 -->
+      <view class='card-item'>
+        <!-- 卡片上方标题 -->
+        <view class='item-title'>
+         <view class='title-text'>{{i.name}}</view>
+         </view>
+        <!-- 卡片下方评价区 -->
+        <view class='item-content'>
+          <view class='contet-text content-body'>
+            <!-- 为方便数据定位，自定义了wx:for-item为j -->
+            <block wx:for='{{starMap}}' wx:for-item='j' wx:key=''>
+              <view class='image-container' data-index='{{i.id}}' bindtap='chooseStar'>
+                <image wx:if='{{i.star >= index + 1}}' data-star='{{index + 1}}' src='{{starCheckedImgUrl}}' bin></image>
+                <image wx:if='{{i.star < index + 1}}' data-star='{{index + 1}}' src='{{starUnCheckedImgUrl}}'></image>
+              </view>
+            </block>
+            <text class='note'>{{i.note}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+   </view>
+   <view class='toast-button button7'>
+      <view class='button5'>
+        <button catchtap='confirmcomment'>确认评价</button>
+      </view>
+    </view>
+  </view>
+  </view>
+  </view>
+  </view>
+-
+</view>

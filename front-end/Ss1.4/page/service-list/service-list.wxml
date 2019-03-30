@@ -1,0 +1,26 @@
+ <!--page/service-list/service-list.wxml-->
+<view class='container'>
+<loading hidden="{{!loading}}">加载中</loading>
+<view class='service-list-view'>
+  <i-cell-group>
+     <i-cell title="添加" is-link url="../addservice/addservice?serviceId=0&isadd=1&shopId={{shopId}}">
+        <i-icon type="add" slot="icon" />
+      </i-cell>
+    <block wx:for="{{list}}" wx:key="id">
+      <i-cell title="{{item.serviceName}}" value="￥{{item.servicePrice}}" is-link url="../addservice/addservice?serviceId={{item.serviceId}}&isadd=0&shopId={{shopId}}"></i-cell>
+    </block>
+  </i-cell-group>
+</view>
+<view class='bottom-view'>
+  <i-page current="{{ current }}" total="{{pageNum}}" bind:change="handleChange">
+    <view slot="prev">
+        <i-icon type="return"></i-icon>
+        上一页
+    </view>
+    <view slot="next">
+        下一页
+        <i-icon type="enter"></i-icon>
+    </view>
+  </i-page>
+</view>
+</view>

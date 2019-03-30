@@ -1,0 +1,350 @@
+/* page/personal-help/personal-help.wxss */
+.perhelp-bd{
+  height: 200rpx;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.perhelp-item{
+  width: 300rpx;
+  display: flex;
+  flex-direction: column;
+  height: 200rpx;
+  justify-content: center;
+}
+.service-img{
+   width: 80rpx;
+   height: 80rpx;
+   margin-left:180rpx;
+}
+.service-text{
+  margin-left:170rpx;
+}
+.perhelp-item1{
+  width: 300rpx;
+  display: flex;
+  flex-direction: column;
+  height: 200rpx;
+  justify-content: center;
+}
+.service-img1{
+   width: 60rpx;
+   height: 60rpx;
+   margin-left: 100rpx;
+}
+.service-text1{
+  font-size: 30rpx;
+  margin-left: 90rpx;
+}
+.perhelp-icon{
+  height: 50rpx;
+  width: 50rpx;
+  margin-left: 20rpx;
+  margin-top:20rpx;
+  float: left;
+}
+
+.perhelp-title{
+  margin-top:30rpx;
+  margin-left:20rpx;
+  display: block;
+  width: 460rpx;
+}
+.perhelp-button{
+ float:right;
+ width:220rpx;
+ height: 50rpx;
+ font-size: 26rpx;
+ background-color: #F7B45D;
+ color: #fff;
+ margin-top:10rpx;
+}
+.perhelp-cost{
+  float:left;
+  margin-left: 10rpx;
+  margin-top:30rpx;
+}
+.perhelp-buttons{
+  display: flex;
+  flex-direction: column;
+  margin-top:-80rpx;
+}
+.check-buttons{
+   display: flex;
+  flex-direction: column;
+  margin-top:-20rpx;
+}
+
+.perhelp-button-small{
+  width: 105rpx;
+  height: 50rpx;
+  background-color: #bebebe;
+  font-size: 22rpx;
+  color: #ffffff;
+  margin-top:10rpx;
+  float: left;
+  margin-left: 20rpx;
+}
+.small1{
+  margin-left:20rpx;
+}
+.unuse-icon{
+  width: 150rpx;
+  height: 150rpx;
+  float: right;
+  margin-right: 40rpx;
+  margin-top: -50rpx;
+}
+.finished-icon{
+  width:30rpx;
+  height: 30rpx;
+  margin-top: 20rpx;
+  margin-right:10rpx;
+}
+.personal-help-item{
+  height: 170rpx;
+  border-bottom: 1px solid #bebebe;
+}
+.button1{
+  padding-left: 10rpx;
+  margin-top: 20rpx;
+  height:70rpx;
+  margin-right:30rpx;
+}
+.toast-box {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+ 
+.toastbg {
+    opacity: 0.2;
+    background-color: black;
+    position: absolute;
+    width: 100%;
+    min-height: 100vh;
+}
+ 
+.showToast {
+    position: absolute;
+    opacity: 1;
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 40%;
+}
+ 
+.toast-title {
+    padding-left: 5%;
+    background-color: #F7B45D;
+    color: white;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    border-top-right-radius: 16rpx;
+    border-top-left-radius: 16rpx;
+    text-align: center;
+}
+ 
+.toast-main {
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    background-color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: row
+}
+.toast-img{
+  width: 80rpx;
+  height: 80rpx;
+  margin-left: 30rpx;
+}
+.toast-text{
+  margin-top: 15rpx;
+}
+.toast-input {
+    margin-left: 5%;
+    margin-right: 5%;
+    border: 1px solid #d3d3d3;
+    padding-left: 2vh;
+    padding-right: 2vh;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    width: 30%;
+}
+.toast-button {
+    display: flex;
+}
+ 
+.button3{
+    width: 50%;
+}
+ 
+.button4 {
+    width: 50%;
+}
+ 
+.button3 button {
+    width: 100%;
+    background-color: white;
+    color: black;
+    border-radius: 0px;
+    border-bottom-left-radius: 16rpx;
+}
+ 
+.button4 button{
+    width: 100%;
+    background-color: white;
+    color: black;
+    border-radius: 0px;
+    border-bottom-right-radius: 16rpx;
+}
+ 
+.picker {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+.active{
+border-bottom: 2px solid #2d8cf0;
+}
+.check-button{
+float:right;
+width:170rpx;
+height:60rpx;
+font-size:28rpx;
+background-color:#F7B45D;
+color:#fff;
+margin-top:10rpx;
+}
+.check-text{
+  font-size: 24rpx;
+  color: #bebebe;
+  float: right;
+  margin-top: 10rpx;
+}
+.toast-body{
+  display: flex;
+  flex-direction: column;
+  
+}
+.main{
+  padding-bottom: 350rpx;
+  background-color: #00e3e3;
+}
+.input{
+margin-left: 5%;
+margin-right: 5%;
+padding-left: 2vh;
+padding-right: 2vh;
+padding-top: 1vh;
+padding-bottom: 1vh;
+ width: 30%;
+}
+.button5{
+width:40%;
+margin-left:150rpx;
+}
+.button5 button{
+  background-color: #F7B45D;
+  color: white;
+  border-radius: 10rpx;
+}
+.button6{
+border:1px solid #00e3e3;
+background-color: #00e3e3;
+height:140rpx;
+}
+.toast-text3{
+  font-size: 40px;
+  color: #F7B45D;
+}
+.title{
+  background: #00e3e3;
+}
+.title1{
+   background:#F7B45D;
+}
+.text4{
+  color: white;
+  margin-top: 40rpx;
+}
+.img{
+margin-top: 15rpx;
+margin-right:50rpx;
+margin-left:80rpx;
+}
+.main1{
+  padding-bottom: 40rpx;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  float: left;
+}
+.button7{
+  background-color: #ffffff;
+}
+
+/* common.wxss */
+.card .card-item{
+  margin-bottom: 25rpx;
+  background-color: white;
+   border-bottom: 1rpx solid #dedede;
+   padding-bottom: 10rpx;
+   margin-left: 20rpx;
+}
+ 
+.card-item .item-title,
+.card-item .item-content{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+ 
+.card-item .item-title{
+  align-items: center;
+  line-height: 70rpx;
+  font-size: 26rpx;
+}
+ 
+.card-item .item-content{
+  line-height: 70rpx;
+}
+ 
+.card-item .image-container{
+  margin-right: 25rpx;
+  width: 40rpx;
+  display: flex;
+  align-items: center;
+}
+ 
+.card-item .title-image{
+  height: 40rpx;
+}
+ 
+.card-item .content-image{
+  height: 70rpx;
+}
+ 
+.card-item .image-container image{
+  width: 40rpx;
+  height: 40rpx;
+}
+ 
+
+ 
+/* feedback.wxss */
+.card-item .content-body{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+ 
+.card-item .content-body .note{
+  line-height: 70rpx;
+  font-size: 30rpx;
+}
+.cost1{
+  font-size: 26rpx;
+}

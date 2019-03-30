@@ -1,0 +1,120 @@
+.containor{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shop-message{
+  width: 100%;
+  background-color: #6e8bb6;
+}
+
+.shop-message-top{
+  display: flex;
+  flex-direction: row;
+  height: 200rpx;
+  width: 100%;
+}
+
+.shop-messagebd{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+  width: 100%;
+  height: 600rpx;
+}
+
+.shop-function-list{
+  width:100%;
+  display: block;        
+}
+
+.shopalbum-text{
+  margin-left: 20rpx;
+  width: 500rpx;
+  float: left;
+  font-size: medium;
+}
+
+.shop-situation{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:100%;
+  font-size: medium;
+}
+
+.onlinetime{
+  position: relative;
+  color:#495060;
+  margin-left: 10px;
+  margin-top: 20px;
+}
+.issearched{
+  position: relative;
+  color:#495060;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.shop-message-picture{
+  margin-left: 10rpx;
+  width: 200rpx;
+  height: 200rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.shop-picture{
+  width: 170rpx;
+  height: 170rpx;
+  border-radius: 50%;
+  border: 6rpx solid whitesmoke;
+  border-color: white;
+}
+
+.shop-lstext{
+  position: relative;
+  margin-top: 20px;
+  color: #fff;
+}
+
+.shop-message-name{
+  margin-left: 10rpx;
+  width: 520rpx;
+  height: 200rpx;
+  display: flex;
+  align-items: center;
+}
+
+.name{
+  font-size: large;
+  color: white;
+}
+
+.shop-message-buttom{
+
+  height: 200rpx;
+  width: 750rpx;
+  display: flex;
+}
+
+.shop-score{
+  margin-left: 38rpx;
+  width: 200rpx;
+  height: 200rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.score-number{
+  font-size: xx-large;
+  color: white;
+}
+.score-text{
+  font-size: small;
+  color: white;
+}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.ss.dao.AppealImgDao">
+	<select id="getAppealImg"
+		resultType="com.graduation.ss.entity.AppealImg">
+		SELECT
+		appeal_img_id,
+		img_addr,
+		create_time,
+		appeal_id
+		FROM
+		tb_appeal_img
+		WHERE appeal_img_id=#{appealImgId}
+	</select>
+	<select id="queryAppealImgCount" resultType="int">
+		SELECT
+		count(1)
+		FROM
+		tb_appeal_img
+		<where>
+			<if test="appealImgCondition.appealId != null">
+				and appeal_id = #{appealImgCondition.appealId}
+			</if>
+		</where>
+	</select>
+	<select id="queryAppealImgList"
+		resultType="com.graduation.ss.entity.AppealImg">
+		SELECT
+		appeal_img_id,
+		img_addr,
+		create_time,
+		appeal_id
+		FROM
+		tb_appeal_img
+		<where>
+			<if test="appealImgCondition.appealId != null">
+				and appeal_id = #{appealImgCondition.appealId}
+			</if>
+		</where>
+		ORDER BY
+		create_time DESC
+		LIMIT #{rowIndex},#{pageSize};
+	</select>
+	<insert id="insertAppealImg"
+		parameterType="com.graduation.ss.entity.AppealImg"
+		useGeneratedKeys="true" keyProperty="appealImgId"
+		keyColumn="appeal_img_id">
+		INSERT INTO
+		tb_appeal_img(img_addr,create_time,appeal_id)
+		VALUES
+		(#{imgAddr},#{createTime},#{appealId})
+	</insert>
+	<delete id="deleteAppealImgById">
+		DELETE FROM
+		tb_appeal_img
+		WHERE
+		appeal_img_id =
+		#{appealImgId}
+	</delete>
+	<delete id="deleteAppealImgByAppealId">
+		DELETE FROM
+		tb_appeal_img
+		WHERE
+		appeal_id =
+		#{appealId}
+	</delete>
+</mapper>

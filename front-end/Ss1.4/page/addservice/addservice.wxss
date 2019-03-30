@@ -1,0 +1,83 @@
+/* page/addservice/addservice.wxss */
+.container{
+  padding:1rem;
+  font-size: 0.9rem;
+  line-height: 1.5rem;
+}
+.row{
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+.row text{                 
+  text-align: left;
+ 
+}
+.row input{
+ font-size: 0.7rem;
+ flex-grow: 2;
+ border: 1px solid #0099CC;
+ display:   inline-block;
+ border-radius:0.3rem;
+ box-shadow: 0 0 0.15rem #aaa;
+ padding: 0.3rem;
+}
+.row textarea
+{
+  height: 150rpx;
+  font-size: 0.8rem;
+ flex-grow: 2;
+ border: 1px solid #0099CC;
+ display:   inline-block;
+ border-radius:0.3rem;
+ box-shadow: 0 0 0.15rem #aaa;
+ padding: 0.5rem;
+ width: 200rpx;
+}
+.row-button
+{
+  display: flex;
+  align-items: center;
+  margin: 1rem;
+}
+.row button{
+  padding: 0 2rem;
+  margin:3rem 1rem;
+
+}
+.section-sttext{
+ flex-grow: 1;
+ margin-bottom: 10rpx;
+}
+.section-stimage{
+  height: 120px;
+}
+.big-logo{
+  height: 100px;
+  width: 100px;
+  position: absolute;
+}
+.logoinfos{
+  height: 95px;
+  width: 95px;
+  border: 1px solid #0099CC;
+}
+.logoinfo{
+  height: 80px;
+  width: 80px;
+  position: absolute;
+  margin: 0.5rem;
+  z-index: 2;
+}
+.big-logof{
+  display: none;
+}
+.column{
+  margin-right: 10rpx;
+}
+.column1{
+  margin-right: 40rpx;
+}
+.column2{
+  
+}

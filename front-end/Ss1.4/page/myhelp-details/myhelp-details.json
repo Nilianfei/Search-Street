@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "求助详情",
+  "usingComponents": {
+    "i-count-down": "../../dist/count-down/index"
+  }
+}

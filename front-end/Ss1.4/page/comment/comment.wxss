@@ -1,0 +1,54 @@
+/* pages/comment/comment.wxss */
+@import "../../weui.wxss";
+.container
+{
+  height: 100%;
+  width:100%;
+  padding-top: 40rpx;
+  
+  display: flex;
+  flex-direction: column;
+  }
+.comment
+{
+  padding-left: 10rpx;
+}
+.serviceinfo
+{
+  justify-content: flex-start;
+}
+
+.serviceimg {
+  width: 50rpx;
+  height: 50rpx;
+/*  margin-left: 0rpx;*/
+  border-radius: 50%;
+
+}
+.nickname {
+  color: #aaa;
+}
+.servicename {
+  color: #000;
+}
+.star-pos {
+    margin: 20rpx;
+    display: flex;
+    flex-direction: column;
+ 
+}
+.weui-cells_after-title{
+  width: 92%;
+  margin:0 auto;
+  border:1px solid #ddd;
+}
+.row{
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  margin-left: 40rpx;
+}
+.row button{
+  padding: 0 2rem;
+  margin:2rem 1rem;
+}

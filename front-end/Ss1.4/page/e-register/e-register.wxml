@@ -1,0 +1,114 @@
+<!--page/register/register.wxml-->
+<view class="container">
+  <view class="reg-hd">
+   <view class='header'>
+      <view class="userinfo-avatar">
+       <image class="big-logo {{show_chlogo ? '' : 'big-logof'}}" bindtap="chooseLogo" src='../../images/add-logo.png'></image>  
+          <block wx:for="{{business_logo}}">  
+            <view class='logoinfos'>  
+              <image class="logoinfo" src='{{item}}' name="businessLogo"></image>  
+            </view>  
+          </block>
+      </view>
+    </view>
+    <view class="reghd-text">
+     <text>{{text}}</text>
+    </view>
+    <view class="weui1">
+     <view class="weui-uploader__files">
+          <view wx:for="{{shop_imgs}}" wx:key="*this" wx:for-item="image">
+           <view class="weui-uploader__file">
+              <image class="weui-uploader__img" src="{{image}}" data-src="{{image}}" bindtap="previewImage"></image>
+            </view>
+          </view>
+        <view class="weui-uploader__input-box">
+          <view class="weui-uploader__input" bindtap="chooseImage"></view>
+       </view>
+      </view>
+    </view>
+  </view>
+  <view class="reg-bd">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" placeholder="商铺名字" name="shopName" focus/>
+          <view class="show_error" wx:if="{{errorMsgs.name_error}}">errorMsgs.name_error</view>
+        </view>
+      </view>
+     <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" placeholder="主营范围" name="businessScope" focus/>
+          <view class="show_error" wx:if="{{errorMsgs.scope_error}}">errorMsgs.scope_error</view>
+        </view>
+      </view>
+     <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" placeholder="人均消费（元/人）" name="perCost" type='number'/>
+          <view class="show_error" wx:if="{{errorMsgs.percost_error}}">{{errorMsgs.percost_error}}</view>
+        </view>
+      </view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" placeholder="营业执照编码" name="businessLicenseCode" focus/>
+          <view class="show_error" wx:if="{{errorMsgs.code_error}}">{{errorMsgs.code_error}}</view>
+        </view>
+      </view>
+      <view class="section-stimage">
+        <view class="section-sttext">营业执照上传</view>
+           <view class="big-logos">  
+            <image class="big-logo {{flag ? '' : 'big-logof'}}" bindtap="upimg" src='../../images/add-photo.png'></image>  
+             <block wx:for="{{business_img}}">  
+             <view class='logoinfos'>  
+             <image class="logoinfo" src='{{business_img[0]}}' name="businessLicenseImg"></image>  
+             </view>  
+            </block>  
+             </view>
+      </view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" placeholder="联系电话" name="phone" type='number'/>
+           <view class="show_error" wx:if="{{errorMsgs.phone_error}}">{{errorMsgs.phone_error}}</view>
+        </view>
+      </view>
+      <view class="store-locat">商铺定位</view>
+      <view class="section">
+       <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+       <view class="picker">当前选择：{{region[0]}}，{{region[1]}}，{{region[2]}}</view>
+       </picker>
+      </view>
+      <view class="slocat-logo">
+        <image class="slocat-img" src="../../images/locat.png"></image>
+        <form bindsubmit="sformSubmit">
+        <input class="slocat-text" placeholder="请输入详细地址" name="fullAddress" value='{{backfill}}' bindinput='getsuggest'/>
+         <view wx:if="{{showkeyword}}">
+         <view wx:for="{{suggestion}}" wx:key="index">
+        <view style="text-align:center;font-size:15px;" bindtap="backfill" id="{{index}}">{{item.title}}</view>
+      </view>
+      </view>
+        <view class="posi">
+         <button class="position" form-type="submit" bindtap="geo">定位</button>
+        </view>
+        </form>
+      </view>
+      <!--地图容器-->
+      <!--longitude及latitude为设置为调转到指定地址位置，默认不显示-->
+      <map id="myMap"
+        markers="{{markers}}"
+        style="width:100%;height:200px;"
+        longitude="{{poi.longitude}}"
+        latitude="{{poi.latitude}}"
+        scale='16' show-location>
+      </map>
+      <view class="serach-append">地址补充</view>
+       <view class="serach-append1">可以让更多人找到你哦！</view>
+        <textarea class="serach-text" name="shopMoreInfo"></textarea>
+        <view class="submitbo"></view>
+      <view class="finsubmit">
+       <button class="check" formType="submit">提交审核</button>
+       <view class="submit-append">(审核通过才能开铺哦）</view>
+      </view>
+
+    </form>
+    </view>
+   
+</view>

@@ -1,0 +1,41 @@
+<!--page/personal-account/personal-account.wxml-->
+<view class="contanier">
+  <view class="per-account">
+   <view class="per-accountbd1">
+     <text class="search-money">{{search_money}}</text>
+     <text class="smoney-text">搜币</text>
+   </view>
+   <view class="per-accountbd2">
+     <text class="true-money">{{mymoney}}</text>
+     <text class="smoney-text">可提现金额（元）</text>
+     <i-button i-class="mymoney-button" inline="true" bind:click="handleClick" type="success" shape="circle" size="small">提现</i-button>
+    </view>
+    <view class="per-accountbd3">
+      <view class="per-accitem">
+       <i-icon type="financial_fill" size="28" color="#ff5809" />
+       <text class="smoney-text">120</text>
+       <view class="peraccitem-tmoney">
+         <text class="smoney-text">6元</text>
+        </view>
+      </view>
+      <view class="per-accitem">
+       <i-icon type="financial_fill" size="28" color="#ff5809" />
+       <text class="smoney-text">200</text>
+       <view class="peraccitem-tmoney">
+         <text class="smoney-text">10元</text>
+        </view>
+      </view>
+      <view class="per-accitem">
+       <i-icon type="financial_fill" size="28" color="#ff5809" />
+       <text class="smoney-text">320</text>
+       <view class="peraccitem-tmoney">
+         <text class="smoney-text">18元</text>
+        </view>
+      </view>
+    </view>
+    <navigator url="../" class="per-accbottom">
+      <text class="question">充值提现问题，点击此处联系客服</text>
+    </navigator>
+  </view>
+  <image class="peracc-img" src="../../images/search_buck.png"></image>
+</view>

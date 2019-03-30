@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "服务",
+  "usingComponents": {
+    "i-input-number": "../../dist/input-number/index",
+    "i-input": "../../dist/input/index"
+  }
+}

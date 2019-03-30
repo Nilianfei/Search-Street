@@ -1,0 +1,45 @@
+<!--page/addservice/addservice.wxml-->
+<!--pages/shopcomment/shopcomment.wxml-->
+<view class="container">
+   <form bindsubmit='formSubmit' bindreset='formReset'>
+   <view class='row'>
+    <text class="column">服务名称</text>
+     <input type="text" name="serviceName"  value="{{serviceName}}">
+    </input>
+   </view>
+   <view class='row'>
+    <text class="column">服务价格</text>
+    <input type="digit" name="servicePrice" value="{{servicePrice}}">
+    </input>
+   </view>
+   <view class='row'>
+    <text class="column column1">优先级 </text>
+    <input type="number" name="servicePriority" maxlength="2" placeholder="请填写1-99的任意数字" value="{{servicePriority}}">
+    </input>
+   </view>
+   <view class='row'>
+    <text class="column column2">服务描述</text>
+     <textarea placeholder="本服务主要是......" name="serviceDesc" value="{{serviceDesc}}"/>
+   </view>
+   <view class='row'>
+    <text class="column column2">服务内容</text>
+      <textarea placeholder="本服务主要包括......" name="serviceContent" value="{{serviceContent}}"/>
+   </view>
+    <view class="section-stimage">
+        <view class="section-sttext">服务相关图片</view>
+           <view class="big-logos">  
+            <image class="big-logo {{flag ? '' : 'big-logof'}}" bindtap="uploadimg" src='../../images/add-photo.png'></image>  
+             <block wx:for="{{serviceImg}}" wx:key="id"> 
+             <view class="logoinfos">  
+             <image class="logoinfo" src='{{serviceImg[0]}}' mode='aspectFill' bindtap="changeimg" name="serviceImg"></image>  
+             </view>  
+             </block> 
+             </view>
+      </view>
+   <view class='row-button'>
+    <button type="primary" form-type="submit">{{addormodify}}</button>
+    <button type="primary" form-type="reset" disabled="{{disabletodelete}}">删除</button>
+   </view>
+ </form>
+</view>
+

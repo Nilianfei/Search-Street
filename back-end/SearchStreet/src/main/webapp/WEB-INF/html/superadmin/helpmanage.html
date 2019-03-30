@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css">
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet"
+	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/commonutil.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/errorhandle.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/helpmanage.js"></script>
+</head>
+
+<body>
+	<!-- 表格 -->
+	<table id="helpManagementTable" title="帮助信息一览" border="0"
+		cellspacing="0" cellpadding="0" iconCls="icon-edit" width="98%"
+		idField="helpId" remoteSort="false" pagination="true"
+		singleSelect="false" showFooter="false" striped="true">
+		<thead>
+			<tr align="center">
+				<th field="helpId" width="50">帮助ID</th>
+				<th field="appealId" width="50">求助ID</th>
+				<th field="userId" width="50">用户ID</th>
+				<th field="appealTitle" width="100">求助标题</th>
+				<th field="completion" width="50">完成分</th>
+				<th field="efficiency" width="50">效率分</th>
+				<th field="attitude" width="50">态度分</th>
+				<th field="avgCompletion" width="100">平均完成分</th>
+				<th field="avgEfficiency" width="100">平均效率分</th>
+				<th field="avgAttitude" width="100">平均态度分</th>
+				<th field="allCoin" width="50">总搜币</th>
+				<th field="additionalCoin" width="70">追加搜币</th>
+				<th field="helpStatus" width="100" formatter="statusFormater">帮助状态</th>
+				<th field="endTime" width="150" formatter="timeFormater">失效时间</th>
+				<th field="opt" formatter='optFormater' width="100">操作</th>
+			</tr>
+		</thead>
+	</table>
+
+	<!-- 添加 -->
+	<div id="helpManagementCreate" icon="icon-save"
+		style="padding: 5px; width: 600px; height: 350px;">
+		<h5 id="helpManagementCreate_message" style="color: red;"></h5>
+		<form id="form_helpManagementCreate" method="post">
+			<div style="margin: 5px;">
+				<label for="appealId">求助ID：</label> <input
+					class="easyui-validatebox" required="true" id="appealId"
+					type="text" name="appealId" />
+			</div>
+			<div style="margin: 5px;">
+				<label for="userId">用户ID：</label> <input class="easyui-validatebox"
+					required="true" id="userId" type="text" name="userId" />
+			</div>
+			<div style="margin: 5px">
+				<label for="appealTitle">求助标题：</label> <input
+					class="easyui-validatebox" type="text" name="appealTitle"
+					required="true" />
+			</div>
+		</form>
+		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
+			onclick="helpManagementCreate();">提交</a></li>
+	</div>
+
+	<!-- 编辑 -->
+	<div id="helpManagementEdit" icon="icon-save"
+		style="padding: 5px; width: 600px; height: 350px;">
+		<h5 id="helpManagementEdit_message" style="color: red;"></h5>
+		<form id="form_helpManagementEdit" method="post">
+			<div style="margin: 5px; display: none;">
+				<label for="helpId">帮助ID：</label> <input class="easyui-validatebox"
+					id="helpId" type="text" name="helpId" readOnly />
+			</div>
+			<!-- <div style="margin: 5px;">
+				<label for="appealId">求助ID：</label> <input
+					class="easyui-validatebox" required="true" id="appealId"
+					type="text" name="appealId" />
+			</div>
+			<div style="margin: 5px;">
+				<label for="userId">用户ID：</label> <input class="easyui-validatebox"
+					required="true" id="userId" type="text" name="userId" />
+			</div>
+			<div style="margin: 5px">
+				<label for="appealTitle">求助标题：</label> <input
+					class="easyui-validatebox" type="text" name="appealTitle"
+					required="true" />
+			</div> -->
+			<div style="margin: 5px">
+				<label for="helpStatus">帮助状态：</label> <select id="helpStatus"
+					required="true" class="easyui-combobox" name="helpStatus"
+					style="width: 100px;">
+					<option id="helpManagementEdit_FIND" value="0">未被接受帮助</option>
+					<option id="helpManagementEdit_SELECED" value="1">已被接受帮助</option>
+					<option id="helpManagementEdit_FINISH" value="2">已完成</option>
+					<option id="helpManagementEdit_DISABLE" value="3">已失效</option>
+					<option id="helpManagementEdit_NO" value="4">禁止</option>
+				</select>
+			</div>
+			<div style="margin: 5px;">
+				<label for="completion">完成分：</label> <input
+					class="easyui-validatebox" required="true" id="completion"
+					type="text" name="completion" />
+			</div>
+			<div style="margin: 5px;">
+				<label for="efficiency">效率分：</label> <input
+					class="easyui-validatebox" required="true" id="efficiency"
+					type="text" name="efficiency" />
+			</div>
+			<div style="margin: 5px;">
+				<label for="attitude">态度分：</label> <input class="easyui-validatebox"
+					required="true" id="attitude" type="text" name="attitude" />
+			</div>
+			<!-- <div style="margin: 5px;">
+				<label for="avgCompletion">平均完成分：</label> <input
+					class="easyui-validatebox" required="true" id="avgCompletion"
+					type="text" name="avgCompletion" />
+			</div>
+			<div style="margin: 5px;">
+				<label for="avgEfficiency">平均效率分：</label> <input
+					class="easyui-validatebox" required="true" id="avgEfficiency"
+					type="text" name="avgEfficiency" />
+			</div>
+			<div style="margin: 5px;">
+				<label for="avgAttitude">平均态度分：</label> <input
+					class="easyui-validatebox" required="true" id="avgAttitude"
+					type="text" name="avgAttitude" />
+			</div> -->
+			<div style="margin: 5px;">
+				<label for="allCoin">总搜币：</label> <input class="easyui-validatebox"
+					required="true" id="allCoin" type="text" name="allCoin" />
+			</div>
+			<div style="margin: 5px;">
+				<label for="additionalCoin">追加搜币：</label> <input
+					class="easyui-validatebox" required="true" id="additionalCoin"
+					type="text" name="additionalCoin" />
+			</div>
+			<!-- <div style="margin: 5px">
+				<label for="endTime">失效时间：</label> <input class="easyui-datetimebox"
+					name="endTime" id="endTime" required="true"
+					data-options="showSeconds:false" style="width: 150px">
+			</div> -->
+		</form>
+		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
+			onclick="helpManagementEdit();">提交</a></li>
+	</div>
+	<!-- Hidden value area -->
+	<input id="enalbeStatusHd" type="hidden" value="ALL" />
+	<input id="searchConditionHd" type="hidden" value="ALL" />
+	<input id="searchInfoHd" type="hidden" />
+	<input id="urlHd" type="hidden" value="listHelps" />
+</body>
+</html>

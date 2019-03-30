@@ -1,0 +1,37 @@
+<!--pages/comment/comment.wxml-->
+<view class="container">
+ <form bindsubmit='formSubmit' bindreset='formReset'>
+  <view class="comment">
+    <view class="serviceinfo" >
+      <image class="serviceimg" src='{{service.serviceImgAddr}}' mode="cover"></image>
+      <text class="servicename">服务名称：{{service.serviceName}}</text>
+    </view>
+    <view class="star-pos">
+     <block wx:for="{{evaluate_content}}" wx:key="id" wx:for-index="idx" wx:for-item="title">
+     <view class="single-starline">
+     <i-cell title="{{title}}" label="{{startext[idx]}}">
+        <i-rate 
+            bind:change="onChange"
+            data-no="{{idx}}"
+            value="{{flag[idx]}}">
+        </i-rate>
+    </i-cell>
+    </view>
+     </block>
+    </view>
+  <view class="weui-cells_after-title">
+    <view class="weui-cell">
+      <view class="weui-cell__bd">
+        <textarea class="weui-textarea" bindinput="bindTextAreaChange" placeholder="请填写您的评论..." style="height: 8em" value="{{info}}" maxlength="{{noteMaxLen}}" focus />
+        <view class="weui-textarea-counter">{{texts}}</view>
+      </view>
+    </view>
+  </view>
+    <view class='row'>
+    <button type="primary" form-type="submit" disabled='{{bf}}'>提交</button>
+    <button type="primary" form-type="reset">取消</button>
+   </view>
+
+ </view>
+</form>
+</view>

@@ -1,0 +1,19 @@
+<!--page/shop-album/shop-album.wxml-->
+<i-tabs current="{{ current }}" bindchange="handleChange">
+    <i-tab key="tab1" title="证书图片"></i-tab>
+    <i-tab key="tab2" title="商铺图片"></i-tab>
+</i-tabs>
+<loading hidden="{{!loading}}">加载中</loading>
+<view class='img' wx:if="{{current=='tab2'}}">
+    <i-row>
+      <i-col span="6" i-class="col-class" wx:for="{{shopImgList}}">
+      <image src='{{item.imgAddr}}'></image></i-col>
+    </i-row>
+</view>
+
+<view class='img' wx:if="{{current=='tab1'}}">
+    <i-row>
+      <i-col span="24" i-class="col-class" >
+      <image src='{{businessLicenseImg}}'></image></i-col>
+    </i-row>
+</view>

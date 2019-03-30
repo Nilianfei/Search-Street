@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "搜街",
+
+  "usingComponents": {
+    "i-input": "../../dist/input/index",
+    "i-button": "../../dist/button/index",
+    "i-panel": "../../dist/panel/index",
+    "i-message": "../../dist/message/index"
+  }
+}

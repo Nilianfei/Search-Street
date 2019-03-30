@@ -1,0 +1,70 @@
+<!--page/search-shop/search-shop.wxml-->
+<view class="page-body">
+  <view class="page-section page-section-gap">
+    <i-panel class="{{openSearch?'':'hide'}}">
+      <i-input value="{{ searchShopName }}" type="textarea" title="商铺名" placeholder="搜索商铺" maxlength="50" bind:change="inputShopName"/>
+      <i-input value="{{ searchShopAddress }}" type="textarea" title="详细地址" placeholder="搜索地址" maxlength="100" bind:change="inputShopAddress"/>
+      <view wx:for="{{suggestion}}" wx:key="index">
+        <view style="text-align:center;font-size:14px;" bindtap="backfill" id="{{item.title}}">{{item.title}}</view>
+      </view>
+
+      <view class="buttonClick">
+        <view class="buttonClickSearch">
+          <i-button bind:click="buttonClickSearch" type="primary">搜索</i-button>
+        </view>
+        <view class="buttonClickBack">
+          <i-button bind:click="buttonClickBack">取消</i-button>
+        </view>
+      </view>
+    </i-panel>
+
+    <map id="myMap" style="width: 100%; height: 100vh;" latitude="{{latitude}}" longitude="{{longitude}}" controls="{{controls}}" bindcontroltap="bindcontroltap" markers="{{markers}}" bindmarkertap="bindmarkertap" polyline="{{polyline}}" bindregionchange="bindregionchange"
+      enable-rotate show-location show-compass>
+
+      <cover-view class="moveToPosition" bindtap='moveToPosition'>
+        <cover-image src='/images/heavy-black-heart_2764.png'></cover-image>
+      </cover-view>
+
+      <cover-view class="searchShop" bindtap='searchShop'>
+        <cover-image src='/images/search_buck.png'></cover-image>
+      </cover-view>
+
+      <cover-view class="checkOrder" bindtap='checkOrder' hover-class='hover'>
+        <cover-image src='/images/clipboard_1f4cb.png'></cover-image>
+      </cover-view>
+
+      <cover-view class="ShopInfo {{openShopInfo?'':'hide'}}">
+        <cover-view class="shopInfo-top">
+          <cover-view class= "shopInfo-top-pic">
+            <cover-image class= "shopInfo-pic" mode='aspectFit' src="{{shopInfoPic}}"></cover-image>
+          </cover-view>
+          <cover-view class="shopInfo-nameAddress">
+            <cover-view class="shopInfo-name">{{shopInfoName}}</cover-view>
+            <cover-view  class="shopInfo-address">{{shopInfoAddress}}</cover-view>
+            <cover-view style="height:2rpx;background-color:grey;"></cover-view>
+            <cover-view class="shopInfo-businessScope">{{shopInfoBusinessScope}}</cover-view>
+          </cover-view>
+        </cover-view>
+        <cover-view class="shopInfo-button">
+          <cover-view class="shopInfoButtonSize">
+            <button class="shopInfoButton blue" hover-class='hover' bindtap="gotoShop"> 查看详情 </button>
+          </cover-view>
+
+          <cover-view class="shopInfoButtonSize">
+              <button class="shopInfoButton blue" hover-class='hover'>导航</button>
+          </cover-view>
+
+          <cover-view class="shopInfoButtonSize">
+            <button class="shopInfoButton white" hover-class='hover' bindtap='shopInfoBack'>取消</button>
+          </cover-view>
+          
+          
+          
+        </cover-view>
+      </cover-view>
+    </map>
+
+
+
+  </view>
+</view>

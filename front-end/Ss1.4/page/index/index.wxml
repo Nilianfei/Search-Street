@@ -1,0 +1,64 @@
+<!--page/index/index.wxml-->
+  <view class='index' style="background-image: url('{{background}}');background-size: cover">
+  <view class="index-hd">
+    <image class="index-logo" src="../../images/search_buck.png"></image>
+    <view class="index-desc">搜街</view>
+  </view>
+
+  <view class="index-bd">
+
+    <view class="kind-list">
+      <view class="kind-list-item item1">
+        <view class="kind-list-item-hd {{open1 ? 'kind-list-item-hd-show' : ''}} " bindtap="kindToggle1">
+          <view class="kind-list-text text1">商铺管理</view>
+          <image class="kind-list-img" src="../../images/store-1.png"></image>
+        </view>
+
+        <view class="kind-list-item-bd {{open1 ? 'kind-list-item-bd-show' : ''}}">
+          <view class="navigator-box {{open1 ? 'navigator-box-show' : ''}}">
+
+            <navigator class="navigator" url="../shop-list/shop-list">
+              <view class="navigator-text ">商铺登录</view>
+              <view class="navigator-arrow"></view>
+            </navigator>
+
+            <navigator class="navigator" url="../shop-register/shop-register">
+              <view class="navigator-text">商铺注册</view>
+              <view class="navigator-arrow"></view>
+            </navigator>
+
+          </view>
+        </view>
+      </view>
+
+      <view class="kind-list-item item1" id="search-store">
+        <view class="kind-list-item-hd" bindtap='searchstore'>
+          <view class="kind-list-text text1">搜搜商铺</view>
+          <image class="kind-list-img" src="../../images/search-store.png"></image>
+        </view>
+      </view>
+
+      <navigator class="kind-list-item item1" url="../search-help/search-help">
+        <view class="kind-list-item-hd" bindtap="kindToggle2">
+          <view class="kind-list-text text1">寻帮助</view>
+          <image class="kind-list-img" src="../../images/help-1.png"></image>
+        </view>
+      </navigator> 
+
+
+      <navigator class="kind-list-item item1" id="my-help" url="../help-map/help-map">
+        <view class="kind-list-item-hd">
+          <view class="kind-list-text text1">帮把手</view>
+          <image class="kind-list-img" src="../../images/helper.png"></image>
+        </view>
+      </navigator>
+
+      <navigator class="kind-list-item item1" id="pri-inf" url="../personal-center/personal-center">
+        <view class="kind-list-item-hd">
+          <view class="kind-list-text text1">个人中心</view>
+          <image class="kind-list-img" src="../../images/person-1.png"></image>
+        </view>
+      </navigator>
+    </view>
+  </view>
+</view>
