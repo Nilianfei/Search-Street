@@ -30,7 +30,12 @@ public class PathUtil {
 		return imagePath.replace("/", seperator);
 	}
 
-	public static String getAppealImgPath(Long appealId) {
+	public static String getuserProfileImgPath(long userId) {
+		String imagePath = "/upload/images/item/personInfo/profileImg/" + userId + "/";
+		return imagePath.replace("/", seperator);
+	}
+	
+	public static String getAppealImgPath(long appealId) {
 		String imagePath = "/upload/images/item/appeal/appealImg/" + appealId + "/";
 		return imagePath.replace("/", seperator);
 	}

@@ -59,6 +59,12 @@ function timeFormater(value, row, index) {
 	} else {
 		time = row.lastEditTime;
 	}
+	return timeChange(time);
+}
+function timeChange(time) {
+	if (time == null) {
+		return '';
+	}
 	var datetime = new Date();
 	datetime.setTime(time);
 	var year = datetime.getFullYear();
@@ -186,9 +192,14 @@ function ajaxTable() {
 	searchBoxBuffer.append('<input type="button" id="searchBtn" value="搜索"');
 	searchBoxBuffer
 			.append('style="margin-right: 0.5em;" onclick="searchInfo()"/>');
+	var addButtonBuffer = new StringBuffer();
+	addButtonBuffer.append('<input type="button" id="addShop" value="添加商铺信息"');
+	addButtonBuffer
+			.append('style="margin-right: 0.5em;" onclick="openDialog()"/>');
 	$('.datagrid-toolbar').append(enableStatusBuffer.toString());
 	$('.datagrid-toolbar').append(searchConditionBuffer.toString());
 	$('.datagrid-toolbar').append(searchBoxBuffer.toString());
+	$('.datagrid-toolbar').append(addButtonBuffer.toString());
 	$("#shopManagementSearch_searchBox").hide();
 	$("#searchBtn").hide();
 	// 获取DataGrid分页组件对象
@@ -283,8 +294,23 @@ function searchInfo() {
 function optFormater(value, row, index) {
 	var shopName = row.shopName;
 	var shopId = row.shopId;
+	var userId = row.userId;
+	var phone = row.phone;
+	var businessLicenseCode = row.businessLicenseCode;
+	var province = row.province;
+	var city = row.city;
+	var district = row.district;
+	var fullAddress = row.fullAddress;
+	var shopMoreInfo = row.shopMoreInfo;
+	var isMobile = row.isMobile;
+	var latitude = row.latitude;
+	var longitude = row.longitude;
 	var enableStatus = row.enableStatus;
-	var params = shopId + "," + enableStatus + ",'" + shopName + "'";
+	var perCost=row.perCost;
+	var businessScope=row.businessScope;
+	var params = shopId+","+userId+",'"+shopName+"','"+businessLicenseCode+"',"+
+	perCost+",'"+phone+"','"+province+"','"+city+"','"+district+"','"+fullAddress+"','"+shopMoreInfo+"',"+
+	isMobile+","+latitude+","+ longitude+","+ enableStatus+",'"+ businessScope+"'";
 	var edit = '<a href="javascript:openDialog_edit(' + params + ')">编辑</a>';
 	return edit;
 };
@@ -301,8 +327,18 @@ function setDialog_edit() {
 	});
 }
 // 打开对话框
-function openDialog_edit(shopId, enableStatus, shopName) {
-	shopManagementEditReset(shopId, enableStatus, shopName);
+function openDialog_edit(shopId, userId, shopName, businessLicenseCode,
+		perCost, phone, province, city, district, fullAddress, shopMoreInfo,
+		isMobile, latitude, longitude, enableStatus, businessScope) {
+	shopManagementEditReset(shopId, userId, shopName, businessLicenseCode,
+			perCost, phone, province, city, district, fullAddress,
+			shopMoreInfo, isMobile, latitude, longitude, enableStatus,
+			businessScope);
+	$('#shopManagementEdit').dialog('open');
+}
+function openDialog() {
+	shopManagementEditReset(null, null, null, null, null, null, null, null,
+			null, null, null, null, null, null, null, null);
 	$('#shopManagementEdit').dialog('open');
 }
 // 关闭对话框
@@ -310,71 +346,106 @@ function closeDialog_edit() {
 	$('#shopManagementEdit').dialog('close');
 }
 // 根据用户id查询用户的信息
-function shopManagementEditReset(shopId, enableStatus, shopName) {
+function shopManagementEditReset(shopId, userId, shopName, businessLicenseCode,
+		perCost, phone, province, city, district, fullAddress, shopMoreInfo,
+		isMobile, latitude, longitude, enableStatus, businessScope) {
 	$("#shopManagementEdit_message").html("");
-	$("#shopManagementEdit_shopName").val(shopName);
-	$("#shopManagementEdit_shopId").val(shopId);
-	$("#shopManagementEdit_enableStatus").val(enableStatus);
+	$('#form_shopManagementEdit').form('load', {
+		shopId : shopId,
+		userId : userId,
+		shopName : shopName,
+		phone : phone,
+		businessLicenseCode : businessLicenseCode,
+		businessLicenseImg : null,
+		profileImg:null,
+		perCost : perCost,
+		province : province,
+		city : city,
+		district : district,
+		fullAddress : fullAddress,
+		shopMoreInfo : shopMoreInfo,
+		isMobile : isMobile,
+		enableStatus : enableStatus,
+		latitude : latitude,
+		longitude : longitude,
+		businessScope : businessScope,
+	});
 }
 // 执行用户编辑操作
 function shopManagementEdit() {
-	var validateResult = true;
-	// easyui 表单验证
-	$('#table_shopManagementEdit input').each(function() {
-		if ($(this).attr('required') || $(this).attr('validType')) {
-			if (!$(this).validatebox('isValid')) {
-				// 如果验证不通过，则返回false
-				validateResult = false;
-				return;
+	var shopId = $('#shopId').val()
+	if (shopId != '') {
+		$('#form_shopManagementEdit').form('submit', {
+			url : 'modifyshop',
+			onSubmit : function() {
+				var isValid = $(this).form('validate');
+				if (!isValid) {
+					$.messager.progress('close'); // hide progress bar while
+					// the
+					// form is invalid
+				}
+				return isValid; // return false will stop the form submission
+			},
+			success : function(data) {
+				var data = eval('(' + data + ')'); // change the JSON string to
+				// javascript object
+				if (data.success) {
+					var messgage = "修改成功!";
+					searchShopInfo();
+					$("#shopManagementEdit_message").html(messgage);
+				} else {
+					var messgage = data.errMsg;
+					$("#shopManagementEdit_message").html(messgage);
+				}
 			}
-		}
-	});
-	if (validateResult == false) {
-		return;
+		});
+	} else {
+		$('#form_shopManagementEdit').form('submit', {
+			url : 'addshop',
+			onSubmit : function() {
+				var isValid = $(this).form('validate');
+				if (!isValid) {
+					$.messager.progress('close'); // hide progress bar while
+					// the
+					// form is invalid
+				}
+				return isValid; // return false will stop the form submission
+			},
+			success : function(data) {
+				var data = eval('(' + data + ')'); // change the JSON string to
+				// javascript object
+				if (data.success) {
+					var messgage = "添加成功!";
+					searchShopInfo();
+					$("#shopManagementEdit_message").html(messgage);
+				} else {
+					var messgage = data.errMsg;
+					$("#shopManagementEdit_message").html(messgage);
+				}
+			}
+		});
 	}
-	var shop = {};
-	shop.shopId = encodeURIComponent($("#shopManagementEdit_shopId").val());
-	shop.enableStatus = encodeURIComponent($("#shopManagementEdit_enableStatus")
-			.val());
-	$.ajax({
-		async : false,
-		cache : false,
-		type : 'POST',
-		dataType : "json",
-		data : {
-			shopStr : JSON.stringify(shop)
-		},
-		url : 'modifyshop',// 请求的action路径
-		error : function() {// 请求失败处理函数
-			alert('请求失败');
-		},
-		success : function() {
-			var messgage = "修改成功!";
-			searchShopInfo();
-			$("#shopManagementEdit_message").html(messgage);
-		}
-	});
-}
 
-/**
- * 修改状态的Ajax
- * 
- * @param url
- * @return
- */
-function changeStatus(url) {
-	$.ajax({
-		async : false,
-		cache : false,
-		type : 'post',
-		dataType : "json",
-		url : url,// 请求的action路径
-		error : function() {// 请求失败处理函数
-			alert('请求失败');
-		},
-		success : function() {
-			alert("操作成功");
-			searchShopInfo();
-		}
-	});
+	/**
+	 * 修改状态的Ajax
+	 * 
+	 * @param url
+	 * @return
+	 */
+	function changeStatus(url) {
+		$.ajax({
+			async : false,
+			cache : false,
+			type : 'post',
+			dataType : "json",
+			url : url,// 请求的action路径
+			error : function() {// 请求失败处理函数
+				alert('请求失败');
+			},
+			success : function() {
+				alert("操作成功");
+				searchShopInfo();
+			}
+		});
+	}
 }

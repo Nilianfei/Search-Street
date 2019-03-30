@@ -37,4 +37,23 @@
 		VALUES
 		(#{openId},#{createTime},#{userId})
 	</insert>
+	<select id="queryWechatCount" resultType="int">
+		SELECT
+		count(1)
+		FROM
+		tb_wechat_auth
+	</select>
+	<select id="queryWechatList"
+		resultType="com.graduation.ss.entity.WechatAuth">
+		SELECT
+		wechat_auth_id,
+		open_id,
+		create_time,
+		user_id
+		FROM
+		tb_wechat_auth
+		ORDER BY
+		create_time DESC
+		LIMIT #{rowIndex},#{pageSize};
+	</select>
 </mapper>

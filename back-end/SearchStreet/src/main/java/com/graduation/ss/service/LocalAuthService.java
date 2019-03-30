@@ -20,6 +20,15 @@ public interface LocalAuthService {
 	 * @return
 	 */
 	LocalAuth getLocalAuthByUserId(long userId);
+	
+	/**
+	 * 分页获取本地账号
+	 * 
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 */
+	LocalAuthExecution getLocalAuthList(int pageIndex, int pageSize);
 
 	/**
 	 * 绑定微信，生成平台专属的帐号

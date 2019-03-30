@@ -4,7 +4,9 @@ import java.util.Date;
 
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.ShopExecution;
+import com.graduation.ss.dto.ShopImgExecution;
 import com.graduation.ss.entity.Shop;
+import com.graduation.ss.entity.ShopImg;
 import com.graduation.ss.exceptions.ShopOperationException;
 
 public interface ShopService {
@@ -57,8 +59,8 @@ public interface ShopService {
 	 * @return
 	 * @throws ShopOperationException
 	 */
-	ShopExecution uploadImg(long shopId, ImageHolder shopImg, ImageHolder businessLicenseImg, ImageHolder profileImg, Date createTime)
-			throws ShopOperationException;
+	ShopExecution uploadImg(long shopId, ImageHolder shopImg, ImageHolder businessLicenseImg, ImageHolder profileImg,
+			Date createTime) throws ShopOperationException;
 
 	/**
 	 * 注册店铺信息，不包括对图片的处理
@@ -70,4 +72,54 @@ public interface ShopService {
 	 * @throws ShopOperationException
 	 */
 	ShopExecution addShop(Shop shop) throws ShopOperationException;
+
+	/**
+	 * 注册商铺信息，包括对图片的处理
+	 * 
+	 * @param shop
+	 * @param businessLicenseImg
+	 * @param profileImg
+	 * @return
+	 * @throws ShopOperationException
+	 */
+	ShopExecution addShop(Shop shop, ImageHolder businessLicenseImg, ImageHolder profileImg)
+			throws ShopOperationException;
+
+	/**
+	 * 修改商铺信息，包括对图片的处理
+	 * 
+	 * @param shop
+	 * @param businessLicenseImg
+	 * @param profileImg
+	 * @return
+	 * @throws ShopOperationException
+	 */
+	ShopExecution modifyShop(Shop shop, ImageHolder businessLicenseImg, ImageHolder profileImg)
+			throws ShopOperationException;
+
+	/**
+	 * 分页获取商铺图片
+	 * 
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 */
+	ShopImgExecution getShopImgList(ShopImg shopImg, int pageIndex, int pageSize);
+
+	/**
+	 * 根据商铺图片Id删除商铺图片
+	 * 
+	 * @param shopImgId
+	 * @throws ShopOperationException
+	 */
+	void delShopImg(long shopImgId) throws ShopOperationException;
+
+	/**
+	 * 添加商铺图片
+	 * 
+	 * @param shopId
+	 * @param shopImgHolder
+	 * @throws ShopOperationException
+	 */
+	void addShopImg(long shopId, ImageHolder shopImgHolder) throws ShopOperationException;
 }

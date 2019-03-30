@@ -1,7 +1,7 @@
 package com.graduation.ss.enums;
 
 public enum WechatAuthStateEnum {
-	LOGINFAIL(-1, "openId输入有误"), SUCCESS(0, "操作成功"), NULL_AUTH_INFO(-1006, "注册信息为空");
+	LOGINFAIL(-1, "openId输入有误"), SUCCESS(0, "操作成功"), NULL_AUTH_INFO(-1006, "注册信息为空"), INNER_ERROR(-1007, "内部错误");
 
 	private int state;
 

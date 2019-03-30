@@ -25,12 +25,59 @@
 		VALUES
 		(#{imgAddr},#{createTime},#{shopId})
 	</insert>
-
+	<select id="queryShopImgCount" resultType="int">
+		SELECT
+		count(1)
+		FROM
+		tb_shop_img
+		<where>
+			<if test="shopImgCondition.shopId != null">
+				and shop_id = #{shopImgCondition.shopId}
+			</if>
+		</where>
+	</select>
+	<select id="queryShopImgList"
+		resultType="com.graduation.ss.entity.ShopImg">
+		SELECT
+		shop_img_id,
+		img_addr,
+		create_time,
+		shop_id
+		FROM
+		tb_shop_img
+		<where>
+			<if test="shopImgCondition.shopId != null">
+				and shop_id = #{shopImgCondition.shopId}
+			</if>
+		</where>
+		ORDER BY
+		create_time DESC
+		LIMIT #{rowIndex},#{pageSize};
+	</select>
+	<select id="getShopImg"
+		resultType="com.graduation.ss.entity.ShopImg">
+		SELECT
+		shop_img_id,
+		img_addr,
+		create_time,
+		shop_id
+		FROM
+		tb_shop_img
+		WHERE
+		shop_img_id=#{shopImgId}
+	</select>
+	<delete id="delShopImgByShopImgId">
+		DELETE FROM
+		tb_shop_img
+		WHERE
+		shop_img_id = #{shopImgId}
+	</delete>
 	<delete id="deleteShopImgByShopIdAndCreateTime">
 		DELETE FROM
 		tb_shop_img
 		WHERE
 		shop_id =
-		#{shopId} and create_time &lt; #{createTime}
+		#{shopId} and
+		create_time &lt; #{createTime}
 	</delete>
 </mapper>

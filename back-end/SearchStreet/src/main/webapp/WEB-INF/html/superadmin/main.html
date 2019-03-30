@@ -3,23 +3,22 @@
 <head>
 <!-- jquery easyui -->
 <link rel="stylesheet" type="text/css"
-	href="../resources/js/superadmin/common/easyui/themes/default/easyui.css">
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css"
-	href="../resources/js/superadmin/common/easyui/themes/icon.css">
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css">
 <script type="text/javascript"
 	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
 <script type="text/javascript"
-	src="../resources/js/superadmin/common/easyui/js/jquery.easyui.min.js"></script>
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
 <script type="text/javascript"
-	src="../resources/js/superadmin/common/easyui/js/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript"
-	src="../resources/js/superadmin/common/commonutil.js"></script>
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
 <link rel="stylesheet"
 	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
 <script type="text/javascript"
-	src="../resources/js/superadmin/common/errorhandle.js"></script>
+	src="../resources/js/superadmin/common/commonutil.js"></script>
 <script type="text/javascript"
-	src="../resources/js/superadmin/main.js"></script>
+	src="../resources/js/superadmin/common/errorhandle.js"></script>
+<script type="text/javascript" src="../resources/js/superadmin/main.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>搜街管理系统</title>
 </head>
@@ -35,11 +34,21 @@
 			<div title="系统管理" selected="true">
 				<ul>
 					<li><a
-						href="javascript:addTab('tabId_customerManagement','帐号管理','personinfomanage');">帐号管理</a></li>
+						href="javascript:addTab('tabId_customerManagement','用户信息管理','personinfomanage');">用户信息管理</a></li>
+					<li><a
+						href="javascript:addTab('tabId_localAuthManagement','本地账号管理','localauthmanage');">本地账号管理</a></li>
+					<li><a
+						href="javascript:addTab('tabId_wechatAuthManagement','微信账号管理','wechatauthmanage');">微信账号管理</a></li>
 					<li><a
 						href="javascript:addTab('tabId_shopManagement','商铺管理','shopmanage');">商铺管理</a></li>
-						<li><a
+					<li><a
+						href="javascript:addTab('tabId_shopImgManagement','商铺图片管理','shopimgmanage');">商铺图片管理</a></li>
+					<li><a
 						href="javascript:addTab('tabId_appealManagement','求助管理','appealmanage');">求助管理</a></li>
+					<li><a
+						href="javascript:addTab('tabId_appealImgManagement','求助图片管理','appealimgmanage');">求助图片管理</a></li>
+					<li><a
+						href="javascript:addTab('tabId_helpManagement','帮助管理','helpmanage');">帮助管理</a></li>
 				</ul>
 			</div>
 		</div>

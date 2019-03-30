@@ -3,6 +3,7 @@ package com.graduation.ss.web.superadmin;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,15 +15,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduation.ss.dto.ConstantForSuperAdmin;
+import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.ShopExecution;
 import com.graduation.ss.entity.Shop;
 import com.graduation.ss.enums.ShopStateEnum;
 import com.graduation.ss.service.ShopService;
 import com.graduation.ss.util.HttpServletRequestUtil;
-
 
 @Controller
 @RequestMapping("/superadmin")
@@ -101,7 +104,7 @@ public class ShopController {
 		Shop shop = null;
 		// 从请求中获取店铺Id
 		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
-		if (shopId > 0) {
+		if (shopId != null) {
 			try {
 				// 根据Id获取店铺实例
 				shop = shopService.getByShopId(shopId);
@@ -130,7 +133,7 @@ public class ShopController {
 	}
 
 	/**
-	 * 修改店铺信息，主要修改可用状态，审核用
+	 * 修改店铺信息
 	 * 
 	 * @param shopStr
 	 * @param request
@@ -138,27 +141,73 @@ public class ShopController {
 	 */
 	@RequestMapping(value = "/modifyshop", method = RequestMethod.POST)
 	@ResponseBody
-	private Map<String, Object> modifyShop(String shopStr, HttpServletRequest request) {
+	private Map<String, Object> modifyShop(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		ObjectMapper mapper = new ObjectMapper();
-		Shop shop = null;
-		try {
-			// 获取前端传递过来的shop json字符串，将其转换成shop实例
-			shop = mapper.readValue(shopStr, Shop.class);
-		} catch (Exception e) {
-			modelMap.put("success", false);
-			modelMap.put("errMsg", e.toString());
-			return modelMap;
+		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
+		Long userId = HttpServletRequestUtil.getLong(request, "userId");
+		String shopName = HttpServletRequestUtil.getString(request, "shopName");
+		String businessLicenseCode = HttpServletRequestUtil.getString(request, "businessLicenseCode");
+		int perCost = HttpServletRequestUtil.getInt(request, "perCost");
+		String phone = HttpServletRequestUtil.getString(request, "phone");
+		String province = HttpServletRequestUtil.getString(request, "province");
+		String city = HttpServletRequestUtil.getString(request, "city");
+		String district = HttpServletRequestUtil.getString(request, "district");
+		String fullAddress = HttpServletRequestUtil.getString(request, "fullAddress");
+		String shopMoreInfo = HttpServletRequestUtil.getString(request, "shopMoreInfo");
+		int isMobile = HttpServletRequestUtil.getInt(request, "isMobile");
+		Float latitude = HttpServletRequestUtil.getFloat(request, "latitude");
+		Float longitude = HttpServletRequestUtil.getFloat(request, "longitude");
+		int enableStatus = HttpServletRequestUtil.getInt(request, "enableStatus");
+		String businessScope = HttpServletRequestUtil.getString(request, "businessScope");
+		Date createTime = HttpServletRequestUtil.getDate(request, "createTime");
+		Date lastEditTime = HttpServletRequestUtil.getDate(request, "lastEditTime");
+		Shop shop = new Shop();
+		shop.setShopId(shopId);
+		shop.setUserId(userId);
+		shop.setShopName(shopName);
+		shop.setBusinessLicenseCode(businessLicenseCode);
+		shop.setPerCost(perCost);
+		shop.setPhone(phone);
+		shop.setProvince(province);
+		shop.setCity(city);
+		shop.setDistrict(district);
+		shop.setFullAddress(fullAddress);
+		shop.setShopMoreInfo(shopMoreInfo);
+		shop.setIsMobile(isMobile);
+		shop.setLatitude(latitude);
+		shop.setLongitude(longitude);
+		shop.setEnableStatus(enableStatus);
+		shop.setBusinessScope(businessScope);
+		shop.setCreateTime(createTime);
+		shop.setLastEditTime(lastEditTime);
+
+		CommonsMultipartFile profileImg = null;
+		CommonsMultipartFile businessLicenseImg = null;
+		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
+				request.getSession().getServletContext());
+		if (commonsMultipartResolver.isMultipart(request)) {
+			MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+			profileImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("profileImg");
+			businessLicenseImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("businessLicenseImg");
 		}
 		// 空值判断
-		if (shop != null && shop.getShopId() != null) {
+		if (shop.getShopId() != null) {
 			try {
-				ShopExecution ae = shopService.modifyShop(shop);
-				if (ae.getState() == ShopStateEnum.SUCCESS.getState()) {
+				ImageHolder profileImgHolder = null;
+				if (profileImg != null) {
+					profileImgHolder = new ImageHolder(profileImg.getOriginalFilename(), profileImg.getInputStream());
+				}
+				ImageHolder businessLicenseImgHolder = null;
+				if (businessLicenseImg != null) {
+					businessLicenseImgHolder = new ImageHolder(businessLicenseImg.getOriginalFilename(),
+							businessLicenseImg.getInputStream());
+				}
+				ShopExecution se = shopService.modifyShop(shop, businessLicenseImgHolder, profileImgHolder);
+				if (se.getState() == ShopStateEnum.SUCCESS.getState()) {
 					modelMap.put("success", true);
 				} else {
 					modelMap.put("success", false);
-					modelMap.put("errMsg", ae.getStateInfo());
+					modelMap.put("errMsg", se.getStateInfo());
 				}
 			} catch (Exception e) {
 				modelMap.put("success", false);
@@ -173,4 +222,86 @@ public class ShopController {
 		return modelMap;
 	}
 
+	/**
+	 * 添加店铺信息
+	 * 
+	 * @param shopStr
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/addshop", method = RequestMethod.POST)
+	@ResponseBody
+	private Map<String, Object> addShop(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		Long userId = HttpServletRequestUtil.getLong(request, "userId");
+		String shopName = HttpServletRequestUtil.getString(request, "shopName");
+		String businessLicenseCode = HttpServletRequestUtil.getString(request, "businessLicenseCode");
+		int perCost = HttpServletRequestUtil.getInt(request, "perCost");
+		String phone = HttpServletRequestUtil.getString(request, "phone");
+		String province = HttpServletRequestUtil.getString(request, "province");
+		String city = HttpServletRequestUtil.getString(request, "city");
+		String district = HttpServletRequestUtil.getString(request, "district");
+		String fullAddress = HttpServletRequestUtil.getString(request, "fullAddress");
+		String shopMoreInfo = HttpServletRequestUtil.getString(request, "shopMoreInfo");
+		int isMobile = HttpServletRequestUtil.getInt(request, "isMobile");
+		Float latitude = HttpServletRequestUtil.getFloat(request, "latitude");
+		Float longitude = HttpServletRequestUtil.getFloat(request, "longitude");
+		int enableStatus = HttpServletRequestUtil.getInt(request, "enableStatus");
+		String businessScope = HttpServletRequestUtil.getString(request, "businessScope");
+		Date createTime = HttpServletRequestUtil.getDate(request, "createTime");
+		Date lastEditTime = HttpServletRequestUtil.getDate(request, "lastEditTime");
+		Shop shop = new Shop();
+		shop.setUserId(userId);
+		shop.setShopName(shopName);
+		shop.setBusinessLicenseCode(businessLicenseCode);
+		shop.setPerCost(perCost);
+		shop.setPhone(phone);
+		shop.setProvince(province);
+		shop.setCity(city);
+		shop.setDistrict(district);
+		shop.setFullAddress(fullAddress);
+		shop.setShopMoreInfo(shopMoreInfo);
+		shop.setIsMobile(isMobile);
+		shop.setLatitude(latitude);
+		shop.setLongitude(longitude);
+		shop.setEnableStatus(enableStatus);
+		shop.setBusinessScope(businessScope);
+		shop.setCreateTime(createTime);
+		shop.setLastEditTime(lastEditTime);
+
+		CommonsMultipartFile profileImg = null;
+		CommonsMultipartFile businessLicenseImg = null;
+		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
+				request.getSession().getServletContext());
+		if (commonsMultipartResolver.isMultipart(request)) {
+			MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+			profileImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("profileImg");
+			businessLicenseImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("businessLicenseImg");
+		}
+		// 空值判断
+
+		try {
+			ImageHolder profileImgHolder = null;
+			if (profileImg != null) {
+				profileImgHolder = new ImageHolder(profileImg.getOriginalFilename(), profileImg.getInputStream());
+			}
+			ImageHolder businessLicenseImgHolder = null;
+			if (businessLicenseImg != null) {
+				businessLicenseImgHolder = new ImageHolder(businessLicenseImg.getOriginalFilename(),
+						businessLicenseImg.getInputStream());
+			}
+			ShopExecution se = shopService.addShop(shop, businessLicenseImgHolder, profileImgHolder);
+			if (se.getState() == ShopStateEnum.CHECK.getState()) {
+				modelMap.put("success", true);
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", se.getStateInfo());
+			}
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.toString());
+			return modelMap;
+		}
+		return modelMap;
+	}
 }

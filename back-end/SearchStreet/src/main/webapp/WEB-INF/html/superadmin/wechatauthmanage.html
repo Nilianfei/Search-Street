@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css">
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet"
+	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/commonutil.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/errorhandle.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/wechatauthmanage.js" charset="utf-8"></script>
+</head>
+
+<body>
+	<!-- 表格 -->
+	<table id="wechatAuthManagementTable" title="微信账号信息一览" border="0"
+		cellspacing="0" cellpadding="0" iconCls="icon-edit" width="98%"
+		idField="wechatAuthId" remoteSort="false" pagination="true"
+		singleSelect="false" showFooter="false" striped="true">
+		<thead>
+			<tr align="center">
+				<th field="wechatAuthId" width="25%">微信帐号ID</th>
+				<th field="userId" width="25%">用户ID</th>
+				<th field="openId" width="25%">OpenId</th>
+				<th field="createTime" width="25%" formatter="timeFormater">创建时间</th>
+			</tr>
+		</thead>
+	</table>
+
+	<!-- Hidden value area -->
+	<input id="searchInfoHd" type="hidden" />
+	<input id="urlHd" type="hidden" value="listwechatAuths" />
+</body>
+</html>

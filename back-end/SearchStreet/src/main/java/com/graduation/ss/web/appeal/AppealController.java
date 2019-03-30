@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import com.graduation.ss.dao.AppealImgDao;
 import com.graduation.ss.dto.AppealExecution;
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.UserCode2Session;
@@ -45,8 +44,6 @@ import io.swagger.annotations.ApiParam;
 public class AppealController {
 	@Autowired
 	private AppealService appealService;
-	@Autowired
-	private AppealImgDao appealImgDao;
 	@Autowired
 	private WechatAuthService wechatAuthService;
 	@Autowired
@@ -110,7 +107,9 @@ public class AppealController {
 				// 获取求助信息
 				Appeal appeal = appealService.getByAppealId(appealId);
 				// 获取求助详情图列表
-				List<AppealImg> appealImgList = appealImgDao.getAppealImgList(appealId);
+				AppealImg appealImg = new AppealImg();
+				appealImg.setAppealId(appealId);
+				List<AppealImg> appealImgList = appealService.getAppealImgList(appealImg, 0, 100).getAppealImgList();
 				appeal.setAppealImgList(appealImgList);
 				modelMap.put("appeal", appeal);
 				modelMap.put("success", true);

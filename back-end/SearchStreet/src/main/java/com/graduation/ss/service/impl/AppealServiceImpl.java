@@ -13,6 +13,7 @@ import com.graduation.ss.dao.AppealImgDao;
 import com.graduation.ss.dao.HelpDao;
 import com.graduation.ss.dao.PersonInfoDao;
 import com.graduation.ss.dto.AppealExecution;
+import com.graduation.ss.dto.AppealImgExecution;
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.entity.Appeal;
 import com.graduation.ss.entity.AppealImg;
@@ -20,6 +21,7 @@ import com.graduation.ss.entity.Help;
 import com.graduation.ss.entity.PersonInfo;
 import com.graduation.ss.enums.AppealStateEnum;
 import com.graduation.ss.exceptions.AppealOperationException;
+import com.graduation.ss.exceptions.ShopOperationException;
 import com.graduation.ss.service.AppealService;
 import com.graduation.ss.util.ImageUtil;
 import com.graduation.ss.util.PageCalculator;
@@ -323,6 +325,43 @@ public class AppealServiceImpl implements AppealService {
 		} catch (Exception e) {
 			throw new AppealOperationException("disableAppeal error:" + e.getMessage());
 		}
+	}
+
+	@Override
+	public AppealImgExecution getAppealImgList(AppealImg appealImg, int pageIndex, int pageSize) {
+		// 将页码转换成行码
+		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+		// 依据查询条件，调用dao层返回相关的商铺图片列表
+		List<AppealImg> appealImgList = appealImgDao.queryAppealImgList(appealImg, rowIndex, pageSize);
+		// 依据相同的查询条件，返回商铺图片总数
+		int count = appealImgDao.queryAppealImgCount(appealImg);
+		AppealImgExecution aie = new AppealImgExecution();
+		if (appealImgList != null) {
+			aie.setAppealImgList(appealImgList);
+			aie.setCount(count);
+		} else {
+			aie.setState(AppealStateEnum.INNER_ERROR.getState());
+		}
+		return aie;
+	}
+
+	@Override
+	public void delAppealImg(long appealImgId) throws AppealOperationException {
+		if (appealImgId >= 0) {
+			AppealImg appealImg = appealImgDao.getAppealImg(appealImgId);
+			if (appealImg != null) {
+				ImageUtil.deleteFileOrPath(appealImg.getImgAddr());
+				int effectedNum = appealImgDao.deleteAppealImgById(appealImgId);
+				if (effectedNum <= 0) {
+					throw new ShopOperationException("删除图片失败");
+				}
+			}
+		}
+	}
+
+	@Override
+	public void createAppealImg(long appealId, ImageHolder appealImgHolder) throws AppealOperationException {
+		addAppealImg(appealId, appealImgHolder);
 	}
 
 }

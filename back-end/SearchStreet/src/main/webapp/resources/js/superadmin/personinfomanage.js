@@ -100,8 +100,14 @@ function ajaxTable() {
 	searchBoxBuffer.append('<input type="button" id="searchBtn" value="搜索"');
 	searchBoxBuffer
 			.append('style="margin-right: 0.5em;" onclick="searchInfo()"/>');
+	var addButtonBuffer = new StringBuffer();
+	addButtonBuffer
+			.append('<input type="button" id="addPersonInfo" value="添加用户信息"');
+	addButtonBuffer
+			.append('style="margin-right: 0.5em;" onclick="openDialog()"/>');
 	$('.datagrid-toolbar').append(enableStatusBuffer.toString());
 	$('.datagrid-toolbar').append(searchBoxBuffer.toString());
+	$('.datagrid-toolbar').append(addButtonBuffer.toString());
 	// 获取DataGrid分页组件对象
 	var p = $("#personinfoManagementTable").datagrid("getPager");
 	// 设置分页组件参数
@@ -169,10 +175,19 @@ function searchInfo() {
  * 当前行的索引 从0 开始
  */
 function optFormater(value, row, index) {
-	var userName = row.userName;
 	var userId = row.userId;
+	var userName = row.userName;
+	var email = row.email == null ? '' : row.email;
+	var sex = row.sex;
+	var birth = timeChange(row.birth);
+	var phone = row.phone == null ? '' : row.phone;
+	var souCoin = row.souCoin == null ? '' : row.souCoin;
+	var userType = row.userType;
 	var enableStatus = row.enableStatus;
-	var params = userId + "," + enableStatus + ",'" + userName + "'";
+
+	var params = userId + ",'" + userName + "','" + email + "'," + sex + ",'"
+			+ birth + "','" + phone + "'," + souCoin + "," + userType + ","
+			+ enableStatus;
 	var edit = '<a href="javascript:openDialog_edit(' + params + ')">编辑</a>';
 	return edit;
 };
@@ -181,7 +196,7 @@ function optFormater(value, row, index) {
 // 设置弹出框的属性
 function setDialog_edit() {
 	$('#personinfoManagementEdit').dialog({
-		title : '帐号编辑',
+		title : '用户信息编辑',
 		modal : true, // 模式窗口：窗口背景不可操作
 		collapsible : true, // 可折叠，点击窗口右上角折叠图标将内容折叠起来
 		resizable : true
@@ -189,8 +204,16 @@ function setDialog_edit() {
 	});
 }
 // 打开对话框
-function openDialog_edit(userId, enableStatus, userName) {
-	personinfoManagementEditReset(userId, enableStatus, userName);
+function openDialog_edit(userId, userName, email, sex, birth, phone, souCoin,
+		userType, enableStatus) {
+	personinfoManagementEditReset(userId, userName, email, sex, birth, phone,
+			souCoin, userType, enableStatus);
+	$('#personinfoManagementEdit').dialog('open');
+}
+
+function openDialog() {
+	personinfoManagementEditReset(null, null, null, null, null, null, null,
+			null, null);
 	$('#personinfoManagementEdit').dialog('open');
 }
 // 关闭对话框
@@ -198,63 +221,101 @@ function closeDialog_edit() {
 	$('#personinfoManagementEdit').dialog('close');
 }
 // 根据用户id查询用户的信息
-function personinfoManagementEditReset(userId, enableStatus, userName) {
+function personinfoManagementEditReset(userId, userName, email, sex, birth,
+		phone, souCoin, userType, enableStatus) {
 	$("#personinfoManagementEdit_message").html("");
-	$("#personinfoManagementEdit_name").val(userName);
-	$("#personinfoManagementEdit_userId").val(userId);
-	$("#personinfoManagementEdit_enableStatus").val(enableStatus);
+	/*
+	 * $("#personinfoManagementEdit_name").val(userName);
+	 * $("#personinfoManagementEdit_userId").val(userId);
+	 * $("#personinfoManagementEdit_enableStatus").val(enableStatus);
+	 */
+	$('#form_personinfoManagementEdit').form('load', {
+		userId : userId,
+		userName : userName,
+		profileImg : null,
+		email : email,
+		sex : sex,
+		phone : phone,
+		souCoin : souCoin,
+		userType : userType,
+		enableStatus : enableStatus,
+	});
+	$('#birth').datetimebox('setValue', birth);
 }
 // 执行用户编辑操作
 function personinfoManagementEdit() {
-	var validateResult = true;
-	// easyui 表单验证
-	$('#table_personinfoManagementEdit input').each(function() {
-		if ($(this).attr('required') || $(this).attr('validType')) {
-			if (!$(this).validatebox('isValid')) {
-				// 如果验证不通过，则返回false
-				validateResult = false;
-				return;
+	var userId = $('#userId').val()
+	if (userId != '') {
+		$('#form_personinfoManagementEdit').form('submit', {
+			url : 'modifypersonInfo',
+			onSubmit : function() {
+				var isValid = $(this).form('validate');
+				if (!isValid) {
+					$.messager.progress('close'); // hide progress bar while
+													// the
+					// form is invalid
+				}
+				return isValid; // return false will stop the form submission
+			},
+			success : function(data) {
+				var data = eval('(' + data + ')'); // change the JSON string to
+				// javascript object
+				if (data.success) {
+					var messgage = "修改成功!";
+					searchAccountInfo();
+					$("#personinfoManagementEdit_message").html(messgage);
+				} else {
+					var messgage = data.errMsg;
+					$("#personinfoManagementEdit_message").html(messgage);
+				}
 			}
-		}
-	});
-	if (validateResult == false) {
-		return;
+		});
+	} else {
+		$('#form_personinfoManagementEdit').form('submit', {
+			url : 'addpersoninfo',
+			onSubmit : function() {
+				var isValid = $(this).form('validate');
+				if (!isValid) {
+					$.messager.progress('close'); // hide progress bar while
+													// the
+					// form is invalid
+				}
+				return isValid; // return false will stop the form submission
+			},
+			success : function(data) {
+				var data = eval('(' + data + ')'); // change the JSON string to
+				// javascript object
+				if (data.success) {
+					var messgage = "添加成功!";
+					searchAccountInfo();
+					$("#personinfoManagementEdit_message").html(messgage);
+				} else {
+					var messgage = data.errMsg;
+					$("#personinfoManagementEdit_message").html(messgage);
+				}
+			}
+		});
 	}
-	var userId = encodeURIComponent($("#personinfoManagementEdit_userId").val());
-	var enableStatus = encodeURIComponent($(
-			"#personinfoManagementEdit_enableStatus").val());
-	$.ajax({
-		async : false,
-		cache : false,
-		type : 'POST',
-		dataType : "json",
-		data : {
-			userId : userId,
-			enableStatus : enableStatus
-		},
-		url : 'modifypersonInfo',// 请求的action路径
-		error : function() {// 请求失败处理函数
-			alert('请求失败');
-		},
-		success : function() {
-			var messgage = "修改成功!";
-			searchAccountInfo();
-			$("#personinfoManagementEdit_message").html(messgage);
-		}
-	});
 }
 function sexFormatter(value, row, index) {
-	if(row.sex==1)return '男性';
-	else if(row.sex==2) return '女性';
-	else return '未知';
+	if (row.sex == 1)
+		return '男性';
+	else if (row.sex == 2)
+		return '女性';
+	else
+		return '未知';
 }
 function statusFormatter(value, row, index) {
-	if(row.enableStatus==1)return '合法';
-	else return '非法';
+	if (row.enableStatus == 1)
+		return '合法';
+	else
+		return '非法';
 }
 function userTypeFormater(value, row, index) {
-	if(row.userType==1)return '管理员';
-	else return '普通用户';
+	if (row.userType == 1)
+		return '管理员';
+	else
+		return '普通用户';
 }
 function imgFormater(value, row, index) {
 	if (value == null || value == '') {
@@ -274,6 +335,12 @@ function timeFormater(value, row, index) {
 		time = row.lastEditTime;
 	} else {
 		time = row.birth
+	}
+	return timeChange(time);
+}
+function timeChange(time) {
+	if (time == null) {
+		return '';
 	}
 	var datetime = new Date();
 	datetime.setTime(time);

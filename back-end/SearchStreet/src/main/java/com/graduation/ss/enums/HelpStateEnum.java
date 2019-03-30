@@ -2,7 +2,7 @@ package com.graduation.ss.enums;
 
 public enum HelpStateEnum {
 	SUCCESS(0, "操作成功"), INNER_ERROR(-1001, "内部系统错误"), NULL_HELPID(-1002, "HelpId为空"), NULL_HELP(-1003, "help信息为空"),
-	NULL_APPEALID(-1004, "appealId为空"), NULL_USERID(-1005, "userId为空");
+	NULL_APPEAL(-1004, "appeal为空"), NULL_USERID(-1005, "userId为空"), AREADY_HELP(-1006,"不能重复帮助");
 	private int state;
 	private String stateInfo;
 

@@ -3,6 +3,7 @@ package com.graduation.ss.web.superadmin;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduation.ss.dto.AppealExecution;
 import com.graduation.ss.dto.ConstantForSuperAdmin;
 import com.graduation.ss.entity.Appeal;
@@ -41,7 +41,7 @@ public class AppealSuperController {
 	 */
 	@RequestMapping(value = "/listappeals", method = RequestMethod.POST)
 	@ResponseBody
-	private Map<String, Object> listShops(HttpServletRequest request) {
+	private Map<String, Object> listAppeals(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		AppealExecution ae = null;
 		// 获取分页信息
@@ -131,38 +131,120 @@ public class AppealSuperController {
 			return modelMap;
 		}
 	}
-
+	
 	/**
-	 * 修改求助信息，主要修改可用状态，审核用
-	 * 
-	 * @param appealStr
+	 * 添加求助信息
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/modifyappeal", method = RequestMethod.POST)
+	@RequestMapping(value = "/addappeal", method = RequestMethod.POST)
 	@ResponseBody
-	private Map<String, Object> modifyAppeal(String appealStr, HttpServletRequest request) {
+	private Map<String, Object> addAppeal(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		ObjectMapper mapper = new ObjectMapper();
-		Appeal appeal = null;
+		Long userId=HttpServletRequestUtil.getLong(request, "userId");
+		String appealTitle=HttpServletRequestUtil.getString(request, "appealTitle");
+		String phone=HttpServletRequestUtil.getString(request, "phone");
+		String appealContent=HttpServletRequestUtil.getString(request, "appealContent");
+		String province=HttpServletRequestUtil.getString(request, "province");
+		String city=HttpServletRequestUtil.getString(request, "city");
+		String district=HttpServletRequestUtil.getString(request, "district");
+		String fullAddress=HttpServletRequestUtil.getString(request, "fullAddress");
+		String appealMoreInfo=HttpServletRequestUtil.getString(request, "appealMoreInfo");
+		Long souCoin=HttpServletRequestUtil.getLong(request, "souCoin");
+		int appealStatus=HttpServletRequestUtil.getInt(request, "appealStatus");
+		Float latitude=HttpServletRequestUtil.getFloat(request, "latitude");
+		Float longitude=HttpServletRequestUtil.getFloat(request, "longitude");
+		Date startTime=HttpServletRequestUtil.getDate(request, "startTime");
+		Date endTime=HttpServletRequestUtil.getDate(request, "endTime");
+		Appeal appeal = new Appeal();
+		appeal.setAppealContent(appealContent);
+		appeal.setAppealMoreInfo(appealMoreInfo);
+		appeal.setAppealStatus(appealStatus);
+		appeal.setAppealTitle(appealTitle);
+		appeal.setCity(city);
+		appeal.setDistrict(district);
+		appeal.setPhone(phone);
+		appeal.setProvince(province);
+		appeal.setUserId(userId);
+		appeal.setEndTime(endTime);
+		appeal.setSouCoin(souCoin);
+		appeal.setLatitude(latitude);
+		appeal.setLongitude(longitude);
+		appeal.setFullAddress(fullAddress);
+		appeal.setStartTime(startTime);
+		
+		// 空值判断
 		try {
-			// 获取前端传递过来的appeal json字符串，将其转换成appeal实例
-			appeal = mapper.readValue(appealStr, Appeal.class);
+			AppealExecution ae = appealService.addAppeal(appeal);
+			if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", true);
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", ae.getStateInfo());
+			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
+		return modelMap;
+	}
+
+	/**
+	 * 修改求助信息
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/modifyappeal", method = RequestMethod.POST)
+	@ResponseBody
+	private Map<String, Object> modifyAppeal(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		Long appealId=HttpServletRequestUtil.getLong(request, "appealId");
+		Long userId=HttpServletRequestUtil.getLong(request, "userId");
+		String appealTitle=HttpServletRequestUtil.getString(request, "appealTitle");
+		String phone=HttpServletRequestUtil.getString(request, "phone");
+		String appealContent=HttpServletRequestUtil.getString(request, "appealContent");
+		String province=HttpServletRequestUtil.getString(request, "province");
+		String city=HttpServletRequestUtil.getString(request, "city");
+		String district=HttpServletRequestUtil.getString(request, "district");
+		String fullAddress=HttpServletRequestUtil.getString(request, "fullAddress");
+		String appealMoreInfo=HttpServletRequestUtil.getString(request, "appealMoreInfo");
+		Long souCoin=HttpServletRequestUtil.getLong(request, "souCoin");
+		int appealStatus=HttpServletRequestUtil.getInt(request, "appealStatus");
+		Float latitude=HttpServletRequestUtil.getFloat(request, "latitude");
+		Float longitude=HttpServletRequestUtil.getFloat(request, "longitude");
+		Date startTime=HttpServletRequestUtil.getDate(request, "startTime");
+		Date endTime=HttpServletRequestUtil.getDate(request, "endTime");
+		Appeal appeal = new Appeal();
+		appeal.setAppealContent(appealContent);
+		appeal.setAppealId(appealId);
+		appeal.setAppealMoreInfo(appealMoreInfo);
+		appeal.setAppealStatus(appealStatus);
+		appeal.setAppealTitle(appealTitle);
+		appeal.setCity(city);
+		appeal.setDistrict(district);
+		appeal.setPhone(phone);
+		appeal.setProvince(province);
+		appeal.setUserId(userId);
+		appeal.setEndTime(endTime);
+		appeal.setSouCoin(souCoin);
+		appeal.setLatitude(latitude);
+		appeal.setLongitude(longitude);
+		appeal.setFullAddress(fullAddress);
+		appeal.setStartTime(startTime);
+		
 		// 空值判断
 		if (appeal != null && appeal.getAppealId() != null) {
 			try {
 				AppealExecution ae = appealService.modifyAppeal(appeal);
-				Help helpCondition = new Help();
-				helpCondition.setAppealId(appeal.getAppealId());
-				List<Help> helps = helpService.getHelpList(helpCondition).getHelpList();
-				for (Help help : helps) {
-					help.setHelpStatus(4);
-					helpService.modifyHelp(help);
+				if (appeal.getAppealStatus() != null && appeal.getAppealStatus() == 4) {
+					Help helpCondition = new Help();
+					helpCondition.setAppealId(appeal.getAppealId());
+					List<Help> helps = helpService.getHelpList(helpCondition).getHelpList();
+					for (Help help : helps) {
+						help.setHelpStatus(4);
+						helpService.modifyHelp(help);
+					}
 				}
 				if (ae.getState() == AppealStateEnum.SUCCESS.getState()) {
 					modelMap.put("success", true);
