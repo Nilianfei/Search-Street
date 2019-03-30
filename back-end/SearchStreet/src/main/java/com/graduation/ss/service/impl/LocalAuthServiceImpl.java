@@ -1,6 +1,7 @@
 package com.graduation.ss.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import com.graduation.ss.enums.LocalAuthStateEnum;
 import com.graduation.ss.exceptions.LocalAuthOperationException;
 import com.graduation.ss.service.LocalAuthService;
 import com.graduation.ss.util.MD5;
+import com.graduation.ss.util.PageCalculator;
 
 @Service
 public class LocalAuthServiceImpl implements LocalAuthService {
@@ -94,6 +96,24 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 		} else {
 			return new LocalAuthExecution(LocalAuthStateEnum.NULL_AUTH_INFO);
 		}
+	}
+
+	@Override
+	public LocalAuthExecution getLocalAuthList(int pageIndex, int pageSize) {
+		// 将页码转换成行码
+		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+		// 依据查询条件，调用dao层返回相关的本地账号列表
+		List<LocalAuth> localAuthList = localAuthDao.queryLocalList(rowIndex, pageSize);
+		// 依据相同的查询条件，返回本地账户总数
+		int count = localAuthDao.queryLocalCount();
+		LocalAuthExecution lae = new LocalAuthExecution();
+		if (localAuthList != null) {
+			lae.setLocalAuthList(localAuthList);
+			lae.setCount(count);
+		} else {
+			lae.setState(LocalAuthStateEnum.INNER_ERROR.getState());
+		}
+		return lae;
 	}
 
 }

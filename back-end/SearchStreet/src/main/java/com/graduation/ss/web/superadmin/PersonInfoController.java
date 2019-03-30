@@ -1,7 +1,9 @@
 package com.graduation.ss.web.superadmin;
 
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,8 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.graduation.ss.dto.ConstantForSuperAdmin;
+import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.PersonInfoExecution;
 import com.graduation.ss.entity.PersonInfo;
 import com.graduation.ss.enums.PersonInfoStateEnum;
@@ -75,28 +81,51 @@ public class PersonInfoController {
 			return modelMap;
 		}
 	}
-
-	/**
-	 * 修改用户信息，主要是修改用户帐号可用状态
-	 * 
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value = "/modifypersonInfo", method = RequestMethod.POST)
+	
+	@RequestMapping(value = "/addpersoninfo", method = RequestMethod.POST)
 	@ResponseBody
-	private Map<String, Object> modifyPersonInfo(HttpServletRequest request) {
+	private Map<String, Object> addPersonInfo(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		// 从前端请求中获取用户Id以及可用状态
-		Long userId = HttpServletRequestUtil.getLong(request, "userId");
+		// 从前端请求中获取用户信息
 		int enableStatus = HttpServletRequestUtil.getInt(request, "enableStatus");
+		String phone = HttpServletRequestUtil.getString(request, "phone");
+		String userName = HttpServletRequestUtil.getString(request, "userName");
+		String email = HttpServletRequestUtil.getString(request, "email");
+		String sex = HttpServletRequestUtil.getString(request, "sex");
+		Date birth = HttpServletRequestUtil.getDate(request, "birth");
+		Long souCoin = HttpServletRequestUtil.getLong(request, "souCoin");
+		int userType = HttpServletRequestUtil.getInt(request, "userType");
+		Date createTime = HttpServletRequestUtil.getDate(request, "createTime");
+		Date lastEditTime = HttpServletRequestUtil.getDate(request, "lastEditTime");
+		PersonInfo pi = new PersonInfo();
+		pi.setUserName(userName);
+		pi.setEmail(email);
+		pi.setSex(sex);
+		pi.setBirth(birth);
+		pi.setPhone(phone);
+		pi.setSouCoin(souCoin);
+		pi.setUserType(userType);
+		pi.setEnableStatus(enableStatus);
+		pi.setCreateTime(createTime);
+		pi.setLastEditTime(lastEditTime);
+		
+		CommonsMultipartFile profileImg = null;
+		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
+				request.getSession().getServletContext());
+		if (commonsMultipartResolver.isMultipart(request)) {
+			MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+			profileImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("profileImg");
+		}
 		// 非空判断
-		if (userId >= 0 && enableStatus >= 0) {
+		if (enableStatus >= 0 && userType >= 0) {
 			try {
-				PersonInfo pi = new PersonInfo();
-				pi.setUserId(userId);
-				pi.setEnableStatus(enableStatus);
-				// 修改用户可用状态
-				PersonInfoExecution ae = personInfoService.modifyPersonInfo(pi);
+				PersonInfoExecution ae;
+				if (profileImg == null) {
+					ae = personInfoService.addPersonInfo(pi, null);
+				} else {
+					ImageHolder imageHolder = new ImageHolder(profileImg.getOriginalFilename(), profileImg.getInputStream());
+					ae = personInfoService.addPersonInfo(pi, imageHolder);
+				}
 				if (ae.getState() == PersonInfoStateEnum.SUCCESS.getState()) {
 					modelMap.put("success", true);
 				} else {
@@ -106,6 +135,86 @@ public class PersonInfoController {
 			} catch (RuntimeException e) {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", e.toString());
+				return modelMap;
+			} catch (IOException e) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", e.getMessage());
+				return modelMap;
+			}
+
+		} else {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "请输入需要添加的帐号信息");
+		}
+		return modelMap;
+	}
+
+	/**
+	 * 修改用户信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/modifypersonInfo", method = RequestMethod.POST)
+	@ResponseBody
+	private Map<String, Object> modifyPersonInfo(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		// 从前端请求中获取用户信息
+		Long userId = HttpServletRequestUtil.getLong(request, "userId");
+		int enableStatus = HttpServletRequestUtil.getInt(request, "enableStatus");
+		String phone = HttpServletRequestUtil.getString(request, "phone");
+		String userName = HttpServletRequestUtil.getString(request, "userName");
+		String email = HttpServletRequestUtil.getString(request, "email");
+		String sex = HttpServletRequestUtil.getString(request, "sex");
+		Date birth = HttpServletRequestUtil.getDate(request, "birth");
+		Long souCoin = HttpServletRequestUtil.getLong(request, "souCoin");
+		int userType = HttpServletRequestUtil.getInt(request, "userType");
+		Date createTime = HttpServletRequestUtil.getDate(request, "createTime");
+		Date lastEditTime = HttpServletRequestUtil.getDate(request, "lastEditTime");
+		PersonInfo pi = new PersonInfo();
+		pi.setUserId(userId);
+		pi.setUserName(userName);
+		pi.setEmail(email);
+		pi.setSex(sex);
+		pi.setBirth(birth);
+		pi.setPhone(phone);
+		pi.setSouCoin(souCoin);
+		pi.setUserType(userType);
+		pi.setEnableStatus(enableStatus);
+		pi.setCreateTime(createTime);
+		pi.setLastEditTime(lastEditTime);
+		
+		CommonsMultipartFile profileImg = null;
+		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
+				request.getSession().getServletContext());
+		if (commonsMultipartResolver.isMultipart(request)) {
+			MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+			profileImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("profileImg");
+		}
+
+		// 非空判断
+		if (userId != null) {
+			try {
+				PersonInfoExecution ae;
+				if (profileImg == null) {
+					ae = personInfoService.modifyPersonInfo(pi, null);
+				} else {
+					ImageHolder imageHolder = new ImageHolder(profileImg.getOriginalFilename(), profileImg.getInputStream());
+					ae = personInfoService.modifyPersonInfo(pi, imageHolder);
+				}
+				if (ae.getState() == PersonInfoStateEnum.SUCCESS.getState()) {
+					modelMap.put("success", true);
+				} else {
+					modelMap.put("success", false);
+					modelMap.put("errMsg", ae.getStateInfo());
+				}
+			} catch (RuntimeException e) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", e.toString());
+				return modelMap;
+			} catch (IOException e) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", e.getMessage());
 				return modelMap;
 			}
 

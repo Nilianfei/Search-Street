@@ -32,6 +32,22 @@ public interface WechatAuthService {
 	 * @return
 	 * @throws WechatAuthOperationException
 	 */
-	void updatePersonInfo(WechatAuth wechatAuth, PersonInfo personInfo)
-			throws WechatAuthOperationException;
+	void updatePersonInfo(WechatAuth wechatAuth, PersonInfo personInfo) throws WechatAuthOperationException;
+
+	/**
+	 * 分页获取微信账号
+	 * 
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 */
+	WechatAuthExecution getWechatAuthList(int pageIndex, int pageSize);
+
+	/**
+	 * 通过用户ID获取微信账号
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	WechatAuth getWechatAuthByUserId(long userId);
 }

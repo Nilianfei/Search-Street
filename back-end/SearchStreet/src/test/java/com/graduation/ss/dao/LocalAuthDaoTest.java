@@ -17,9 +17,9 @@ import com.graduation.ss.entity.LocalAuth;
 public class LocalAuthDaoTest {
 	@Autowired
 	private LocalAuthDao localAuthDao;
-	private static final String username="testusername";
-	private static final String password="testpassword";
-	
+	private static final String username = "testusername";
+	private static final String password = "testpassword";
+
 	@Test
 	public void testInsertLocalAuth() {
 		LocalAuth localAuth = new LocalAuth();
@@ -30,21 +30,21 @@ public class LocalAuthDaoTest {
 		int effectedNum = localAuthDao.insertLocalAuth(localAuth);
 		assertEquals(1, effectedNum);
 	}
-	
+
 	@Test
-	public void testQueryLocalByUserNameAndPwd(){
+	public void testQueryLocalByUserNameAndPwd() {
 		LocalAuth localAuth = localAuthDao.queryLocalByUserNameAndPwd(username, password);
 		assertEquals("1", localAuth.getUserId().toString());
 	}
-	
+
 	@Test
-	public void testQueryLocalByUserId(){
+	public void testQueryLocalByUserId() {
 		LocalAuth localAuth = localAuthDao.queryLocalByUserId(1L);
 		assertEquals("1", localAuth.getUserId().toString());
 	}
-	
+
 	@Test
-	public void testUpdateLocalAuth(){
+	public void testUpdateLocalAuth() {
 		Date now = new Date();
 		int effectedNum = localAuthDao.updateLocalAuth(1L, username, password, password + "new", now);
 		assertEquals(1, effectedNum);

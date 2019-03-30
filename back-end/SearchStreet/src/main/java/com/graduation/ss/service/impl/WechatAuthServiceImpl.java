@@ -2,6 +2,7 @@ package com.graduation.ss.service.impl;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import com.graduation.ss.entity.WechatAuth;
 import com.graduation.ss.enums.WechatAuthStateEnum;
 import com.graduation.ss.exceptions.WechatAuthOperationException;
 import com.graduation.ss.service.WechatAuthService;
+import com.graduation.ss.util.PageCalculator;
 
 @Service
 public class WechatAuthServiceImpl implements WechatAuthService {
@@ -135,6 +137,8 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 		try {
 			if (wechatAuth.getUserId() != null) {
 				try {
+					//该方法不能修改用户类型
+					personInfo.setUserType(null);
 					personInfo.setUserId(wechatAuth.getUserId());
 					personInfo.setLastEditTime(new Date());
 					int effectedNum = personInfoDao.updatePersonInfo(personInfo);
@@ -149,6 +153,29 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 		} catch (Exception e) {
 			throw new WechatAuthOperationException("updatePersonInfo error: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public WechatAuthExecution getWechatAuthList(int pageIndex, int pageSize) {
+		// 将页码转换成行码
+		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+		// 依据查询条件，调用dao层返回相关的微信账号列表
+		List<WechatAuth> wechatAuthList = wechatAuthDao.queryWechatList(rowIndex, pageSize);
+		// 依据相同的查询条件，返回微信账户总数
+		int count = wechatAuthDao.queryWechatCount();
+		WechatAuthExecution wae = new WechatAuthExecution();
+		if (wechatAuthList != null) {
+			wae.setWechatAuthList(wechatAuthList);
+			wae.setCount(count);
+		} else {
+			wae.setState(WechatAuthStateEnum.INNER_ERROR.getState());
+		}
+		return wae;
+	}
+
+	@Override
+	public WechatAuth getWechatAuthByUserId(long userId) {
+		return wechatAuthDao.queryWechatByUserId(userId);
 	}
 
 }

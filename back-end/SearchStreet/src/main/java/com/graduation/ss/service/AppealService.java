@@ -1,8 +1,10 @@
 package com.graduation.ss.service;
 
 import com.graduation.ss.dto.AppealExecution;
+import com.graduation.ss.dto.AppealImgExecution;
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.entity.Appeal;
+import com.graduation.ss.entity.AppealImg;
 import com.graduation.ss.exceptions.AppealOperationException;
 
 public interface AppealService {
@@ -95,4 +97,30 @@ public interface AppealService {
 	 * @throws AppealOperationException
 	 */
 	AppealExecution disableAppeal(Long userId, Long appealId) throws AppealOperationException;
+	
+	/**
+	 * 分页获取求助图片
+	 * 
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 */
+	AppealImgExecution getAppealImgList(AppealImg appealImg, int pageIndex, int pageSize);
+
+	/**
+	 * 根据求助图片Id删除求助图片
+	 * 
+	 * @param appealImgId
+	 * @throws AppealOperationException
+	 */
+	void delAppealImg(long appealImgId) throws AppealOperationException;
+
+	/**
+	 * 添加求助图片
+	 * 
+	 * @param appealId
+	 * @param appealImgHolder
+	 * @throws AppealOperationException
+	 */
+	void createAppealImg(long appealId, ImageHolder appealImgHolder) throws AppealOperationException;
 }

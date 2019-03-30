@@ -1,5 +1,7 @@
 package com.graduation.ss.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.graduation.ss.entity.WechatAuth;
@@ -29,4 +31,18 @@ public interface WechatAuthDao {
 	 * @return
 	 */
 	WechatAuth queryWechatByUserId(Long userId);
+	
+	/**
+	 * 分页查询微信账号
+	 * @param rowIndex
+	 * @param pageSize
+	 * @return
+	 */
+	List<WechatAuth>  queryWechatList(@Param("rowIndex") int rowIndex, @Param("pageSize") int pageSize);
+	
+	/**
+	 * 查询微信账号总数
+	 * @return
+	 */
+	int queryWechatCount();
 }

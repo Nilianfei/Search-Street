@@ -1,7 +1,9 @@
 package com.graduation.ss.service;
 
+import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.PersonInfoExecution;
 import com.graduation.ss.entity.PersonInfo;
+import com.graduation.ss.exceptions.PersonInfoOperationException;
 
 public interface PersonInfoService {
 
@@ -29,5 +31,15 @@ public interface PersonInfoService {
 	 * @param personInfo
 	 * @return
 	 */
-	PersonInfoExecution modifyPersonInfo(PersonInfo personInfo);
+	PersonInfoExecution modifyPersonInfo(PersonInfo personInfo, ImageHolder thumbnail) throws PersonInfoOperationException;
+	
+	/**
+	 * 添加用户信息
+	 * 
+	 * @param personInfo
+	 * @param thumbnail
+	 * @return
+	 * @throws PersonInfoOperationException
+	 */
+	PersonInfoExecution addPersonInfo(PersonInfo personInfo, ImageHolder thumbnail) throws PersonInfoOperationException;
 }

@@ -24,7 +24,7 @@ public class PersonInfoServiceTest {
 		PersonInfo personInfo = new PersonInfo();
 		personInfo.setUserId(1L);
 		personInfo.setEnableStatus(0);
-		PersonInfoExecution personInfoExecution = personInfoService.modifyPersonInfo(personInfo);
+		PersonInfoExecution personInfoExecution = personInfoService.modifyPersonInfo(personInfo,null);
 		System.out.println(personInfoExecution.getPersonInfo().getUserId());
 	}
 	

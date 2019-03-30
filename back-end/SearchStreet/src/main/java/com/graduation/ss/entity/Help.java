@@ -28,7 +28,7 @@ public class Help {
 	 * 帮助状态 0求助用户未确定帮助对象，1已接受帮助， 2已完成，3已失效
 	 * 
 	 */
-	@ApiModelProperty(value = "帮助状态 0求助用户未确定帮助对象，1已接受帮助， 2已完成，3已失效")
+	@ApiModelProperty(value = "帮助状态 0求助用户未确定帮助对象，1已接受帮助， 2已完成，3已失效，4已禁止")
 	private Integer helpStatus;
 	/**
 	 * 完成程度分，范围：0-5分整数

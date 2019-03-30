@@ -46,6 +46,12 @@ function timeFormater(value, row, index) {
 	} else {
 		time = row.endTime;
 	}
+	return timeChange(time);
+}
+function timeChange(time) {
+	if (time == null) {
+		return '';
+	}
 	var datetime = new Date();
 	datetime.setTime(time);
 	var year = datetime.getFullYear();
@@ -67,7 +73,6 @@ function timeFormater(value, row, index) {
 	return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":"
 			+ second;// +"."+mseconds;
 }
-
 function listAppealByTitle() {
 	var appealTitle = $("#searchInfoHd").val();
 	if (appealTitle == "") {
@@ -177,9 +182,15 @@ function ajaxTable() {
 	searchBoxBuffer.append('<input type="button" id="searchBtn" value="搜索"');
 	searchBoxBuffer
 			.append('style="margin-right: 0.5em;" onclick="searchInfo()"/>');
+	var addButtonBuffer = new StringBuffer();
+	addButtonBuffer
+			.append('<input type="button" id="addAppeal" value="添加求助信息"');
+	addButtonBuffer
+			.append('style="margin-right: 0.5em;" onclick="openDialog()"/>');
 	$('.datagrid-toolbar').append(appealStatusBuffer.toString());
 	$('.datagrid-toolbar').append(searchConditionBuffer.toString());
 	$('.datagrid-toolbar').append(searchBoxBuffer.toString());
+	$('.datagrid-toolbar').append(addButtonBuffer.toString());
 	$("#appealManagementSearch_searchBox").hide();
 	$("#searchBtn").hide();
 	// 获取DataGrid分页组件对象
@@ -274,8 +285,25 @@ function searchInfo() {
 function optFormater(value, row, index) {
 	var appealTitle = row.appealTitle;
 	var appealId = row.appealId;
+	var userId = row.userId;
+	var phone = row.phone;
+	var appealContent = row.appealContent;
+	var province = row.province;
+	var city = row.city;
+	var district = row.district;
+	var fullAddress = row.fullAddress;
+	var appealMoreInfo = row.appealMoreInfo;
+	var souCoin = row.souCoin;
+	var latitude = row.latitude;
+	var longitude = row.longitude;
 	var appealStatus = row.appealStatus;
-	var params = appealId + "," + appealStatus + ",'" + appealTitle + "'";
+	var startTime = timeChange(row.startTime);
+	var endTime = timeChange(row.endTime);
+	var params = appealId + "," + userId + ",'" + appealTitle + "','" + phone
+			+ "','" + appealContent + "','" + province + "','" + city + "','"
+			+ district + "','" + fullAddress + "','" + appealMoreInfo + "',"
+			+ souCoin + "," + appealStatus + "," + latitude + "," + longitude
+			+ ",'" + startTime + "','" + endTime + "'";
 	var edit = '<a href="javascript:openDialog_edit(' + params + ')">编辑</a>';
 	return edit;
 };
@@ -292,8 +320,18 @@ function setDialog_edit() {
 	});
 }
 // 打开对话框
-function openDialog_edit(appealId, appealStatus, appealTitle) {
-	appealManagementEditReset(appealId, appealStatus, appealTitle);
+function openDialog_edit(appealId, userId, appealTitle, phone, appealContent,
+		province, city, district, fullAddress, appealMoreInfo, souCoin,
+		appealStatus, latitude, longitude, startTime, endTime) {
+	appealManagementEditReset(appealId, userId, appealTitle, phone,
+			appealContent, province, city, district, fullAddress,
+			appealMoreInfo, souCoin, appealStatus, latitude, longitude,
+			startTime, endTime);
+	$('#appealManagementEdit').dialog('open');
+}
+function openDialog() {
+	appealManagementEditReset(null, null, null, null, null, null, null, null,
+			null, null, null, null, null, null, null, null);
 	$('#appealManagementEdit').dialog('open');
 }
 // 关闭对话框
@@ -301,51 +339,88 @@ function closeDialog_edit() {
 	$('#appealManagementEdit').dialog('close');
 }
 // 根据用户id查询用户的信息
-function appealManagementEditReset(appealId, appealStatus, appealTitle) {
+function appealManagementEditReset(appealId, userId, appealTitle, phone,
+		appealContent, province, city, district, fullAddress, appealMoreInfo,
+		souCoin, appealStatus, latitude, longitude, startTime, endTime) {
 	$("#appealManagementEdit_message").html("");
-	$("#appealManagementEdit_appealTitle").val(appealTitle);
-	$("#appealManagementEdit_appealId").val(appealId);
-	$("#appealManagementEdit_appealStatus").val(appealStatus);
+	/*
+	 * $("#appealManagementEdit_appealTitle").val(appealTitle);
+	 * $("#appealManagementEdit_appealId").val(appealId);
+	 * $("#appealManagementEdit_appealStatus").val(appealStatus);
+	 */
+	$('#form_appealManagementEdit').form('load', {
+		appealId : appealId,
+		userId : userId,
+		appealTitle : appealTitle,
+		phone : phone,
+		appealContent : appealContent,
+		province : province,
+		city : city,
+		district : district,
+		fullAddress : fullAddress,
+		appealMoreInfo : appealMoreInfo,
+		souCoin : souCoin,
+		appealStatus : appealStatus,
+		latitude : latitude,
+		longitude : longitude
+	});
+	$('#startTime').datetimebox('setValue', startTime);
+	$('#endTime').datetimebox('setValue', endTime);
 }
 // 执行用户编辑操作
 function appealManagementEdit() {
-	var validateResult = true;
-	// easyui 表单验证
-	$('#table_appealManagementEdit input').each(function() {
-		if ($(this).attr('required') || $(this).attr('validType')) {
-			if (!$(this).validatebox('isValid')) {
-				// 如果验证不通过，则返回false
-				validateResult = false;
-				return;
+	var appealId = $('#appealId').val()
+	if (appealId != '') {
+		$('#form_appealManagementEdit').form('submit', {
+			url : 'modifyappeal',
+			onSubmit : function() {
+				var isValid = $(this).form('validate');
+				if (!isValid) {
+					$.messager.progress('close'); // hide progress bar while
+													// the
+					// form is invalid
+				}
+				return isValid; // return false will stop the form submission
+			},
+			success : function(data) {
+				var data = eval('(' + data + ')'); // change the JSON string to
+				// javascript object
+				if (data.success) {
+					var messgage = "修改成功!";
+					searchAppealInfo();
+					$("#appealManagementEdit_message").html(messgage);
+				} else {
+					var messgage = data.errMsg;
+					$("#appealManagementEdit_message").html(messgage);
+				}
 			}
-		}
-	});
-	if (validateResult == false) {
-		return;
+		});
+	} else {
+		$('#form_appealManagementEdit').form('submit', {
+			url : 'addappeal',
+			onSubmit : function() {
+				var isValid = $(this).form('validate');
+				if (!isValid) {
+					$.messager.progress('close'); // hide progress bar while
+													// the
+					// form is invalid
+				}
+				return isValid; // return false will stop the form submission
+			},
+			success : function(data) {
+				var data = eval('(' + data + ')'); // change the JSON string to
+				// javascript object
+				if (data.success) {
+					var messgage = "添加成功!";
+					searchAppealInfo();
+					$("#appealManagementEdit_message").html(messgage);
+				} else {
+					var messgage = data.errMsg;
+					$("#appealManagementEdit_message").html(messgage);
+				}
+			}
+		});
 	}
-	var appeal = {};
-	appeal.appealId = encodeURIComponent($("#appealManagementEdit_appealId")
-			.val());
-	appeal.appealStatus = encodeURIComponent($(
-			"#appealManagementEdit_appealStatus").val());
-	$.ajax({
-		async : false,
-		cache : false,
-		type : 'POST',
-		dataType : "json",
-		data : {
-			appealStr : JSON.stringify(appeal)
-		},
-		url : 'modifyappeal',// 请求的action路径
-		error : function() {// 请求失败处理函数
-			alert('请求失败');
-		},
-		success : function() {
-			var messgage = "修改成功!";
-			searchAppealInfo();
-			$("#appealManagementEdit_message").html(messgage);
-		}
-	});
 }
 
 /**

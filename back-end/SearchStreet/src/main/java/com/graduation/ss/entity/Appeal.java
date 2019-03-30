@@ -40,7 +40,7 @@ public class Appeal {
 	/**
 	 * 求助的状态 0不确定帮助对象，1已确定帮助对象，2已完成,3已过时失效
 	 */
-	@ApiModelProperty(value = "求助状态： 0不确定帮助对象，1已确定帮助对象，2已完成,3已过时失效")
+	@ApiModelProperty(value = "求助状态： 0不确定帮助对象，1已确定帮助对象，2已完成,3已过时失效，4已禁止")
 	private Integer appealStatus;
 	@ApiModelProperty(value = "纬度", required = true)
 	private Float latitude;

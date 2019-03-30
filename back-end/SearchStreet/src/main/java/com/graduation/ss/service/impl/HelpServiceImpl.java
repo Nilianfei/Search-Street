@@ -81,16 +81,27 @@ public class HelpServiceImpl implements HelpService {
 		}
 		Long appealId = help.getAppealId();
 		if (appealId == null) {
-			return new HelpExecution(HelpStateEnum.NULL_APPEALID);
+			return new HelpExecution(HelpStateEnum.NULL_APPEAL);
 		}
 		try {
+			Appeal appeal = appealDao.queryByAppealId(appealId);
 			Help helpCondition = new Help();
+			if (appeal == null) {
+				return new HelpExecution(HelpStateEnum.NULL_APPEAL);
+			}
+			helpCondition.setAppealId(appealId);
+			helpCondition.setUserId(userId);
+			List<Help> helpList = helpDao.queryHelpList(helpCondition);
+			if (helpList.size() > 0) {
+				return new HelpExecution(HelpStateEnum.AREADY_HELP);
+			}
+
 			Float avgCompletion = 0f;
 			Float avgEfficiency = 0f;
 			Float avgAttitude = 0f;
-			helpCondition.setUserId(userId);
+			helpCondition.setAppealId(null);
 			helpCondition.setHelpStatus(2);// 查找已完成的帮助
-			List<Help> helpList = helpDao.queryHelpList(helpCondition);
+			helpList = helpDao.queryHelpList(helpCondition);
 			for (Help help1 : helpList) {
 				avgCompletion += help1.getCompletion();
 				avgEfficiency += help1.getEfficiency();
@@ -106,10 +117,7 @@ public class HelpServiceImpl implements HelpService {
 			help.setAvgAttitude(avgAttitude);
 			help.setAvgCompletion(avgCompletion);
 			help.setAvgEfficiency(avgEfficiency);
-			Appeal appeal = appealDao.queryByAppealId(appealId);
-			if (appeal == null) {
-				throw new HelpOperationException("appealId无效");
-			}
+
 			help.setEndTime(appeal.getEndTime());
 			// 给帮助信息赋初始值
 			help.setHelpStatus(0);
@@ -187,7 +195,7 @@ public class HelpServiceImpl implements HelpService {
 			throw new HelpOperationException(e.getMessage());
 		}
 	}
-	
+
 	@Override
 	@Transactional
 	public void additionSouCoin(Long helpId, Long appealUserId, Long additionSouCoin) throws HelpOperationException {
@@ -219,7 +227,7 @@ public class HelpServiceImpl implements HelpService {
 			if (help.getHelpStatus() != 2) {
 				throw new HelpOperationException("该状态不能追赏");
 			}
-			if (help.getAdditionalCoin()>0){
+			if (help.getAdditionalCoin() > 0) {
 				throw new HelpOperationException("不能多次追赏");
 			}
 			Long helpUserId = help.getUserId();
@@ -235,7 +243,7 @@ public class HelpServiceImpl implements HelpService {
 			}
 			help.setAdditionalCoin(additionSouCoin);
 			Long allCoin = help.getAllCoin();
-			help.setAllCoin(allCoin+additionSouCoin);
+			help.setAllCoin(allCoin + additionSouCoin);
 			effectedNum = helpDao.updateHelp(help);
 			if (effectedNum <= 0) {
 				throw new HelpOperationException("修改帮助追赏金失败");

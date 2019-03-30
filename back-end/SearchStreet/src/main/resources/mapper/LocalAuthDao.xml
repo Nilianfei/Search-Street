@@ -3,7 +3,8 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.graduation.ss.dao.LocalAuthDao">
-	<select id="queryLocalByUserNameAndPwd" resultType="com.graduation.ss.entity.LocalAuth">
+	<select id="queryLocalByUserNameAndPwd"
+		resultType="com.graduation.ss.entity.LocalAuth">
 		SELECT
 		local_auth_id,
 		user_name,
@@ -15,7 +16,8 @@
 		WHERE user_name=#{userName}
 		AND password=#{password}
 	</select>
-	<select id="queryLocalByUserId" resultType="com.graduation.ss.entity.LocalAuth">
+	<select id="queryLocalByUserId"
+		resultType="com.graduation.ss.entity.LocalAuth">
 		SELECT
 		local_auth_id,
 		user_name,
@@ -26,8 +28,30 @@
 		FROM tb_local_auth
 		WHERE user_id=#{userId}
 	</select>
-	<insert id="insertLocalAuth" parameterType="com.graduation.ss.entity.LocalAuth"
-	useGeneratedKeys="true" keyProperty="localAuthId" keyColumn="local_auth_id">
+	<select id="queryLocalCount" resultType="int">
+		SELECT
+		count(1)
+		FROM
+		tb_local_auth
+	</select>
+	<select id="queryLocalList"
+		resultType="com.graduation.ss.entity.LocalAuth">
+		SELECT
+		local_auth_id,
+		user_name,
+		password,
+		create_time,
+		last_edit_time,
+		user_id
+		FROM tb_local_auth
+		ORDER BY
+		create_time DESC
+		LIMIT #{rowIndex},#{pageSize};
+	</select>
+	<insert id="insertLocalAuth"
+		parameterType="com.graduation.ss.entity.LocalAuth"
+		useGeneratedKeys="true" keyProperty="localAuthId"
+		keyColumn="local_auth_id">
 		INSERT
 		INTO
 		tb_local_auth(user_name,password,user_id,create_time,last_edit_time)
@@ -42,6 +66,7 @@
 		</set>
 		where user_id=#{userId}
 		AND user_name=#{userName}
-		AND password=#{password}
+		AND
+		password=#{password}
 	</update>
 </mapper>
