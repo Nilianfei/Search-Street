@@ -127,16 +127,4 @@
 		
 	</build>
 
-<<<<<<< HEAD
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>c3p0</groupId>
-				<artifactId>c3p0</artifactId>
-				<version>0.9.5.2</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-=======
->>>>>>> b73ae10582644668a2e354e8d84da2ace30c5c51
 </project>

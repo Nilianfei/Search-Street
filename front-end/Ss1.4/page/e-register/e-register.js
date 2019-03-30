@@ -89,7 +89,7 @@ Page({
       region: e.detail.value
     })
   },
-<<<<<<< HEAD
+
   //数据回填方法
   backfill: function (e) {
     console.log(e);
@@ -150,8 +150,7 @@ Page({
     });
   },
 
-=======
->>>>>>> b73ae10582644668a2e354e8d84da2ace30c5c51
+
   upimg: function () {
     var that = this;
     var flag = this.data.flag;
