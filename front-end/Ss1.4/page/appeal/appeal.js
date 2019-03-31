@@ -10,9 +10,11 @@ Page({
     ,"phone":"","province":"","city":"","district":""
     ,"fullAddress":"","appealMoreInfo":"","souCoin":0,"startTime":"","endTime":""},
     bottonText:"立即帮忙",
+    isHelp:false,
     loading:true,
+    isDisabled: false,
     appealId: null,
-    token:null
+    token:null,
   },
 
   /**
@@ -50,19 +52,22 @@ Page({
         )
       }
     })
-    //查询用户是否预约过服务
+    //查询用户是否提交过帮助该求助的申请
     wx.request({
       url: app.globalData.serviceUrl+"/SearchStreet/help/queryishelp?appealId=" + that.data.appealId + "&token=" + that.data.token,
       data: {},
       method: "GET",
       success: res => {
+        console.log(res);
         if(res.data.success){
           that.setData({
-            loading: false
+            loading: false,
           })
           if (res.data.ishelp == true) {
             that.setData({
-              bottonText: "已求助"
+              isHelp: true,
+              bottonText: "您已经申请，请等待...",
+              isDisabled: true,
             })
           }
         } else{
@@ -78,17 +83,18 @@ Page({
 
   helping: function () {
     var that = this;
-    if (that.data.bottonText != "已求助") {
+    if (!that.data.isHelp) {
       wx.request({
         url: app.globalData.serviceUrl+"/SearchStreet/help/addHelp?token="+that.data.token,
         data: {
           appealId: that.data.appealId,
+          appealTitle: that.data.appeal.appealTitle,
         },
         method: "POST",
         success: res => {
           that.setData({
-            bottonText: "已求助"
-          });
+            bottonText: "您已经申请，请等待...",
+          })
           wx.redirectTo({
             url: '../help-map/help-map'//返回搜搜求助页面
           })
@@ -96,6 +102,7 @@ Page({
       })
     }
   },
+  
 
   previewImg:function (e) {
     var index = e.currentTarget.id;

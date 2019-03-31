@@ -1,89 +1,84 @@
 /* page/addservice/addservice.wxss */
-.container{
-  padding:1rem;
-  font-size: 0.9rem;
-  line-height: 1.5rem;
+
+.container {
+  background-color: #f8f8f9;
 }
-.row{
+
+.bigInput {
+  height: 160rpx;
+  display: flex;
+}
+
+.row {
   display: flex;
   align-items: center;
   margin-bottom: 0.8rem;
 }
 
-.row text{                 
+.row text {
+  flex-grow: 1;
   text-align: left;
- 
+  margin: 0.5rem;
 }
-.row input{
- font-size: 0.7rem;
- flex-grow: 2;
- border: 1px solid #0099CC;
- display:   inline-block;
- border-radius:0.3rem;
- box-shadow: 0 0 0.15rem #aaa;
- padding: 0.3rem;
+
+.row input {
+  font-size: 0.7rem;
+  flex-grow: 2;
+  border: 1px solid #09c;
+  display: inline-block;
+  border-radius: 0.3rem;
+  box-shadow: 0 0 0.15rem #aaa;
+  padding: 0.3rem;
 }
-.row textarea
-{
+
+.row textarea {
   height: 150rpx;
   font-size: 0.8rem;
- flex-grow: 2;
- border: 1px solid #0099CC;
- display:   inline-block;
- border-radius:0.3rem;
- box-shadow: 0 0 0.15rem #aaa;
- padding: 0.5rem;
-
- width: 200rpx;
-
+  flex-grow: 2;
+  border: 1px solid #09c;
+  display: inline-block;
+  border-radius: 0.3rem;
+  box-shadow: 0 0 0.15rem #aaa;
+  padding: 0.5rem;
 }
-.row-button
-{
+
+.row-button {
   display: flex;
   align-items: center;
   margin: 1rem;
 }
-.row button{
+
+.row button {
   padding: 0 2rem;
-  margin:3rem 1rem;
+  margin: 3rem 1rem;
+}
+
+.section-stimage {
+  background-color: #ffffff;
+  height: 160px;
 
 }
-.section-sttext{
- flex-grow: 1;
 
- margin-bottom: 10rpx;
-
-}
-.section-stimage{
-  height: 120px;
-}
-.big-logo{
+.big-logo {
   height: 100px;
   width: 100px;
   position: absolute;
 }
-.logoinfos{
+
+.logoinfos {
   height: 95px;
   width: 95px;
-  border: 1px solid #0099CC;
+  border: 1px solid #09c;
 }
-.logoinfo{
+
+.logoinfo {
   height: 80px;
   width: 80px;
   position: absolute;
   margin: 0.5rem;
   z-index: 2;
 }
-.big-logof{
+
+.big-logof {
   display: none;
-
-}
-.column{
-  margin-right: 10rpx;
-}
-.column1{
-  margin-right: 40rpx;
-}
-.column2{
-
 }

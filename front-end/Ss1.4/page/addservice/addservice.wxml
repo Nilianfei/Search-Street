@@ -1,51 +1,54 @@
-﻿<!--page/addservice/addservice.wxml-->
-<!--pages/shopcomment/shopcomment.wxml-->
+<!--page/addservice/addservice.wxml-->
+
 <view class="container">
-   <form bindsubmit='formSubmit' bindreset='formReset'>
-   <view class='row'>
-    <text class="column">服务名称</text>
-     <input type="text" name="serviceName"  value="{{serviceName}}">
-    </input>
-   </view>
-   <view class='row'>
-    <text class="column">服务价格</text>
-    <input type="digit" name="servicePrice" value="{{servicePrice}}">
-    </input>
-   </view>
-   <view class='row'>
+  <i-panel>
+    <i-input value="{{ service.serviceName }}" type="textarea" title="服务名称" maxlength="30" bind:change="inputServiceName" />
+    <i-input value="{{ service.servicePrice }}" type="number" title="服务价格" maxlength="10" bind:change="inputServicePrice" />
+    <i-input value="{{ service.servicePriority }}" type="number" title="优先级" maxlength="2" placeholder="请输入1~99的数字" bind:change="inputServicePriority" />
+  </i-panel>
 
-    <text class="column column1">优先级 </text>
+  <view style="height:10rpx;width:100%;background-color:#f8f8f9;"></view>
 
-    <input type="number" name="servicePriority" maxlength="2" placeholder="请填写1-99的任意数字" value="{{servicePriority}}">
-    </input>
-   </view>
-   <view class='row'>
+  <i-panel title="服务描述" i-class="panelTitle">
+    <i-input i-class="bigInput" value="{{ service.serviceDesc }}" name="serviceDesc" type="textarea" mode="wrapped" maxlength="200" placeholder="本服务主要是..." bind:change="inputServiceDesc" />
+  </i-panel>
 
-    <text class="column column2">服务描述</text>
-     <textarea placeholder="本服务主要是......" name="serviceDesc" value="{{serviceDesc}}"/>
-   </view>
-   <view class='row'>
-    <text class="column column2">服务内容</text>
+  <view style="height:10rpx;width:100%;background-color:#f8f8f9;"></view>
 
-      <textarea placeholder="本服务主要包括......" name="serviceContent" value="{{serviceContent}}"/>
-   </view>
-    <view class="section-stimage">
-        <view class="section-sttext">服务相关图片</view>
-           <view class="big-logos">  
+  <i-panel title="服务内容">
+    <i-input i-class="bigInput" value="{{ service.serviceContent }}" name="serviceContent" type="textarea" mode="wrapped" maxlength="200" placeholder="本服务主要包括..." bind:change="inputServiceContent" />
+  </i-panel>
 
-            <image class="big-logo {{flag ? '' : 'big-logof'}}" bindtap="uploadimg" src='../../images/add-photo.png'></image>  
+  <view style="height:40rpx;width:100%;background-color:#f8f8f9;"></view>
 
-             <block wx:for="{{serviceImg}}" wx:key="id"> 
-             <view class="logoinfos">  
-             <image class="logoinfo" src='{{serviceImg[0]}}' mode='aspectFill' bindtap="changeimg" name="serviceImg"></image>  
-             </view>  
-             </block> 
-             </view>
-      </view>
-   <view class='row-button'>
-    <button type="primary" form-type="submit">{{addormodify}}</button>
-    <button type="primary" form-type="reset" disabled="{{disabletodelete}}">删除</button>
-   </view>
- </form>
+  <view class="section-stimage">
+    <i-panel>
+      <i-row>
+        <i-col span="17">
+          <i-input title="服务相关图片" disabled></i-input>
+        </i-col>
+        <i-col span="7">
+          <view>
+            <i-button type="ghost" bind:click="uploadimg" inline="true" size="small"> 添加图片 </i-button>
+          </view>
+        </i-col>
+      </i-row>
+    </i-panel>
+
+    <view class="big-logos">
+      <image class="big-logo {{flag ? '' : 'big-logof'}}" bindtap="uploadimg" src='../../images/add-photo.png'></image>
+      <block wx:for="{{serviceImg}}" wx:key="id">
+        <view class="logoinfos">
+          <image class="logoinfo" src='{{serviceImg[0]}}' mode='aspectFill' bindtap="changeimg" name="serviceImg"></image>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view style="height:40rpx;width:100%;background-color:#f8f8f9;"></view>
+  
+  <view class='botton-view'>
+    <i-button type="primary" bind:click="addOrModifyService">{{addOrModify}}</i-button>
+    <i-button type="{{isDelete}}" bind:click="cancelOrDeleteService">{{cancelOrDelete}}</i-button>
+  </view>
 </view>
-

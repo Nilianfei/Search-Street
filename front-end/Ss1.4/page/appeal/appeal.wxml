@@ -26,6 +26,6 @@
     <i-input value="{{appeal.appealMoreInfo}}" title="补充说明" type="textarea" disabled />
   </i-panel>
   <view class='botton-view'>
-    <i-button type="primary" long="true" bind:click="helping">{{bottonText}}</i-button>
+    <i-button type="primary" long="true" bind:click="helping" disabled='{{isDisabled}}'>{{bottonText}}</i-button>
   </view>
 </view>

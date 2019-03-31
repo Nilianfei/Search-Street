@@ -39,12 +39,12 @@
             <cover-view class="appealInfo-bottom">
 
               <cover-view style='width:330rpx;display:inline-block;'>
-                <cover-image class="appealInfo-icon" src='/images/钱币.png' mode='aspectFit'></cover-image>
+                <cover-image class="appealInfo-icon" src='/images/yellowcoin.png' mode='aspectFit'></cover-image>
                 <cover-view style='display:inline-block;margin-left:10rpx;'> {{ appealInfoSouCoin }} </cover-view>
               </cover-view>
 
               <cover-view style='width:330rpx;display:inline-block;'>
-                <cover-image class="appealInfo-icon" src='/images/时钟.png' mode='aspectFit'></cover-image>
+                <cover-image class="appealInfo-icon" src='/images/time.png' mode='aspectFit'></cover-image>
                 <cover-view style='display:inline-block;margin-left:10rpx;'> {{ appealInfoEndTime }} </cover-view>
               </cover-view>
 
