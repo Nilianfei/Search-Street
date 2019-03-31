@@ -59,7 +59,7 @@ public interface ShopService {
 	 * @return
 	 * @throws ShopOperationException
 	 */
-	ShopExecution uploadImg(long shopId, ImageHolder shopImg, ImageHolder businessLicenseImg, ImageHolder profileImg,
+	ShopExecution uploadImg(Long shopId, ImageHolder shopImg, ImageHolder businessLicenseImg, ImageHolder profileImg,
 			Date createTime) throws ShopOperationException;
 
 	/**
@@ -112,7 +112,7 @@ public interface ShopService {
 	 * @param shopImgId
 	 * @throws ShopOperationException
 	 */
-	void delShopImg(long shopImgId) throws ShopOperationException;
+	ShopImgExecution delShopImg(Long shopImgId) throws ShopOperationException;
 
 	/**
 	 * 添加商铺图片
@@ -121,5 +121,5 @@ public interface ShopService {
 	 * @param shopImgHolder
 	 * @throws ShopOperationException
 	 */
-	void addShopImg(long shopId, ImageHolder shopImgHolder) throws ShopOperationException;
+	ShopImgExecution addShopImg(Long shopId, ImageHolder shopImgHolder) throws ShopOperationException;
 }

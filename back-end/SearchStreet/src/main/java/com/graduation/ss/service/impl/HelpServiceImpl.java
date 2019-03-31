@@ -64,7 +64,7 @@ public class HelpServiceImpl implements HelpService {
 				throw new HelpOperationException("帮助修改失败");
 			}
 		} catch (Exception e) {
-			throw new HelpOperationException("modifyHelp error:" + e.getMessage());
+			throw new HelpOperationException("modifyHelp error:" + e.toString());
 		}
 		return new HelpExecution(HelpStateEnum.SUCCESS, help);
 	}
@@ -132,7 +132,7 @@ public class HelpServiceImpl implements HelpService {
 				throw new HelpOperationException("帮助创建失败");
 			}
 		} catch (Exception e) {
-			throw new HelpOperationException("addHelp error:" + e.getMessage());
+			throw new HelpOperationException("addHelp error:" + e.toString());
 		}
 		return new HelpExecution(HelpStateEnum.SUCCESS, help);
 	}
@@ -153,7 +153,17 @@ public class HelpServiceImpl implements HelpService {
 
 	@Override
 	@Transactional
-	public void selectHelp(Long helpId, Long appealId) throws HelpOperationException {
+	public HelpExecution selectHelp(Long helpId, Long appealId, Long appealUserId) throws HelpOperationException {
+		if (helpId == null) {
+			return new HelpExecution(HelpStateEnum.NULL_HELPID);
+		}
+		if (appealId == null) {
+			return new HelpExecution(HelpStateEnum.NULL_APPEAL);
+		}
+		Appeal appeal = appealDao.queryByAppealId(appealId);
+		if (appeal.getUserId() != appealUserId) {
+			return new HelpExecution(HelpStateEnum.NOT_USER_APPEAL);
+		}
 		Help helpCondition = new Help();
 		helpCondition.setAppealId(appealId);
 		try {
@@ -166,7 +176,7 @@ public class HelpServiceImpl implements HelpService {
 						throw new HelpOperationException("修改帮助状态失败");
 					}
 				} catch (Exception e) {
-					throw new HelpOperationException("selectHelp error:" + e.getMessage());
+					throw new HelpOperationException("selectHelp error:" + e.toString());
 				}
 			}
 			Help help = new Help();
@@ -178,10 +188,9 @@ public class HelpServiceImpl implements HelpService {
 					throw new HelpOperationException("修改帮助状态失败");
 				}
 			} catch (Exception e) {
-				throw new HelpOperationException("selectHelp error:" + e.getMessage());
+				throw new HelpOperationException("selectHelp error:" + e.toString());
 			}
-			Appeal appeal = new Appeal();
-			appeal.setAppealId(appealId);
+
 			appeal.setAppealStatus(1);
 			try {
 				int effectedNum = appealDao.updateAppeal(appeal);
@@ -189,51 +198,64 @@ public class HelpServiceImpl implements HelpService {
 					throw new HelpOperationException("修改求助状态失败");
 				}
 			} catch (Exception e) {
-				throw new HelpOperationException("selectHelp error:" + e.getMessage());
+				throw new HelpOperationException("selectHelp error:" + e.toString());
 			}
 		} catch (Exception e) {
-			throw new HelpOperationException(e.getMessage());
+			throw new HelpOperationException(e.toString());
 		}
+		return new HelpExecution(HelpStateEnum.SUCCESS);
 	}
 
 	@Override
 	@Transactional
-	public void additionSouCoin(Long helpId, Long appealUserId, Long additionSouCoin) throws HelpOperationException {
+	public HelpExecution additionSouCoin(Long helpId, Long appealUserId, Long additionSouCoin)
+			throws HelpOperationException {
 		if (appealUserId == null) {
-			throw new HelpOperationException("additinoSouCoin error:" + "缺少userId");
+			return new HelpExecution(HelpStateEnum.NULL_USERID);
 		}
 		if (helpId == null) {
-			throw new HelpOperationException("additinoSouCoin error:" + "缺少helpId");
+			return new HelpExecution(HelpStateEnum.NULL_HELPID);
+		}
+		if (additionSouCoin == null) {
+			return new HelpExecution(HelpStateEnum.NULL_ADDITIONCOIN);
 		}
 
 		try {
+			Help help = helpDao.queryByHelpId(helpId);
+			if (help == null) {
+				return new HelpExecution(HelpStateEnum.NULL_HELP);
+			}
+
+			Appeal appeal = appealDao.queryByAppealId(help.getAppealId());
+			if (appeal.getUserId() != appealUserId) {
+				return new HelpExecution(HelpStateEnum.NOT_USER_APPEAL);
+			}
+
+			if (help.getHelpStatus() != 2) {
+				return new HelpExecution(HelpStateEnum.NOT_ADDCOIN);
+			}
+			if (help.getAdditionalCoin() > 0) {
+				return new HelpExecution(HelpStateEnum.NOT_ADDCOIN_AGAIN);
+			}
+
 			PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(appealUserId);
 			if (personInfo == null) {
-				throw new HelpOperationException("appealUserId无效");
+				return new HelpExecution(HelpStateEnum.NULL_APPEALER);
 			}
 			Long appealerSouCoin = personInfo.getSouCoin();
 			if (additionSouCoin > appealerSouCoin) {
-				throw new HelpOperationException("搜币不够");
+				return new HelpExecution(HelpStateEnum.LACK_COIN);
 			}
 			personInfo.setSouCoin(appealerSouCoin - additionSouCoin);
 			int effectedNum = personInfoDao.updatePersonInfo(personInfo);
 			if (effectedNum <= 0) {
 				throw new HelpOperationException("扣除求助者搜币失败");
 			}
-			Help help = helpDao.queryByHelpId(helpId);
-			if (help == null) {
-				throw new HelpOperationException("helpId无效");
-			}
-			if (help.getHelpStatus() != 2) {
-				throw new HelpOperationException("该状态不能追赏");
-			}
-			if (help.getAdditionalCoin() > 0) {
-				throw new HelpOperationException("不能多次追赏");
-			}
+
 			Long helpUserId = help.getUserId();
 			personInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
 			if (personInfo == null) {
-				throw new HelpOperationException("帮助者不存在");
+				return new HelpExecution(HelpStateEnum.NULL_HELPER);
 			}
 			appealerSouCoin = personInfo.getSouCoin();
 			personInfo.setSouCoin(appealerSouCoin + additionSouCoin);
@@ -249,8 +271,9 @@ public class HelpServiceImpl implements HelpService {
 				throw new HelpOperationException("修改帮助追赏金失败");
 			}
 		} catch (Exception e) {
-			throw new HelpOperationException("additinoSouCoin error:" + e.getMessage());
+			throw new HelpOperationException("additinoSouCoin error:" + e.toString());
 		}
+		return new HelpExecution(HelpStateEnum.SUCCESS);
 	}
 
 }

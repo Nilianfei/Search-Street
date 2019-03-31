@@ -71,7 +71,7 @@ public class AppealController {
 			userId = wechatAuth.getUserId();
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 		try {
@@ -90,7 +90,7 @@ public class AppealController {
 			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}
@@ -116,7 +116,7 @@ public class AppealController {
 				return modelMap;
 			} catch (Exception e) {
 				modelMap.put("success", false);
-				modelMap.put("errMsg", e.getMessage());
+				modelMap.put("errMsg", e.toString());
 				return modelMap;
 			}
 		} else {
@@ -147,7 +147,7 @@ public class AppealController {
 			userId = wechatAuth.getUserId();
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 		appeal.setUserId(userId);
@@ -163,7 +163,7 @@ public class AppealController {
 			}
 		} catch (AppealOperationException e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}
@@ -187,7 +187,7 @@ public class AppealController {
 	 * modelMap.put("appealId", ae.getAppeal().getAppealId()); } else {
 	 * modelMap.put("success", false); modelMap.put("errMsg", ae.getStateInfo()); }
 	 * } catch (AppealOperationException e) { modelMap.put("success", false);
-	 * modelMap.put("errMsg", e.getMessage()); } return modelMap; }
+	 * modelMap.put("errMsg", e.toString()); } return modelMap; }
 	 */
 
 	private void handleImage(HttpServletRequest request, ImageHolder appealImg) throws IOException {
@@ -209,6 +209,7 @@ public class AppealController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		// 1.接收并转化相应的参数，包括求助id以及图片信息
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		String token = HttpServletRequestUtil.getString(request, "token");
 		ImageHolder appealImg = new ImageHolder("", null);
 		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
 				request.getSession().getServletContext());
@@ -218,15 +219,33 @@ public class AppealController {
 			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
+			return modelMap;
+		}
+		Long userId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人ID
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			userId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 		// 2.上传求助图片
 		try {
-			appealService.uploadImg(appealId, appealImg);
+			AppealExecution ae = appealService.uploadImg(appealId, appealImg, userId);
+			if (ae.getState() != AppealStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", ae.getStateInfo());
+			}
 		} catch (AppealOperationException e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		modelMap.put("success", true);
 		return modelMap;
@@ -275,7 +294,7 @@ public class AppealController {
 			modelMap.put("success", true);
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}
@@ -309,7 +328,7 @@ public class AppealController {
 			appealUserId = wechatAuth.getUserId();
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 		try {
@@ -322,7 +341,7 @@ public class AppealController {
 			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}
@@ -348,7 +367,7 @@ public class AppealController {
 			appealUserId = wechatAuth.getUserId();
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 
@@ -364,7 +383,7 @@ public class AppealController {
 			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 	}
@@ -390,7 +409,7 @@ public class AppealController {
 			appealUserId = wechatAuth.getUserId();
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 
@@ -406,7 +425,7 @@ public class AppealController {
 			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 	}

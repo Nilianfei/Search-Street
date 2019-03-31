@@ -66,8 +66,11 @@ public class ShopServiceImpl implements ShopService {
 
 	@Override
 	@Transactional
-	public ShopExecution uploadImg(long shopId, ImageHolder shopImg, ImageHolder businessLicenseImg,
+	public ShopExecution uploadImg(Long shopId, ImageHolder shopImg, ImageHolder businessLicenseImg,
 			ImageHolder profileImg, Date createTime) throws ShopOperationException {
+		if(shopId==null) {
+			return new ShopExecution(ShopStateEnum.NULL_SHOPID);
+		}
 		Shop shop = new Shop();
 		shop.setShopId(shopId);
 		try {
@@ -104,7 +107,7 @@ public class ShopServiceImpl implements ShopService {
 				return new ShopExecution(ShopStateEnum.SUCCESS, shop);
 			}
 		} catch (Exception e) {
-			throw new ShopOperationException("modifyShop error:" + e.getMessage());
+			throw new ShopOperationException("modifyShop error:" + e.toString());
 		}
 	}
 
@@ -119,7 +122,7 @@ public class ShopServiceImpl implements ShopService {
 			shop.setEnableStatus(0);
 			shop.setCreateTime(new Date());
 			shop.setLastEditTime(new Date());
-			if (shop.getPerCost() < 0) {
+			if (shop.getPerCost() == null || shop.getPerCost() <0) {
 				shop.setPerCost(0);
 			}
 			// 添加店铺信息
@@ -128,7 +131,7 @@ public class ShopServiceImpl implements ShopService {
 				throw new ShopOperationException("店铺创建失败");
 			}
 		} catch (Exception e) {
-			throw new ShopOperationException("addShop error:" + e.getMessage());
+			throw new ShopOperationException("addShop error:" + e.toString());
 		}
 		return new ShopExecution(ShopStateEnum.CHECK, shop);
 	}
@@ -136,12 +139,12 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public ShopExecution modifyShop(Shop shop) throws ShopOperationException {
 		// 空值判断
-		if (shop == null) {
+		if (shop == null || shop.getShopId() == null) {
 			return new ShopExecution(ShopStateEnum.NULL_SHOP);
 		}
 		try {
 			shop.setLastEditTime(new Date());
-			if (shop.getPerCost() < 0) {
+			if (shop.getPerCost() == null || shop.getPerCost() <0) {
 				shop.setPerCost(0);
 			}
 			// 修改店铺信息
@@ -150,7 +153,7 @@ public class ShopServiceImpl implements ShopService {
 				throw new ShopOperationException("店铺修改失败");
 			}
 		} catch (Exception e) {
-			throw new ShopOperationException("modifyShop error:" + e.getMessage());
+			throw new ShopOperationException("modifyShop error:" + e.toString());
 		}
 		return new ShopExecution(ShopStateEnum.SUCCESS, shop);
 	}
@@ -219,7 +222,7 @@ public class ShopServiceImpl implements ShopService {
 			// 给店铺信息赋初始值
 			shop.setEnableStatus(0);
 			shop.setCreateTime(new Date());
-			if (shop.getPerCost() < 0) {
+			if (shop.getPerCost() == null || shop.getPerCost() <0) {
 				shop.setPerCost(0);
 			}
 			// 添加店铺信息
@@ -233,7 +236,7 @@ public class ShopServiceImpl implements ShopService {
 					try {
 						addBusinessLicenseImg(shop, businessLicenseImg);
 					} catch (Exception e) {
-						throw new ShopOperationException("addBusinessLicenseImg error:" + e.getMessage());
+						throw new ShopOperationException("addBusinessLicenseImg error:" + e.toString());
 					}
 				}
 				if (profileImg != null && profileImg.getImage() != null && profileImg.getImageName() != null
@@ -242,7 +245,7 @@ public class ShopServiceImpl implements ShopService {
 					try {
 						addProfileImg(shop, profileImg);
 					} catch (Exception e) {
-						throw new ShopOperationException("addProfileImg error:" + e.getMessage());
+						throw new ShopOperationException("addProfileImg error:" + e.toString());
 					}
 				}
 				// 更新店铺的图片地址
@@ -252,7 +255,7 @@ public class ShopServiceImpl implements ShopService {
 				}
 			}
 		} catch (Exception e) {
-			throw new ShopOperationException("addShop error:" + e.getMessage());
+			throw new ShopOperationException("addShop error:" + e.toString());
 		}
 		return new ShopExecution(ShopStateEnum.CHECK, shop);
 	}
@@ -277,7 +280,7 @@ public class ShopServiceImpl implements ShopService {
 					}
 					addBusinessLicenseImg(shop, businessLicenseImg);
 				} catch (Exception e) {
-					throw new ShopOperationException("addBusinessLicenseImg error:" + e.getMessage());
+					throw new ShopOperationException("addBusinessLicenseImg error:" + e.toString());
 				}
 			}
 			if (profileImg != null && profileImg.getImage() != null && profileImg.getImageName() != null
@@ -289,12 +292,12 @@ public class ShopServiceImpl implements ShopService {
 					}
 					addProfileImg(shop, profileImg);
 				} catch (Exception e) {
-					throw new ShopOperationException("addProfileImg error:" + e.getMessage());
+					throw new ShopOperationException("addProfileImg error:" + e.toString());
 				}
 			}
 			// 更新店铺的图片地址
 			shop.setLastEditTime(new Date());
-			if (shop.getPerCost() < 0) {
+			if (shop.getPerCost() == null || shop.getPerCost() <0) {
 				shop.setPerCost(0);
 			}
 
@@ -303,14 +306,14 @@ public class ShopServiceImpl implements ShopService {
 				throw new ShopOperationException("更新图片地址失败");
 			}
 		} catch (Exception e) {
-			throw new ShopOperationException("modifyShop error:" + e.getMessage());
+			throw new ShopOperationException("modifyShop error:" + e.toString());
 		}
 		return new ShopExecution(ShopStateEnum.SUCCESS, shop);
 	}
 
 	@Override
-	public void delShopImg(long shopImgId) throws ShopOperationException {
-		if (shopImgId >= 0) {
+	public ShopImgExecution delShopImg(Long shopImgId) throws ShopOperationException {
+		if (shopImgId != null) {
 			ShopImg shopImg = shopImgDao.getShopImg(shopImgId);
 			if (shopImg != null) {
 				ImageUtil.deleteFileOrPath(shopImg.getImgAddr());
@@ -319,12 +322,23 @@ public class ShopServiceImpl implements ShopService {
 					throw new ShopOperationException("删除图片失败");
 				}
 			}
+		} else {
+			return new ShopImgExecution(ShopStateEnum.NULL_SHOPIMGID);
 		}
+		return new ShopImgExecution(ShopStateEnum.SUCCESS);
 	}
 
 	@Override
-	public void addShopImg(long shopId, ImageHolder shopImgHolder) throws ShopOperationException {
-		addShopImg(shopId, shopImgHolder, new Date());
+	public ShopImgExecution addShopImg(Long shopId, ImageHolder shopImgHolder) throws ShopOperationException {
+		if (shopId == null) {
+			return new ShopImgExecution(ShopStateEnum.NULL_SHOPID);
+		}
+		try {
+			addShopImg(shopId, shopImgHolder, new Date());
+		} catch (Exception e) {
+			throw new ShopOperationException("addShopImg error:"+e.toString());
+		}
+		return new ShopImgExecution(ShopStateEnum.SUCCESS);
 	}
 
 	@Override

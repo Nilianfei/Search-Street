@@ -62,7 +62,7 @@ public class HelpServiceTest {
 	@Test
 	@Ignore
 	public void testSelectHelp() throws HelpOperationException {
-		helpService.selectHelp(13l, 3l);
+		helpService.selectHelp(13l, 3l,14l);
 	}
 	
 	@Test

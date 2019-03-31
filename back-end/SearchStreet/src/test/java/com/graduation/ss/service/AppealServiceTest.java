@@ -32,7 +32,7 @@ public class AppealServiceTest {
 	@Ignore
 	public void testGetNearbyAppealList() {
 		AppealExecution ae = appealService.getNearbyAppealList(50, 0, 50, 0, null);
-		List<Appeal> appealList  = ae.getAppealList();
+		List<Appeal> appealList = ae.getAppealList();
 		if (appealList.size() != 0) {
 			for (Appeal appeal : appealList) {
 				System.out.println(appeal);
@@ -46,7 +46,7 @@ public class AppealServiceTest {
 	public void testGetAppealList() {
 		Appeal appealCondition = new Appeal();
 		appealCondition.setAppealStatus(0);
-		AppealExecution ae = appealService.getAppealListFY(appealCondition, 1,15);
+		AppealExecution ae = appealService.getAppealListFY(appealCondition, 1, 15);
 		System.out.println("求助列表数为:" + ae.getAppealList().size());
 		System.out.println("求助总数为:" + ae.getCount());
 	}
@@ -57,7 +57,7 @@ public class AppealServiceTest {
 		File appealImg = new File("D:/test.jpg");
 		InputStream is = new FileInputStream(appealImg);
 		ImageHolder appealImageHolder = new ImageHolder(appealImg.getName(), is);
-		appealService.uploadImg(3l, appealImageHolder);
+		appealService.uploadImg(3l, appealImageHolder, 14l);
 	}
 
 	@Test
@@ -100,12 +100,12 @@ public class AppealServiceTest {
 		AppealExecution appealExecution = appealService.addAppeal(appeal);
 		assertEquals(AppealStateEnum.SUCCESS.getState(), appealExecution.getState());
 	}
-	
+
 	@Test
 	@Ignore
-	public void testCompleteAppeal() throws AppealOperationException{
-		AppealExecution ae=appealService.completeAppeal(4l, 9l, 1l);
+	public void testCompleteAppeal() throws AppealOperationException {
+		AppealExecution ae = appealService.completeAppeal(4l, 9l, 1l);
 		System.out.println(ae.getStateInfo());
 	}
-	
+
 }

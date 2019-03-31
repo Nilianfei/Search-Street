@@ -37,7 +37,7 @@ public class OrderCheckServiceImpl implements OrderCheckService {
 						throw new OrderOperationException("订单修改失败");
 					}
 				} catch (Exception e) {
-					throw new OrderOperationException("modifyOrder error:" + e.getMessage());
+					throw new OrderOperationException("modifyOrder error:" + e.toString());
 			}
 		}
 	}

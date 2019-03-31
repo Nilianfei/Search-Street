@@ -57,7 +57,7 @@ public interface AppealService {
 	 * @return
 	 * @throws AppealOperationException
 	 */
-	void uploadImg(long appealId, ImageHolder appealImg) throws AppealOperationException;
+	AppealExecution uploadImg(Long appealId, ImageHolder appealImg, Long userId) throws AppealOperationException;
 
 	/**
 	 * 添加求助信息，不包括对图片的处理
@@ -97,7 +97,7 @@ public interface AppealService {
 	 * @throws AppealOperationException
 	 */
 	AppealExecution disableAppeal(Long userId, Long appealId) throws AppealOperationException;
-	
+
 	/**
 	 * 分页获取求助图片
 	 * 
@@ -113,7 +113,7 @@ public interface AppealService {
 	 * @param appealImgId
 	 * @throws AppealOperationException
 	 */
-	void delAppealImg(long appealImgId) throws AppealOperationException;
+	AppealImgExecution delAppealImg(Long appealImgId) throws AppealOperationException;
 
 	/**
 	 * 添加求助图片
@@ -122,5 +122,5 @@ public interface AppealService {
 	 * @param appealImgHolder
 	 * @throws AppealOperationException
 	 */
-	void createAppealImg(long appealId, ImageHolder appealImgHolder) throws AppealOperationException;
+	AppealImgExecution createAppealImg(Long appealId, ImageHolder appealImgHolder) throws AppealOperationException;
 }

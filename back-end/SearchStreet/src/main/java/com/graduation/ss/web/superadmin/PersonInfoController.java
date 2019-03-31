@@ -138,7 +138,7 @@ public class PersonInfoController {
 				return modelMap;
 			} catch (IOException e) {
 				modelMap.put("success", false);
-				modelMap.put("errMsg", e.getMessage());
+				modelMap.put("errMsg", e.toString());
 				return modelMap;
 			}
 
@@ -214,7 +214,7 @@ public class PersonInfoController {
 				return modelMap;
 			} catch (IOException e) {
 				modelMap.put("success", false);
-				modelMap.put("errMsg", e.getMessage());
+				modelMap.put("errMsg", e.toString());
 				return modelMap;
 			}
 

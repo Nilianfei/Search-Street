@@ -59,7 +59,7 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 				jsonString = mapper.writeValueAsString(wechatAuthAndEnableStatus);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
-				throw new WechatAuthOperationException(e.getMessage());
+				throw new WechatAuthOperationException(e.toString());
 			}
 			jedisStrings.set(key, jsonString);
 		} else {
@@ -71,13 +71,13 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 				wechatAuth = wechatAuthAndEnableStatus.getWechatAuth();
 			} catch (JsonParseException e) {
 				e.printStackTrace();
-				throw new WechatAuthOperationException(e.getMessage());
+				throw new WechatAuthOperationException(e.toString());
 			} catch (JsonMappingException e) {
 				e.printStackTrace();
-				throw new WechatAuthOperationException(e.getMessage());
+				throw new WechatAuthOperationException(e.toString());
 			} catch (IOException e) {
 				e.printStackTrace();
-				throw new WechatAuthOperationException(e.getMessage());
+				throw new WechatAuthOperationException(e.toString());
 			}
 		}
 
@@ -112,7 +112,7 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 						throw new WechatAuthOperationException("添加用户信息失败");
 					}
 				} catch (Exception e) {
-					throw new WechatAuthOperationException("insertPersonInfo error: " + e.getMessage());
+					throw new WechatAuthOperationException("insertPersonInfo error: " + e.toString());
 				}
 			}
 			// 创建专属于本平台的微信帐号
@@ -123,7 +123,7 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 				return new WechatAuthExecution(WechatAuthStateEnum.SUCCESS, wechatAuth);
 			}
 		} catch (Exception e) {
-			throw new WechatAuthOperationException("insertWechatAuth error: " + e.getMessage());
+			throw new WechatAuthOperationException("insertWechatAuth error: " + e.toString());
 		}
 	}
 
@@ -147,11 +147,11 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 						throw new WechatAuthOperationException("修改用户信息失败");
 					}
 				} catch (Exception e) {
-					throw new WechatAuthOperationException("updatePersonInfo error: " + e.getMessage());
+					throw new WechatAuthOperationException("updatePersonInfo error: " + e.toString());
 				}
 			}
 		} catch (Exception e) {
-			throw new WechatAuthOperationException("updatePersonInfo error: " + e.getMessage());
+			throw new WechatAuthOperationException("updatePersonInfo error: " + e.toString());
 		}
 	}
 

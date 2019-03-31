@@ -31,7 +31,7 @@ public class PersonInfoServiceImpl implements PersonInfoService {
 	private JedisUtil.Keys jedisKeys;
 
 	@Override
-	public PersonInfo getPersonInfoByUserId(Long userId) {
+	public PersonInfo getPersonInfoByUserId(long userId) {
 		return personInfoDao.queryPersonInfoByUserId(userId);
 	}
 
@@ -69,7 +69,7 @@ public class PersonInfoServiceImpl implements PersonInfoService {
 				throw new PersonInfoOperationException("个人信息修改失败");
 			}
 		} catch (Exception e) {
-			throw new PersonInfoOperationException("modifyPersonInfo error:" + e.getMessage());
+			throw new PersonInfoOperationException("modifyPersonInfo error:" + e.toString());
 		}
 		return new PersonInfoExecution(PersonInfoStateEnum.SUCCESS, personInfo);
 	}
@@ -125,7 +125,7 @@ public class PersonInfoServiceImpl implements PersonInfoService {
 				throw new PersonInfoOperationException("更新图片地址失败");
 			}
 		} catch (Exception e) {
-			throw new PersonInfoOperationException("addPersonInfo error:" + e.getMessage());
+			throw new PersonInfoOperationException("addPersonInfo error:" + e.toString());
 		}
 		return new PersonInfoExecution(PersonInfoStateEnum.SUCCESS, personInfo);
 	}

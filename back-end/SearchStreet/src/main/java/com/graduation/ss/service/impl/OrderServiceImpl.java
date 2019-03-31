@@ -189,7 +189,7 @@ public class OrderServiceImpl implements OrderService {
 				throw new OrderOperationException("订单创建失败");
 			}
 		} catch (Exception e) {
-			throw new OrderOperationException("addOrder error:" + e.getMessage());
+			throw new OrderOperationException("addOrder error:" + e.toString());
 		}
 		return new OrderExecution(OrderStateEnum.SUCCESS, order);
 	}
@@ -209,7 +209,7 @@ public class OrderServiceImpl implements OrderService {
 				throw new OrderOperationException("订单修改失败");
 			}
 		} catch (Exception e) {
-			throw new OrderOperationException("modifyOrder error:" + e.getMessage());
+			throw new OrderOperationException("modifyOrder error:" + e.toString());
 		}
 		return new OrderExecution(OrderStateEnum.SUCCESS, order);
 	}
@@ -229,7 +229,7 @@ public class OrderServiceImpl implements OrderService {
 						throw new OrderOperationException("订单删除失败");
 					}
 				} catch (Exception e) {
-					throw new OrderOperationException("deleteOrder error:" + e.getMessage());
+					throw new OrderOperationException("deleteOrder error:" + e.toString());
 				}
 				return new OrderExecution(OrderStateEnum.SUCCESS, orderDao.queryByOrderId(orderId));
 	}

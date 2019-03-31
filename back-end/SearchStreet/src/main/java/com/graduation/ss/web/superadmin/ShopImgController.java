@@ -19,6 +19,7 @@ import com.graduation.ss.dto.ConstantForSuperAdmin;
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.ShopImgExecution;
 import com.graduation.ss.entity.ShopImg;
+import com.graduation.ss.enums.ShopStateEnum;
 import com.graduation.ss.service.ShopService;
 import com.graduation.ss.util.HttpServletRequestUtil;
 
@@ -109,7 +110,12 @@ public class ShopImgController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long shopImgId = HttpServletRequestUtil.getLong(request, "shopImgId");
 		try {
-			shopService.delShopImg(shopImgId);
+			ShopImgExecution shopImgExecution = shopService.delShopImg(shopImgId);
+			if (shopImgExecution.getState() != ShopStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", shopImgExecution.getStateInfo());
+				return modelMap;
+			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.toString());
@@ -140,7 +146,12 @@ public class ShopImgController {
 		}
 		try {
 			ImageHolder shopImgHolder = new ImageHolder(shopImg.getOriginalFilename(), shopImg.getInputStream());
-			shopService.addShopImg(shopId, shopImgHolder);
+			ShopImgExecution shopImgExecution = shopService.addShopImg(shopId, shopImgHolder);
+			if (shopImgExecution.getState() != ShopStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", shopImgExecution.getStateInfo());
+				return modelMap;
+			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.toString());

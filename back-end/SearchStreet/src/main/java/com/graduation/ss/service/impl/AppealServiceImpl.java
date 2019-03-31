@@ -95,22 +95,31 @@ public class AppealServiceImpl implements AppealService {
 					throw new AppealOperationException("求助修改失败");
 				}
 			} catch (Exception e) {
-				throw new AppealOperationException("modifyAppeal error:" + e.getMessage());
+				throw new AppealOperationException("modifyAppeal error:" + e.toString());
 			}
 		}
 		return appeal;
 	}
 
 	@Override
-	public void uploadImg(long appealId, ImageHolder appealImg) throws AppealOperationException {
+	public AppealExecution uploadImg(Long appealId, ImageHolder appealImg, Long userId)
+			throws AppealOperationException {
+		if (appealId == null) {
+			return new AppealExecution(AppealStateEnum.NULL_APPEALID);
+		}
+		Appeal appeal = appealDao.queryByAppealId(appealId);
+		if (appeal.getUserId() != userId) {
+			return new AppealExecution(AppealStateEnum.NOT_USER_APPEAL);
+		}
 		try {
 			if (appealImg != null && appealImg.getImage() != null && appealImg.getImageName() != null
 					&& !"".equals(appealImg.getImageName())) {
 				addAppealImg(appealId, appealImg);
 			}
 		} catch (Exception e) {
-			throw new AppealOperationException("uploadAppealImg error:" + e.getMessage());
+			throw new AppealOperationException("uploadAppealImg error:" + e.toString());
 		}
+		return new AppealExecution(AppealStateEnum.SUCCESS);
 	}
 
 	private void addAppealImg(long appealId, ImageHolder appealImgHolder) {
@@ -152,7 +161,7 @@ public class AppealServiceImpl implements AppealService {
 				throw new AppealOperationException("求助创建失败");
 			}
 		} catch (Exception e) {
-			throw new AppealOperationException("addAppeal error:" + e.getMessage());
+			throw new AppealOperationException("addAppeal error:" + e.toString());
 		}
 		return new AppealExecution(AppealStateEnum.SUCCESS, appeal);
 	}
@@ -160,7 +169,7 @@ public class AppealServiceImpl implements AppealService {
 	@Override
 	public AppealExecution modifyAppeal(Appeal appeal) throws AppealOperationException {
 		// 空值判断
-		if (appeal == null) {
+		if (appeal == null || appeal.getAppealId() == null) {
 			return new AppealExecution(AppealStateEnum.NULL_APPEAL);
 		}
 		try {
@@ -169,7 +178,7 @@ public class AppealServiceImpl implements AppealService {
 				throw new AppealOperationException("求助修改失败");
 			}
 		} catch (Exception e) {
-			throw new AppealOperationException("modifyAppeal error:" + e.getMessage());
+			throw new AppealOperationException("modifyAppeal error:" + e.toString());
 		}
 		return new AppealExecution(AppealStateEnum.SUCCESS, appeal);
 	}
@@ -190,7 +199,10 @@ public class AppealServiceImpl implements AppealService {
 		Long souCoin = 0l;
 		Appeal appeal = appealDao.queryByAppealId(appealId);
 		if (appeal == null) {
-			throw new AppealOperationException("completeAppeal error:" + "appealId无效");
+			return new AppealExecution(AppealStateEnum.NULL_APPEAL);
+		}
+		if (appeal.getUserId() != appealUserId) {
+			return new AppealExecution(AppealStateEnum.NOT_USER_APPEAL);
 		}
 		souCoin = appeal.getSouCoin();
 		try {
@@ -198,12 +210,12 @@ public class AppealServiceImpl implements AppealService {
 			Long appealerSouCoin = appealPersonInfo.getSouCoin();
 			Help help = helpDao.queryByHelpId(helpId);
 			if (help == null) {
-				throw new AppealOperationException("helpId无效");
+				return new AppealExecution(AppealStateEnum.NOT_HELPID);
 			}
 			Long helpUserId = help.getUserId();
 			PersonInfo helpPersonInfo = personInfoDao.queryPersonInfoByUserId(helpUserId);
 			if (helpPersonInfo == null) {
-				throw new AppealOperationException("帮助者不存在");
+				return new AppealExecution(AppealStateEnum.NOT_HELPER);
 			}
 
 			if (appealerSouCoin < souCoin) {
@@ -242,7 +254,7 @@ public class AppealServiceImpl implements AppealService {
 				throw new AppealOperationException("修改帮助状态失败");
 			}
 		} catch (Exception e) {
-			throw new AppealOperationException("completeAppeal error:" + e.getMessage());
+			throw new AppealOperationException("completeAppeal error:" + e.toString());
 		}
 		AppealExecution ae = new AppealExecution(AppealStateEnum.SUCCESS, appeal);
 		return ae;
@@ -280,7 +292,7 @@ public class AppealServiceImpl implements AppealService {
 				}
 			}
 		} catch (Exception e) {
-			throw new AppealOperationException("cancelAppeal error:" + e.getMessage());
+			throw new AppealOperationException("cancelAppeal error:" + e.toString());
 		}
 	}
 
@@ -323,7 +335,7 @@ public class AppealServiceImpl implements AppealService {
 				return new AppealExecution(AppealStateEnum.SUCCESS, appeal);
 			}
 		} catch (Exception e) {
-			throw new AppealOperationException("disableAppeal error:" + e.getMessage());
+			throw new AppealOperationException("disableAppeal error:" + e.toString());
 		}
 	}
 
@@ -346,8 +358,8 @@ public class AppealServiceImpl implements AppealService {
 	}
 
 	@Override
-	public void delAppealImg(long appealImgId) throws AppealOperationException {
-		if (appealImgId >= 0) {
+	public AppealImgExecution delAppealImg(Long appealImgId) throws AppealOperationException {
+		if (appealImgId != null) {
 			AppealImg appealImg = appealImgDao.getAppealImg(appealImgId);
 			if (appealImg != null) {
 				ImageUtil.deleteFileOrPath(appealImg.getImgAddr());
@@ -356,12 +368,25 @@ public class AppealServiceImpl implements AppealService {
 					throw new ShopOperationException("删除图片失败");
 				}
 			}
+		} else {
+			return new AppealImgExecution(AppealStateEnum.NULL_APPEALIMGID);
 		}
+		return new AppealImgExecution(AppealStateEnum.SUCCESS);
 	}
 
 	@Override
-	public void createAppealImg(long appealId, ImageHolder appealImgHolder) throws AppealOperationException {
-		addAppealImg(appealId, appealImgHolder);
+	public AppealImgExecution createAppealImg(Long appealId, ImageHolder appealImgHolder)
+			throws AppealOperationException {
+		if (appealId != null) {
+			try {
+				addAppealImg(appealId, appealImgHolder);
+			} catch (Exception e) {
+				throw new AppealOperationException("createAppealImg error:" + e.toString());
+			}
+		} else {
+			return new AppealImgExecution(AppealStateEnum.NULL_APPEALID);
+		}
+		return new AppealImgExecution(AppealStateEnum.SUCCESS);
 	}
 
 }

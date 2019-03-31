@@ -15,10 +15,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import com.graduation.ss.dto.AppealImgExecution;
 import com.graduation.ss.dto.ConstantForSuperAdmin;
 import com.graduation.ss.dto.ImageHolder;
-import com.graduation.ss.dto.AppealImgExecution;
 import com.graduation.ss.entity.AppealImg;
+import com.graduation.ss.enums.AppealStateEnum;
 import com.graduation.ss.service.AppealService;
 import com.graduation.ss.util.HttpServletRequestUtil;
 
@@ -109,7 +110,12 @@ public class AppealImgController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long appealImgId = HttpServletRequestUtil.getLong(request, "appealImgId");
 		try {
-			appealService.delAppealImg(appealImgId);
+			AppealImgExecution appealImgExecution = appealService.delAppealImg(appealImgId);
+			if (appealImgExecution.getState() != AppealStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", appealImgExecution.getStateInfo());
+				return modelMap;
+			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.toString());
@@ -140,7 +146,12 @@ public class AppealImgController {
 		}
 		try {
 			ImageHolder appealImgHolder = new ImageHolder(appealImg.getOriginalFilename(), appealImg.getInputStream());
-			appealService.createAppealImg(appealId, appealImgHolder);
+			AppealImgExecution appealImgExecution = appealService.createAppealImg(appealId, appealImgHolder);
+			if (appealImgExecution.getState() != AppealStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", appealImgExecution.getStateInfo());
+				return modelMap;
+			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.toString());

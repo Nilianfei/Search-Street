@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.graduation.ss.dto.HelpExecution;
 import com.graduation.ss.dto.UserCode2Session;
+import com.graduation.ss.entity.Appeal;
 import com.graduation.ss.entity.Help;
 import com.graduation.ss.entity.PersonInfo;
 import com.graduation.ss.entity.WechatAuth;
 import com.graduation.ss.enums.HelpStateEnum;
 import com.graduation.ss.exceptions.HelpOperationException;
+import com.graduation.ss.service.AppealService;
 import com.graduation.ss.service.HelpService;
 import com.graduation.ss.service.PersonInfoService;
 import com.graduation.ss.service.WechatAuthService;
@@ -39,6 +41,8 @@ import io.swagger.annotations.ApiParam;
 public class HelpController {
 	@Autowired
 	private HelpService helpService;
+	@Autowired
+	private AppealService appealService;
 	@Autowired
 	private WechatAuthService wechatAuthService;
 	@Autowired
@@ -65,7 +69,7 @@ public class HelpController {
 				helpCondition.setAppealId(appealId);
 				HelpExecution helpExecution = helpService.getHelpListFY(helpCondition, null, null, pageIndex, pageSize);
 				List<Help> helps = helpExecution.getHelpList();
-				for(Help help2:helps) {
+				for (Help help2 : helps) {
 					PersonInfo personInfo = personInfoService.getPersonInfoByUserId(help2.getUserId());
 					help2.setPersonInfo(personInfo);
 				}
@@ -77,7 +81,7 @@ public class HelpController {
 				modelMap.put("success", true);
 			} catch (Exception e) {
 				modelMap.put("success", false);
-				modelMap.put("errMsg", e.getMessage());
+				modelMap.put("errMsg", e.toString());
 			}
 		}
 		return modelMap;
@@ -104,7 +108,7 @@ public class HelpController {
 			userId = wechatAuth.getUserId();
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 		if (appealId <= 0) {
@@ -125,7 +129,7 @@ public class HelpController {
 				}
 			} catch (Exception e) {
 				modelMap.put("success", false);
-				modelMap.put("errMsg", e.getMessage());
+				modelMap.put("errMsg", e.toString());
 			}
 		}
 		return modelMap;
@@ -164,7 +168,7 @@ public class HelpController {
 			userId = wechatAuth.getUserId();
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 		try {
@@ -187,7 +191,7 @@ public class HelpController {
 			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}
@@ -199,7 +203,7 @@ public class HelpController {
 	private Map<String, Object> getHelpByHelpId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
-		if (helpId > 0) {
+		if (helpId != null) {
 			try {
 				// 获取帮助信息
 				Help help = helpService.getByHelpId(helpId);
@@ -207,7 +211,7 @@ public class HelpController {
 				modelMap.put("success", true);
 			} catch (Exception e) {
 				modelMap.put("success", false);
-				modelMap.put("errMsg", e.getMessage());
+				modelMap.put("errMsg", e.toString());
 			}
 		} else {
 			modelMap.put("success", false);
@@ -236,7 +240,7 @@ public class HelpController {
 			userId = wechatAuth.getUserId();
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 		help.setUserId(userId);
@@ -252,7 +256,7 @@ public class HelpController {
 			}
 		} catch (HelpOperationException e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}
@@ -261,22 +265,45 @@ public class HelpController {
 	@ResponseBody
 	@ApiOperation(value = "帮助评论", notes = "评论帮助需要输入帮助Id、完成分、效率分和态度分")
 	@ApiImplicitParams({
-		@ApiImplicitParam(paramType = "query", name = "token", value = "包含求助者用户信息的token", required = true, dataType = "String"),
-		@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助Id", required = true, dataType = "Long"),
-		@ApiImplicitParam(paramType = "query", name = "completion", value = "完成分", required = true, dataType = "int"),
-		@ApiImplicitParam(paramType = "query", name = "efficiency", value = "效率分", required = true, dataType = "int"),
-		@ApiImplicitParam(paramType = "query", name = "attitude", value = "态度分", required = true, dataType = "int")})
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含求助者用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助Id", required = true, dataType = "Long"),
+			@ApiImplicitParam(paramType = "query", name = "completion", value = "完成分", required = true, dataType = "int"),
+			@ApiImplicitParam(paramType = "query", name = "efficiency", value = "效率分", required = true, dataType = "int"),
+			@ApiImplicitParam(paramType = "query", name = "attitude", value = "态度分", required = true, dataType = "int") })
 	private Map<String, Object> commentHelp(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
 		int completion = HttpServletRequestUtil.getInt(request, "completion");
 		int efficiency = HttpServletRequestUtil.getInt(request, "efficiency");
 		int attitude = HttpServletRequestUtil.getInt(request, "attitude");
-		Help help = new Help();
-		help.setHelpId(helpId);
+		String token = HttpServletRequestUtil.getString(request, "token");
+
+		Long userId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人ID
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			userId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.toString());
+			return modelMap;
+		}
+
+		Help help = helpService.getByHelpId(helpId);
+		Appeal appeal = appealService.getByAppealId(help.getAppealId());
+		if (appeal.getUserId() != userId) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "该求助不属于该用户");
+			return modelMap;
+		}
 		help.setCompletion(completion);
 		help.setEfficiency(efficiency);
 		help.setAttitude(attitude);
-		Map<String, Object> modelMap = new HashMap<String, Object>();
+
 		HelpExecution helpExecution;
 		try {
 			helpExecution = helpService.modifyHelp(help);
@@ -289,7 +316,7 @@ public class HelpController {
 			}
 		} catch (HelpOperationException e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}
@@ -305,16 +332,36 @@ public class HelpController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
+		String token = HttpServletRequestUtil.getString(request, "token");
+
+		Long userId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人ID
+		String openId = userCode2Session.getOpenId();
 		try {
-			helpService.selectHelp(helpId, appealId);
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			userId = wechatAuth.getUserId();
 		} catch (Exception e) {
-			modelMap.put("success", true);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.toString());
+			return modelMap;
+		}
+		try {
+			HelpExecution he = helpService.selectHelp(helpId, appealId, userId);
+			if (he.getState() != HelpStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", he.getStateInfo());
+			}
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.toString());
 		}
 		modelMap.put("success", true);
 		return modelMap;
 	}
-	
+
 	@RequestMapping(value = "/additionsoucoin", method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value = "求助者追赏")
@@ -346,14 +393,18 @@ public class HelpController {
 			appealUserId = wechatAuth.getUserId();
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 		try {
-			helpService.additionSouCoin(helpId, appealUserId, additionSouCoin);
+			HelpExecution he = helpService.additionSouCoin(helpId, appealUserId, additionSouCoin);
+			if (he.getState() != HelpStateEnum.SUCCESS.getState()) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", he.getStateInfo());
+			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		modelMap.put("success", true);
 		return modelMap;

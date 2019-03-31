@@ -98,7 +98,7 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 				return new LocalAuthExecution(LocalAuthStateEnum.SUCCESS, localAuth);
 			}
 		} catch (Exception e) {
-			throw new LocalAuthOperationException("insertLocalAuth error: " + e.getMessage());
+			throw new LocalAuthOperationException("insertLocalAuth error: " + e.toString());
 		}
 	}
 

@@ -40,7 +40,7 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/shopadmin")
-@Api(value = "ShopManagementController|对店铺操作的控制器")
+@Api(value = "ShopManagementController|对商铺操作的控制器")
 public class ShopManagementController {
 	@Autowired
 	private ShopService shopService;
@@ -51,11 +51,11 @@ public class ShopManagementController {
 
 	@RequestMapping(value = "/getshoplistbyuserid", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "根据用户ID获取其所有店铺信息（分页）")
+	@ApiOperation(value = "根据用户ID获取其所有商铺信息（分页）")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = true, dataType = "int"),
-			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的店铺数目", required = true, dataType = "int") })
+			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的商铺数目", required = true, dataType = "int") })
 	private Map<String, Object> getShopListByUserId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		String token = HttpServletRequestUtil.getString(request, "token");
@@ -72,7 +72,7 @@ public class ShopManagementController {
 			userId = wechatAuth.getUserId();
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 		try {
@@ -87,23 +87,23 @@ public class ShopManagementController {
 			modelMap.put("success", true);
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}
 
 	@RequestMapping(value = "/getshopbyid", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "根据店铺ID获取店铺信息")
-	@ApiImplicitParam(paramType = "query", name = "shopId", value = "店铺ID", required = true, dataType = "Long", example = "65")
+	@ApiOperation(value = "根据商铺ID获取商铺信息")
+	@ApiImplicitParam(paramType = "query", name = "shopId", value = "商铺ID", required = true, dataType = "Long", example = "65")
 	private Map<String, Object> getShopByShopId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
-		if (shopId > 0) {
+		if (shopId != null) {
 			try {
-				// 获取店铺信息
+				// 获取商铺信息
 				Shop shop = shopService.getByShopId(shopId);
-				// 获取店铺详情图列表
+				// 获取商铺详情图列表
 				List<ShopImg> shopImgList = shopImgDao.getShopImgList(shopId);
 				shop.setShopImgList(shopImgList);
 				modelMap.put("shop", shop);
@@ -121,12 +121,13 @@ public class ShopManagementController {
 
 	@RequestMapping(value = "/registershop", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "注册店铺（不添加图片）", notes = "不用传shopId")
+	@ApiOperation(value = "注册商铺（不添加图片）", notes = "不用传shopId")
 	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
 	private Map<String, Object> registerShop(
-			@RequestBody @ApiParam(name = "shop", value = "传入json格式,不用传shopId", required = true) Shop shop, String token) {
+			@RequestBody @ApiParam(name = "shop", value = "传入json格式,不用传shopId", required = true) Shop shop,
+			String token) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		// 注册店铺
+		// 注册商铺
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
 		// 将token解密成openId 和session_key
@@ -138,7 +139,7 @@ public class ShopManagementController {
 			userId = wechatAuth.getUserId();
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 		shop.setUserId(userId);
@@ -154,18 +155,42 @@ public class ShopManagementController {
 			}
 		} catch (ShopOperationException e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}
 
 	@RequestMapping(value = "/modifyshop", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "修改店铺信息（不修改图片）", notes = "要传shopId")
+	@ApiOperation(value = "修改商铺信息（不修改图片）", notes = "要传shopId")
 	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
 	private Map<String, Object> modifyShop(
-			@RequestBody @ApiParam(name = "shop", value = "传入json格式,要传shopId", required = true) Shop shop) {
+			@RequestBody @ApiParam(name = "shop", value = "传入json格式,要传shopId", required = true) Shop shop,
+			String token) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
+
+		Long userId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人信息
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			userId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.toString());
+			return modelMap;
+		}
+		if (shop.getShopId() != null) {
+			Shop tempShop = shopService.getByShopId(shop.getShopId());
+			if (tempShop.getUserId() != userId) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", "该商铺不属于该用户");
+			}
+		}
+
 		ShopExecution se;
 		try {
 			se = shopService.modifyShop(shop);
@@ -178,7 +203,7 @@ public class ShopManagementController {
 			}
 		} catch (ShopOperationException e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}
@@ -207,20 +232,43 @@ public class ShopManagementController {
 
 	@RequestMapping(value = "/uploadimg", method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "上传店铺相关图片", notes = "注册和修改信息都适用,在swagger这个网站上看不了效果,请查看前端已使用过的页面")
+	@ApiOperation(value = "上传商铺相关图片", notes = "注册和修改信息都适用,在swagger这个网站上看不了效果,请查看前端已使用过的页面")
 	@ApiImplicitParams({
-		@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
-		@ApiImplicitParam(paramType = "query", name = "shopId", value = "店铺id", required = true, dataType = "Long"),
-		@ApiImplicitParam(paramType = "query", name = "createTime", value = "图片创建时间", required = true, dataType = "String")
-	})
+			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "query", name = "shopId", value = "商铺id", required = true, dataType = "Long"),
+			@ApiImplicitParam(paramType = "query", name = "createTime", value = "图片创建时间", required = true, dataType = "String") })
 	private Map<String, Object> uploadImg(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		// 1.接收并转化相应的参数，包括店铺id以及图片信息
+		// 1.接收并转化相应的参数，包括商铺id以及图片信息
 		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
 		Date createTime = HttpServletRequestUtil.getDate(request, "createTime");
+		String token = HttpServletRequestUtil.getString(request, "token");
 		ImageHolder shopImg = new ImageHolder("", null);
 		ImageHolder businessLicenseImg = new ImageHolder("", null);
 		ImageHolder profileImg = new ImageHolder("", null);
+
+		Long userId = null;
+		UserCode2Session userCode2Session = null;
+		// 将token解密成openId 和session_key
+		userCode2Session = JWT.unsign(token, UserCode2Session.class);
+		// 获取个人信息
+		String openId = userCode2Session.getOpenId();
+		try {
+			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
+			userId = wechatAuth.getUserId();
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.toString());
+			return modelMap;
+		}
+		if (shopId != null) {
+			Shop tempShop = shopService.getByShopId(shopId);
+			if (tempShop.getUserId() != userId) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", "该商铺不属于该用户");
+			}
+		}
+
 		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
 				request.getSession().getServletContext());
 		try {
@@ -229,11 +277,11 @@ public class ShopManagementController {
 			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
-			System.out.println(e.getMessage());
+			modelMap.put("errMsg", e.toString());
+			System.out.println(e.toString());
 			return modelMap;
 		}
-		// 2.上传店铺图片
+		// 2.上传商铺图片
 		ShopExecution se;
 		try {
 			se = shopService.uploadImg(shopId, shopImg, businessLicenseImg, profileImg, createTime);
@@ -246,19 +294,18 @@ public class ShopManagementController {
 			}
 		} catch (ShopOperationException e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}
 
 	@RequestMapping(value = "/searchnearbyshops", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "返回2.5km内的所有店铺")
+	@ApiOperation(value = "返回2.5km内的所有商铺")
 	@ApiImplicitParams({
-		@ApiImplicitParam(paramType = "query", name = "longitude", value = "屏幕中心的经度", required = true, dataType = "Float"),
-		@ApiImplicitParam(paramType = "query", name = "latitude", value = "屏幕中心的纬度", required = true, dataType = "Float"),
-		@ApiImplicitParam(paramType = "query", name = "shopName", value = "店铺名", required = false, dataType = "String")
-	})
+			@ApiImplicitParam(paramType = "query", name = "longitude", value = "屏幕中心的经度", required = true, dataType = "Float"),
+			@ApiImplicitParam(paramType = "query", name = "latitude", value = "屏幕中心的纬度", required = true, dataType = "Float"),
+			@ApiImplicitParam(paramType = "query", name = "shopName", value = "商铺名", required = false, dataType = "String") })
 	private Map<String, Object> searchNearbyShops(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		float longitude = HttpServletRequestUtil.getFloat(request, "longitude");
@@ -271,7 +318,7 @@ public class ShopManagementController {
 
 		// 先计算查询点的经纬度范围
 		float r = 6371;// 地球半径千米
-		float dis = 2.5f;// 查询范围2.5km内的所有店铺
+		float dis = 2.5f;// 查询范围2.5km内的所有商铺
 		float dlng = (float) (2 * Math.asin(Math.sin(dis / (2 * r)) / Math.cos(latitude * Math.PI / 180)));
 		dlng = (float) (dlng * 180 / Math.PI);
 		float dlat = dis / r;
@@ -295,7 +342,7 @@ public class ShopManagementController {
 			modelMap.put("success", true);
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 		}
 		return modelMap;
 	}

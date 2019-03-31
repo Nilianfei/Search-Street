@@ -38,7 +38,7 @@ public class AppealCheckServiceImpl implements AppealCheckService {
 						throw new AppealOperationException("求助修改失败");
 					}
 				} catch (Exception e) {
-					throw new AppealOperationException("modifyAppeal error:" + e.getMessage());
+					throw new AppealOperationException("modifyAppeal error:" + e.toString());
 				}
 			}
 		}
@@ -60,7 +60,7 @@ public class AppealCheckServiceImpl implements AppealCheckService {
 						throw new HelpOperationException("帮助修改失败");
 					}
 				} catch (Exception e) {
-					throw new HelpOperationException("modifyHelp error:" + e.getMessage());
+					throw new HelpOperationException("modifyHelp error:" + e.toString());
 				}
 			}
 		}

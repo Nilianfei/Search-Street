@@ -108,7 +108,7 @@ public class LocalAuthController {
 			return modelMap;
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 
@@ -221,7 +221,7 @@ public class LocalAuthController {
 			return modelMap;
 		} catch (Exception e) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", e.getMessage());
+			modelMap.put("errMsg", e.toString());
 			return modelMap;
 		}
 	}

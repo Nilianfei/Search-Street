@@ -58,8 +58,8 @@ public interface HelpService {
 	 * @param appealId
 	 * @throws HelpOperationException
 	 */
-	void selectHelp(Long helpId, Long appealId) throws HelpOperationException;
-	
+	HelpExecution selectHelp(Long helpId, Long appealId, Long appealUserId) throws HelpOperationException;
+
 	/**
 	 * 追赏金
 	 * 
@@ -67,6 +67,5 @@ public interface HelpService {
 	 * @param appealUserId
 	 * @param additionSouCoin
 	 */
-	void additionSouCoin(Long helpId, Long appealUserId, Long additionSouCoin)
-			throws HelpOperationException;
+	HelpExecution additionSouCoin(Long helpId, Long appealUserId, Long additionSouCoin) throws HelpOperationException;
 }

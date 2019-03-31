@@ -125,6 +125,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
 		superAdminIR.excludePathPatterns("/superadmin/logincheck");
 		superAdminIR.excludePathPatterns("/superadmin/main");
 		superAdminIR.excludePathPatterns("/superadmin/top");
+//		superAdminIR.excludePathPatterns("/superadmin/register");
 	}
 
 }

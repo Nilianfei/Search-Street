@@ -13,7 +13,7 @@ public interface PersonInfoService {
 	 * @param userId
 	 * @return
 	 */
-	PersonInfo getPersonInfoByUserId(Long userId);
+	PersonInfo getPersonInfoByUserId(long userId);
 	
 	/**
 	 * 根据查询条件分页返回用户信息列表
