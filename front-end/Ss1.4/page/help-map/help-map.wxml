@@ -57,7 +57,7 @@
           </cover-view>
 
           <cover-view class="appealInfoButtonSize">
-            <button class="appealInfoButton blue" hover-class='hover'>导航</button>
+            <button class="appealInfoButton blue" hover-class='hover' bindtap='navigation'>导航</button>
           </cover-view>
 
           <cover-view class="appealInfoButtonSize">

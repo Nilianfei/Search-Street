@@ -51,7 +51,7 @@
           </cover-view>
 
           <cover-view class="shopInfoButtonSize">
-              <button class="shopInfoButton blue" hover-class='hover'>导航</button>
+              <button class="shopInfoButton blue" hover-class='hover' bindtap='navigation'>导航</button>
           </cover-view>
 
           <cover-view class="shopInfoButtonSize">

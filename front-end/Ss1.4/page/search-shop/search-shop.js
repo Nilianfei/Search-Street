@@ -281,6 +281,7 @@ Page({
     })
 
     console.log(this.data.shopInfoId);
+    console.log(this.data.latitude);
   },
 
   gotoShop: function(e) {
@@ -458,7 +459,19 @@ Page({
       console.log('impossible click this hh.');
     }
   },
-  
+
+  /* 点击导航按钮转移到外部应用进行导航 */
+  navigation:function(e){
+    var point=this.data.polyline[0].points[1];
+    var shopname=this.data.shopInfoName;
+    console.log(point.latitude);
+    wx.openLocation({
+      latitude:parseInt(point.latitude),
+      longitude:parseInt(point.longitude),
+      scale:18,
+      name:shopname
+    })
+  },
   /*
   //openInfo(测试功能)
   openInfo: function(e){

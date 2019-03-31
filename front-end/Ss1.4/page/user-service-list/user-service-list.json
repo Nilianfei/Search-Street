@@ -1,11 +1,9 @@
-﻿{
+{
   "navigationBarTitleText": "商家",
   "usingComponents": {
     "i-collapse": "../../dist/collapse/index",
     "i-collapse-item": "../../dist/collapse-item/index",
-
-    "van-card": "../../vant-weapp/dist/card/index",
-
-    "i-page": "../../dist/page/index"
+     "van-card": "../../vant-weapp/dist/card/index",
+     "i-page": "../../dist/page/index"
   }
 }

@@ -1,4 +1,7 @@
 /* page/personal-help/personal-help.wxss */
+.contanier{
+  margin-top: -50rpx;
+}
 .perhelp-bd{
   height: 200rpx;
   border-bottom: 1px solid #f0f0f0;
