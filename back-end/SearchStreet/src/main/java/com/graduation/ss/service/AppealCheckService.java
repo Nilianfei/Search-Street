@@ -6,7 +6,7 @@ import com.graduation.ss.exceptions.HelpOperationException;
 public interface AppealCheckService {
 
 	/**
-	 * 检测进行中的appeal和help是否过期，如果过期，则修改appeal和help的状态
+	 * 检测进行中的appeal是否过期，如果过期，则修改appeal的状态
 	 * @throws AppealOperationException
 	 */
 	public void checkAppeal()throws AppealOperationException;

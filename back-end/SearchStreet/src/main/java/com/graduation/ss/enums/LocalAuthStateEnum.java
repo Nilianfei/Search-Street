@@ -2,7 +2,8 @@ package com.graduation.ss.enums;
 
 public enum LocalAuthStateEnum {
 	LOGINFAIL(-1, "密码或帐号输入有误"), SUCCESS(0, "操作成功"), NULL_AUTH_INFO(-1006, "注册信息为空"),
-	ONLY_ONE_ACCOUNT(-1007, "最多只能绑定一个本地帐号"), INNER_ERROR(-1008, "内部错误");
+	ONLY_ONE_ACCOUNT(-1007, "最多只能绑定一个本地帐号"), INNER_ERROR(-1008, "内部错误"), USER_NAME_ERR(-1009, "用户名重复"),
+	PERSONINFO_ERR(-1010, "缺少用户信息");
 
 	private int state;
 
