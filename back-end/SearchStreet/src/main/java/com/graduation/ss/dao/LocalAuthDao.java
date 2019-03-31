@@ -9,6 +9,12 @@ import com.graduation.ss.entity.LocalAuth;
 
 public interface LocalAuthDao {
 	/**
+	 * 获取所有用户名
+	 * @return
+	 */
+	List<String> queryUserName();
+	
+	/**
 	 * 通过账号和密码查询对应信息，登录用
 	 * 
 	 * @param userName

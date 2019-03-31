@@ -1,18 +1,4 @@
-﻿$(function() {
-	$('#centerTab').tabs({
-		tools:[{
-			iconCls:'icon-back',
-			handler: function(){
-				$.messager.confirm('注销提示', '你确定注销吗?', function(r){
-					if(r){
-						window.location = root+'/login/doLogout.jhtml';
-					}
-				});
-			}
-		}]
-	});
-});
-
+﻿
 /**
  * 创建新选项卡
  * @param tabId    选项卡id

@@ -3,7 +3,9 @@ package com.graduation.ss.dao;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
+import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ public class LocalAuthDaoTest {
 	private static final String password = "testpassword";
 
 	@Test
+	@Ignore
 	public void testInsertLocalAuth() {
 		LocalAuth localAuth = new LocalAuth();
 		localAuth.setUserName(username);
@@ -32,23 +35,35 @@ public class LocalAuthDaoTest {
 	}
 
 	@Test
+	@Ignore
 	public void testQueryLocalByUserNameAndPwd() {
 		LocalAuth localAuth = localAuthDao.queryLocalByUserNameAndPwd(username, password);
 		assertEquals("1", localAuth.getUserId().toString());
 	}
 
 	@Test
+	@Ignore
 	public void testQueryLocalByUserId() {
 		LocalAuth localAuth = localAuthDao.queryLocalByUserId(1L);
 		assertEquals("1", localAuth.getUserId().toString());
 	}
 
 	@Test
+	@Ignore
 	public void testUpdateLocalAuth() {
 		Date now = new Date();
 		int effectedNum = localAuthDao.updateLocalAuth(1L, username, password, password + "new", now);
 		assertEquals(1, effectedNum);
 		LocalAuth localAuth = localAuthDao.queryLocalByUserId(1L);
 		System.out.println(localAuth.getPassword());
+	}
+	
+	@Test
+	@Ignore
+	public void testQueryUserName() {
+		List<String> userNameList=localAuthDao.queryUserName();
+		for(String userName:userNameList) {
+			System.out.println(userName);
+		}
 	}
 }

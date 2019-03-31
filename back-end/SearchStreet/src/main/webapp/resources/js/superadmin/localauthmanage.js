@@ -88,7 +88,7 @@ function ajaxTable() {
 			.append('style="margin-right: 0.5em;" onclick="searchInfo()"/>');
 	var addButtonBuffer = new StringBuffer();
 	addButtonBuffer
-			.append('<input type="button" id="addLocalAuth" value="添加本地账号信息"');
+			.append('<input type="button" id="addLocalAuth" value="添加管理员账号信息"');
 	addButtonBuffer
 			.append('style="margin-right: 0.5em;" onclick="openDialog()"/>');
 	$('.datagrid-toolbar').append(searchBoxBuffer.toString());
@@ -167,7 +167,7 @@ function setDialog_edit() {
 }
 function setDialog_create() {
 	$('#localAuthManagementCreate').dialog({
-		title : '本地帐号添加',
+		title : '管理员帐号添加',
 		modal : true, // 模式窗口：窗口背景不可操作
 		collapsible : true, // 可折叠，点击窗口右上角折叠图标将内容折叠起来
 		resizable : true

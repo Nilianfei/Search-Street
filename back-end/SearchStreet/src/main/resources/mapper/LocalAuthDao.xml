@@ -3,6 +3,11 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.graduation.ss.dao.LocalAuthDao">
+	<select id="queryUserName" resultType="java.lang.String">
+		SELECT
+		user_name
+		FROM tb_local_auth
+	</select>
 	<select id="queryLocalByUserNameAndPwd"
 		resultType="com.graduation.ss.entity.LocalAuth">
 		SELECT

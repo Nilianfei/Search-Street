@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.graduation.ss.cache.JedisUtil;
 import com.graduation.ss.dao.LocalAuthDao;
 import com.graduation.ss.dao.PersonInfoDao;
+import com.graduation.ss.dao.WechatAuthDao;
 import com.graduation.ss.dto.LocalAuthExecution;
 import com.graduation.ss.entity.LocalAuth;
 import com.graduation.ss.entity.PersonInfo;
+import com.graduation.ss.entity.WechatAuth;
 import com.graduation.ss.enums.LocalAuthStateEnum;
 import com.graduation.ss.exceptions.LocalAuthOperationException;
 import com.graduation.ss.service.LocalAuthService;
@@ -25,6 +28,10 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 	private LocalAuthDao localAuthDao;
 	@Autowired
 	private PersonInfoDao personInfoDao;
+	@Autowired
+	private WechatAuthDao wechatAuthDao;
+	@Autowired
+	private JedisUtil.Keys jedisKeys;
 
 	@Override
 	public LocalAuth getLocalAuthByUsernameAndPwd(String username, String password) {
@@ -56,13 +63,34 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 			// 如果绑定过则直接退出，以保证平台帐号的唯一性
 			return new LocalAuthExecution(LocalAuthStateEnum.ONLY_ONE_ACCOUNT);
 		}
+		PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(localAuth.getUserId());
+		if (personInfo == null) {
+			return new LocalAuthExecution(LocalAuthStateEnum.PERSONINFO_ERR);
+		}
+		List<String> userNameList = localAuthDao.queryUserName();
+		for (String userName : userNameList) {
+			if (userName.equals(localAuth.getUserName())) {
+				return new LocalAuthExecution(LocalAuthStateEnum.USER_NAME_ERR);
+			}
+		}
 		try {
+			WechatAuth wechatAuth = wechatAuthDao.queryWechatByUserId(personInfo.getUserId());
+			if(wechatAuth!=null) {
+				String openId = wechatAuth.getOpenId();
+				jedisKeys.del(openId);
+			}
+			//修改用户类型为管理员
+			personInfo.setUserType(1);
+			int effectedNum =personInfoDao.updatePersonInfo(personInfo);
+			if (effectedNum <= 0) {
+				throw new LocalAuthOperationException("用户类型修改失败");
+			}
 			// 如果之前没有绑定过平台帐号，则创建一个平台帐号与该用户绑定
 			localAuth.setCreateTime(new Date());
 			localAuth.setLastEditTime(new Date());
 			// 对密码进行MD5加密
 			localAuth.setPassword(MD5.getMd5(localAuth.getPassword()));
-			int effectedNum = localAuthDao.insertLocalAuth(localAuth);
+			effectedNum = localAuthDao.insertLocalAuth(localAuth);
 			// 判断创建是否成功
 			if (effectedNum <= 0) {
 				throw new LocalAuthOperationException("帐号绑定失败");
