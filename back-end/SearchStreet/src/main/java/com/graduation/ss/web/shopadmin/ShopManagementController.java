@@ -53,12 +53,12 @@ public class ShopManagementController {
 	@ResponseBody
 	@ApiOperation(value = "根据用户ID获取其所有商铺信息（分页）")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = true, dataType = "int"),
 			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的商铺数目", required = true, dataType = "int") })
 	private Map<String, Object> getShopListByUserId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		String token = HttpServletRequestUtil.getString(request, "token");
+		String token = request.getHeader("token");
 		int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
 		int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
 		Long userId = null;
@@ -122,11 +122,12 @@ public class ShopManagementController {
 	@RequestMapping(value = "/registershop", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "注册商铺（不添加图片）", notes = "不用传shopId")
-	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
+	@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
 	private Map<String, Object> registerShop(
 			@RequestBody @ApiParam(name = "shop", value = "传入json格式,不用传shopId", required = true) Shop shop,
-			String token) {
+			HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = request.getHeader("token");
 		// 注册商铺
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
@@ -163,11 +164,12 @@ public class ShopManagementController {
 	@RequestMapping(value = "/modifyshop", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "修改商铺信息（不修改图片）", notes = "要传shopId")
-	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
+	@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
 	private Map<String, Object> modifyShop(
 			@RequestBody @ApiParam(name = "shop", value = "传入json格式,要传shopId", required = true) Shop shop,
-			String token) {
+			HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = request.getHeader("token");
 
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
@@ -234,7 +236,7 @@ public class ShopManagementController {
 	@ResponseBody
 	@ApiOperation(value = "上传商铺相关图片", notes = "注册和修改信息都适用,在swagger这个网站上看不了效果,请查看前端已使用过的页面")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "shopId", value = "商铺id", required = true, dataType = "Long"),
 			@ApiImplicitParam(paramType = "query", name = "createTime", value = "图片创建时间", required = true, dataType = "String") })
 	private Map<String, Object> uploadImg(HttpServletRequest request) {
@@ -242,7 +244,8 @@ public class ShopManagementController {
 		// 1.接收并转化相应的参数，包括商铺id以及图片信息
 		Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
 		Date createTime = HttpServletRequestUtil.getDate(request, "createTime");
-		String token = HttpServletRequestUtil.getString(request, "token");
+		String token = request.getHeader("token");
+
 		ImageHolder shopImg = new ImageHolder("", null);
 		ImageHolder businessLicenseImg = new ImageHolder("", null);
 		ImageHolder profileImg = new ImageHolder("", null);

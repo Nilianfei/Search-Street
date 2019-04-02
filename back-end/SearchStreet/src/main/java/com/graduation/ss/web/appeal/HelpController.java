@@ -92,11 +92,11 @@ public class HelpController {
 	@ApiOperation(value = "查询是否帮助了这个求助")
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助ID", required = true, dataType = "Long"),
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String") })
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String") })
 	private Map<String, Object> queryisHelp(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
-		String token = HttpServletRequestUtil.getString(request, "token");
+		String token = request.getHeader("token");
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
 		// 将token解密成openId 和session_key
@@ -139,7 +139,7 @@ public class HelpController {
 	@ResponseBody
 	@ApiOperation(value = "根据用户ID和帮助状态查询帮助（可增加输入的条件有：帮助状态，指定日期范围，搜币（大于等于输入搜币）信息(分页)", notes = "进行中:helpStatus=1（返回的helpStatus=0表示还没有被选中，helpStatus=1表示已被选中）,已完成:helpStatus=2,已失效:helpStatus=3")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "helpStatus", value = "帮助状态", required = false, dataType = "int"),
 			@ApiImplicitParam(paramType = "query", name = "startTime", value = "时间范围（下限）", required = false, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "endTime", value = "时间范围（上限）", required = false, dataType = "String"),
@@ -149,7 +149,7 @@ public class HelpController {
 	private Map<String, Object> getHelpListByUserId(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 
-		String token = HttpServletRequestUtil.getString(request, "token");
+		String token = request.getHeader("token");
 		Integer helpStatus = HttpServletRequestUtil.getInteger(request, "helpStatus");
 		Date startTime = HttpServletRequestUtil.getDate(request, "startTime");
 		Date endTime = HttpServletRequestUtil.getDate(request, "endTime");
@@ -223,11 +223,12 @@ public class HelpController {
 	@RequestMapping(value = "/addHelp", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "创建帮助")
-	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
+	@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
 	private Map<String, Object> addHelp(
 			@RequestBody @ApiParam(name = "help", value = "传入json格式,只传appealId和appealTitle就好了", required = true) Help help,
-			String token) {
+			HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = request.getHeader("token");
 		Long userId = null;
 		System.out.println(help.toString());
 		UserCode2Session userCode2Session = null;
@@ -265,7 +266,7 @@ public class HelpController {
 	@ResponseBody
 	@ApiOperation(value = "帮助评论", notes = "评论帮助需要输入帮助Id、完成分、效率分和态度分")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含求助者用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含求助者用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助Id", required = true, dataType = "Long"),
 			@ApiImplicitParam(paramType = "query", name = "completion", value = "完成分", required = true, dataType = "int"),
 			@ApiImplicitParam(paramType = "query", name = "efficiency", value = "效率分", required = true, dataType = "int"),
@@ -276,7 +277,7 @@ public class HelpController {
 		int completion = HttpServletRequestUtil.getInt(request, "completion");
 		int efficiency = HttpServletRequestUtil.getInt(request, "efficiency");
 		int attitude = HttpServletRequestUtil.getInt(request, "attitude");
-		String token = HttpServletRequestUtil.getString(request, "token");
+		String token = request.getHeader("token");
 
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
@@ -327,12 +328,12 @@ public class HelpController {
 	@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助ID", required = true, dataType = "Long"),
 			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助Id", required = true, dataType = "Long"),
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String") })
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String") })
 	private Map<String, Object> selectHelper(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
-		String token = HttpServletRequestUtil.getString(request, "token");
+		String token = request.getHeader("token");
 
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
@@ -366,13 +367,13 @@ public class HelpController {
 	@ResponseBody
 	@ApiOperation(value = "求助者追赏")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助ID", required = true, dataType = "Long"),
 			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助ID", required = true, dataType = "Long"),
 			@ApiImplicitParam(paramType = "query", name = "additionSouCoin", value = "追赏金数", required = true, dataType = "Long") })
 	private Map<String, Object> additionSouCoin(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		String token = HttpServletRequestUtil.getString(request, "token");
+		String token = request.getHeader("token");
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
 		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
 		Long additionSouCoin = HttpServletRequestUtil.getLong(request, "additionSouCoin");

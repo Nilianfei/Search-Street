@@ -53,13 +53,16 @@ public class AppealController {
 	@ResponseBody
 	@ApiOperation(value = "根据用户ID和求助状态获取相应的（可增加输入的条件有：求助名（模糊），省份，城市，地区，指定日期范围（大于等于输入startTime，小于等于输入endTime），搜币（大于等于输入搜币））求助信息(分页)", notes = "进行中:appealStatus=1（返回的appealStatus=0表示没有确定帮助者，appealStatus=1表示已确定帮助者）,已完成:appealStatus=2,已失效:appealStatus=3")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = true, dataType = "int"),
 			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的数目", required = true, dataType = "int") })
 	private Map<String, Object> getAppealListByUserId(
 			@RequestBody @ApiParam(name = "appeal", value = "传入json格式,不用传appealId", required = true) Appeal appeal,
-			String token, int pageIndex, int pageSize) {
+			HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = request.getHeader("token");
+		int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
+		int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
 		// 将token解密成openId 和session_key
@@ -130,11 +133,12 @@ public class AppealController {
 	@RequestMapping(value = "/registerappeal", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "创建求助（不添加图片）", notes = "不用传appealId")
-	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
+	@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
 	private Map<String, Object> registerAppeal(
 			@RequestBody @ApiParam(name = "appeal", value = "传入json格式,不用传appealId", required = true) Appeal appeal,
-			String token) {
+			HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = request.getHeader("token");
 		// 添加求助
 		Long userId = null;
 		UserCode2Session userCode2Session = null;
@@ -185,9 +189,10 @@ public class AppealController {
 	 * appealService.modifyAppeal(appeal); if (ae.getState() ==
 	 * AppealStateEnum.SUCCESS.getState()) { modelMap.put("success", true);
 	 * modelMap.put("appealId", ae.getAppeal().getAppealId()); } else {
-	 * modelMap.put("success", false); modelMap.put("errMsg", ae.getStateInfo()); }
-	 * } catch (AppealOperationException e) { modelMap.put("success", false);
-	 * modelMap.put("errMsg", e.toString()); } return modelMap; }
+	 * modelMap.put("success", false); modelMap.put("errMsg",
+	 * ae.getStateInfo()); } } catch (AppealOperationException e) {
+	 * modelMap.put("success", false); modelMap.put("errMsg", e.toString()); }
+	 * return modelMap; }
 	 */
 
 	private void handleImage(HttpServletRequest request, ImageHolder appealImg) throws IOException {
@@ -203,13 +208,13 @@ public class AppealController {
 	@ResponseBody
 	@ApiOperation(value = "上传求助图片", notes = "在swagger这个网站上看不了效果,请查看前端已使用过的页面")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助id", required = true, dataType = "Long") })
 	private Map<String, Object> uploadImg(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
+		String token = request.getHeader("token");
 		// 1.接收并转化相应的参数，包括求助id以及图片信息
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
-		String token = HttpServletRequestUtil.getString(request, "token");
 		ImageHolder appealImg = new ImageHolder("", null);
 		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
 				request.getSession().getServletContext());
@@ -303,12 +308,12 @@ public class AppealController {
 	@ResponseBody
 	@ApiOperation(value = "求助者确定完成求助并支付搜币")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助ID", required = true, dataType = "Long"),
 			@ApiImplicitParam(paramType = "query", name = "helpId", value = "帮助ID", required = true, dataType = "Long") })
 	private Map<String, Object> competeAppeal(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		String token = HttpServletRequestUtil.getString(request, "token");
+		String token = request.getHeader("token");
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
 		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
 		Help help = helpservice.getByHelpId(helpId);
@@ -350,11 +355,11 @@ public class AppealController {
 	@ResponseBody
 	@ApiOperation(value = "求助者使求助失效")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助Id", required = true, dataType = "Long") })
 	private Map<String, Object> disableAppeal(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		String token = HttpServletRequestUtil.getString(request, "token");
+		String token = request.getHeader("token");
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
 		Long appealUserId = null;
 		UserCode2Session userCode2Session = null;
@@ -392,11 +397,11 @@ public class AppealController {
 	@ResponseBody
 	@ApiOperation(value = "求助者撤销求助")
 	@ApiImplicitParams({
-			@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
+			@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String"),
 			@ApiImplicitParam(paramType = "query", name = "appealId", value = "求助Id", required = true, dataType = "Long") })
 	private Map<String, Object> cancelAppeal(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		String token = HttpServletRequestUtil.getString(request, "token");
+		String token = request.getHeader("token");
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
 		Long appealUserId = null;
 		UserCode2Session userCode2Session = null;

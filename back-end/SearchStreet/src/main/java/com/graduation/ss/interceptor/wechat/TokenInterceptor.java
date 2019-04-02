@@ -22,7 +22,7 @@ import com.graduation.ss.util.JWT;
 public class TokenInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		request.setCharacterEncoding("utf-8");
-		String token = request.getParameter("token");
+		String token = request.getHeader("token");
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		if(null != token) {
 			UserCode2Session userCode2Session = JWT.unsign(token, UserCode2Session.class);
