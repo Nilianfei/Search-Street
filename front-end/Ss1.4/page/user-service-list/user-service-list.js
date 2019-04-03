@@ -8,7 +8,9 @@ Page({
     successRate: 0,
     service: [],
     shop: null,
+
     imgUrl: "http://139.196.101.84:8080/image",
+
     shopId: 0,
     profileImgUrl: '',
     //全局变量
@@ -21,7 +23,7 @@ Page({
     pageSize: 6,
     cardCur: 0,
     shopImgList: null,
-    businessLicenseImg: null,
+    //businessLicenseImg: null,
     tower: [{
       id: 0,
       url: ''
@@ -96,14 +98,14 @@ Page({
         console.log(res);
         var shop = res.data.shop;
         var tower = that.data.tower;
-        var businessLicenseImg = app.globalData.imgUrl + shop.businessLicenseImg;
+        //var businessLicenseImg = app.globalData.imgUrl + shop.businessLicenseImg;
         var url = app.globalData.imgUrl + shop.profileImg;
         that.setData({
           shop: shop, //设置页面中的数据
           profileImgUrl: url,
           tower: tower,
           tower2: tower,
-          businessLicenseImg: businessLicenseImg,
+          //businessLicenseImg: businessLicenseImg,
           serviceRating: res.data.serviceAvg,
           starRating: res.data.starAvg,
           successRate: res.data.successRate
@@ -113,7 +115,7 @@ Page({
         if (shop.shopImgList) {
           var length = shop.shopImgList.length;
           for (var i = 0; i < shop.shopImgList.length; i++) {
-            shop.shopImgList[i].imgAddr = app.globalData.imgUrl + shop.shopImgList[i].imgAddr;
+            shop.shopImgList[i].imgAddr = imgUrl + shop.shopImgList[i].imgAddr;
             tower[i].url = shop.shopImgList[i].imgAddr;
           }
         }

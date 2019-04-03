@@ -348,6 +348,7 @@ Page({
                 filePath: that.data.service.serviceImgAddr,
                 fileName: "serviceImg"
               })
+              console.log(that.data.token);
             }
             wx.navigateBack({
               url: '../service-list/service-list?shopId=' + that.data.shopId

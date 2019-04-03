@@ -1,11 +1,14 @@
 /* page/shop/shop.wxss */
+
+@import "../../icon.wxss";
+@import "../../colorui.wxss";
+
 .container{
   background-color: #eeeeee;
 }
 
 .shop-message{
   width: 100%;
-  background-color: #6e8bb6;
 }
 
 .shop-message-top{

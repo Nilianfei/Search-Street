@@ -19,7 +19,7 @@ Page({
     cimgId: [],
     state: [{
         "id": 0,
-        "color": "green" ,
+        "color": "green",
         "state": "已下单"
       },
       {
@@ -36,7 +36,13 @@ Page({
         "id": 3,
         "color": "grey",
         "state": "已取消"
+      },
+      {
+        "id": 4,
+        "color": "black",
+        "state": "已删除"
       }
+
     ],
     token: null,
     userId: null,
@@ -72,8 +78,11 @@ Page({
       } else {
         wx.request({
           url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
+          header: {
+            token: token,
+          },
           data: {
-            token: token
+
           },
           success: function(res) {
             // 拿到自己后台传过来的数据，自己作处理
@@ -148,6 +157,7 @@ Page({
   onShareAppMessage: function() {
 
   },
+
   getDeviceInfo: function() {
     let that = this
     wx.getSystemInfo({
@@ -212,11 +222,21 @@ Page({
           var img = [];
           var id = [];
           var service = res.data.serviceList;
+          console.log(service);
           //利用一次遍历将每一单的照片和订单号记录下来(orderList与serviceList其实是一一对应的orderList[i]对应的服务是serviceList[i])
           for (var i = 0; i < order.length; i++) {
+            console.log(i);
+            /*
+             *跳过null 需要与后端沟通更好的解决办法
+             */
+            if (service[i] == null) {
+              console.log("do this continue.");
+              order[i].orderStatus = 4;
+              continue;
+            };
             id[i] = order[i].orderId;
             if (service[i].serviceImgAddr != null)
-              img[i] = service[i].serviceImgAddr; //经过修改后可以正常显示订单图片信息
+              img[i] = service[i].serviceImgAddr; //经过修改后可以正常显示订单图片信息,还需等addservice调整后加上服务器的ip
             var time = JSON.stringify(order[i].createTime);
             order[i].createTime = util.formatDate(time);
             if (order[i].overTime != null) {
@@ -229,7 +249,7 @@ Page({
             orderlist: order,
             serviceImg: img,
             imgId: id,
-            service: service    //此4全为数组变量，且index相同时的是同一个订单记录里不同的信息。
+            service: service //此4全为数组变量，且index相同时的是同一个订单记录里不同的信息。
           })
         }
       }
@@ -247,8 +267,8 @@ Page({
       success: res => {
         console.log(res);
         if (res.data.success) {
-          var order = res.data.OrderList;   //根据条件筛选出待评价的订单信息
-          var img = that.data.serviceImg;   //该商铺提供的所有服务的img都存储在此，第一次载入时由先执行的allShow()存到data
+          var order = res.data.OrderList; //根据条件筛选出待评价的订单信息
+          var img = that.data.serviceImg; //该商铺提供的所有服务的img都存储在此，第一次载入时由先执行的allShow()存到data
           var simg = [];
           var simgid = [];
           var id = that.data.imgId;
@@ -322,7 +342,9 @@ Page({
       }
     })
   },
-
+  /*
+   * 无法正确的到正确的评价(当一项服务被商家删除后评价依然存在)
+   */
   commentShow: function() {
     var that = this;
     //查询用户的评论
@@ -337,8 +359,13 @@ Page({
           var service = res.data.serviceList;
           var img = [];
           for (var i = 0; i < shopComment.length; i++) {
+
+            /*服务不存在时候的措施*/
+            if (service[i] == null) {
+              continue;
+            }
             if (service[i].serviceImgAddr != null) {
-              img[i] =  service[i].serviceImgAddr;
+              img[i] = service[i].serviceImgAddr;
             }
           }
 
@@ -416,8 +443,22 @@ Page({
   serviceDetail: function(e) {
     var that = this;
     var service = that.data.service[e.currentTarget.dataset.id];
-    wx.navigateTo({
-      url: '../service/service?service=' + JSON.stringify(service),
-    })
+    console.log(e.currentTarget.dataset.id);
+    if (service == null) {
+      wx.showModal({
+        title: '提示',
+        content: "该服务已被商家删除",
+        showCancel: false,
+        success(res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+          }
+        }
+      });
+    } else {
+      wx.navigateTo({
+        url: '../service/service?service=' + JSON.stringify(service),
+      })
+    }
   }
 })

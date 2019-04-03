@@ -30,9 +30,11 @@
             </view>
           </view>
           <view class="productPrice">
-            <text class="button {{item.orderStatus==0?'':'nodisplay'}}" bindtap='finishOrder' data-id="{{item.orderId}}" data-item="{{item}}">确认完成</text>
-            <text class="button {{item.orderStatus==0?'':'nodisplay'}}" bindtap="cancelOrder" data-id="{{item.orderId}}" data-item="{{item}}">取消订单</text>
-            <text class="button {{item.orderStatus==1?'':'nodisplay'}}" bindtap='addComment' data-id="{{index}}" data-item="{{item}}">评价</text>
+            
+            <button class="cu-btn round bg-green  margin-left-sm padding-xs {{item.orderStatus==0?'':'nodisplay'}}" bindtap='finishOrder' data-id="{{item.orderId}}" data-item="{{item}}">确认完成</button>
+            <button class="cu-btn round bg-gray  margin-left-sm padding-xs {{item.orderStatus==0?'':'nodisplay'}}" bindtap='cancelOrder' data-id="{{item.orderId}}" data-item="{{item}}">取消订单</button>
+            <button class="cu-btn round bg-cyan  margin-left-sm padding-xs {{item.orderStatus==1?'':'nodisplay'}}" bindtap='addComment' data-id="{{index}}" data-item="{{item}}">添加评价</button>
+            
             <view class="price">
               <text>合计：￥{{item.orderPrice}}</text>
             </view>
@@ -63,7 +65,7 @@
             </view>
           </view>
           <view class="productPrice">
-            <button class="button" size="mini" bindtap="addComment" data-id="{{index}}" data-item="{{item}}">评价</button>
+            <button class="cu-btn round bg-cyan  margin-left-sm padding-xs" bindtap='addComment' data-id="{{index}}" data-item="{{item}}">添加评价</button>
             <view class="price">
               <text>合计：￥{{item.orderPrice}}</text>
             </view>

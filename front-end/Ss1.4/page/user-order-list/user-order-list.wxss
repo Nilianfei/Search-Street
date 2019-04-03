@@ -92,7 +92,6 @@ page {
  
 .orderListDetails {
   display: flex;
-  height: 300rpx;
   border-bottom: 1rpx solid #f3f3f3;
   padding-bottom:10rpx;
   align-content: space-around;
@@ -140,12 +139,8 @@ page {
 }
 .button
 {
-  margin-top:10rpx;
-  margin-left: 30rpx;
-  margin-right: 20rpx;
-  background: #39b54a;
-  color:white;
-  padding:5rpx;
+  height: 80rpx;
+  width: 200rpx;
 }
 .nodisplay{
   display: none;

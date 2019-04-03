@@ -1,8 +1,8 @@
 // page/shop/shop.js
-var score = 80;
-var score_rank = 5;
-score_rank = score_rank.toFixed(1);
-var score_rate = 0.8;
+// var score = 80;
+// var score_rank = 5;
+// score_rank = score_rank.toFixed(1);
+// var score_rate = 0.8;
 var app=getApp();
 Page({
 
@@ -11,11 +11,11 @@ Page({
    */
   data: {
     shop :{},
-    score_number0: score,
-    score_number1: score_rank,
-    score_number2: score_rate,
     shopId:null,
     imgUrl: app.globalData.imgUrl,
+    score: 0,
+    score_rank: 0,
+    score_rate: 0,
   },
 
   /**
@@ -56,6 +56,21 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var that = this;
+    //获取商铺信息
+    wx.request({
+      url: app.globalData.serviceUrl + "/SearchStreet/shopComment/getAvgScorebyshopid?shopId=" + that.data.shopId, //获取评分信息
+      data: {},
+      method: "GET",
+      success: res => {
+        console.log(res);
+        that.setData({
+          score: res.data.serviceAvg,
+          score_rank: res.data.starAvg.toFixed(1),
+          score_rate: res.data.successRate
+        })
+      }
+    });
 
   },
 
