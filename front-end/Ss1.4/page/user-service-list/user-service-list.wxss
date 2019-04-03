@@ -1,6 +1,10 @@
 /* page/user-service-list/user-service-list.wxss */
 @import "../../icon.wxss";
 @import "../../colorui.wxss";
+
+.bottom-view {
+  width: 100%;
+}
 .UCenter-bg {
   background-size: cover;
   height: 550rpx;

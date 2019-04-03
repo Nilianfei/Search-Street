@@ -1,4 +1,4 @@
-﻿var app = getApp();
+var app = getApp();
 
 var initData = '添加店铺环境或菜品图片审核通过率会高哦'
 var showCheck = "此为必填选项哦"
@@ -283,7 +283,10 @@ Page({
         console.log("error");
       }
       wx.request({
-        url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/registershop?token=" + token,
+        url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/registershop",
+        header:{
+          token: token
+        },
         data: {
           shopName: e.detail.value.shopName,
           businessScope: e.detail.value.businessScope,

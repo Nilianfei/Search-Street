@@ -201,10 +201,12 @@ Page({
     wx.getLocation({
       type: "gcj02",
       success: function (res) {
+        //console.log(res);
         that.setData({
           latitude: res.latitude,
           longitude: res.longitude
         });
+        //console.log(that.data.latitude+ " " +that.data.longitude);
       },
     })
     this.mapCtx.moveToLocation();
@@ -256,7 +258,7 @@ Page({
     let _markers = this.data.markers;
     let markerId = e.markerId;
     let currentMarker = _markers[markerId];
-
+    //console.log(this.data.latitude + " " + this.data.longitude);
     this.setData({
       polyline: [{
         points: [{

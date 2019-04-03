@@ -15,7 +15,6 @@ Page({
   },
   handleChange({ detail }) {
     var that= this;
-    
     if(that.data.current<=that.data.pageNum){
       that.setData({
         loading: true
@@ -32,8 +31,10 @@ Page({
       }
       wx.request({
         url: app.globalData.serviceUrl+"/SearchStreet/shopadmin/getshoplistbyuserid",
-        data: {
+        header:{
           token: that.data.token,
+        },
+        data: {
           pageIndex: that.data.current,
           pageSize: that.data.pageSize
         },
@@ -83,8 +84,10 @@ Page({
     }
     wx.request({
       url: app.globalData.serviceUrl+"/SearchStreet/shopadmin/getshoplistbyuserid",
-      data: {
+      header:{
         token: that.data.token,
+      },
+      data: {
         pageIndex: 0,
         pageSize: that.data.pageSize
       },

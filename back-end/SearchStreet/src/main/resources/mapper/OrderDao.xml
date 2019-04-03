@@ -20,6 +20,9 @@
 				test="orderCondition.serviceId != null">
 				and service_id = #{orderCondition.serviceId}
 			</if> 
+			<if test="orderCondition.serviceName != null">
+				and service_name like '%${orderCondition.serviceName}%'
+			</if>
 			<if test="orderCondition.createTime != null">
 			    and DATE_FORMAT(create_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.createTime},'%Y %m %d')
 		   </if>
@@ -27,7 +30,7 @@
 			    and DATE_FORMAT(over_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.overTime},'%Y %m %d')
 		</if>
 		</where>
-		ORDER BY order_id desc
+		ORDER BY order_id asc
 		LIMIT #{rowIndex},#{pageSize};
 	</select>
 	<select id="queryOrderCount" resultType="int">
@@ -47,6 +50,9 @@
 				test="orderCondition.serviceId != null">
 				and service_id = #{orderCondition.serviceId}
 			</if> 
+			<if test="orderCondition.serviceName != null">
+				and service_name like '%${orderCondition.serviceName}%'
+			</if>
 			<if test="orderCondition.createTime != null">
 			    and DATE_FORMAT(create_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.createTime},'%Y %m %d')
 		   </if>
@@ -126,6 +132,9 @@
 				test="orderCondition.serviceId != null">
 				and service_id = #{orderCondition.serviceId}
 			</if> 
+			<if test="orderCondition.serviceName != null">
+				and service_name like '%${orderCondition.serviceName}%'
+			</if>
 			<if test="orderCondition.createTime != null">
 			    and DATE_FORMAT(create_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.createTime},'%Y %m %d')
 		   </if>
@@ -149,6 +158,9 @@
 				test="orderCondition.serviceId != null">
 				and service_id = #{orderCondition.serviceId}
 			</if> 
+			<if test="orderCondition.serviceName != null">
+				and service_name like '%${orderCondition.serviceName}%'
+			</if>
 			<if test="orderCondition.createTime != null">
 			    and DATE_FORMAT(create_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.createTime},'%Y %m %d')
 		   </if>

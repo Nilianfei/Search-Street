@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "修改商铺信息",
+  "navigationBarTitleText": "编辑商铺信息",
 
   "usingComponents": {
     "i-input": "../../dist/input/index",

@@ -323,6 +323,7 @@ public class ServiceController {
 				sService.modifyService(service);
 				if (se.getState() == ServiceStateEnum.SUCCESS.getState()) {
 					modelMap.put("success", true);
+					modelMap.put("serviceImgAddr", service.getServiceImgAddr());
 				} else {
 					modelMap.put("success", false);
 					modelMap.put("errMsg", se.getStateInfo());

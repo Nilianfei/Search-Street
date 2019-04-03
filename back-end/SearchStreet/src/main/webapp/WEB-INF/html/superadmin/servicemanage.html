@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css">
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet"
+	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/commonutil.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/errorhandle.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/servicemanage.js"></script>
+</head>
+
+<body>
+	<!-- 表格 -->
+	<table id="serviceManagementTable" title="服务信息一览" border="0"
+		cellspacing="0" cellpadding="0" iconCls="icon-edit" width="98%"
+		idField="serviceId" remoteSort="false" pagination="true"
+		singleSelect="false" showFooter="false" striped="true">
+		<thead>
+			<tr align="center">
+				<th field="serviceId" width="50">服务ID</th>
+				<th field="shopId" width="50">店铺ID</th>
+				<th field="serviceName" width="100">服务名称</th>
+				<th field="servicePrice" width="50">服务价格</th>
+				<th field="servicePriority" width="50">优先级</th>
+				<th field="serviceDesc" width="300">服务描述</th>
+				<th field="serviceContent" width="200">服务内容</th>
+				<th field="opt" formatter='optFormater' width="150">操作</th>
+			</tr>
+		</thead>
+	</table>
+
+	<!-- 编辑 -->
+	<div id="serviceManagementEdit" icon="icon-save"
+		style="padding: 5px; width: 600px; height: 350px;">
+		<h5 id="serviceManagementEdit_message" style="color: red;"></h5>
+		<form id="form_serviceManagementEdit" method="post">
+			<div style="margin: 5px; ">
+				<label for="serviceId">服务ID：</label> <input
+					class="easyui-validatebox" id="serviceId" type="text"
+					name="serviceId" readOnly />
+			</div>
+			<div style="margin: 5px;">
+				<label for="shopId">店铺ID：</label> <input class="easyui-validatebox"
+					required="true" id="shopId" type="text" name="shopId" />
+			</div>
+			<div style="margin: 5px">
+				<label for="serviceName">服务名称：</label> <input
+					class="easyui-validatebox" type="text" name="serviceName"
+					required="true" />
+			</div>
+			<div style="margin: 5px">
+				<label for="servicePrice">服务价格：</label> <input
+				class="easyui-validatebox" type="text" name="servicePrice"
+					required="true"  />
+			</div>
+			<div style="margin: 5px">
+				<label for="servicePriority">优先级：</label> <input
+				class="easyui-validatebox" type="text" name="servicePriority"
+					required="true"  />
+			</div>
+			<div style="margin: 5px">
+				<label for="serviceDesc">服务描述：</label> <input
+					class="easyui-textbox" data-options="multiline:true"
+					style="width: 200px; height: 50px" name="serviceDesc"  />
+			</div>
+			<div style="margin: 5px">
+				<label for="serviceContent">服务内容：</label> <input
+					class="easyui-textbox" data-options="multiline:true"
+					style="width: 200px; height: 50px" name="serviceContent"  />
+			</div>
+		</form>
+		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
+			onclick="serviceManagementEdit();">提交</a></li>
+	</div>
+	<!-- Hidden value area -->
+	<input id="searchConditionHd" type="hidden" value="ALL" />
+	<input id="searchInfoHd" type="hidden" />
+	<input id="urlHd" type="hidden" value="listServices" />
+</body>
+</html>

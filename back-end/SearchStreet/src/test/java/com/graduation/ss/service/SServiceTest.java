@@ -84,7 +84,7 @@ public class SServiceTest {
 		service.setServiceId(2L);
 		service.setServiceName("修改后的服务名称");
 		ServiceExecution se = sService.modifyService(service);
-		System.out.println("新的服务名称为：" + se.getService().getServiceName());
+		System.out.println("新的服务名称为：" + se.getServiceInfo().getServiceName());
 	}
 
 	@Test

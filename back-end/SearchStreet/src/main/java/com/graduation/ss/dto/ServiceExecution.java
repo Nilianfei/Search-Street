@@ -21,8 +21,8 @@ public class ServiceExecution {
 	// 操作的serviceImg(删改服务图片的时候用到)
 	private ServiceImg serviceImg;
 	// 服务列表(查询服务列表的时候使用)
-	private List<ServiceInfo> serviceInfoList;
-
+	private List<ServiceInfo> serviceList;
+	private  List<ServiceImg> serviceImgList;
 	public ServiceExecution() {
 
 	}
@@ -47,10 +47,13 @@ public class ServiceExecution {
 	}
 
 	// 查询服务操作成功的时候使用的构造器
-	public ServiceExecution(ServiceStateEnum stateEnum, List<ServiceInfo> serviceInfoList) {
+	public ServiceExecution(ServiceStateEnum stateEnum, List<ServiceInfo> serviceList) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
-		this.serviceInfoList = serviceInfoList;
+		this.serviceList = serviceList;
+	}
+	public ServiceExecution(List<ServiceImg> serviceImgList) {
+		this.serviceImgList =serviceImgList;
 	}
 
 	public int getState() {
@@ -77,20 +80,12 @@ public class ServiceExecution {
 		this.count = count;
 	}
 
-	public ServiceInfo getService() {
+	public ServiceInfo getServiceInfo() {
 		return serviceInfo;
 	}
 
-	public void setService(ServiceInfo serviceInfo) {
+	public void setServiceInfo(ServiceInfo serviceInfo) {
 		this.serviceInfo = serviceInfo;
-	}
-
-	public List<ServiceInfo> getServiceList() {
-		return serviceInfoList;
-	}
-
-	public void setServiceList(List<ServiceInfo> serviceInfoList) {
-		this.serviceInfoList = serviceInfoList;
 	}
 
 	public ServiceImg getServiceImg() {
@@ -100,5 +95,22 @@ public class ServiceExecution {
 	public void setServiceImg(ServiceImg serviceImg) {
 		this.serviceImg = serviceImg;
 	}
-	
+
+	public List<ServiceImg> getServiceImgList() {
+		return serviceImgList;
+	}
+
+	public void setServiceImgList(List<ServiceImg> serviceImgList) {
+		this.serviceImgList = serviceImgList;
+	}
+
+	public List<ServiceInfo> getServiceList() {
+		return serviceList;
+	}
+
+	public void setServiceList(List<ServiceInfo> serviceList) {
+		this.serviceList = serviceList;
+	}
+
+
 }

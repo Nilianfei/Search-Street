@@ -29,7 +29,8 @@
     "page/user-service-list/user-service-list",
     "page/shop-shopcomment/shop-shopcomment",
     "page/help-map/help-map",
-    "page/myservice-detail/myservice-detail"
+    "page/myservice-detail/myservice-detail",
+    "page/shop-settings/shop-settings"
   ],
   "permission": {
     "scope.userLocation": {

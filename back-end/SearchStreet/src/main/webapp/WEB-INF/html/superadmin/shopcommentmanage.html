@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css">
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet"
+	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/commonutil.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/common/errorhandle.js"></script>
+<script type="text/javascript"
+	src="../resources/js/superadmin/shopcommentmanage.js"></script>
+</head>
+
+<body>
+	<!-- 表格 -->
+	<table id="shopCommentManagementTable" title="评论信息一览" border="0"
+		cellspacing="0" cellpadding="0" iconCls="icon-edit" width="98%"
+		idField="shopCommentId" remoteSort="false" pagination="true"
+		singleSelect="false" showFooter="false" striped="true">
+		<thead>
+			<tr align="center">
+				<th field="shopCommentId" width="50">服务评论Id</th>
+				<th field="shopId" width="50">商家Id</th>
+				<th field="orderId" width="50">订单Id</th>
+				<th field="userId" width="50">用户Id</th>
+				<th field="serviceRating" width="50">服务评分</th>
+				<th field="starRating" width="50">星级评分</th>
+				<th field="commentContent" width="300">评论内容</th>
+				<th field="commentReply" width="300">商家回复</th>
+				<th field="opt" formatter='optFormater' width="150">操作</th>
+			</tr>
+		</thead>
+	</table>
+
+	<!-- 编辑 -->
+	<div id="shopCommentManagementEdit" icon="icon-save"
+		style="padding: 5px; width: 600px; height: 350px;">
+		<h5 id="shopCommentManagementEdit_message" style="color: red;"></h5>
+		<form id="form_shopCommentManagementEdit" method="post">
+			<div style="margin: 5px;">
+				<label for="shopCommentId">服务评论Id：</label> <input
+					class="easyui-validatebox" id="shopCommentId" type="text"
+					name="shopCommentId" readOnly />
+			</div>
+						<div style="margin: 5px">
+				<label for="shopId">商家Id：</label> <input
+					class="easyui-validatebox" type="text" name="shopId"
+					required="true" />
+			</div>
+			<div style="margin: 5px">
+				<label for="orderId">订单Id：</label> <input class="easyui-validatebox"
+					required="true" type="text" name="orderId" />
+			<div style="margin: 5px;">
+				<label for="userId">用户ID：</label> <input class="easyui-validatebox"
+					required="true" id="userId" type="text" name="userId" />
+			</div>
+            <div style="margin: 5px">
+				<label for="serviceRating">服务评分：</label> <input class="easyui-validatebox"
+					type="text" name="serviceRating" required="true" />
+			</div>
+			<div style="margin: 5px">
+				<label for="starRating">星级评分：</label> <input class="easyui-validatebox"
+					type="text" name="starRating" required="true" />
+			</div>
+			</div>
+			<div style="margin: 5px">
+				<label for="commentContent">评论内容：</label> <input
+					class="easyui-textbox" data-options="multiline:true"
+					style="width: 200px; height: 50px" name="commentContent" />
+			</div>
+			<div style="margin: 5px">
+				<label for="commentReply">商家回复：</label> <input
+					class="easyui-textbox" data-options="multiline:true"
+					style="width: 200px; height: 50px" name="commentReply" />
+			</div>
+			
+		</form>
+		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
+			onclick="shopCommentManagementEdit();">提交</a></li>
+	</div>
+	<!-- Hidden value area -->
+	<input id="searchConditionHd" type="hidden" value="ALL" />
+	<input id="searchInfoHd" type="hidden" />
+	<input id="urlHd" type="hidden" value="listShopComment" />
+</body>
+</html>

@@ -18,29 +18,52 @@ Page({
     cserviceImg: [],
     cimgId: [],
     state: [{
-      "id": 0,
-      "state": "已下单"
-    },
-    {
-      "id": 1,
-      "state": "待评价"
-    },
-    {
-      "id": 2,
-      "state": "已完成"
-    },
-    {
-      "id": 3,
-      "state": "已取消"
-    }],
+        "id": 0,
+        "color": "green",
+        "state": "已下单"
+      },
+      {
+        "id": 1,
+        "color": "orange",
+        "state": "待评价"
+      },
+      {
+        "id": 2,
+        "color": "gray",
+        "state": "已完成"
+      },
+      {
+        "id": 3,
+        "color": "grey",
+        "state": "已取消"
+      },
+      {
+        "id": 4,
+        "color": "black",
+        "state": "已删除"
+      }
+
+    ],
     token: null,
     userId: null,
     currtab: 0,
-    swipertab: [{ name: '全部', index: 0 }, { name: '待评价', index: 1 }, { name: '已取消', index: 2 }, { name: '我的评价', index: 3 }],
+    swipertab: [{
+      name: '全部',
+      index: 0
+    }, {
+      name: '待评价',
+      index: 1
+    }, {
+      name: '已取消',
+      index: 2
+    }, {
+      name: '我的评价',
+      index: 3
+    }],
   },
-  onLoad: function () {
+  onLoad: function() {
     var that = this
-    try {//同步获取与用户信息有关的缓存token
+    try { //同步获取与用户信息有关的缓存token
       const value = wx.getStorageSync('token');
       const userId = wx.getStorageSync('userId');
       if (value) {
@@ -52,14 +75,16 @@ Page({
         that.setData({
           userId: userId
         })
-      }
-      else {
+      } else {
         wx.request({
           url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
-          data: {
-            token: token
+          header: {
+            token: token,
           },
-          success: function (res) {
+          data: {
+
+          },
+          success: function(res) {
             // 拿到自己后台传过来的数据，自己作处理
             console.log(res.data);
             if (null != res.data.success && res.data.success) {
@@ -68,14 +93,12 @@ Page({
                 key: 'userId',
                 data: res.data.personInfo.userId
               });
-              that.setData(
-                {
-                  userId: res.data.personInfo.userId
-                }
-              )
+              that.setData({
+                userId: res.data.personInfo.userId
+              })
             }
-          }
-          , fail: function (err) {
+          },
+          fail: function(err) {
             console.log(err)
           }
         })
@@ -87,7 +110,7 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
     // 页面渲染完成
     this.getDeviceInfo()
     this.orderShow()
@@ -96,48 +119,49 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
     this.orderShow()
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   },
-  getDeviceInfo: function () {
+
+  getDeviceInfo: function() {
     let that = this
     wx.getSystemInfo({
-      success: function (res) {
+      success: function(res) {
         that.setData({
           deviceW: res.windowWidth,
           deviceH: res.windowHeight
@@ -147,9 +171,9 @@ Page({
   },
 
   /**
-  * 选项卡点击切换
-  */
-  tabSwitch: function (e) {
+   * 选项卡点击切换
+   */
+  tabSwitch: function(e) {
     var that = this
     if (this.data.currtab === e.target.dataset.current) {
       return false
@@ -160,12 +184,14 @@ Page({
     }
   },
 
-  tabChange: function (e) {
-    this.setData({ currtab: e.detail.current })
+  tabChange: function(e) {
+    this.setData({
+      currtab: e.detail.current
+    })
     this.orderShow()
   },
 
-  orderShow: function () {
+  orderShow: function() {
     let that = this
     switch (this.data.currtab) {
       case 0:
@@ -182,46 +208,57 @@ Page({
         break
     }
   },
-  allShow: function () {
+  allShow: function() {
     var that = this;
     //查询用户的订单
     wx.request({
       url: app.globalData.serviceUrl + '/SearchStreet/order/getOrderlistAndServicebyuo?userId=' + that.data.userId,
       data: {},
       method: "GET",
-      success: function (res) {
+      success: function(res) {
         console.log(res);
         if (res.data.success) {
           var order = res.data.OrderList;
           var img = [];
           var id = [];
           var service = res.data.serviceList;
+          console.log(service);
+          //利用一次遍历将每一单的照片和订单号记录下来(orderList与serviceList其实是一一对应的orderList[i]对应的服务是serviceList[i])
           for (var i = 0; i < order.length; i++) {
+            console.log(i);
+            /*
+             *跳过null 需要与后端沟通更好的解决办法
+             */
+            if (service[i] == null) {
+              console.log("do this continue.");
+              order[i].orderStatus = 4;
+              continue;
+            };
             id[i] = order[i].orderId;
             if (service[i].serviceImgAddr != null)
-              img[i] = app.globalData.imgUrl + service[i].serviceImgAddr;
+              img[i] = service[i].serviceImgAddr; //经过修改后可以正常显示订单图片信息,还需等addservice调整后加上服务器的ip
             var time = JSON.stringify(order[i].createTime);
             order[i].createTime = util.formatDate(time);
             if (order[i].overTime != null) {
               time = JSON.stringify(order[i].overTime);
               order[i].overTime = util.formatDate(time);
-            }
-            else
+            } else
               order[i].overTime = '';
           }
           that.setData({
             orderlist: order,
             serviceImg: img,
             imgId: id,
-            service: service
+            service: service //此4全为数组变量，且index相同时的是同一个订单记录里不同的信息。
           })
         }
       }
     })
   },
 
-  waitShow: function () {
+  waitShow: function() {
     var that = this;
+
     //查询用户待评价订单
     wx.request({
       url: app.globalData.serviceUrl + '/SearchStreet/order/getOrderlistbyuo?userId=' + that.data.userId + '&orderStatus=1',
@@ -230,8 +267,8 @@ Page({
       success: res => {
         console.log(res);
         if (res.data.success) {
-          var order = res.data.OrderList;
-          var img = that.data.serviceImg;
+          var order = res.data.OrderList; //根据条件筛选出待评价的订单信息
+          var img = that.data.serviceImg; //该商铺提供的所有服务的img都存储在此，第一次载入时由先执行的allShow()存到data
           var simg = [];
           var simgid = [];
           var id = that.data.imgId;
@@ -241,8 +278,7 @@ Page({
             if (order[i].overTime != null) {
               time = JSON.stringify(order[i].overTime);
               order[i].overTime = util.formatDate(time);
-            }
-            else
+            } else
               order[i].overTime = '';
             for (var j = 0; j < img.length; j++) {
               if (id[j] == order[i].orderId) {
@@ -263,7 +299,7 @@ Page({
     })
   },
 
-  cancelShow: function () {
+  cancelShow: function() {
     var that = this;
     //查询用户已取消的订单
     wx.request({
@@ -285,8 +321,7 @@ Page({
               if (order[i].overTime != null) {
                 time = JSON.stringify(order[i].overTime);
                 order[i].overTime = util.formatDate(time);
-              }
-              else
+              } else
                 order[i].overTime = '';
               for (var j = 0; j < img.length; j++) {
                 if (id[j] == order[i].orderId) {
@@ -307,8 +342,10 @@ Page({
       }
     })
   },
-
-  commentShow: function () {
+  /*
+   * 无法正确的到正确的评价(当一项服务被商家删除后评价依然存在)
+   */
+  commentShow: function() {
     var that = this;
     //查询用户的评论
     wx.request({
@@ -322,8 +359,13 @@ Page({
           var service = res.data.serviceList;
           var img = [];
           for (var i = 0; i < shopComment.length; i++) {
+
+            /*服务不存在时候的措施*/
+            if (service[i] == null) {
+              continue;
+            }
             if (service[i].serviceImgAddr != null) {
-              img[i] = app.globalData.imgUrl + service[i].serviceImgAddr;
+              img[i] = service[i].serviceImgAddr;
             }
           }
 
@@ -336,7 +378,7 @@ Page({
       }
     })
   },
-  cancelOrder: function (e) {
+  cancelOrder: function(e) {
     wx.showToast({
       title: '正在取消订单，请稍候...',
       icon: 'loading',
@@ -365,7 +407,7 @@ Page({
       }
     })
   },
-  finishOrder: function (e) {
+  finishOrder: function(e) {
     var that = this;
     var order = e.target.dataset.item;
     console.log(order)
@@ -389,7 +431,7 @@ Page({
       }
     })
   },
-  addComment: function (e) {
+  addComment: function(e) {
     var that = this;
     var service = that.data.service[e.target.dataset.id];
     var order = e.target.dataset.item;
@@ -398,11 +440,25 @@ Page({
     })
     that.allShow()
   },
-  serviceDetail: function (e) {
+  serviceDetail: function(e) {
     var that = this;
     var service = that.data.service[e.currentTarget.dataset.id];
-    wx.navigateTo({
-      url: '../service/service?service=' + JSON.stringify(service),
-    })
+    console.log(e.currentTarget.dataset.id);
+    if (service == null) {
+      wx.showModal({
+        title: '提示',
+        content: "该服务已被商家删除",
+        showCancel: false,
+        success(res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+          }
+        }
+      });
+    } else {
+      wx.navigateTo({
+        url: '../service/service?service=' + JSON.stringify(service),
+      })
+    }
   }
 })

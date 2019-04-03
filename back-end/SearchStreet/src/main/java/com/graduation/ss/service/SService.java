@@ -5,6 +5,7 @@ import java.util.Date;
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.ServiceExecution;
 import com.graduation.ss.exceptions.ServiceOperationException;
+import com.graduation.ss.entity.ServiceImg;
 import com.graduation.ss.entity.ServiceInfo;
 
 public interface SService {
@@ -42,7 +43,8 @@ public interface SService {
 	 * @throws ServiceOperationException
 	 */
 	public ServiceExecution modifyService(ServiceInfo service) throws ServiceOperationException;
-
+	public ServiceExecution getServiceImgList(ServiceImg serviceImg,int pageIndex, int pageSize);
+	public ServiceExecution getServiceImg(long serviceId);
 	/**
 	 * 上传服务图片
 	 * 
@@ -55,7 +57,7 @@ public interface SService {
 	 */
 	public ServiceExecution uploadImg(long serviceId, ImageHolder serviceImg,Date createTime)
 			throws ServiceOperationException;
-
+	public ServiceExecution createServiceImg(Long serviceId, ImageHolder serviceImgHolder);
 	/**
 	 * 添加服务信息，不包括对图片的处理
 	 * 
@@ -73,4 +75,5 @@ public interface SService {
 	 * @throws ServiceOperationException
 	 */
 	public ServiceExecution deleteService(long serviceId) throws ServiceOperationException;
+	public ServiceExecution deleteServiceImg(ServiceImg serviceImg) ;
 }

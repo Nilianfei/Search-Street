@@ -1,5 +1,7 @@
 package com.graduation.ss.web.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -219,11 +221,13 @@ public class ShopCommentController {
 	//根据查询条件获取评论列表 分页
 	@RequestMapping(value = "/listShopComment", method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "根据shopID、userId、commentcontent获取其所有服务评论信息（分页）")
+	@ApiOperation(value = "根据shopID、orderId、userId、commentContent获取其所有服务评论信息（分页）")
 	@ApiImplicitParams({
 		@ApiImplicitParam(paramType = "query", name = "shopId", value = "店铺ID", required = true, dataType = "Long", example = "3"),
+		@ApiImplicitParam(paramType = "query", name = "orderId", value = "订单ID", required = true, dataType = "Long", example = "1"),
 		@ApiImplicitParam(paramType = "query", name = "userId", value = "用户ID", required = true, dataType = "Long", example = "1"),
-		@ApiImplicitParam(paramType = "query", name = "commentContent", value = "服务评论", required = true, dataType = "String", example = "测试shopComment内容"),
+		@ApiImplicitParam(paramType = "query", name = "commentContent", value = "评论内容", required = true, dataType = "String", example = "测试shopComment内容"),
+		@ApiImplicitParam(paramType = "query", name = "commentReply", value = "商家回复", required = true, dataType = "String", example = "回复"),
 			@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = true, dataType = "int"),
 			@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的服务数目", required = true, dataType = "int") })
 	private Map<String, Object> listShopComment(HttpServletRequest request) {
@@ -238,12 +242,23 @@ public class ShopCommentController {
 			long shopId=HttpServletRequestUtil.getLong(request, "shopId");
 			if(shopId>0)
 			   shopCommentCondition.setShopId(shopId);
+			long orderId=HttpServletRequestUtil.getLong(request, "orderId");
+			if(orderId>0)
+			    shopCommentCondition.setOrderId(orderId);
 			long userId=HttpServletRequestUtil.getLong(request, "userId");
 			if(userId>0)
 			    shopCommentCondition.setUserId(userId);
 			String shopCommentContent=HttpServletRequestUtil.getString(request, "commentContent");
 			if(shopCommentContent!=null)
-				 shopCommentCondition.setCommentContent(shopCommentContent);
+		    {
+				try {
+					// 若传入评论内容，则将评论内容解码后添加到查询条件里，进行模糊查询
+					shopCommentCondition.setCommentContent(URLDecoder.decode(shopCommentContent, "UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					modelMap.put("success", false);
+					modelMap.put("errMsg", e.toString());
+				}
+			}
 			try {
 				// 根据查询条件分页返回评论列表
 				se = shopCommentService.getShopCommentList(shopCommentCondition, pageIndex, pageSize);
@@ -325,7 +340,6 @@ public class ShopCommentController {
 				//添加评论		
 				ShopCommentExecution ae = shopCommentService.addShopComment(shopComment);
 				OrderInfo order=OrderService.getByOrderId(shopComment.getOrderId());
-				order.setOrderId(shopComment.getOrderId());
 				order.setOrderStatus(2);
 				try {
 					//更新订单
@@ -366,7 +380,7 @@ public class ShopCommentController {
 		@ResponseBody
 		@ApiOperation(value = "修改服务评价信息")
 		private Map<String, Object> modifyShopComment(
-				@RequestBody @ApiParam(name = "ShopComment", value = "传入json格式,要传serviceId", required = true)ShopComment shopComment, HttpServletRequest request) {
+				@RequestBody @ApiParam(name = "ShopComment", value = "传入json格式,要传shopCommentId", required = true)ShopComment shopComment, HttpServletRequest request) {
 			Map<String, Object> modelMap = new HashMap<String, Object>();
 			System.out.println(shopComment.toString());
 			// 空值判断

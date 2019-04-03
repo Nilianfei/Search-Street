@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    token:"",
     isadd: undefined,
     flag: true,
     serviceId: undefined,
@@ -23,7 +24,7 @@ Page({
       "servicePriority": '',
       "shopId": null,
     },
-    
+    imgUrl: app.globalData.serviceUrl,
     serviceImg: [],
     addormodify: '更新',
     disabletodelete: true,
@@ -44,13 +45,25 @@ Page({
    */
   onLoad: function(options) {
     var that = this;
+
+    try {
+      const value = wx.getStorageSync('token')
+      if (value) {
+        that.setData({
+          token: value,
+        })
+      }
+    } catch (e) {
+      console.log("error");
+    }
+
     //页面初始化，options为页面跳转所带来的参数
     that.setData({
       serviceId: options.serviceId,
       isadd: options.isadd,
       shopId: options.shopId
     });
-    console.log(that.data.shopId+" "+that.data.serviceId);
+    console.log(that.data.shopId + " " + that.data.serviceId);
     if (parseInt(options.isadd) == 0) {
       that.setData({
         addOrModify: "保存更改",
@@ -60,14 +73,16 @@ Page({
     }
 
     if (options.serviceId == 0) {
+      //var p ="serviceImg"
       that.setData({
-        serviceImg: null,
+        serviceImg: '/images/add-photo.png',
       })
-      return;  //serviceId==0即是添加服务的情况，原表单内指为空，不许要get
+      return; //serviceId==0即是添加服务的情况，原表单内指为空，不许要get
     }
 
     wx.request({
       url: app.globalData.serviceUrl + '/SearchStreet/service/searchservicebyid?serviceId=' + that.data.serviceId,
+      
       data: {},
       method: 'GET',
       success: function(res) {
@@ -93,10 +108,12 @@ Page({
           var flag = false; //确定该服务有无图片信息的flag，flag=true表示没有，反之则有。
           if (service.serviceImgAddr == null) {
             flag = true;
-            that.data.serviceImg = null;
           } else {
-            that.data.serviceImg[0] = service.serviceImgAddr; //有问题
-            console.log(that.data.serviceImg[0])
+            //var p="serviceImg";
+            that.setData({
+              serviceImg: service.serviceImgAddr,
+            })
+            console.log(that.data.serviceImg)
           }
           that.setData({
             flag: flag,
@@ -160,6 +177,7 @@ Page({
   uploadimg: function() {
     var that = this;
     var flag = this.data.flag;
+    //var p="serviceImg";
     wx.chooseImage({
       sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有  
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
@@ -167,12 +185,14 @@ Page({
         that.setData({
           serviceImg: res.tempFilePaths,
           flag: !flag
-        })
+        });
+        console.log(that.data.serviceImg[0]);
       }
     })
   },
   changeimg: function() {
     var that = this;
+    //var p = "serviceImg";
     wx.chooseImage({
       sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有  
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
@@ -187,7 +207,7 @@ Page({
   inputServiceName: function(e) {
     var p = "service.serviceName";
     this.setData({
-      [p] : e.detail.detail.value,
+      [p]: e.detail.detail.value,
     })
     console.log(this.data.service.serviceName);
   },
@@ -195,28 +215,28 @@ Page({
   inputServicePrice: function(e) {
     var p = "service.servicePrice";
     this.setData({
-      [p] : e.detail.detail.value,
+      [p]: e.detail.detail.value,
     })
   },
 
   inputServicePriority: function(e) {
     var p = "service.servicePriority";
     this.setData({
-      [p] : e.detail.detail.value,
+      [p]: e.detail.detail.value,
     })
   },
 
   inputServiceDesc: function(e) {
     var p = "service.serviceDesc";
     this.setData({
-      [p] : e.detail.detail.value,
+      [p]: e.detail.detail.value,
     })
   },
 
   inputServiceContent: function(e) {
-    var p ="service.serviceContent";
+    var p = "service.serviceContent";
     this.setData({
-      [p] : e.detail.detail.value,
+      [p]: e.detail.detail.value,
     })
   },
 
@@ -266,24 +286,25 @@ Page({
       });
     } else {
 
-      /*
-      var token = null;
-      try {
-        const value = wx.getStorageSync('token')
-        if (value) {
-          token = value;
-        }
-      } catch (e) {
-        console.log("error");
-      }*/
-
-      if (that.data.serviceImg != null) {
-        var imgAddr ="service.serviceImgAddr"
+      
+      if (that.data.serviceImg != '/images/add-photo.png') {
+        var imgAddr = "service.serviceImgAddr";
         that.setData({
-          [imgAddr] : that.data.serviceImg[0],
+          [imgAddr]:  that.data.serviceImg[0],
         })
+        console.log(this.data.serviceImg[0]); //
+        console.log(this.data.service.serviceImgAddr);
+      }
+      else{
+        var imgAddr="service.serviceImgAddr" ;
+        that.setData({
+          [imgAddr]: null,
+        })
+        console.log(this.data.serviceImg[0]);
+        console.log(this.data.service.serviceImgAddr);
       }
       
+
       var url = '';
       if (parseInt(that.data.isadd) == 1) {
         url = that.data.addUrl;
@@ -293,6 +314,9 @@ Page({
       }
       wx.request({
         url: url,
+        header: {
+          token: that.data.token,
+        },
         data: {
           "serviceContent": that.data.service.serviceContent,
           "serviceDesc": that.data.service.serviceDesc,
@@ -304,7 +328,7 @@ Page({
           "shopId": that.data.shopId,
         },
         method: 'POST',
-        
+
         success: res => {
           console.log(res);
           if (res.data.success) {
@@ -312,14 +336,19 @@ Page({
               key: 'serviceId',
               data: res.data.serviceId
             })
-            if (that.data.serviceImg != null && that.data.serviceImg[0] != undefined) {
+            if (that.data.service.serviceImgAddr != null) {
               var date = new Date();
-              var url = app.globalData.serviceUrl + "/SearchStreet/service/uploadimg?serviceId=" + res.data.serviceId + "&createTime=" + app.timeStamp2String(date);
+              var url = that.data.imgUrl + "/SearchStreet/service/uploadimg?serviceId=" + res.data.serviceId + "&createTime=" + app.timeStamp2String(date);
+              console.log(url);
               app.uploadAImg({
+                header: {
+                  token: that.data.token,
+                },
                 url: url,
-                filePath: that.data.serviceImg[0],
+                filePath: that.data.service.serviceImgAddr,
                 fileName: "serviceImg"
               })
+              console.log(that.data.token);
             }
             wx.navigateBack({
               url: '../service-list/service-list?shopId=' + that.data.shopId
@@ -399,7 +428,7 @@ Page({
       that.data.service.serviceContent = that.data.detail.serviceContent;
       
       if (that.data.serviceImg != null) {
-        that.data.service.serviceImgAddr = that.data.serviceImg[0];
+        that.data.service.serviceImgAddr = that.data.serviceImg;
       }
 
       var url = '';
@@ -431,12 +460,12 @@ Page({
               key: 'serviceId',
               data: res.data.serviceId
             })
-            if (that.data.serviceImg != null && that.data.serviceImg[0] != undefined) {
+            if (that.data.serviceImg != null && that.data.serviceImg != undefined) {
               var date = new Date();
               var url = app.globalData.serviceUrl + "/SearchStreet/service/uploadimg?serviceId=" + res.data.serviceId + "&createTime=" + app.timeStamp2String(date);
               app.uploadAImg({
                 url: url,
-                filePath: that.data.serviceImg[0],
+                filePath: that.data.serviceImg,
                 fileName: "serviceImg"
               })
             }
@@ -449,6 +478,31 @@ Page({
     }
   },
   */
+
+  cancelOrDeleteService: function(e) {
+    var that = this;
+    if (that.data.isadd == 1) {
+      wx.navigateBack({
+        url: '../../page/service-list/service-list?shopId=' + that.data.shopId,
+      })
+    } else if (that.data.isadd == 0) {
+      var url = that.data.deleteUrl;
+      wx.request({
+        url: url + that.data.serviceId,
+        method: 'POST',
+        success: res => {
+          console.log(res);
+          if (res.data.success) {
+            wx.navigateBack({
+              url: '../../page/service-list/service-list' + that.data.shopId,
+            })
+          }
+        }
+      })
+    }
+
+  },
+
   formReset: function(e) {
     var that = this;
     var url = that.data.deleteUrl;

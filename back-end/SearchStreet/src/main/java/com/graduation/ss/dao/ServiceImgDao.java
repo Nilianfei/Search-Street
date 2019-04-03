@@ -1,22 +1,28 @@
 package com.graduation.ss.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.graduation.ss.entity.ServiceImg;
 
 public interface ServiceImgDao {
+	public List<ServiceImg> queryServiceImg(@Param("serviceImgCondition")ServiceImg serviceImgCondition, @Param("rowIndex") int rowIndex,
+			@Param("pageSize") int pageSize);
 	/**
 	 * 列出某个店铺的某服务图
 	 * 
 	 * @param serviceId
 	 * @return
 	 */
-	ServiceImg getServiceImg(long serviceId);
+	public ServiceImg getServiceImg(long serviceId);
 	/**
 	 * 添加服务图片
 	 * 
 	 * @param serviceImg
 	 * @return
 	 */
-	int insertServiceImg(ServiceImg serviceImg);
+	public int insertServiceImg(ServiceImg serviceImg);
 
 	/**
 	 * 更改服务图片
@@ -24,7 +30,7 @@ public interface ServiceImgDao {
 	 * @param serviceImg
 	 * @return
 	 */
-	int updateServiceImg(ServiceImg serviceImg);
+	public int updateServiceImg(ServiceImg serviceImg);
 
 	/**
 	 * 删除服务图片
@@ -32,5 +38,5 @@ public interface ServiceImgDao {
 	 * @param shopId
 	 * @return
 	 */
-	int deleteServiceImg(long serviceId);
+	public int deleteServiceImg(long serviceId);
 }

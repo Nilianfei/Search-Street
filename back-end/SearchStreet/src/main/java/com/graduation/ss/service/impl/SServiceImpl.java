@@ -1,5 +1,6 @@
 package com.graduation.ss.service.impl;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 //import java.lang.annotation.Annotation;
 import java.util.Date;
@@ -130,7 +131,20 @@ public class SServiceImpl implements SService {
 		}
 		return serviceExecution;
 }
-			
+	@Override
+	public ServiceExecution createServiceImg(Long serviceId, ImageHolder serviceImgHolder)
+			throws ServiceOperationException {
+		if (serviceId != null) {
+			try {
+				addServiceImg(serviceId, serviceImgHolder,new Date());
+			} catch (Exception e) {
+				throw new ServiceOperationException("createServiceImg error:" + e.toString());
+			}
+		} else {
+			return new ServiceExecution(ServiceStateEnum.NULL_ServiceImg);
+		}
+		return new ServiceExecution(ServiceStateEnum.SUCCESS);
+	}		
 
 	@Override
 	public ServiceExecution addService(ServiceInfo service) throws ServiceOperationException {
@@ -185,14 +199,42 @@ public class SServiceImpl implements SService {
 			throw new ServiceOperationException("创建服务图片失败:" + e.toString());
 		}
 	}
-
+	@Override
+	public ServiceExecution getServiceImgList(ServiceImg serviceImg,int pageIndex, int pageSize) {
+		// 将页码转换成行码
+		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+		// 依据查询条件，调用dao层返回相关的服务图片列表
+		List<ServiceImg> serviceImgList = serviceImgDao.queryServiceImg(serviceImg, rowIndex, pageSize);
+		ServiceExecution aie = new ServiceExecution();
+		if (serviceImgList != null) {
+			aie.setServiceImgList(serviceImgList);
+			aie.setCount(serviceImgList.size());
+		} else {
+			aie.setState(ServiceStateEnum.INNER_ERROR.getState());
+		}
+		return aie;
+	}
+	@Override
+	public ServiceExecution getServiceImg(long serviceId) {
+		// 依据查询条件，调用dao层返回相关的服务图片列表
+		ServiceImg serviceImg = serviceImgDao.getServiceImg(serviceId);
+		ServiceExecution aie = new ServiceExecution();
+		if (serviceImg != null) {
+			List<ServiceImg> serviceImgList =new ArrayList<ServiceImg>();
+			serviceImgList.add(serviceImg);
+			aie.setServiceImgList(serviceImgList);
+			aie.setCount(1);
+		} else {
+			aie.setState(ServiceStateEnum.INNER_ERROR.getState());
+		}
+		return aie;
+	}
 	/**
 	 * 删除某个店铺下的服务详情图
 	 * 
 	 * @param serviceId
 	 */
-	@SuppressWarnings("unused")
-	private ServiceExecution deleteServiceImg(ServiceImg serviceImg) {
+	public ServiceExecution deleteServiceImg(ServiceImg serviceImg) {
 		// 空值判断
 		if (serviceImg == null) {
 					return new ServiceExecution(ServiceStateEnum.NULL_ServiceImg);

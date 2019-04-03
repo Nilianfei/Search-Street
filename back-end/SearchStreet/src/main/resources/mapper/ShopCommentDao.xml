@@ -5,27 +5,35 @@
 <mapper namespace="com.graduation.ss.dao.ShopCommentDao">
 	<select id="queryShopCommentList" resultType="com.graduation.ss.entity.ShopComment">
 		SELECT
-		shop_comment_id,shop_id,order_id,user_id,comment_content,service_rating,star_rating
+		shop_comment_id,shop_id,order_id,user_id,comment_content,service_rating,star_rating,comment_reply
 		FROM
 		tb_shop_comment
 		<where>
+		<if
+				test="shopCommentCondition.shopId != null">
+				and shop_id = #{shopCommentCondition.shopId}
+			</if> 
+		<if
+				test="shopCommentCondition.orderId != null">
+				and order_id = #{shopCommentCondition.orderId}
+			</if> 
 			<if test="shopCommentCondition.userId != null">
 				and user_id = #{shopCommentCondition.userId }
 			</if>
 			<if
-				test="shopCommentCondition.shopId != null">
-				and shop_id = #{shopCommentCondition.shopId}
-			</if> 
-			<if
 				test="shopCommentCondition.commentContent != null">
 				and comment_content like '%${shopCommentCondition.commentContent}%'
+			</if> 
+			<if
+				test="shopCommentCondition.commentReply != null">
+				and comment_reply like '%${shopCommentCondition.commentReply}%'
 			</if> 
 		</where>
 		LIMIT #{rowIndex},#{pageSize};
 	</select>
 	<select id="queryShopCommentList2" resultType="com.graduation.ss.entity.ShopComment">
 		SELECT
-		shop_comment_id,shop_id,order_id,user_id,comment_content,service_rating,star_rating
+		shop_comment_id,shop_id,order_id,user_id,comment_content,service_rating,star_rating,comment_reply
 		FROM
 		tb_shop_comment
 		<where>
@@ -39,6 +47,10 @@
 			<if
 				test="shopCommentCondition.commentContent != null">
 				and comment_content like '%${shopCommentCondition.commentContent}%'
+			</if> 
+			<if
+				test="shopCommentCondition.commentReply != null">
+				and comment_reply like '%${shopCommentCondition.commentReply}%'
 			</if> 
 		</where>
 	</select>
@@ -58,6 +70,10 @@
 			<if
 				test="shopCommentCondition.commentContent != null">
 				and comment_content like '%${shopCommentCondition.commentContent}%'
+			</if> 
+			<if
+				test="shopCommentCondition.commentReply != null">
+				and comment_reply like '%${shopCommentCondition.commentReply}%'
 			</if> 
 		</where>
 	</select>
@@ -79,16 +95,16 @@
 		useGeneratedKeys="true" keyProperty="shopCommentId" keyColumn="shop_comment_id">
 		INSERT
 		INTO
-		tb_shop_comment(shop_id,order_id,user_id,comment_content,service_rating,star_rating)
+		tb_shop_comment(shop_id,order_id,user_id,comment_content,service_rating,star_rating,comment_reply)
 		VALUES
 		(#{shopId},#{orderId},#{userId},#{commentContent},
-		#{serviceRating},#{starRating})
+		#{serviceRating},#{starRating},#{commentReply})
 	</insert>
 	<insert id="insertShopCommentInfo" parameterType="java.util.List"
 		useGeneratedKeys="true" keyProperty="shopCommentId" keyColumn="shop_comment_id">
 		INSERT
 		INTO 
-		tb_shop_comment(shop_id,order_id,user_id,comment_content,service_rating,star_rating)
+		tb_shop_comment(shop_id,order_id,user_id,comment_content,service_rating,star_rating,comment_reply)
 		VALUES
 		<foreach collection="list" item="shopCommentInfoDTO" index="index"
 			separator=",">
@@ -98,7 +114,8 @@
 			#{shopCommentInfoDTO.userId},
 			#{shopCommentInfoDTO.commentContent},
 			#{shopCommentInfoDTO.serviceRating},
-			#{shopCommentInfoDTO.starRating}
+			#{shopCommentInfoDTO.starRating},
+			#{shopCommentInfoDTO.commentReply}
 			)
 		</foreach>
 	</insert>
@@ -111,7 +128,8 @@
 			<if test="userId != null">user_id=#{userId},</if>
 			<if test="commentContent != null">comment_content=#{commentContent},</if>
 			<if test="serviceRating != null">service_rating=#{serviceRating},</if>
-			<if test="starRating!=null">star_rating=#{starRating}</if>	
+			<if test="starRating!=null">star_rating=#{starRating},</if>	
+			<if test="commentReply != null">comment_reply=#{commentReply}</if>
 		</set>
 		where shop_comment_id=#{shopCommentId}
 	</update>
@@ -120,7 +138,7 @@
     </delete>
 	<select id="queryByShopCommentId" resultType="com.graduation.ss.entity.ShopComment" parameterType="Long">
 		SELECT
-		shop_id,order_id,user_id,comment_content,service_rating,star_rating
+		shop_id,order_id,user_id,comment_content,service_rating,star_rating,comment_reply
 		FROM
 		tb_shop_comment
 		WHERE
@@ -128,7 +146,7 @@
 	</select>
 	<select id="queryByOrderId" resultType="com.graduation.ss.entity.ShopComment" parameterType="Long">
 		SELECT
-		shop_id,order_id,user_id,comment_content,service_rating,star_rating
+		shop_id,order_id,user_id,comment_content,service_rating,star_rating,comment_reply
 		FROM
 		tb_shop_comment
 		WHERE

@@ -61,7 +61,26 @@ public class SuperAdminController {
 		// 求助图片管理页
 		return "superadmin/appealimgmanage";
 	}
-
+	@RequestMapping(value = "/shopcommentmanage", method = RequestMethod.GET)
+	private String shopcommentmanage() {
+		// 商铺评论管理页
+		return "superadmin/shopcommentmanage";
+	}
+	@RequestMapping(value = "/serviceimgmanage", method = RequestMethod.GET)
+	private String serviceimgmanage() {
+		// 服务图片管理页
+		return "superadmin/serviceimgmanage";
+	}
+	@RequestMapping(value = "/servicemanage", method = RequestMethod.GET)
+	private String servicemanage() {
+		// 服务管理页
+		return "superadmin/servicemanage";
+	}
+	@RequestMapping(value = "/ordermanage", method = RequestMethod.GET)
+	private String ordermanage() {
+		// 服务管理页
+		return "superadmin/ordermanage";
+	}
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	private String main() {
 		// 超级管理员主页
