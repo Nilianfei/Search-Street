@@ -283,7 +283,10 @@ Page({
         console.log("error");
       }
       wx.request({
-        url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/registershop?token=" + token,
+        url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/registershop",
+        header:{
+          token: token
+        },
         data: {
           shopName: e.detail.value.shopName,
           businessScope: e.detail.value.businessScope,

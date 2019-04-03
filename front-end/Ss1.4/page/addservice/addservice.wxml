@@ -22,18 +22,9 @@
   <view style="height:40rpx;width:100%;background-color:#f8f8f9;"></view>
 
   <view class="section-stimage">
-    <i-panel>
-      <i-row>
-        <i-col span="17">
-          <i-input title="服务相关图片" disabled></i-input>
-        </i-col>
-        <i-col span="7">
-          <view>
-            <i-button type="ghost" bind:click="uploadimg" inline="true" size="small"> 添加图片 </i-button>
-          </view>
-        </i-col>
-      </i-row>
-    </i-panel>
+   
+   <i-input title="服务相关图片" disabled></i-input>
+        
 
     <view class="big-logos">
       

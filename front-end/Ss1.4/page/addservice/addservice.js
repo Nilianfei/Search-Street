@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    token:"",
     isadd: undefined,
     flag: true,
     serviceId: undefined,
@@ -23,7 +24,7 @@ Page({
       "servicePriority": '',
       "shopId": null,
     },
-
+    imgUrl: app.globalData.serviceUrl,
     serviceImg: [],
     addormodify: '更新',
     disabletodelete: true,
@@ -44,6 +45,18 @@ Page({
    */
   onLoad: function(options) {
     var that = this;
+
+    try {
+      const value = wx.getStorageSync('token')
+      if (value) {
+        that.setData({
+          token: value,
+        })
+      }
+    } catch (e) {
+      console.log("error");
+    }
+
     //页面初始化，options为页面跳转所带来的参数
     that.setData({
       serviceId: options.serviceId,
@@ -69,6 +82,7 @@ Page({
 
     wx.request({
       url: app.globalData.serviceUrl + '/SearchStreet/service/searchservicebyid?serviceId=' + that.data.serviceId,
+      
       data: {},
       method: 'GET',
       success: function(res) {
@@ -172,8 +186,7 @@ Page({
           serviceImg: res.tempFilePaths,
           flag: !flag
         });
-        console.log(that.data.flag);
-        console.log(that.data.serviceImg);
+        console.log(that.data.serviceImg[0]);
       }
     })
   },
@@ -273,25 +286,24 @@ Page({
       });
     } else {
 
-      /*
-      var token = null;
-      try {
-        const value = wx.getStorageSync('token')
-        if (value) {
-          token = value;
-        }
-      } catch (e) {
-        console.log("error");
-      }*/
-
-      if (that.data.serviceImg != null) {
-        var imgAddr = "service.serviceImgAddr"
+      
+      if (that.data.serviceImg != '/images/add-photo.png') {
+        var imgAddr = "service.serviceImgAddr";
         that.setData({
-          [imgAddr]: that.data.serviceImg[0],
+          [imgAddr]:  that.data.serviceImg[0],
         })
         console.log(this.data.serviceImg[0]); //
         console.log(this.data.service.serviceImgAddr);
       }
+      else{
+        var imgAddr="service.serviceImgAddr" ;
+        that.setData({
+          [imgAddr]: null,
+        })
+        console.log(this.data.serviceImg[0]);
+        console.log(this.data.service.serviceImgAddr);
+      }
+      
 
       var url = '';
       if (parseInt(that.data.isadd) == 1) {
@@ -302,6 +314,9 @@ Page({
       }
       wx.request({
         url: url,
+        header: {
+          token: that.data.token,
+        },
         data: {
           "serviceContent": that.data.service.serviceContent,
           "serviceDesc": that.data.service.serviceDesc,
@@ -321,12 +336,16 @@ Page({
               key: 'serviceId',
               data: res.data.serviceId
             })
-            if (that.data.serviceImg != null) {
+            if (that.data.service.serviceImgAddr != null) {
               var date = new Date();
-              var url = app.globalData.serviceUrl + "/SearchStreet/service/uploadimg?serviceId=" + res.data.serviceId + "&createTime=" + app.timeStamp2String(date);
+              var url = that.data.imgUrl + "/SearchStreet/service/uploadimg?serviceId=" + res.data.serviceId + "&createTime=" + app.timeStamp2String(date);
+              console.log(url);
               app.uploadAImg({
+                header: {
+                  token: that.data.token,
+                },
                 url: url,
-                filePath: that.data.serviceImg[0],
+                filePath: that.data.service.serviceImgAddr,
                 fileName: "serviceImg"
               })
             }

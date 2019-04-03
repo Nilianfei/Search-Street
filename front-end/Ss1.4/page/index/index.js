@@ -43,7 +43,7 @@ Page({
                   });
                   wx.request({
                     url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
-                    data: {
+                    header: {
                       token: token
                     },
                     success: function (res) {
