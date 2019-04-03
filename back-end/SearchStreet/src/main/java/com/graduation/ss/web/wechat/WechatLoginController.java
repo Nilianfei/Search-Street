@@ -47,17 +47,17 @@ public class WechatLoginController {
 	@ApiOperation(value = "一言难尽，具体用法看前端用过的代码")
 	public Map<String, Object> wechatLogin(@RequestBody WechatUser wechatUser) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		//code是微信登录的临时凭证
+		// code是微信登录的临时凭证
 		String code = wechatUser.getCode();
 		String openId = null;
 		WechatAuth auth = null;
-		if(null != code) {
+		if (null != code) {
 			UserCode2Session code2Session;
-			try{
-				//获取openId和Session_key
+			try {
+				// 获取openId和Session_key
 				code2Session = WechatUtil.getUserCode2Session(code);
 				openId = code2Session.getOpenId();
-				//加密openId和Session_key
+				// 加密openId和Session_key
 				String token = JWT.sign(code2Session, 30L * 24L * 3600L * 1000L);
 				modelMap.put("token", token);
 				auth = wechatAuthService.getWechatAuthByOpenId(openId);
@@ -67,18 +67,18 @@ public class WechatLoginController {
 				return modelMap;
 			}
 		}
-		//如果auth为空，则此用户是第一次登录，因此要将数据写入数据库
-		if(auth == null) {
+		// 如果auth为空，则此用户是第一次登录，因此要将数据写入数据库
+		if (auth == null) {
 			PersonInfo personInfo = WechatUtil.getPersonInfoFromRequest(wechatUser);
 			auth = new WechatAuth();
 			auth.setOpenId(openId);
 			WechatAuthExecution we = wechatAuthService.register(auth, personInfo);
-			if(we.getState() != WechatAuthStateEnum.SUCCESS.getState()) {
+			if (we.getState() != WechatAuthStateEnum.SUCCESS.getState()) {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", "wechatAuthService.register失败");
 				return modelMap;
 			}
-		} else {
+		} else { // 否则更新用户信息
 			try {
 				PersonInfo personInfo = WechatUtil.getPersonInfoFromRequest(wechatUser);
 				wechatAuthService.updatePersonInfo(auth, personInfo);
@@ -91,7 +91,7 @@ public class WechatLoginController {
 		modelMap.put("success", true);
 		return modelMap;
 	}
-	
+
 	/**
 	 * 接收客户端发来的token，将数据库中的个人信息发送给客户端
 	 * 
@@ -101,25 +101,25 @@ public class WechatLoginController {
 	@RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value = "获取用户个人信息")
-	@ApiImplicitParam(paramType = "query", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
+	@ApiImplicitParam(paramType = "header", name = "token", value = "包含用户信息的token", required = true, dataType = "String")
 	public Map<String, Object> getWechatUserInfo(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		String token = request.getParameter("token");
+		String token = request.getHeader("token");
 		UserCode2Session userCode2Session = null;
-		//将token解密成openId 和session_key
+		// 将token解密成openId 和session_key
 		userCode2Session = JWT.unsign(token, UserCode2Session.class);
-		//获取个人信息
+		// 获取个人信息
 		String openId = userCode2Session.getOpenId();
-		try{
+		try {
 			WechatAuth wechatAuth = wechatAuthService.getWechatAuthByOpenId(openId);
-			if(null == wechatAuth){
+			if (null == wechatAuth) {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", "获取微信账号信息失败");
 				return modelMap;
 			}
 			Long userId = wechatAuth.getUserId();
 			PersonInfo personInfo = personInfoService.getPersonInfoByUserId(userId);
-			if(null != personInfo){
+			if (null != personInfo) {
 				modelMap.put("success", true);
 				modelMap.put("personInfo", personInfo);
 			} else {
