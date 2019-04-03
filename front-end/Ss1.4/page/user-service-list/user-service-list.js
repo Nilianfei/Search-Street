@@ -6,7 +6,7 @@ Page({
     starRating: 0,
     serviceRating: 0,
     successRate: 0,
-    service:[],
+    service: [],
     shop: null,
     imgUrl: "http://139.196.101.84:8080/image",
     shopId: 0,
@@ -44,9 +44,23 @@ Page({
       id: 6,
       url: ''
     }],
-    tower2: null
+    tower2: null,
+
+    //from star new css
+    cur: 'tab1',
   },
-  handleChange({ detail }) {
+
+  handleChange_tabs({
+    detail
+  }) {
+    this.setData({
+      cur: detail.key,
+    })
+  },
+
+  handleChange_page({
+    detail
+  }) {
     var that = this;
 
     if (that.data.current <= that.data.pageNum) {
@@ -68,14 +82,14 @@ Page({
 
     }
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     var that = this;
     that.setData({
-      shopId: options.shopId//options.id
+      shopId: options.shopId //options.id
     })
     //获取商铺信息
     wx.request({
-      url: app.globalData.serviceUrl + "/SearchStreet/shopComment/getAvgScorebyshopid?shopId=" + that.data.shopId,
+      url: app.globalData.serviceUrl + "/SearchStreet/shopComment/getAvgScorebyshopid?shopId=" + that.data.shopId, //获取评分信息
       data: {},
       method: "GET",
       success: res => {
@@ -84,33 +98,36 @@ Page({
         var tower = that.data.tower;
         var businessLicenseImg = app.globalData.imgUrl + shop.businessLicenseImg;
         var url = app.globalData.imgUrl + shop.profileImg;
-        that.setData(
-          {
-            shop: shop,//设置页面中的数据
-            profileImgUrl: url,
-            tower: tower,
-            tower2: tower,
-            businessLicenseImg: businessLicenseImg,
-            serviceRating: res.data.serviceAvg,
-            starRating: res.data.starAvg,
-            successRate: res.data.successRate
-          }
-        )
+        that.setData({
+          shop: shop, //设置页面中的数据
+          profileImgUrl: url,
+          tower: tower,
+          tower2: tower,
+          businessLicenseImg: businessLicenseImg,
+          serviceRating: res.data.serviceAvg,
+          starRating: res.data.starAvg,
+          successRate: res.data.successRate
+        })
         
-        var length = shop.shopImgList.length;
-        for (var i = 0; i < shop.shopImgList.length; i++) {
-          shop.shopImgList[i].imgAddr = app.globalData.imgUrl + shop.shopImgList[i].imgAddr;
-          tower[i].url = shop.shopImgList[i].imgAddr;
+        
+        if (shop.shopImgList) {
+          var length = shop.shopImgList.length;
+          for (var i = 0; i < shop.shopImgList.length; i++) {
+            shop.shopImgList[i].imgAddr = app.globalData.imgUrl + shop.shopImgList[i].imgAddr;
+            tower[i].url = shop.shopImgList[i].imgAddr;
+          }
         }
         
+
         // 初始化towerSwiper 传已有的数组名即可
         that.towerSwiper('tower2', length);
+        
       }
     })
     that.tabchange(0)
 
   },
-  tabchange: function (options) {
+  tabchange: function(options) {
     var that = this;
     var pageIndex = options;
     if (that.data.TabCur == 0) {
@@ -118,45 +135,43 @@ Page({
         //点击服务时 获得服务列表 
         url: app.globalData.serviceUrl + '/SearchStreet/service/getservicelistbyshopid?shopId=' + that.data.shopId + '&pageIndex=' + pageIndex + '&pageSize=' + that.data.pageSize,
         method: 'GET',
-        success: function (res) {
-          var serviceList = res.data.serviceList;//res.data就是从后台接收到的值
+        success: function(res) {
+          var serviceList = res.data.serviceList; //res.data就是从后台接收到的值
           that.setData({
             list: serviceList,
             loading: false,
             pageNum: res.data.pageNum
           })
         },
-        fail: function (res) {
+        fail: function(res) {
           console.log('submit fail');
         },
-        complete: function (res) {
+        complete: function(res) {
           console.log('submit complete');
         }
       })
-    }
-    else if (that.data.TabCur == 1) {
+    } else if (that.data.TabCur == 1) {
       //点击评论时，获得评论
       wx.request({
         url: app.globalData.serviceUrl + '/SearchStreet/shopComment/getshopCommentlistbyshopid?shopId=' + that.data.shopId + '&pageIndex=' + pageIndex + '&pageSize=' + that.data.pageSize,
         method: 'GET',
-        success: function (res) {
-          var shopCommentList = res.data.shopCommentList;//res.data就是从后台接收到的值
+        success: function(res) {
+          var shopCommentList = res.data.shopCommentList; //res.data就是从后台接收到的值
           that.setData({
             list: shopCommentList,
-            service:res.data.serviceList,
+            service: res.data.serviceList,
             loading: false,
             pageNum: res.data.pageNum
           })
         },
-        fail: function (res) {
+        fail: function(res) {
           console.log('submit fail');
         },
-        complete: function (res) {
+        complete: function(res) {
           console.log('submit complete');
         }
       })
-    }
-    else {
+    } else {
 
     }
   },
@@ -235,7 +250,7 @@ Page({
       })
     }
   },
-  order: function (e) {
+  order: function(e) {
     var service = e.currentTarget.dataset.content;
     wx.navigateTo({
       url: '../service/service?service=' + JSON.stringify(service),

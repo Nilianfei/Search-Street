@@ -1,4 +1,4 @@
-﻿<!--page/register/register.wxml-->
+<!--page/register/register.wxml-->
 <view class="container">
   <view class="reg-hd">
    <view class='header'>

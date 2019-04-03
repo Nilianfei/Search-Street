@@ -1,10 +1,10 @@
 <!--page/shop-shopcomment/shop-shopcomment.wxml-->
-  <!-- 评论 -->
-  <swiper class="swiper-box" duration="300" style="height:{{deviceH-31}}px" >
+<!-- 评论 -->
+<swiper class="swiper-box" duration="300" style="height:{{deviceH-31}}px">
   <swiper-item>
     <scroll-view class="hot-box" scroll-y='true' style='height:100%'>
       <view class="orderDetails" wx:for="{{shopComment}}" wx:key=" ">
-          <view class="orderListTitle">
+        <view class="orderListTitle">
           <text class="userName">{{service[index].serviceName}}</text>
           <text class="orderStatus">{{state[2].state}}</text>
         </view>
@@ -14,22 +14,18 @@
           </view>
           <view class="productInfo">
             <view class="productTitle">
-            服务评分
-             <i-cell title="服务评分">
-              <i-rate 
-            disabled="{{true}}"
-            value="{{item.serviceRating/20}}">
-             </i-rate>
-             </i-cell>
+              服务评分
+              <i-cell title="服务评分">
+                <i-rate disabled="{{true}}" value="{{item.serviceRating/20}}">
+                </i-rate>
+              </i-cell>
             </view>
             <view class="productTitle">星级评分:
-             <i-cell title="星级评分">
-              <i-rate 
-            disabled="{{true}}"
-            value="{{item.starRating}}">
-             </i-rate>
-             </i-cell>
-             </view>
+              <i-cell title="星级评分">
+                <i-rate disabled="{{true}}" value="{{item.starRating}}">
+                </i-rate>
+              </i-cell>
+            </view>
             <text class="productCount">评论内容: {{item.commentContent}}</text>
           </view>
         </view>

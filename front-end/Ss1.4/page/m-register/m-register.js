@@ -1,4 +1,4 @@
-﻿var app = getApp();
+var app = getApp();
 var showCheck = "此为必填选项哦"
 // 引入SDK核心类
 var QQMapWX = require('../../util/qqmap-wx-jssdk.min.js');

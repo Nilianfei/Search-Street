@@ -1,4 +1,4 @@
-﻿var app = getApp();
+var app = getApp();
 
 var initData = '添加店铺环境或菜品图片审核通过率会高哦'
 var showCheck = "此为必填选项哦"

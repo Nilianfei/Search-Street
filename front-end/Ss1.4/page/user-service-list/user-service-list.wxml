@@ -1,122 +1,71 @@
 <!--page/user-service-list/user-service-list.wxml-->
-<view class='U-bg  bg-grey'>
-<view class="margin-lr-xl padding-xl text-lg text-center">
-  <view class="flex justify-center">
-      <view class='text-white'>
+<view class='U-bg  bg-gradual-blue light'>
+  <view class="margin-lr-xl padding-sm  text-center">
+    <view class="flex justify-center">
+      <view class='text-white text-bold '>
         <view class="cu-avatar xl round solids" style="background-image:url({{profileImgUrl}})"></view>
-        <view class="padding text-lg">{{shop.shopName}}</view>
-</view>
+        <view class="padding text-xl">{{shop.shopName}}</view>
       </view>
-       <i-collapse-item title="商家信息" class='text-left text-lg'>
-            <view slot="content">
-               <view class='text-lg  flex padding-bf align-center'>
-       <text>营业范围：</text>
-    <text class='text-df'>{{shop.businessScope}}</text>
-  </view>
-  <view class='margin-top-sm flex padding-bf align-center'>
-  <text>人均消费：</text>
-    <text class='text-df text-price'>{{shop.perCost}}</text>
-  </view>
-   <view class='flex padding-bf align-center'>
-  <text>详细地址：</text>
-    <text class='flex-treble text-df text-left'>{{shop.fullAddress}}</text>
-  </view>
-            </view>
-        </i-collapse-item>
-      
+    </view>
   </view>
 </view>
 
-
-<scroll-view scroll-x class="bg-grey.light nav  padding-lr text-xl text-left">
-  <view class="cu-item {{0==TabCur?'text-white cur':''}}" bindtap='tabSelect' data-id="0">
-    <text class='icon-goods'></text> 服务
-  </view>
-  <view class="cu-item {{1==TabCur?'text-white cur':''}}" bindtap='tabSelect' data-id="1">
-    <text class='icon-comment'></text> 评论
-  </view>
-  <view class="cu-item {{2==TabCur?'text-white cur':''}}" bindtap='tabSelect' data-id="2">
-    <text class='icon-shop'></text> 商家
+<scroll-view scroll-x class="bg-white nav">
+  <view class="flex text-center">
+    <view class="cu-item flex-sub {{0==TabCur?' cur':''}}" bindtap='tabSelect' data-id="0">
+      <text class='icon-goods'></text> 服务
+    </view>
+    <view class="cu-item flex-sub {{1==TabCur?' cur':''}}" bindtap='tabSelect' data-id="1">
+      <text class='icon-comment'></text> 评论
+    </view>
   </view>
 </scroll-view>
 <loading hidden="{{!loading}}">加载中</loading>
 <view class="scs {{0==TabCur?'':'nodisplay'}}">
-    <block wx:for="{{list}}" wx:key="id">
+  <block wx:for="{{list}}" wx:key="id">
     <view class="scsitem solid-bottom" bindtap='order' data-content='{{item}}'>
-    <van-card
-  num=""
-  price="{{item.servicePrice}}"
-  desc="{{item.serviceContent}}"
-  title="{{item.serviceName}}"
-  thumb="{{imgUrl+item.serviceImgAddr}}"
-/>
-</view>
-    </block>
+      <van-card num="" price="{{item.servicePrice}}" desc="{{item.serviceContent}}" title="{{item.serviceName}}" thumb="{{ item.serviceImgAddr }}" />
+    </view>
+  </block>
 </view>
 
 
 <view class="scs {{1==TabCur?'':'nodisplay'}}">
-<view class='padding flex text-center text-grey bg-white shadow-warp'>
-  <view class='flex flex-sub flex-direction solid-right'>
-    <view class="text-xl text-orange">{{serviceRating}}</view>
-    <view class="margin-top-sm">
-      <text class='icon-evaluate'></text> 服务分</view>
-  </view>
-  <view class='flex flex-sub flex-direction solid-right'>
-    <view class="text-xl text-blue">{{starRating}}</view>
-    <view class="margin-top-sm">
-      <text class='icon-favorfill'></text> 星级评分</view>
-  </view>
-  <view class='flex flex-sub flex-direction'>
-    <view class="text-xl text-green">{{successRate}}%</view>
-    <view class="margin-top-sm">
-      <text class='icon-attentionfill'></text> 搜街成功率</view>
-  </view>
-</view>
-    <block wx:for="{{list}}" wx:key="id">
-    <view class="scsitem solid-bottom">
-    <van-card
-  num=""
-  price=""
-  desc="{{item.commentContent}}"
-  title="{{service[index].serviceName}}"
-  thumb="{{imgUrl+service[index].serviceImgAddr}}"
-/>
-</view>
-    </block>
-</view>
-
-
-<view class="scs {{2==TabCur?'':'nodisplay'}}">
-    <view class="scsitem solid-bottom margin-lr-xl">
-    <view>
-    <text class='icon-phone flex-treble text-lg text-left'>联系电话：{{shop.phone}}</text>
+  <view class='padding flex text-center text-grey bg-white shadow-warp'>
+    <view class='flex flex-sub flex-direction solid-right'>
+      <view class="text-xl text-orange">{{serviceRating}}</view>
+      <view class="margin-top-sm">
+        <text class='icon-evaluate'></text> 服务分</view>
     </view>
-  <text class='icon-location flex-treble text-lg text-left'>地址：{{shop.fullAddress}}</text>
-  <view class="pic">
-<swiper class="screen-swiper {{DotStyle?'square-dot':'round-dot'}}" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
-  <swiper-item wx:for="{{shop.shopImgList.length}}" wx:key>
-    <image src="{{tower[index].url}}" mode='aspectFit'></image>
-  </swiper-item>
-</swiper>
-</view>
-<view class="businessLicense">
- <text class='icon-newsfill flex-treble text-lg text-left'>营业执照编码：{{shop.businessLicenseCode}}</text>
-  <image class="businessLicenseImg" src="{{businessLicenseImg}}" mode='widthFix'></image>
+    <view class='flex flex-sub flex-direction solid-right'>
+      <view class="text-xl text-blue">{{starRating}}</view>
+      <view class="margin-top-sm">
+        <text class='icon-favorfill'></text> 星级评分</view>
+    </view>
+    <view class='flex flex-sub flex-direction'>
+      <view class="text-xl text-green">{{successRate}}%</view>
+      <view class="margin-top-sm">
+        <text class='icon-attentionfill'></text> 搜街成功率</view>
+    </view>
   </view>
+  <block wx:for="{{list}}" wx:key="id">
+    <view class="scsitem solid-bottom">
+      <van-card num="" price="" desc="{{item.commentContent}}" title="{{service[index].serviceName}}" thumb="{{ service[index].serviceImgAddr }}" />
+    </view>
+  </block>
 </view>
-</view>
+
 
 
 <view class="bottom-view {{2==TabCur?'nodisplay':''}}">
-  <i-page current="{{ current }}" total="{{pageNum}}" bind:change="handleChange">
+  <i-page current="{{ current }}" total="{{pageNum}}" bind:change="handleChange_page">
     <view slot="prev">
-        <i-icon type="return"></i-icon>
-        上一页
+      <i-icon type="return"></i-icon>
+      上一页
     </view>
     <view slot="next">
-        下一页
-        <i-icon type="enter"></i-icon>
+      下一页
+      <i-icon type="enter"></i-icon>
     </view>
   </i-page>
 </view>

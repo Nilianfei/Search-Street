@@ -36,12 +36,11 @@
     </i-panel>
 
     <view class="big-logos">
-      <image class="big-logo {{flag ? '' : 'big-logof'}}" bindtap="uploadimg" src='../../images/add-photo.png'></image>
-      <block wx:for="{{serviceImg}}" wx:key="id">
-        <view class="logoinfos">
-          <image class="logoinfo" src='{{serviceImg[0]}}' mode='aspectFill' bindtap="changeimg" name="serviceImg"></image>
-        </view>
-      </block>
+      
+      <image class="logoinfo" wx:if="{{ !isadd }}" src='{{ serviceImg }}' mode='aspectFill' bindtap="changeimg" ></image>
+      
+      <image wx:if="{{ isadd }}" class="logoinfo" src='{{ serviceImg }}'  mode='aspectFill' bindtap="uploadimg" ></image>
+      
     </view>
   </view>
 
