@@ -30,7 +30,10 @@
     "page/shop-shopcomment/shop-shopcomment",
     "page/help-map/help-map",
     "page/myservice-detail/myservice-detail",
-    "page/shop-settings/shop-settings"
+    "page/shop-settings/shop-settings",
+    "page/modify-myhelp/modify-myhelp",
+    "page/orderdetail/orderdetail",
+    "page/temp/temp"
   ],
   "permission": {
     "scope.userLocation": {

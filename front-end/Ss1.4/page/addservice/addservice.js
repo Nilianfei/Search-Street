@@ -57,11 +57,12 @@ Page({
       console.log("error");
     }
 
+    var point="service.shopId"
     //页面初始化，options为页面跳转所带来的参数
     that.setData({
       serviceId: options.serviceId,
       isadd: options.isadd,
-      shopId: options.shopId
+      [point]: options.shopId
     });
     console.log(that.data.shopId + " " + that.data.serviceId);
     if (parseInt(options.isadd) == 0) {
@@ -312,12 +313,16 @@ Page({
         url = that.data.modifyUrl;
         that.data.service.serviceId = that.data.serviceId;
       }
+      console.log(that.data.service);
       wx.request({
         url: url,
+        data: JSON.stringify(that.data.service),
         header: {
           token: that.data.token,
         },
+        /*
         data: {
+
           "serviceContent": that.data.service.serviceContent,
           "serviceDesc": that.data.service.serviceDesc,
           "serviceId": that.data.serviceId,
@@ -327,6 +332,7 @@ Page({
           "servicePriority": that.data.service.servicePriority,
           "shopId": that.data.shopId,
         },
+        */
         method: 'POST',
 
         success: res => {
@@ -500,7 +506,7 @@ Page({
     }
 
   },
-
+  /*
   formReset: function(e) {
     var that = this;
     var url = that.data.deleteUrl;
@@ -517,4 +523,5 @@ Page({
       }
     })
   }
+  */
 })
