@@ -258,7 +258,7 @@ public class ServiceController {
 			// 空值判断
 			if (serviceId>0) {
 				try {
-					//更新服务
+					//删除服务
 					ServiceExecution ae = sService.deleteService(serviceId);
 					if (ae.getState() == ServiceStateEnum.SUCCESS.getState()) {
 						modelMap.put("success", true);
@@ -274,7 +274,7 @@ public class ServiceController {
 
 			} else {
 				modelMap.put("success", false);
-				modelMap.put("errMsg", "错误的serveId");
+				modelMap.put("errMsg", "错误的serviceId");
 			}
 			return modelMap;
 		}

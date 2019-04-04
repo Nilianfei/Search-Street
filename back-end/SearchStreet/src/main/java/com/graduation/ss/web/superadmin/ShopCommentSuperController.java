@@ -437,7 +437,7 @@ public class ShopCommentSuperController {
 	}
 
 	//删除评论
-	@RequestMapping(value = "/deleteShopComment", method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteshopcomment", method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "删除服务评价信息")
 	@ApiImplicitParam(paramType = "query", name = "shopCommentId", value = "服务评价ID", required = true, dataType = "Long", example = "3")

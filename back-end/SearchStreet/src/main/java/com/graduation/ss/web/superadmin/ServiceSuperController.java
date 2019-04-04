@@ -259,7 +259,36 @@ public class ServiceSuperController {
 
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "请输入求助信息");
+			modelMap.put("errMsg", "请输入服务信息");
+		}
+		return modelMap;
+	}
+	//删除服务
+	@RequestMapping(value = "/deleteservice", method = RequestMethod.POST)
+	@ResponseBody
+	private Map<String, Object> deleteService(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		long serviceId = HttpServletRequestUtil.getLong(request, "serviceId");
+		// 空值判断
+		if (serviceId>0) {
+			try {
+				//删除服务
+				ServiceExecution ae = sService.deleteService(serviceId);
+				if (ae.getState() == ServiceStateEnum.SUCCESS.getState()) {
+					modelMap.put("success", true);
+				} else {
+					modelMap.put("success", false);
+					modelMap.put("errMsg", ae.getStateInfo());
+				}
+			} catch (Exception e) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", e.toString());
+				return modelMap;
+			}
+
+		} else {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "错误的serviceId");
 		}
 		return modelMap;
 	}

@@ -48,7 +48,8 @@ function timeFormater(value, row, index) {
 	} else {
 		time = row.overTime;
 	}
-	return timeChange(time);
+	//return timeChange(time);
+	return formatDate(time);
 }
 function timeChange(time) {
 	if (time == null) {
@@ -75,6 +76,37 @@ function timeChange(time) {
 	return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":"
 			+ second;// +"."+mseconds;
 }
+/*
+ * 时间戳转换为yyyy-MM-dd hh:mm:ss 格式  formatDate()
+ * inputTime   时间戳
+ */
+function formatDate(inputTime) {
+  var time=JSON.stringify(inputTime);
+  var strlist=time.split(",");
+  var y = strlist[0].substr(1,4);
+  var m = strlist[1];
+  m = m < 10 ? ('0' + m) : m;
+  var d = strlist[2];
+  d = d < 10 ? ('0' + d) : d;
+  var h = strlist[3];
+  h = h < 10 ? ('0' + h) : h;
+  var minute='0';
+  var second = '0';
+  //它会自动把秒等于0的时间传值过程中忽略掉
+  if(strlist.length==5)
+  {
+    minute = strlist[4].substr(0, strlist[4].length - 1);
+  }
+  else
+  {
+    minute = strlist[4];
+    second = strlist[5].substr(0, strlist[5].length - 1);
+  }   
+  minute = minute < 10 ? ('0' + minute) : minute;
+  second = second < 10 ? ('0' + second) : second;
+  return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+}
+
 function listOrderByServiceName() {
 	var enalbeStatus = $("#enalbeStatusHd").val();
 	var urlBuffer = new StringBuffer();
@@ -334,14 +366,21 @@ function optFormater(value, row, index) {
 	var serviceCount= row.serviceCount;
 	var orderPrice = row.orderPrice;
 	var orderStatus = row.orderStatus;
-	var createTime = timeChange(row.createTime);
-	var overTime = timeChange(row.overTime);
+	var createTime = formatDate(row.createTime);
+	var overTime = formatDate(row.overTime);
 	var params = orderId + "," +serviceId+","+ userId + ",'" + serviceName + "'," + serviceCount
 			+ "," + orderPrice+","+orderStatus +",'"+ createTime + "','" + overTime + "'";
-	var edit = '<a href="javascript:openDialog_edit(' + params + ')">编辑</a>';
+	var edit = '<a href="javascript:openDialog_edit(' + params + ')">编辑</a>'+"    "+'<a href="javascript:doDel(' + orderId+ ')">删除</a>';
 	return edit;
 };
-
+function doDel(orderId) {
+	$.messager.confirm('删除提示', '你确定永久删除该数据吗?', function(r) {
+		if (r) {
+			var url = 'deleteorder?orderId=' + orderId;
+			changeStatus(url);
+		}
+	});
+}
 /** --------------编辑操作弹出框------------------* */
 
 // 设置弹出框的属性
@@ -443,6 +482,43 @@ function orderManagementEdit() {
 	}
 }
 
+/** --------------执行删除操作------------------* 
+function doDel(orderId) {
+	$.messager.confirm('删除提示', '你确定永久删除该数据吗?', function(r) {
+		if (r) {
+			var url = 'deleteorder?orderId=' + orderId;
+			changeStatus(url);
+		}
+	});
+}
+*/
+/**
+ * 批量操作
+ * 
+ * @return
+ 
+function batch(flag) {
+	if ($('#orderManagementTable').datagrid('getSelected')) {
+		// 首先如果用户选择了数据，则获取选择的数据集合
+		var tempList = [];
+		var selectedRow = $('#orderManagementTable').datagrid('getSelections');
+		var jsonList = [];
+		for (var i = 0; i < selectedRow.length; i++) {
+			jsonList.push(selectedRow[i].orderId);
+		}
+		// 删除操作
+		$.messager.confirm('删除提示', '你确定永久删除下列区域吗?<br/>',
+				function(r) {
+					if (r) {
+						var url = 'deleteorder?orderIdListStr='
+								+ JSON.stringify(jsonList);
+						changeStatus(url);
+					}
+				});
+
+	}
+}
+*/
 /**
  * 修改状态的Ajax
  * 
@@ -465,3 +541,4 @@ function changeStatus(url) {
 		}
 	});
 }
+

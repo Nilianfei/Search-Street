@@ -268,6 +268,7 @@ public class SServiceImpl implements SService {
 						throw new ServiceOperationException("服务删除失败");					
 					}
 					ServiceImg serviceImg=serviceImgDao.getServiceImg(serviceId);
+					if(serviceImg!=null)
 					deleteServiceImg(serviceImg);
 				} catch (Exception e) {
 					throw new ServiceOperationException("deleteService error:" + e.getMessage());

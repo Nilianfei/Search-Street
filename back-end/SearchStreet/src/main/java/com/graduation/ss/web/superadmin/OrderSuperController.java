@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -277,14 +278,19 @@ public class OrderSuperController {
 	@ResponseBody
 	private Map<String, Object> modifyOrder(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		
 		Long orderId=HttpServletRequestUtil.getLong(request, "orderId");
 		Long serviceId=HttpServletRequestUtil.getLong(request, "serviceId");
 		Long userId=HttpServletRequestUtil.getLong(request, "userId");
 		Long serviceCount=HttpServletRequestUtil.getLong(request, "serviceCount");
 		int orderStatus=HttpServletRequestUtil.getInt(request, "orderStatus");
-		LocalDateTime createTime=HttpServletRequestUtil.getDate(request, "createTime").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-		LocalDateTime overTime=HttpServletRequestUtil.getDate(request, "overTime").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+		String s1=HttpServletRequestUtil.getString(request, "createTime");
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime createTime = LocalDateTime.parse(s1,df);
+		System.out.println(createTime);
+		//Date t1=new Date();
+		//LocalDateTime createTime=t1.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+		String s2=HttpServletRequestUtil.getString(request, "overTime");
+		LocalDateTime overTime=LocalDateTime.parse(s2,df);
 		String serviceName = HttpServletRequestUtil.getString(request, "serviceName");
 		double orderPrice=HttpServletRequestUtil.getDouble(request, "orderPrice");
 		OrderInfo order = new OrderInfo();
@@ -317,6 +323,35 @@ public class OrderSuperController {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", "请输入求助信息");
 		}
+		return modelMap;
+	}
+	//删除订单
+	@RequestMapping(value = "/deleteorder", method = RequestMethod.POST)
+	@ResponseBody
+	private Map<String, Object> deleteOrder(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		// 从请求中获取OrderId
+		long OrderId = HttpServletRequestUtil.getLong(request, "orderId");
+			if (OrderId>0) {
+				try {
+					//删除订单
+					OrderExecution ae = orderService.deleteOrder(OrderId);
+					if (ae.getState() == OrderStateEnum.SUCCESS.getState()) {
+						modelMap.put("success", true);
+					} else {
+						modelMap.put("success", false);
+						modelMap.put("errMsg", ae.getStateInfo());
+					}
+				} catch (Exception e) {
+					modelMap.put("success", false);
+					modelMap.put("errMsg", e.toString());
+					return modelMap;
+				}
+
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", "空的查询信息");
+			}
 		return modelMap;
 	}
 }

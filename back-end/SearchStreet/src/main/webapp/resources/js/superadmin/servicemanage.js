@@ -29,45 +29,6 @@ function searchServiceInfo() {
 	}
 }
 
-
-
-function timeFormater(value, row, index) {
-	if (value == null || value == '') {
-		return '';
-	}
-	var time;
-	if (value == row.startTime) {
-		time = row.startTime;
-	} else {
-		time = row.endTime;
-	}
-	return timeChange(time);
-}
-function timeChange(time) {
-	if (time == null) {
-		return '';
-	}
-	var datetime = new Date();
-	datetime.setTime(time);
-	var year = datetime.getFullYear();
-	var month = datetime.getMonth() + 1;
-	var date = datetime.getDate();
-	var hour = datetime.getHours();
-	if (hour <= 9) {
-		hour = "0" + hour;
-	}
-	var minute = datetime.getMinutes();
-	if (minute <= 9) {
-		minute = "0" + minute;
-	}
-	var second = datetime.getSeconds();
-	if (second <= 9) {
-		second = "0" + second;
-	}
-	// var mseconds = datetime.getMilliseconds();
-	return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":"
-			+ second;// +"."+mseconds;
-}
 function listServiceByServiceName() {
 	var serviceName = $("#searchInfoHd").val();
 	if (serviceName == "") {
@@ -291,9 +252,17 @@ function optFormater(value, row, index) {
 	var serviceContent= row.serviceContent;
 	var params = serviceId+","+ shopId + ",'" + serviceName + "'," + servicePrice
 			+ "," + servicePriority+",'"+serviceDesc+"','"+serviceContent+ "'" ;
-	var edit = '<a href="javascript:openDialog_edit(' + params + ')">编辑</a>';
+	var edit = '<a href="javascript:openDialog_edit(' + params + ')">编辑</a>'+"    "+'<a href="javascript:doDel(' + serviceId+ ')">删除</a>';
 	return edit;
 };
+function doDel(serviceId) {
+	$.messager.confirm('删除提示', '你确定永久删除该数据吗?', function(r) {
+		if (r) {
+			var url = 'deleteservice?serviceId=' + serviceId;
+			changeStatus(url);
+		}
+	});
+}
 
 /** --------------编辑操作弹出框------------------* */
 
@@ -392,4 +361,25 @@ function serviceManagementEdit() {
 		});
 	}
 }
-
+/**
+ * 修改状态的Ajax
+ * 
+ * @param url
+ * @return
+ */
+function changeStatus(url) {
+	$.ajax({
+		async : false,
+		cache : false,
+		type : 'post',
+		dataType : "json",
+		url : url,// 请求的action路径
+		error : function() {// 请求失败处理函数
+			alert('请求失败');
+		},
+		success : function() {
+			alert("操作成功");
+			searchServiceInfo();
+		}
+	});
+}

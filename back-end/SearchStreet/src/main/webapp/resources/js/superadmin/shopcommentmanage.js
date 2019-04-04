@@ -276,9 +276,17 @@ function optFormater(value, row, index) {
 	var commentContent = row.commentContent;
 	var commentReply = row.commentReply;
 	var params = shopCommentId + "," +shopId+"," +orderId+"," + userId +"," + serviceRating+"," +starRating+"," + commentContent + "," +commentReply ;
-	var edit = '<a href="javascript:openDialog_edit(' + params + ')">编辑</a>';
+	var edit = '<a href="javascript:openDialog_edit(' + params + ')">编辑</a>'+"    "+'<a href="javascript:doDel(' + shopCommentId+ ')">删除</a>';
 	return edit;
 };
+function doDel(shopCommentId) {
+	$.messager.confirm('删除提示', '你确定永久删除该数据吗?', function(r) {
+		if (r) {
+			var url = 'deleteshopcomment?shopCommentId=' + shopCommentId;
+			changeStatus(url);
+		}
+	});
+}
 
 /** --------------编辑操作弹出框------------------* */
 
@@ -372,5 +380,27 @@ function shopCommentManagementEdit() {
 			}
 		});
 	}
+}
+/**
+ * 修改状态的Ajax
+ * 
+ * @param url
+ * @return
+ */
+function changeStatus(url) {
+	$.ajax({
+		async : false,
+		cache : false,
+		type : 'post',
+		dataType : "json",
+		url : url,// 请求的action路径
+		error : function() {// 请求失败处理函数
+			alert('请求失败');
+		},
+		success : function() {
+			alert("操作成功");
+			searchShopCommentInfo();
+		}
+	});
 }
 
