@@ -51,7 +51,7 @@
               <text class="text-lg padding-xs margin-left-sm">{{item.serviceName}}</text>
             </view>
             <view class="  flex-sub">
-              <view class="cu-tag line-{{state[1].color}}  margin-left-xl">{{state[1].state}}</view>
+              <view class="cu-tag line-{{state[item.orderStatus].color}}  margin-left-xl">{{state[item.orderStatus].state}}</view>
             </view>
           </view>
           <view class="orderListDetails" bindtap="serviceDetail" data-id="{{index}}">
@@ -82,7 +82,7 @@
               <text class="text-lg padding-xs margin-left-sm">{{item.serviceName}}</text>
             </view>
             <view class="  flex-sub">
-              <view class="cu-tag line-{{state[3].color}}  margin-left-xl">{{state[3].state}}</view>
+              <view class="cu-tag line-{{state[item.orderStatus].color}}  margin-left-xl">{{state[item.orderStatus].state}}</view>
             </view>
           </view>
           <view class="orderListDetails" bindtap="serviceDetail" data-id="{{index}}">

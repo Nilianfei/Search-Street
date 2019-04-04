@@ -112,7 +112,7 @@ Page({
           } else {
             //var p="serviceImg";
             that.setData({
-              serviceImg: service.serviceImgAddr,
+              serviceImg: that.data.imgUrl + service.serviceImgAddr,
             })
             console.log(that.data.serviceImg)
           }
@@ -346,6 +346,7 @@ Page({
               var date = new Date();
               var url = that.data.imgUrl + "/SearchStreet/service/uploadimg?serviceId=" + res.data.serviceId + "&createTime=" + app.timeStamp2String(date);
               console.log(url);
+              console.log("uploadAImg:" +that.data.service.serviceImgAddr);
               app.uploadAImg({
                 token: that.data.token,
                 url: url,
