@@ -44,7 +44,7 @@
 				{
 					"id": 0,
 					"name": "test",
-					"pathName": "page/service-list/service-list",
+					"pathName": "page/shop-order-list/shop-order-list",
 					"query": "shopId=76",
 					"scene": null
 				}

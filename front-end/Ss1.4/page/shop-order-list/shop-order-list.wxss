@@ -1,4 +1,9 @@
 /* page/shop-order-list/shop-order-list.wxss */
+
+@import "../../icon.wxss";
+@import "../../colorui.wxss";
+
+
 page {
   height: 100%;
 }

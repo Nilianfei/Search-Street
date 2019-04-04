@@ -1,15 +1,45 @@
 <!--page/shop-order-list/shop-order-list.wxml-->
- <view class="container">
-<view class="swiper-tab">
-  <block wx:for="{{swipertab}}" wx:key="sptab">
-    <view class="swiper-tab-list {{currtab == item.index ? 'on' : ''}}" data-current="{{item.index}}" bindtap="tabSwitch">{{item.name}}</view>
-  </block>
-</view>
- 
-<swiper current="{{currtab}}" class="swiper-box" duration="300" style="height:{{deviceH-31}}px" bindchange="tabChange">
-  <!-- 全部 -->
-  <swiper-item>
-    <scroll-view class="hot-box" scroll-y='true' style='height:100%'>
+<view class="container">
+  <view class="swiper-tab">
+    <block wx:for="{{swipertab}}" wx:key="sptab">
+      <view class="swiper-tab-list {{currtab == item.index ? 'on' : ''}}" data-current="{{item.index}}" bindtap="tabSwitch">{{item.name}}</view>
+    </block>
+  </view>
+
+  <swiper current="{{currtab}}" class="swiper-box" duration="300" style="height:{{deviceH-31}}px" bindchange="tabChange">
+    <!-- 全部 -->
+    <swiper-item>
+      <scroll-view class="hot-box" scroll-y='true' style='height:100%'>
+        <view class="orderDetails" wx:for="{{orderlist}}" wx:key=" ">
+          <view class="orderListTitle flex ">
+            <view class="flex-treble">
+              <text class="text-lg padding-xs margin-left-sm">{{item.serviceName}}</text>
+            </view>
+            <view class="  flex-sub">
+              <view class="cu-tag line-{{state[item.orderStatus].color}}  margin-left-xl">{{state[item.orderStatus].state}}</view>
+            </view>
+          </view>
+          <view class="orderListDetails" bindtap='serviceDetail' data-id="{{index}}">
+            <view class="productImg">
+              <image src="{{serviceImg[index]}}" mode='aspectFit' background-size="cover"></image>
+            </view>
+            <view class="productInfo">
+              <view class="text-df padding-xs">下单时间: {{item.createTime}}</view>
+              <view class="text-df padding-xs">完成时间: {{item.overTime}}</view>
+              <view class="text-df padding-xs">服务数量: {{item.serviceCount}}</view>
+            </view>
+          </view>
+          <view class="productPrice">
+
+            <button class="cu-btn round bg-green  margin-left-sm padding-xs {{item.orderStatus==0?'':'nodisplay'}}" bindtap='finishOrder' data-id="{{item.orderId}}" data-item="{{item}}">确认完成</button>
+            <button class="cu-btn round bg-gray  margin-left-sm padding-xs {{item.orderStatus==0?'':'nodisplay'}}" bindtap='cancelOrder' data-id="{{item.orderId}}" data-item="{{item}}">取消订单</button>
+
+            <view class="price">
+              <text>合计：￥{{item.orderPrice}}</text>
+            </view>
+          </view>
+        </view>
+        <!-- 
       <view  class="orderDetails" wx:for="{{orderlist}}" wx:key=" ">
         <view class="orderListTitle">
           <text class="userName">{{item.serviceName}}</text>
@@ -32,12 +62,44 @@
             <text>合计：￥{{item.orderPrice}}</text>
           </view>
         </view>
-      </view>
-    </scroll-view>
-  </swiper-item>
-  <!-- 已下单 -->
-  <swiper-item>
-    <scroll-view class="hot-box" scroll-y='true' style='height:100%'>
+      </view> 
+      -->
+      </scroll-view>
+    </swiper-item>
+    <!-- 已下单 -->
+    <swiper-item>
+      <scroll-view class="hot-box" scroll-y='true' style='height:100%'>
+
+        <view class="orderDetails" wx:for="{{worderlist}}" wx:key=" ">
+          <view class="orderListTitle flex ">
+            <view class="flex-treble">
+              <text class="text-lg padding-xs margin-left-sm">{{item.serviceName}}</text>
+            </view>
+            <view class="  flex-sub">
+              <view class="cu-tag line-{{state[item.orderStatus].color}}  margin-left-xl">{{state[0].state}}</view>
+            </view>
+          </view>
+          <view class="orderListDetails" bindtap='serviceDetail' data-id="{{index}}">
+            <view class="productImg">
+              <image src="{{serviceImg[index]}}" mode='aspectFit' background-size="cover"></image>
+            </view>
+            <view class="productInfo">
+              <view class="text-df padding-xs">下单时间: {{item.createTime}}</view>
+              <view class="text-df padding-xs">完成时间: {{item.overTime}}</view>
+              <view class="text-df padding-xs">服务数量: {{item.serviceCount}}</view>
+            </view>
+          </view>
+          <view class="productPrice">
+
+            <button class="cu-btn round bg-green  margin-left-sm padding-xs {{item.orderStatus==0?'':'nodisplay'}}" bindtap='finishOrder' data-id="{{item.orderId}}" data-item="{{item}}">确认完成</button>
+            <button class="cu-btn round bg-gray  margin-left-sm padding-xs {{item.orderStatus==0?'':'nodisplay'}}" bindtap='cancelOrder' data-id="{{item.orderId}}" data-item="{{item}}">取消订单</button>
+
+            <view class="price">
+              <text>合计：￥{{item.orderPrice}}</text>
+            </view>
+          </view>
+        </view>
+        <!--
       <view class="orderDetails" wx:for="{{worderlist}}" wx:key=" ">
          <view class="orderListTitle">
           <text class="userName">{{item.serviceName}}</text>
@@ -61,11 +123,41 @@
           </view>
         </view>
       </view>
-    </scroll-view>
-  </swiper-item>
-  <!-- 取消 -->
-  <swiper-item>
-    <scroll-view class="hot-box" scroll-y='true' style='height:100%'>
+    -->
+      </scroll-view>
+    </swiper-item>
+    <!-- 取消 -->
+    <swiper-item>
+      <scroll-view class="hot-box" scroll-y='true' style='height:100%'>
+
+        <view class="orderDetails" wx:for="{{corderlist}}" wx:key=" ">
+          <view class="orderListTitle flex ">
+            <view class="flex-treble">
+              <text class="text-lg padding-xs margin-left-sm">{{item.serviceName}}</text>
+            </view>
+            <view class="  flex-sub">
+              <view class="cu-tag line-{{state[item.orderStatus].color}}  margin-left-xl">{{state[3].state}}</view>
+            </view>
+          </view>
+          <view class="orderListDetails" bindtap='serviceDetail' data-id="{{index}}">
+            <view class="productImg">
+              <image src="{{serviceImg[index]}}" mode='aspectFit' background-size="cover"></image>
+            </view>
+            <view class="productInfo">
+              <view class="text-df padding-xs">下单时间: {{item.createTime}}</view>
+              <view class="text-df padding-xs">完成时间: {{item.overTime}}</view>
+              <view class="text-df padding-xs">服务数量: {{item.serviceCount}}</view>
+            </view>
+          </view>
+          <view class="productPrice">
+
+            <view class="price">
+              <text>合计：￥{{item.orderPrice}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 
       <view class="orderDetails" wx:for="{{corderlist}}" wx:key=" ">
           <view class="orderListTitle">
           <text class="userName">{{item.serviceName}}</text>
@@ -86,9 +178,10 @@
             <text>合计：￥{{item.orderPrice}}</text>
           </view>
         </view>
-      </view>
-    </scroll-view>
-  </swiper-item>
- 
-</swiper>
+      </view> 
+      -->
+      </scroll-view>
+    </swiper-item>
+
+  </swiper>
 </view>

@@ -4,8 +4,8 @@
     <i-panel class="{{openSearch?'':'hide'}}">
       <i-input value="{{ searchShopName }}" type="textarea" title="商铺名" placeholder="搜索商铺" maxlength="50" bind:change="inputShopName"/>
       <i-input value="{{ searchShopAddress }}" type="textarea" title="详细地址" placeholder="搜索地址" maxlength="100" bind:change="inputShopAddress"/>
-      <view wx:for="{{suggestion}}" wx:key="index">
-        <view style="text-align:center;font-size:14px;" bindtap="backfill" id="{{item.title}}">{{item.title}}</view>
+      <view wx:for="{{suggestion}}" wx:if="{{searchShopAddress!=''}}" wx:key="index">
+        <view class="bg-gray padding-xs margin-bottom-xs margin-right-xs margin-left-xs"style="text-align:center;font-size:14px;" bindtap="backfill" id="{{item.title}}">{{item.title}}</view>
       </view>
 
       <view class="buttonClick">
@@ -21,7 +21,7 @@
     <map id="myMap" style="width: 100%; height: 100vh;" latitude="{{latitude}}" longitude="{{longitude}}" controls="{{controls}}" bindcontroltap="bindcontroltap" markers="{{markers}}" bindmarkertap="bindmarkertap" polyline="{{polyline}}" bindregionchange="bindregionchange"
       enable-rotate show-location show-compass>
 
-      <cover-view class="moveToPosition" bindtap='moveToPosition'>
+      <cover-view class="moveToPosition shadow-lg" bindtap='moveToPosition'>
         <cover-image src='/images/heavy-black-heart_2764.png'></cover-image>
       </cover-view>
 
@@ -29,11 +29,11 @@
         <cover-image src='/images/search_buck.png'></cover-image>
       </cover-view>
 
-      <cover-view class="checkOrder" bindtap='checkOrder' hover-class='hover'>
+      <cover-view class="checkOrder shadow-lg" bindtap='checkOrder' hover-class='hover'>
         <cover-image src='/images/clipboard_1f4cb.png'></cover-image>
       </cover-view>
 
-      <cover-view class="ShopInfo {{openShopInfo?'':'hide'}}">
+      <cover-view class="ShopInfo {{openShopInfo?'':'hide'}} shadow-warp">
         <cover-view class="shopInfo-top">
           <cover-view class= "shopInfo-top-pic">
             <cover-image class= "shopInfo-pic" mode='aspectFit' src="{{shopInfoPic}}"></cover-image>

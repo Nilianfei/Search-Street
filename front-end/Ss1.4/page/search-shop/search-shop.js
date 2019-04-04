@@ -186,6 +186,7 @@ Page({
         profileImg: shopProfileImg,
         address: shopList[i].city + shopList[i].district + shopList[i].fullAddress,
         businessScope: shopList[i].businessScope,
+        iconPath: "/images/markers.png",
       }
       
     }
