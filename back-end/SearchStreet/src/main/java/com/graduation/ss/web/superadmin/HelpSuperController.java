@@ -1,7 +1,6 @@
 package com.graduation.ss.web.superadmin;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,12 +79,11 @@ public class HelpSuperController {
 		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
 		String appealTitle = HttpServletRequestUtil.getString(request, "appealTitle");
 		Long userId = HttpServletRequestUtil.getLong(request, "userId");
-		Date endTime = HttpServletRequestUtil.getDate(request, "endTime");
+		
 		Help help = new Help();
 		help.setAppealId(appealId);
 		help.setAppealTitle(appealTitle);
 		help.setUserId(userId);
-		help.setEndTime(endTime);
 
 		try {
 			HelpExecution ae = helpService.addHelp(help);
@@ -108,32 +106,18 @@ public class HelpSuperController {
 	private Map<String, Object> modifyHelp(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		Long helpId = HttpServletRequestUtil.getLong(request, "helpId");
-		Long appealId = HttpServletRequestUtil.getLong(request, "appealId");
-		String appealTitle = HttpServletRequestUtil.getString(request, "appealTitle");
-		Long userId = HttpServletRequestUtil.getLong(request, "userId");
 		int helpStatus = HttpServletRequestUtil.getInt(request, "helpStatus");
 		int completion = HttpServletRequestUtil.getInt(request, "completion");
 		int efficiency = HttpServletRequestUtil.getInt(request, "efficiency");
 		int attitude = HttpServletRequestUtil.getInt(request, "attitude");
-		Float avgCompletion = HttpServletRequestUtil.getFloat(request, "avgCompletion");
-		Float avgEfficiency = HttpServletRequestUtil.getFloat(request, "avgEfficiency");
-		Float avgAttitude = HttpServletRequestUtil.getFloat(request, "avgAttitude");
 		Long allCoin = HttpServletRequestUtil.getLong(request, "allCoin");
 		Long additionalCoin = HttpServletRequestUtil.getLong(request, "additionalCoin");
-		Date endTime = HttpServletRequestUtil.getDate(request, "endTime");
 		Help help = new Help();
 		help.setHelpId(helpId);
-		help.setAppealId(appealId);
-		help.setAppealTitle(appealTitle);
 		help.setHelpStatus(helpStatus);
-		help.setUserId(userId);
-		help.setEndTime(endTime);
 		help.setCompletion(completion);
 		help.setEfficiency(efficiency);
 		help.setAttitude(attitude);
-		help.setAvgAttitude(avgAttitude);
-		help.setAvgCompletion(avgCompletion);
-		help.setAvgEfficiency(avgEfficiency);
 		help.setAllCoin(allCoin);
 		help.setAdditionalCoin(additionalCoin);
 

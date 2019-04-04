@@ -95,8 +95,6 @@ public class PersonInfoController {
 		Date birth = HttpServletRequestUtil.getDate(request, "birth");
 		Long souCoin = HttpServletRequestUtil.getLong(request, "souCoin");
 		int userType = HttpServletRequestUtil.getInt(request, "userType");
-		Date createTime = HttpServletRequestUtil.getDate(request, "createTime");
-		Date lastEditTime = HttpServletRequestUtil.getDate(request, "lastEditTime");
 		PersonInfo pi = new PersonInfo();
 		pi.setUserName(userName);
 		pi.setEmail(email);
@@ -106,8 +104,6 @@ public class PersonInfoController {
 		pi.setSouCoin(souCoin);
 		pi.setUserType(userType);
 		pi.setEnableStatus(enableStatus);
-		pi.setCreateTime(createTime);
-		pi.setLastEditTime(lastEditTime);
 		
 		CommonsMultipartFile profileImg = null;
 		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
@@ -169,8 +165,7 @@ public class PersonInfoController {
 		Date birth = HttpServletRequestUtil.getDate(request, "birth");
 		Long souCoin = HttpServletRequestUtil.getLong(request, "souCoin");
 		int userType = HttpServletRequestUtil.getInt(request, "userType");
-		Date createTime = HttpServletRequestUtil.getDate(request, "createTime");
-		Date lastEditTime = HttpServletRequestUtil.getDate(request, "lastEditTime");
+		
 		PersonInfo pi = new PersonInfo();
 		pi.setUserId(userId);
 		pi.setUserName(userName);
@@ -181,8 +176,6 @@ public class PersonInfoController {
 		pi.setSouCoin(souCoin);
 		pi.setUserType(userType);
 		pi.setEnableStatus(enableStatus);
-		pi.setCreateTime(createTime);
-		pi.setLastEditTime(lastEditTime);
 		
 		CommonsMultipartFile profileImg = null;
 		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(

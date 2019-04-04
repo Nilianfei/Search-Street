@@ -3,7 +3,6 @@ package com.graduation.ss.web.superadmin;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,8 +158,7 @@ public class ShopController {
 		Float longitude = HttpServletRequestUtil.getFloat(request, "longitude");
 		int enableStatus = HttpServletRequestUtil.getInt(request, "enableStatus");
 		String businessScope = HttpServletRequestUtil.getString(request, "businessScope");
-		Date createTime = HttpServletRequestUtil.getDate(request, "createTime");
-		Date lastEditTime = HttpServletRequestUtil.getDate(request, "lastEditTime");
+		
 		Shop shop = new Shop();
 		shop.setShopId(shopId);
 		shop.setUserId(userId);
@@ -178,8 +176,6 @@ public class ShopController {
 		shop.setLongitude(longitude);
 		shop.setEnableStatus(enableStatus);
 		shop.setBusinessScope(businessScope);
-		shop.setCreateTime(createTime);
-		shop.setLastEditTime(lastEditTime);
 
 		CommonsMultipartFile profileImg = null;
 		CommonsMultipartFile businessLicenseImg = null;
@@ -248,8 +244,7 @@ public class ShopController {
 		Float longitude = HttpServletRequestUtil.getFloat(request, "longitude");
 		int enableStatus = HttpServletRequestUtil.getInt(request, "enableStatus");
 		String businessScope = HttpServletRequestUtil.getString(request, "businessScope");
-		Date createTime = HttpServletRequestUtil.getDate(request, "createTime");
-		Date lastEditTime = HttpServletRequestUtil.getDate(request, "lastEditTime");
+		
 		Shop shop = new Shop();
 		shop.setUserId(userId);
 		shop.setShopName(shopName);
@@ -266,8 +261,6 @@ public class ShopController {
 		shop.setLongitude(longitude);
 		shop.setEnableStatus(enableStatus);
 		shop.setBusinessScope(businessScope);
-		shop.setCreateTime(createTime);
-		shop.setLastEditTime(lastEditTime);
 
 		CommonsMultipartFile profileImg = null;
 		CommonsMultipartFile businessLicenseImg = null;
