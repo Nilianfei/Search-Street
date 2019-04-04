@@ -75,7 +75,7 @@ Page({
     if (options.serviceId == 0) {
       //var p ="serviceImg"
       that.setData({
-        serviceImg: '/images/add-photo.png',
+        serviceImg: '../../images/add-photo.png',
       })
       return; //serviceId==0即是添加服务的情况，原表单内指为空，不许要get
     }
@@ -287,7 +287,7 @@ Page({
     } else {
 
       
-      if (that.data.serviceImg != '/images/add-photo.png') {
+      if (that.data.serviceImg != '../../images/add-photo.png') {
         var imgAddr = "service.serviceImgAddr";
         that.setData({
           [imgAddr]:  that.data.serviceImg[0],
@@ -341,9 +341,7 @@ Page({
               var url = that.data.imgUrl + "/SearchStreet/service/uploadimg?serviceId=" + res.data.serviceId + "&createTime=" + app.timeStamp2String(date);
               console.log(url);
               app.uploadAImg({
-                header: {
-                  token: that.data.token,
-                },
+                token: that.data.token,
                 url: url,
                 filePath: that.data.service.serviceImgAddr,
                 fileName: "serviceImg"

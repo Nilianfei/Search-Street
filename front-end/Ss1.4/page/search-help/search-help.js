@@ -1,4 +1,4 @@
-﻿var util=require('../../util/util.js');
+var util=require('../../util/util.js');
 
 var app=getApp();
 var shelp_text='添加关于求助的图片会有更多人愿意帮助你哦'
@@ -58,6 +58,7 @@ Page({
     show: false,
     currenttime: '选择时间',
     showkeyword:false,
+    flag:false,
   },
   showtime(){
     this.setData({ show: true });
@@ -226,9 +227,9 @@ previewImage:function (e){
             title: res.title,
             latitude: latitude,
             longitude: longitude,
-            iconPath: '../../images/定位.png',//图标路径
-            width: 20,
-            height: 20,
+            iconPath: '../../images/locat.png',//图标路径
+            width: 40,
+            height: 40,
           }],
           poi: { //根据自己data数据设置相应的地图中心坐标变量名称
             latitude: latitude,
@@ -247,7 +248,11 @@ previewImage:function (e){
       }
     })
   },
-  
+  show(){
+  wx.navigateBack({
+    delta:1
+  })
+  },
   /*整张表单上传*/
   formSubmit: function (e) {
     var that = this;
@@ -296,8 +301,23 @@ previewImage:function (e){
         errorMsgs: {
           phone_error: errorMsg
         }
+      })}
+    else if (!(/^1(3|4|5|7|8)\d{9}$/.test(e.detail.value.shelpPhone))) //验证11位手机号码
+    {
+      if (!/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(e.detail.value.shelpPhone)){
+       //验证固定电话号码
+        wx.showModal({
+          title: '提示',
+          content: '您输入的手机号码或固定号码有误，请重新输入',
+        })
+      }
+    } else if (that.data.latitude == null || that.data.longitude == null) {
+      wx.showModal({
+        title: '提示',
+        content: '您还没有开启定位哦',
       })
-    } else if (e.detail.value.fullAddress.length == 0) {
+    } 
+     else if (e.detail.value.fullAddress.length == 0) {
       wx.showModal({
         title: '提示',
         content: '请输入您的详细地址',
@@ -323,7 +343,7 @@ previewImage:function (e){
         console.log("error");
       }
       wx.request({
-        url: app.globalData.serviceUrl + "/SearchStreet/appeal/registerappeal?token=" + token,      //完整的发布帮助的url
+        url: app.globalData.serviceUrl + "/SearchStreet/appeal/registerappeal",      //完整的发布帮助的url
         data: {
           appealTitle: e.detail.value.shelpTitle,
           appealContent:e.detail.value.shelpContent,
@@ -340,6 +360,10 @@ previewImage:function (e){
           appealMoreInfo: e.detail.value.shelpMoreInfo,
         },
         method: "POST",
+        header: {
+          'content-type': 'application/json',
+          'token': token
+        },
         success: res => {
           console.log(res);
           if (res.data.success) {
@@ -348,13 +372,14 @@ previewImage:function (e){
               data: res.data.appealId
             })
             var date = new Date();
-            var url = app.globalData.serviceUrl + "/SearchStreet/appeal/uploadimg?appealId=" + res.data.appealId +"&token=" + token;          
+            var url = app.globalData.serviceUrl + "/SearchStreet/appeal/uploadimg?appealId=" + res.data.appealId;          
             //后台保存用户发布帮助的图片的url
             for (var i = 0; i < that.data.shelp_imgs.length; i++) {
               app.uploadAImg({
                 url: url,
                 filePath: that.data.shelp_imgs[i],
-                fileName: "appealImg"
+                fileName: "appealImg",
+                token:token
               })
             }
             wx.showToast({
@@ -362,9 +387,7 @@ previewImage:function (e){
               icon: 'success',
               duration: 4000
             })
-            wx.redirectTo({
-              url: '../../page/index/index'
-            })
+            that.show();
           } else {
             if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
               wx.redirectTo({
@@ -396,7 +419,11 @@ previewImage:function (e){
     wx.request({
       url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
       data: {
-        token: token
+        //token: token
+      },
+      header: {
+        'content-type': 'application/json',
+        'token': token
       },
       success: function (res) {
         // 拿到自己后台传过来的数据，自己作处理
@@ -421,7 +448,7 @@ previewImage:function (e){
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+   
   },
 
   /**

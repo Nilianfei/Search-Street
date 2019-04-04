@@ -40,7 +40,7 @@
       </view>
       <text class="shelp-costtext">结束</text>
       </view>
-     <input class="shelp-phone" type="number" placeholder="请输入手机号" name="shelpPhone"></input>
+     <input class="shelp-phone" type="number" placeholder="请输入联系方式" name="shelpPhone"></input>
      <view class="show_error" wx:if="{{errorMsgs.phone_error}}">{{errorMsgs.phone_error}}</view>
      <view class="store-locat">帮帮定位</view>
       <view class="section">

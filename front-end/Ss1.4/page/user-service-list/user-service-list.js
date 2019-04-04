@@ -158,6 +158,8 @@ Page({
         url: app.globalData.serviceUrl + '/SearchStreet/shopComment/getshopCommentlistbyshopid?shopId=' + that.data.shopId + '&pageIndex=' + pageIndex + '&pageSize=' + that.data.pageSize,
         method: 'GET',
         success: function(res) {
+          console.log(res);
+          var service = res.data.serviceList;
           var shopCommentList = res.data.shopCommentList; //res.data就是从后台接收到的值
           that.setData({
             list: shopCommentList,

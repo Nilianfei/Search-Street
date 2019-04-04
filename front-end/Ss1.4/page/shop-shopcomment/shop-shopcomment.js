@@ -46,7 +46,7 @@ Page({
           var img = [];
           for (var i = 0; i < shopComment.length; i++) {
             if (service[i].serviceImgAddr != null) {
-              img[i] = app.globalData.imgUrl + service[i].serviceImgAddr;
+              img[i] =service[i].serviceImgAddr;
             }
           }
 

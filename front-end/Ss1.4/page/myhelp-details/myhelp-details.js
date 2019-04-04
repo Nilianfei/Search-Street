@@ -100,7 +100,7 @@ Page({
         }
           console.log(helperlistall);
          for(var i=0;i<helperlistall.length;i++){
-           if(helperlistall[i].helpStatus==0||helperlistall[i].helpStatus==3) {   /*此处有逻辑错误 */
+           if(helperlistall[i].helpStatus==0||helperlistall[i].helpStatus==3) {   
             // that.data.disabled[i]=false;
              //that.data.btn_helper[i]='选择他';
             helperlistall[i]=[{disabled:false,btn_helper:'选择他'}].concat(helperlistall[i]);
@@ -151,12 +151,16 @@ Page({
     }
     /*同时给后台发一个消息，让其告知提供帮助的人，他已经被选定 */
     wx.request({
-      url: app.globalData.serviceUrl + "/SearchStreet/help/selectHelper?token=" + token,
+      url: app.globalData.serviceUrl + "/SearchStreet/help/selectHelper",
       data: {
         appealId: this.data.id,
         helpId: e.currentTarget.dataset.id,
       },
       method: 'GET',
+      header: {
+        'content-type': 'application/json',
+        'token': token
+      },
       success(res) {
         console.log(res.data);
         if (res.data.success) {
@@ -165,6 +169,18 @@ Page({
          that.setData({
            helperlist:helperlistall,
          })
+          let pages = getCurrentPages();  // 当前页的数据，可以输出来看看有什么东西
+          let prevPage = pages[pages.length - 2];  // 上一页的数据，也可以输出来看看有什么东西
+          /** 设置数据 这里面的 value 是上一页你想被携带过去的数据，后面是本方法里你得到的数据，我这里是detail.value，根据自己实际情况设置 */
+          prevPage.setData({
+            helpId: e.target.id,
+          })
+          console.log(prevPage);
+          /** 返回上一页 这个时候数据就传回去了 可以在上一页的onShow方法里把 value 输出来查看是否已经携带完成 */
+         wx.navigateBack({
+           delta:2
+         });
+         
         }
         console.log(that.data.helperlist);
       }

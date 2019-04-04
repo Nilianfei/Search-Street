@@ -1,5 +1,7 @@
 <!--page/register/register.wxml-->
-<view class="container">
+
+<view class="container1">
+
   <view class="reg-hd">
    <view class='header'>
       <view class="userinfo-avatar">

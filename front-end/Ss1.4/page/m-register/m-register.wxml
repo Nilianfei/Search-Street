@@ -1,4 +1,4 @@
-﻿<!--page/m-register/m-register.wxml-->
+<!--page/m-register/m-register.wxml-->
 <view class="container">
   <view class="reg-hd">
     <view class="userinfo-avatar">
@@ -11,7 +11,7 @@
     </view>
   </view>
   <view class="reg-bd">
-    <form bindsubmit="formSubmit" bindreset="formReset">
+    <form bindsubmit="formsubmit" bindreset="formReset">
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input">
           <input class="weui-input" placeholder="商铺名字" name="shopName" focus/>
@@ -60,11 +60,11 @@
       </view>
       <!--地图容器-->
       <!--longitude及latitude为设置为调转到指定地址位置，默认不显示-->
-      <map id="myMap"
+       <map id="myMap"
         markers="{{markers}}"
         style="width:100%;height:200px;"
-        longitude="{{longitude}}"
-        latitude="{{latitude}}"
+        longitude="{{poi.longitude}}"
+        latitude="{{poi.latitude}}"
         scale='16' show-location>
       </map>
       <view class="serach-append">地址补充</view>

@@ -43,7 +43,7 @@
    <view class="details-main">
      <textarea>{{helpDetail.appealContent}}</textarea>
      <view wx:if='{{help.helpStatus==3}}'>
-       <image class='unused-img' src="../../images/oder1.png"></image>
+       <image class='unused-img' src="../../images/inactive-1.png"></image>
       </view>
      <!-- 求助者发布图片的url -->
      <view class="details-imgs">

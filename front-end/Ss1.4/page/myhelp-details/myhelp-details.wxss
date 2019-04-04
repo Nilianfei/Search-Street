@@ -75,7 +75,7 @@ page{
 .helper1{
  display: flex;
  flex-direction: row;
- margin-top: 30rpx;
+
 }
 .itself{
   width: 120rpx;
