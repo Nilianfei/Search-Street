@@ -57,49 +57,9 @@ Page({
       }
     })
   },
-  sformSubmit(e) {
-    var _this = this;
-    var fulladdress = _this.data.region[0] + _this.data.region[1] + _this.data.region[2] + e.detail.value.fullAddress;
-    var sig = md5("/ws/geocoder/v1/?address=" + fulladdress + "&key=GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM&output=jsonPPxq4x9BswKT7fyXshwNjUOfacWkNbxJ");
-    //调用地址解析接口
-    qqmapsdk.geocoder({
-      sig: sig,
-      //获取表单传入地址
-      address: fulladdress, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
-      success: function (res) {//成功后的回调
-        console.log(res);
-        var res = res.result;
-        var latitude = res.location.lat;
-        var longitude = res.location.lng;
-        //根据地址解析在地图上标记解析地址位置
-        _this.setData({ // 获取返回结果，放到markers及poi中，并在地图展示
-          markers: [{
-            id: 0,
-            title: res.title,
-            latitude: latitude,
-            longitude: longitude,
-            iconPath: '../../images/locat.png',//图标路径
-            width: 20,
-            height: 20,
-          }],
-          poi: { //根据自己data数据设置相应的地图中心坐标变量名称
-            latitude: latitude,
-            longitude: longitude
-          }
-        });
-        _this.data.latitude = latitude;
-        _this.data.longitude = longitude;
-        console.log(longitude);
-      },
-      fail: function (error) {
-        console.error(error);
-      },
-      complete: function (res) {
-        console.log(res);
-      }
-    })
-  },
+  
   bindRegionChange: function (e) {
+    console.log(this.data.markers);
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       region: e.detail.value
@@ -165,8 +125,52 @@ Page({
       }
     });
   },
+  sformSubmit(e) {
+    var _this = this;
+    var fulladdress = _this.data.region[0] + _this.data.region[1] + _this.data.region[2] + e.detail.value.fullAddress;
+    var sig = md5("/ws/geocoder/v1/?address=" + fulladdress + "&key=GTPBZ-3HY35-YSDIY-Q4O5T-5SSTQ-YOBGM&output=jsonPPxq4x9BswKT7fyXshwNjUOfacWkNbxJ");
+    //调用地址解析接口
+    qqmapsdk.geocoder({
+      sig: sig,
+      //获取表单传入地址
+      address: fulladdress, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
+      success: function (res) {//成功后的回调
+        console.log(res);
+        var res = res.result;
+        var latitude = res.location.lat;
+        var longitude = res.location.lng;
+        //根据地址解析在地图上标记解析地址位置
+        _this.setData({ // 获取返回结果，放到markers及poi中，并在地图展示
+          markers: [{
+            id: 0,
+            title: res.title,
+            latitude: latitude,
+            longitude: longitude,
+            iconPath: '../../images/locat.png',//图标路径
+            width: 40,
+            height: 40,
+          }],
+          poi: { //根据自己data数据设置相应的地图中心坐标变量名称
+            latitude: latitude,
+            longitude: longitude
+          }
+        });
+        _this.data.latitude = latitude;
+        _this.data.longitude = longitude;
+        console.log(longitude);
+      },
+      fail: function (error) {
+        console.error(error);
+      },
+      complete: function (res) {
+        console.log(res);
+        console.log(_this.data.markers)
+      }
+    })
 
-  formSubmit: function (e) {
+  },
+  formsubmit: function (e) {
+   console.log(e);
     var that = this;
     var errorMsg = this.data.errorMsg;
     if (that.data.business_img.length == 0) {
@@ -198,12 +202,29 @@ Page({
           phone_error: errorMsg
         }
       })
-    } else if (e.detail.value.fullAddress.length == 0) {
+    }
+    else if (!(/^1(3|4|5|7|8)\d{9}$/.test(e.detail.value.phone))) //验证11位手机号码
+    {
+      if (!/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(e.detail.value.phone)) {
+        //验证固定电话号码
+        wx.showModal({
+          title: '提示',
+          content: '您输入的手机号码或固定号码有误，请重新输入',
+        })
+      }
+    } 
+     else if (e.detail.value.fullAddress.length == 0) {
       wx.showModal({
         title: '提示',
         content: '请您输入商店的完整地址',
       })
-    } else {
+    } 
+    else if (that.data.latitude == null || that.data.longitude == null) {
+      wx.showModal({
+        title: '提示',
+        content: '您还没有开启定位哦',
+      })
+    }else {
       //console.log('form发生了submit事件，携带数据为：', e.detail.value);
       //var that = this;
       var token = null;
@@ -216,7 +237,7 @@ Page({
         console.log("error");
       }
       wx.request({
-        url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/registershop?token=" + token,
+        url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/registershop",
         data: {
           shopName: e.detail.value.shopName,
           businessScope: e.detail.value.businessScope,
@@ -232,6 +253,10 @@ Page({
           isMobile: 1
         },
         method: "POST",
+        header: {
+          'content-type': 'application/json',
+          'token': token
+        },
         success: res => {
           console.log(res);
           if (res.data.success) {
@@ -240,12 +265,16 @@ Page({
               data: res.data.shopId
             })
             var date = new Date();
-            var url = app.globalData.serviceUrl + "/SearchStreet/shopadmin/uploadimg?shopId=" + res.data.shopId + "&createTime=" + app.timeStamp2String(date) + "&token=" + token;
+            var url = app.globalData.serviceUrl + "/SearchStreet/shopadmin/uploadimg?shopId=" + res.data.shopId + "&createTime=" + app.timeStamp2String(date);
             app.uploadAImg({
               url: url,
               filePath: that.data.business_img[0],
-              fileName: "profileImg"
+              fileName: "profileImg",
+              token:token
             })
+          wx.navigateBack({
+            delta:1
+          })
           } else {
             if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
               wx.redirectTo({
@@ -256,5 +285,11 @@ Page({
         }
       })
     }
+  },
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+   console.log(this.data.markers)
   }
 })

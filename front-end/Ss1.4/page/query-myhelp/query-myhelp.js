@@ -1,22 +1,7 @@
 // page/query-myhelp/query-myhelp.js
 var app = getApp();
 var util = require('../../util/util.js');
-function countdown(that) {
-  that.setData({
-    targetTime: util.formatTime(that.data.second),
-  })
-  var second = that.data.second;
-  // console.log(second);
-  if (second == 0) {
 
-    return;
-  }
-  var time = setTimeout(function () {
-    that.data.second -= 1;
-    countdown(that);
-  }
-    , 1000)
-}
 Page({
 
   /**
@@ -143,7 +128,7 @@ Page({
       console.log("error");
     }
     wx.request({
-      url: app.globalData.serviceUrl + "/SearchStreet/help/gethelplistbyuserid?token=" + token + " &pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
+      url: app.globalData.serviceUrl + "/SearchStreet/help/gethelplistbyuserid?pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
       data: {
         helpStatus:that.data.statusindex,
         startTime:that.data.starttime,
@@ -151,6 +136,10 @@ Page({
         souCoin:that.data.costnum,
       },
       method: 'GET',
+      header: {
+        'content-type': 'application/json',
+        'token': token
+      },
       success: function (res) {
         console.log(res.data);
         if (res.data.success) {

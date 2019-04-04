@@ -1,6 +1,6 @@
 /* page/personal-help/personal-help.wxss */
 .contanier{
-  margin-top: -50rpx;
+  
 }
 .perhelp-bd{
   height: 200rpx;
@@ -71,12 +71,13 @@
 .perhelp-buttons{
   display: flex;
   flex-direction: column;
-  margin-top:-80rpx;
+  margin-left: 20rpx;
 }
 .check-buttons{
    display: flex;
   flex-direction: column;
-  margin-top:-20rpx;
+  margin-top:50rpx;
+  margin-left: 30rpx;
 }
 
 .perhelp-button-small{
@@ -87,7 +88,6 @@
   color: #ffffff;
   margin-top:10rpx;
   float: left;
-  margin-left: 20rpx;
 }
 .small1{
   margin-left:20rpx;
@@ -96,8 +96,12 @@
   width: 150rpx;
   height: 150rpx;
   float: right;
-  margin-right: 40rpx;
-  margin-top: -50rpx;
+ margin-top:10rpx;
+margin-left:50rpx;
+z-index:-1;
+}
+.inactive-help{
+  color: #d81e06;
 }
 .finished-icon{
   width:30rpx;
@@ -106,12 +110,25 @@
   margin-right:10rpx;
 }
 .personal-help-item{
-  height: 170rpx;
-  border-bottom: 1px solid #bebebe;
+  height: 160rpx;
+  display: flex;
+}
+.personal-help-item1{
+   border-bottom: 1px solid #bebebe;
+   height: 190rpx;
+}
+.others{
+  display: flex;
+  flex-direction: column;
+}
+.info{
+  display: flex;
+}
+.help-item-title{
+  display: flex; 
 }
 .button1{
   padding-left: 10rpx;
-  margin-top: 20rpx;
   height:70rpx;
   margin-right:30rpx;
 }
@@ -204,7 +221,9 @@
     border-radius: 0px;
     border-bottom-right-radius: 16rpx;
 }
- 
+ ._buttons{
+   height: 180rpx;
+ }
 .picker {
     padding-top: 1vh;
     padding-bottom: 1vh;
@@ -225,7 +244,7 @@ margin-top:10rpx;
   font-size: 24rpx;
   color: #bebebe;
   float: right;
-  margin-top: 10rpx;
+ 
 }
 .toast-body{
   display: flex;
@@ -246,13 +265,12 @@ padding-bottom: 1vh;
  width: 30%;
 }
 .button5{
-width:40%;
-margin-left:150rpx;
+width:50%;
 }
 .button5 button{
   background-color: #F7B45D;
   color: white;
-  border-radius: 10rpx;
+ border-radius: 0px;
 }
 .button6{
 border:1px solid #00e3e3;
@@ -279,7 +297,7 @@ margin-right:50rpx;
 margin-left:80rpx;
 }
 .main1{
-  padding-bottom: 40rpx;
+  padding-bottom: 0rpx;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -350,4 +368,23 @@ margin-left:80rpx;
 }
 .cost1{
   font-size: 26rpx;
+}
+
+.help-item{
+display: flex;
+flex-direction: column;
+}
+.inactive-text{
+color:#d81e06;
+margin-top:50rpx;
+margin-left:50rpx;
+font-size:50rpx;
+}
+.button5_{
+margin-left: 150rpx;
+width:40%;
+}
+.button5_ button{
+background-color:#F7B45D;
+color:white;
 }

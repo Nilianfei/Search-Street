@@ -1,18 +1,20 @@
 var app=getApp();
 var util=require('../../util/util.js');
 function countdown(that) {
+  that.data.end_time[i]=util.formatTime(that.data.second);
   that.setData({
-    targetTime: util.formatTime(that.data.second),
+    end_time:end_time
   })
+  console.log(end_time);
   var second = that.data.second;
- // console.log(second);
+ console.log(second);
   if (second == 0) {
 
     return;
   }
   var time = setTimeout(function () {
     that.data.second -= 1;
-    countdown(that);
+    countdown(that,i);
   }
     , 1000)
 }
@@ -34,8 +36,8 @@ Page({
     list2:[],
     currentTab:0,
     currentTab1:1,
-    btnhover:false,
-    targetTime:0,
+    countDownList:[],
+    end_time:[],
     second:0,
     id:0,
     ifadditioncoin:false,
@@ -52,6 +54,7 @@ Page({
     starUnCheckedImgUrl: "../../images/gray-star.png",
     List1:[],
     soucoin:[],
+    inactive_text:[],
     // 建议内容
     opinion: "",
 
@@ -89,8 +92,7 @@ Page({
   },
 
  /* 根据导航栏的选择设置目前的key值 */
-  handleChange({ detail }) {
-    var phelptime = [];
+  handleChange({detail}) {
     var that = this;
     var token = null;
     var disabled=[];
@@ -109,28 +111,37 @@ Page({
     });
     if (that.data.current == 'tab2') {
       wx.request({
-        url: app.globalData.serviceUrl + "/SearchStreet/appeal/getappeallistbyuserid?token=" + token + "&pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
+        url: app.globalData.serviceUrl + "/SearchStreet/appeal/getappeallistbyuserid?pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
         data: {
 
         },
         method: 'POST',
+        header: {
+          'content-type': 'application/json',
+          'token': token
+        },
         success: function (res) {
           console.log(res.data);
           if (res.data.success) {
             console.log(res.data);
             var List = res.data.appealList;
             for (var i = 0; i < List.length; i++) {
+              if(List[i].appealStatus==3){
+                   if(List[i].endTime<new Date().getTime())
+                   {
+                     that.data.inactive_text[i]='时间失效'
+                   }
+                   else{
+                     that.data.inactive_text[i]='撤销单'
+                   }
+              }
               var format = List[i];
               format.endTime = util.formatDate1(List[i].endTime);
-              List[i]=format;
-            }
-            for(var i=0;i<List.length;i++){
-              disabled[i]=false;
-              disabled1[i]=false;
-            }
+              List[i] = format;
+             }
             that.setData({
               list: List,
-              disabled:disabled,
+              inactive_text:that.data.inactive_text
             })
             console.log(that.data.list);
           } else {
@@ -174,6 +185,147 @@ Page({
      url: '../myhelp-details/myhelp-details?id='+e.currentTarget.id,
    })
   },
+requesthelp(){
+    var that = this;
+    var token = null;
+    try {
+      const value = wx.getStorageSync('token')
+      if (value) {
+        token = value;
+        that.data.token = value;
+      }
+    } catch (e) {
+      console.log("error");
+    }
+    wx.request({
+        url: app.globalData.serviceUrl + "/SearchStreet/appeal/getappeallistbyuserid?pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
+        data: {
+
+        },
+        method: 'POST',
+      header: {
+        'content-type': 'application/json',
+        'token': token
+      },
+        success: function (res) {
+          console.log(res.data);
+          if (res.data.success) {
+            console.log(res.data);
+            var List = res.data.appealList;
+            for (var i = 0; i < List.length; i++) {
+              var format = List[i];
+              format.endTime = util.formatDate1(List[i].endTime);
+              List[i] = format;
+
+
+            }
+            that.setData({
+              list: List,
+              //disabled:disabled,
+            })
+            console.log(that.data.list);
+          } else {
+            if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+              wx.redirectTo({
+                url: '../../page/login/login'
+              })
+            }
+          }
+        },
+        fail: function (res) {
+          console.log('submit fail');
+        },
+        complete: function (res) {
+          console.log('submit complete');
+        }
+      })
+},
+  requestservice() {
+    var that = this;
+    var token = null;
+    var List1 = [];
+    var showcoin = [];
+    var showcomment = [];
+    console.log(that.data.list);
+    try {
+      const value = wx.getStorageSync('token')
+      if (value) {
+        token = value;
+        that.data.token = value;
+      }
+    } catch (e) {
+      console.log("error");
+    }
+      wx.request({
+        url: app.globalData.serviceUrl + "/SearchStreet/help/gethelplistbyuserid?pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
+        data: {
+
+        },
+        method: 'GET',
+        header: {
+          'content-type': 'application/json',
+          'token': token
+        },
+        success: function (res) {
+          console.log(res.data);
+          if (res.data.success) {
+            console.log(res.data);
+            List1 = res.data.helpList;
+            for (var i = 0; i < List1.length; i++) {
+              if (List1[i].additionalCoin != 0) showcoin[i] = false;
+              else showcoin[i] = true;
+              if (List1[i].attitude != 0 && List1[i].completion != 0 && List1[i].efficiency != 0) showcomment[i] = false;
+              else showcomment[i] = true;
+            }
+            for (var i = 0; i < List1.length; i++) {
+              wx.request({
+                url: app.globalData.serviceUrl + "/SearchStreet/appeal/getappealbyid?appealId=" + List1[i].appealId,
+                data: {
+
+                },
+                method: 'GET',
+                success(res) {
+                  console.log(res.data);
+                  if (res.data.success) {
+                   that.data.end_time.push(res.data.appeal.endTime + 3600 * 24 * 1000);
+                    var format = res.data.appeal;
+                    format.endTime = util.formatDate1(res.data.appeal.endTime);
+                    console.log(format.endTime);
+                    that.data.list2.push(format);
+                  }
+                }
+              })
+            }
+            that.countDown();
+            that.setData({
+              List1: List1,
+              showcoin: showcoin,
+              showcomment: showcomment,
+            })
+          }
+          else if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
+            wx.redirectTo({
+              url: '../../page/login/login'
+            })
+          }
+
+        },
+        fail: function (res) {
+          console.log('submit fail');
+        },
+        complete: function (res) {
+          console.log('submit complete');
+        }
+      })
+    
+    this.setData({
+      list2: that.data.list2,
+      showcoin: that.data.showcoin,
+      showcomment: that.data.showcomment,
+      end_time: that.data.end_time
+    })
+    console.log(this.data.list2);
+  },
 /* 点击确认已被帮助按钮功能 */
 finishedHelp:function(e){
   var that=this;
@@ -187,25 +339,52 @@ finishedHelp:function(e){
     console.log("error");
   }
   wx.request({
-    url: app.globalData.serviceUrl+"/SearchStreet/appeal/competeappeal?token="+token,
-    data:{
-    appealId:e.target.id,
-    helpId:2
+    url: app.globalData.serviceUrl + "/SearchStreet/help/gethelplistbyappealid?appealId=" + e.target.id + "&pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
+    data: {
+    helpStatus:1
     },
-    method:'GET',
-    success(res){
+    method: 'GET',
+    success(res) {
       console.log(res.data);
-      if(res.data.success){
-        that.setData({
-          btnhover: true,
-        }) 
+      if(res.data.helpList.length==0){
+        wx.showModal({
+          title: '提示',
+          content: '此求助还未确定帮助者，不能确认已被帮助',
+        })
       }
+      else{
+       that.data.helpId = res.data.helpList[0].helpId;
+          console.log(that.data.helpId);
+          wx.request({
+            url: app.globalData.serviceUrl + "/SearchStreet/appeal/competeappeal",
+            data: {
+              appealId: e.target.id,
+              helpId: that.data.helpId,
+            },
+            method: 'GET',
+            header: {
+              'content-type': 'application/json',
+              'token': token
+            },
+            success(res) {
+              console.log(res.data);
+              if (res.data.success) {
+               that.requesthelp();
+               that.requestservice();
+              }
+            }
+          })
+        }
+     that.setData({
+       helpId:that.data.helpId
+     })
     }
   })
-},
+ },
 
 /*点击帮助无效按钮功能 */
 unfinishedHelp:function(e){
+  var that=this;
   var token = null;
   try {
     const value = wx.getStorageSync('token')
@@ -216,32 +395,67 @@ unfinishedHelp:function(e){
     console.log("error");
   }
   wx.request({
-    url: app.globalData.serviceUrl + "/SearchStreet/appeal/disableappeal?token=" + token,       /*完整后台url，将此状态变为已完成（不会将搜币打到对方账户），并告知给提供服务的人 */
+    url: app.globalData.serviceUrl + "/SearchStreet/appeal/disableappeal",       /*完整后台url，将此状态变为已完成（不会将搜币打到对方账户），并告知给提供服务的人 */
     data: {
       appealId: e.target.id,
       //helpId: 1
     },
     method: 'GET',
+    header: {
+      'content-type': 'application/json',
+      'token': token
+    },
     success(res) {
       console.log(res.data);
       if(res.data.success){
-        this.setData({
-          btnhover1: true,
-        }) 
+        that.requesthelp();
+        that.requestservice();
+      }else{
+        wx.showModal({
+          title: '提示',
+          content: '此求助还未确定帮助者，不能使帮助无效',
+        })
       }
     }
   })
 },
 /* 点击撤销按钮功能 */
-withdrawHelp:function(e){
+  withdrawHelp:function(e){
+  var that=this;
+  var token = null;
+  try {
+    const value = wx.getStorageSync('token')
+    if (value) {
+      token = value;
+    }
+  } catch (e) {
+    console.log("error");
+  }
   wx.request({
-    url: app.globalData.serviceUrl + "/SeacrhStreet/appeal/cancelappeal?token=" + token,          /*根据求助ID查看是否有人对此求助提供了帮助，若无人接单，才可撤销，将其变为失效单 */  
+    url: app.globalData.serviceUrl + "/SearchStreet/appeal/cancelappeal",          /*根据求助ID查看是否有人对此求助提供了帮助，若无人接单，才可撤销，将其变为失效单 */  
     data:{
       appealId:e.target.id
     },
     method:'GET',
+    header: {
+      'content-type': 'application/json',
+      'token': token
+    },
    success(res){
      console.log(res.data);
+     if(res.data.success){
+     var inactive=that.data.inactive_text;
+     inactive[e.currentTarget.dataset.id]='撤销单';
+     that.setData({
+       inactive_text:inactive
+     })
+     that.requesthelp();
+   }else{
+     wx.showModal({
+       title: '提示',
+       content: '已有人对此提出了帮助，不能撤销哦',
+     })
+   }
    }
   })
 },
@@ -281,10 +495,19 @@ inputComment:function(e){
     })
   },
 
+  /*点击取消评价按钮功能 */
+  can: function (e) {
+    console.log(e);
+    var that = this;
+    this.setData({
+      ifcomment: false,
+    })
+  },
   /**
    * 评分
    */
   chooseStar: function (e) {
+    console.log(e);
     const index = e.currentTarget.dataset.index;
     const star = e.target.dataset.star;
     let evaluations = this.data.evaluations;
@@ -298,8 +521,11 @@ inputComment:function(e){
     console.log(this.data.evaluations);
   },
 
+  
+
 /* 点击确认评价按钮的功能 */
-  confirmcomment:function(){
+  confirmcomment:function(e){
+    console.log(e);
     var that = this;
     var disabled = that.data.disabled1;
     if (that.data.evaluations[0].star == 0) {
@@ -329,17 +555,22 @@ inputComment:function(e){
         console.log("error");
       }
       wx.request({
-        url: app.globalData.serviceUrl + "/SearchStreet/help/commenthelp?token=" + token +'&helpId='+that.data.helpId,
+        url: app.globalData.serviceUrl + "/SearchStreet/help/commenthelp?helpId="+that.data.helpId,
         data: {
           completion: that.data.evaluations[0].star,
           efficiency: that.data.evaluations[1].star,
           attitude: that.data.evaluations[2].star,
         },
         method: "GET",
+        header: {
+          'content-type': 'application/json',
+          'token': token
+        },
         success: res => {
           console.log(res);
           if (res.data.success) {
             disabled[that.data.appealindex] = true;
+            that.requestservice();
              that.setData({
                ifcomment:false,
                disabled1:disabled,
@@ -424,17 +655,22 @@ confirm:function(e){
     }
     console.log(that.data.helpId);
     wx.request({
-      url: app.globalData.serviceUrl + "/SearchStreet/help/additionsoucoin?token=" + token,         /* 将打赏金额的数值传给后台 */
+      url: app.globalData.serviceUrl + "/SearchStreet/help/additionsoucoin",         /* 将打赏金额的数值传给后台 */
       data:{
         additionSouCoin:parseInt(this.data.reward),
         appealId:this.data.id,
         helpId:that.data.helpId,
+      },
+      header: {
+        'content-type': 'application/json',
+        'token': token
       },
       success(res){
         console.log(res);
         console.log(that.data.appealindex);
         if(res.data.success){
           disabled[that.data.appealindex]=true;
+          that.requestservice();
         that.setData({
           ifName:false,
           disabled:disabled,
@@ -505,11 +741,8 @@ confirm:function(e){
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    //console.log(options);
-    var phelptime1=[];
     var that = this ;    
     var token = null;
-    var list3=[];
     var List1=[];
     var showcoin=[];
     var showcomment=[];
@@ -525,11 +758,15 @@ confirm:function(e){
     }
     if(that.data.current=='tab1'){
       wx.request({
-        url: app.globalData.serviceUrl + "/SearchStreet/help/gethelplistbyuserid?token=" + token + "&pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
+        url: app.globalData.serviceUrl + "/SearchStreet/help/gethelplistbyuserid?pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
         data: {
         
         },
         method: 'GET',
+        header: {
+          'content-type': 'application/json',
+          'token': token
+        },
         success: function (res) {
           console.log(res.data);
           if (res.data.success) {
@@ -551,13 +788,7 @@ confirm:function(e){
                 success(res) {
                   console.log(res.data);
                   if(res.data.success){
-                  if (res.data.appeal.endTime+3600*24*1000 - new Date().getTime() <= 0) that.data.targetTime=0;                  
-                  else {
-                  that.data.second = Math.floor((res.data.appeal.endTime+3600*24*1000 - new Date().getTime()) / 1000);
-                  console.log(that.data.second);
-                  countdown(that);
-                  }
-                  console.log(that.data.second);
+                   that.data.end_time.push(res.data.appeal.endTime+3600*24*1000);
                     var format = res.data.appeal;
                     format.endTime = util.formatDate1(res.data.appeal.endTime);
                     console.log(format.endTime);
@@ -566,7 +797,7 @@ confirm:function(e){
                 }
               })
             }
-            //console.log(that.data.phelptime1)
+            that.countDown();
             that.setData({
               List1:List1,
               showcoin:showcoin,
@@ -592,11 +823,34 @@ confirm:function(e){
       list2: that.data.list2,
       showcoin:that.data.showcoin,
       showcomment:that.data.showcomment,
-      //phelptime1:that.data.phelptime1,
+      end_time:that.data.end_time
     })
     console.log(this.data.list2);
     },
-  
+  countDown() {//倒计时函数
+    // 获取当前时间，同时得到活动结束时间数组
+    let newTime = new Date().getTime();
+    let endTimeList = this.data.end_time;
+    let countDownArr = [];
+
+    // 对结束时间进行处理渲染到页面
+    endTimeList.forEach(endTime => {
+      // 如果活动未结束，对时间进行处理
+      let obj=null;
+      if (endTime - newTime > 0) {
+        let time = Math.floor((endTime - newTime) / 1000);
+        obj=util.formatTime(time);
+      } else {//活动已结束，全部设置为'00'
+       obj=util.formatTime(0);
+       clearTimeout(number);
+      }
+      countDownArr.push(obj);
+    })
+    // 渲染，然后每隔一秒执行一次倒计时函数
+    this.setData({ countDownList: countDownArr })
+    var number=setTimeout(this.countDown, 1000);
+  },
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -609,7 +863,9 @@ confirm:function(e){
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+  this.setData({
+    helpId:this.data.helpId
+  })
   },
 
   /**

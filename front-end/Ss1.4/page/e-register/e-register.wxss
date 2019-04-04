@@ -1,5 +1,8 @@
 /* page/register/register.wxss */
 @import "../../weui.wxss";
+.contanier1{
+  margin-top:-20rpx;
+}
 .header{
   height: 90px;
 }

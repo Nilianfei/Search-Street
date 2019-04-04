@@ -18,18 +18,22 @@ Page({
     cimgId: [],
     state: [{
       "id": 0,
+      "color": "green",
       "state": "已下单"
     },
     {
       "id": 1,
+      "color": "orange",
       "state": "待评价"
     },
     {
       "id": 2,
+      "color": "gray",
       "state": "已完成"
     },
     {
       "id": 3,
+      "color": "grey",
       "state": "已取消"
     }],
     token: null,

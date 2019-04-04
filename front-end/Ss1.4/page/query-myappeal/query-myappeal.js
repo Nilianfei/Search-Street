@@ -33,11 +33,15 @@ Page({
       console.log("error");
     }
     wx.request({
-      url: app.globalData.serviceUrl + "/SearchStreet/appeal/getappeallistbyuserid?token=" + token + " &pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
+      url: app.globalData.serviceUrl + "/SearchStreet/appeal/getappeallistbyuserid?pageIndex=" + 0 + "&pageSize=" + that.data.pageSize,
         data: {
            appealTitle:that.data.value
        },
       method: 'POST',
+      header: {
+        'content-type': 'application/json',
+        'token': token
+      },
       success: function (res) {
         console.log(res.data);
         if (res.data.success) {

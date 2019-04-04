@@ -29,7 +29,11 @@ Page({
     wx.request({
       url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
       data: {
-        token: token
+        //token: token
+      },
+      header: {
+        'content-type': 'application/json',
+        'token': token
       },
       success: function (res) {
         // 拿到自己后台传过来的数据，自己作处理

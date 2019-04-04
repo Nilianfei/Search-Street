@@ -183,6 +183,7 @@ Page({
         startTime: appealList[i].startTime,
         endTime: appealList[i].endTime,
         souCoin: appealList[i].souCoin,
+        iconPath: "/images/help_markers.png",
       }
 
     }

@@ -201,8 +201,8 @@ Page({
             latitude: latitude,
             longitude: longitude,
             iconPath: '../../images/locat.png',//图标路径
-            width: 20,
-            height: 20,
+            width: 40,
+            height: 40,
           }],
           poi: { //根据自己data数据设置相应的地图中心坐标变量名称
             latitude: latitude,
@@ -218,10 +218,13 @@ Page({
       },
       complete: function (res) {
         console.log(res);
+        
       }
     })
+    //console.log(this.data.markers)
   },
   formSubmit: function (e) {
+    console.log(e);
     var that = this;
     var errorMsg = this.data.errorMsg;
     if (that.data.business_logo.length == 0) {
@@ -264,12 +267,29 @@ Page({
           phone_error: errorMsg
         }
       })
-    } else if (e.detail.value.fullAddress.length == 0) {
+    } else if (!(/^1(3|4|5|7|8)\d{9}$/.test(e.detail.value.phone))) //验证11位手机号码
+    {
+      if (!/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(e.detail.value.phone)) {
+        //验证固定电话号码
+        wx.showModal({
+          title: '提示',
+          content: '您输入的手机号码或固定号码有误，请重新输入',
+        })
+      }
+    } 
+    else if (e.detail.value.fullAddress.length == 0) {
       wx.showModal({
         title: '提示',
         content: '请您输入商店的完整地址',
       })
-    } else {
+    } 
+    else if(that.data.latitude==null||that.data.longitude==null){
+      wx.showModal({
+        title: '提示',
+        content: '您还没有开启定位哦',
+      })
+      }
+      else {
       //console.log('form发生了submit事件，携带数据为：', e.detail.value);
       //var that = this;
       var token = null;
@@ -284,9 +304,7 @@ Page({
       }
       wx.request({
         url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/registershop",
-        header:{
-          token: token
-        },
+
         data: {
           shopName: e.detail.value.shopName,
           businessScope: e.detail.value.businessScope,
@@ -303,6 +321,10 @@ Page({
           isMobile: 0
         },
         method: "POST",
+        header: {
+          'content-type': 'application/json',
+          'token': token
+        },
         success: res => {
           console.log(res);
           if (res.data.success) {
@@ -311,24 +333,30 @@ Page({
               data: res.data.shopId
             })
             var date = new Date();
-            var url = app.globalData.serviceUrl + "/SearchStreet/shopadmin/uploadimg?shopId=" + res.data.shopId + "&createTime=" + app.timeStamp2String(date) + "&token=" + token;
+            var url = app.globalData.serviceUrl + "/SearchStreet/shopadmin/uploadimg?shopId=" + res.data.shopId + "&createTime=" + app.timeStamp2String(date);
             app.uploadAImg({
               url: url,
               filePath: that.data.business_img[0],
-              fileName: "businessLicenseImg"
+              fileName: "businessLicenseImg",
+              token:token,
             })
             app.uploadAImg({
               url: url,
               filePath: that.data.business_logo[0],
-              fileName: "profileImg"
+              fileName: "profileImg",
+              token: token,
             })
             for (var i = 0; i < that.data.shop_imgs.length; i++) {
               app.uploadAImg({
                 url: url,
                 filePath: that.data.shop_imgs[i],
-                fileName: "shopImg"
+                fileName: "shopImg",
+                token: token,
               })
             }
+            wx.navigateBack({
+              delta:1
+            })
           } else {
             if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {
               wx.redirectTo({

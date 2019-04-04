@@ -54,9 +54,13 @@ Page({
     })
     //查询用户是否提交过帮助该求助的申请
     wx.request({
-      url: app.globalData.serviceUrl+"/SearchStreet/help/queryishelp?appealId=" + that.data.appealId + "&token=" + that.data.token,
+      url: app.globalData.serviceUrl+"/SearchStreet/help/queryishelp?appealId=" + that.data.appealId,
       data: {},
       method: "GET",
+      header: {
+        'content-type': 'application/json',
+        'token': that.data.token
+      },
       success: res => {
         console.log(res);
         if(res.data.success){
@@ -85,12 +89,16 @@ Page({
     var that = this;
     if (!that.data.isHelp) {
       wx.request({
-        url: app.globalData.serviceUrl+"/SearchStreet/help/addHelp?token="+that.data.token,
+        url: app.globalData.serviceUrl+"/SearchStreet/help/addHelp",
         data: {
           appealId: that.data.appealId,
           appealTitle: that.data.appeal.appealTitle,
         },
         method: "POST",
+        header: {
+          'content-type': 'application/json',
+          'token': that.data.token
+        },
         success: res => {
           that.setData({
             bottonText: "您已经申请，请等待...",

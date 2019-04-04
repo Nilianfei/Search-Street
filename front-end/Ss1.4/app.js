@@ -40,6 +40,10 @@ App({
       url: data.url,
       filePath: data.filePath,
       name: data.fileName,
+      header: {
+        'content-type': 'application/json',
+        'token': data.token
+      },
       success: function (res) {
         console.log("upload"+ data.fileName + res.data);
       }, fail: function (error) {
