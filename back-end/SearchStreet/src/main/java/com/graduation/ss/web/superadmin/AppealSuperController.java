@@ -2,6 +2,8 @@ package com.graduation.ss.web.superadmin;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -154,8 +156,20 @@ public class AppealSuperController {
 		int appealStatus=HttpServletRequestUtil.getInt(request, "appealStatus");
 		Float latitude=HttpServletRequestUtil.getFloat(request, "latitude");
 		Float longitude=HttpServletRequestUtil.getFloat(request, "longitude");
-		Date startTime=HttpServletRequestUtil.getDate(request, "startTime");
-		Date endTime=HttpServletRequestUtil.getDate(request, "endTime");
+		String startTimeStr=HttpServletRequestUtil.getString(request, "startTime");
+		String endTimeStr=HttpServletRequestUtil.getString(request, "endTime");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date startTime;
+		Date endTime;
+		try {
+			startTime = sdf.parse(startTimeStr);
+			endTime = sdf.parse(endTimeStr);
+		} catch (ParseException e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.toString());
+			return modelMap;
+		}
+		
 		Appeal appeal = new Appeal();
 		appeal.setAppealContent(appealContent);
 		appeal.setAppealMoreInfo(appealMoreInfo);
@@ -213,8 +227,20 @@ public class AppealSuperController {
 		int appealStatus=HttpServletRequestUtil.getInt(request, "appealStatus");
 		Float latitude=HttpServletRequestUtil.getFloat(request, "latitude");
 		Float longitude=HttpServletRequestUtil.getFloat(request, "longitude");
-		Date startTime=HttpServletRequestUtil.getDate(request, "startTime");
-		Date endTime=HttpServletRequestUtil.getDate(request, "endTime");
+		String startTimeStr=HttpServletRequestUtil.getString(request, "startTime");
+		String endTimeStr=HttpServletRequestUtil.getString(request, "endTime");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date startTime;
+		Date endTime;
+		try {
+			startTime = sdf.parse(startTimeStr);
+			endTime = sdf.parse(endTimeStr);
+		} catch (ParseException e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.toString());
+			return modelMap;
+		}
+		
 		Appeal appeal = new Appeal();
 		appeal.setAppealContent(appealContent);
 		appeal.setAppealId(appealId);

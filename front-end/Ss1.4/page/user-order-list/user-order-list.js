@@ -260,7 +260,7 @@ Page({
 
     //查询用户待评价订单
     wx.request({
-      url: app.globalData.serviceUrl + '/SearchStreet/order/getOrderlistbyuo?userId=' + that.data.userId + '&orderStatus=1',
+      url: app.globalData.serviceUrl + '/SearchStreet/order/getOrderlistAndServicebyuo?userId=' + that.data.userId + '&orderStatus=1',
       data: {},
       method: "GET",
       success: res => {
@@ -271,7 +271,18 @@ Page({
           var simg = [];
           var simgid = [];
           var id = that.data.imgId;
+          var service = res.data.serviceList;
           for (var i = 0; i < order.length; i++) {
+
+            /*
+             *跳过null 需要与后端沟通更好的解决办法
+             */
+            if (service[i] == null) {
+              console.log("do this continue.");
+              order[i].orderStatus = 4;
+              continue;
+            };
+
             var time = JSON.stringify(order[i].createTime);
             order[i].createTime = util.formatDate(time);
             if (order[i].overTime != null) {
@@ -302,7 +313,7 @@ Page({
     var that = this;
     //查询用户已取消的订单
     wx.request({
-      url: app.globalData.serviceUrl + '/SearchStreet/order/getOrderlistbyuo?userId=' + that.data.userId + '&orderStatus=3',
+      url: app.globalData.serviceUrl + '/SearchStreet/order/getOrderlistAndServicebyuo?userId=' + that.data.userId + '&orderStatus=3',
       data: {},
       method: "GET",
       success: res => {
@@ -314,7 +325,18 @@ Page({
             var cimg = [];
             var id = that.data.imgId;
             var cimgid = [];
+            var service = res.data.serviceList;
             for (var i = 0; i < order.length; i++) {
+
+              /*
+             *跳过null 需要与后端沟通更好的解决办法
+             */
+              if (service[i] == null) {
+                console.log("do this continue.");
+                order[i].orderStatus = 4;
+                continue;
+              };
+
               var time = JSON.stringify(order[i].createTime);
               order[i].createTime = util.formatDate(time);
               if (order[i].overTime != null) {
