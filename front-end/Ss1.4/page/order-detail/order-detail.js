@@ -9,6 +9,7 @@ Page({
     order:null,
     createTime:"",
     overTime:"",
+    imgUrl: app.globalData.imgUrl ,
     state: [{
       "id": 0,
       "color": "green",
@@ -116,19 +117,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (order != null) {
-      var time = JSON.stringify(order.createTime);
-      var createTime = util.formatDate(time);
-      var overTime = "";
-      if (order.overTime != null) {
-        time = JSON.stringify(order.overTime);
-        overTime = util.formatDate(time);
-      }
-      that.setData({
-        createTime: createTime,
-        overTime: overTime
-      })
-    }
   },
 
   /**
@@ -175,6 +163,9 @@ Page({
     var order = e.target.dataset.item;
     console.log(order)
     order.orderStatus = 3;
+    order.createTime = new Date(order.createTime);
+    if (order.overTime != '')
+      order.overTime = new Date(order.overTime);
     order = JSON.stringify(order);
     wx.request({
       url: app.globalData.serviceUrl + "/SearchStreet/order/changeorderstatus",
@@ -186,8 +177,14 @@ Page({
       success: res => {
         console.log(res);
         if (res.data.success) {
+          var overTime = "";
+          if (res.data.order.overTime != null) {
+            var time = JSON.stringify(res.data.order.overTime);
+            overTime = util.formatDate(time);
+          }
          that.setData({
-           order:res.data.order
+           order:res.data.order,
+           overTime: overTime
          })
         }
       }
@@ -198,6 +195,9 @@ Page({
     var order = e.target.dataset.item;
     console.log(order)
     order.orderStatus = 1;
+    order.createTime = new Date(order.createTime);
+    if (order.overTime != '')
+      order.overTime = new Date(order.overTime);
     order = JSON.stringify(order);
     wx.request({
       url: app.globalData.serviceUrl + '/SearchStreet/order/changeorderstatus',
@@ -209,9 +209,20 @@ Page({
       success: res => {
         console.log(res);
         if (res.data.success) {
+          var overTime = "";
+          if (res.data.order.overTime != null) {
+            var time = JSON.stringify(res.data.order.overTime);
+            overTime = util.formatDate(time);
+          }
           that.setData({
-            order: res.data.order
+            order: res.data.order,
+            overTime: overTime
           })
+           wx.showToast({
+            title: "订单已确认",
+            icon: '',
+            duration: 1500
+          });
         }
       }
     })

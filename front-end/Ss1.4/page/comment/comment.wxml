@@ -3,7 +3,7 @@
  <form bindsubmit='formSubmit' bindreset='formReset'>
   <view class="comment">
     <view class="serviceinfo" >
-      <image class="serviceimg" src='{{service.serviceImgAddr}}' mode="cover"></image>
+      <image class="serviceimg" src='{{imgUrl+service.serviceImgAddr}}' mode="cover"></image>
       <text class="servicename">服务名称：{{service.serviceName}}</text>
     </view>
     <view class="star-pos">

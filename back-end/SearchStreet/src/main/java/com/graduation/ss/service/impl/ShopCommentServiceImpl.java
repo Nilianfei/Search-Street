@@ -16,7 +16,9 @@ import com.graduation.ss.entity.OrderInfo;
 import com.graduation.ss.entity.Shop;
 import com.graduation.ss.entity.ShopComment;
 import com.graduation.ss.enums.ShopCommentStateEnum;
+import com.graduation.ss.exceptions.OrderOperationException;
 import com.graduation.ss.exceptions.ShopCommentOperationException;
+import com.graduation.ss.exceptions.ShopOperationException;
 import com.graduation.ss.service.ShopCommentService;
 import com.graduation.ss.util.PageCalculator;
 
@@ -90,34 +92,51 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 		int serviceAvg=0;
 		int starAvg=0;
 		int successRate=0;
-		Shop shop=shopDao.queryByShopId(shopId);
-		ShopComment shopComment=new ShopComment();
-		shopComment.setShopId(shopId);
-		List<ShopComment> shopCommentList=shopCommentDao.queryShopCommentList2(shopComment);
-		if(shopCommentList!=null&&shopCommentList.size()!=0)
+		Shop shop=new Shop();
+		try
 		{
-			serviceAvg = shopCommentDao.queryAvgServiceRating(shopId);
-			starAvg=shopCommentDao.queryAvgStarRating(shopId);
-			List<OrderInfo> orderlist=new ArrayList<OrderInfo>();
-			List<OrderInfo> torderlist=new ArrayList<OrderInfo>();
-			for(int i=0;i<shopCommentList.size();i++)
+			shop=shopDao.queryByShopId(shopId);
+			ShopComment shopComment=new ShopComment();
+			shopComment.setShopId(shopId);
+			try
 			{
-				OrderInfo  orderCondition =orderDao.queryByOrderId(shopCommentList.get(i).getOrderId());
-				torderlist.add(orderCondition);
-				if(orderCondition.getOrderStatus()==3)
-				orderlist.add(orderCondition);
+				List<ShopComment> shopCommentList=shopCommentDao.queryShopCommentList2(shopComment);
+				if(shopCommentList!=null&&shopCommentList.size()!=0)
+				{
+					serviceAvg = shopCommentDao.queryAvgServiceRating(shopId);
+					starAvg=shopCommentDao.queryAvgStarRating(shopId);
+					List<OrderInfo> orderlist=new ArrayList<OrderInfo>();
+					List<OrderInfo> torderlist=new ArrayList<OrderInfo>();
+					try {
+						for(int i=0;i<shopCommentList.size();i++)
+						{
+							OrderInfo  orderCondition =orderDao.queryByOrderId(shopCommentList.get(i).getOrderId());
+							torderlist.add(orderCondition);
+							if(orderCondition.getOrderStatus()==3)
+							orderlist.add(orderCondition);
+						}
+						int torderNum=torderlist.size();
+						if(torderNum!=0)
+						{
+							int forderNum=torderNum-orderlist.size();
+							float s=((float)forderNum/torderNum)*100;
+							successRate=(int)s;
+						}
+					}catch (Exception e) {
+						throw new OrderOperationException("get orderInfo error" + e.getMessage());
+					}
+				}
 			}
-			int torderNum=torderlist.size();
-			if(torderNum!=0)
-			{
-				int forderNum=torderNum-orderlist.size();
-				float s=((float)forderNum/torderNum)*100;
-				successRate=(int)s;
+			catch (Exception e) {
+				throw new ShopCommentOperationException("get shopCommentList error" + e.getMessage());
 			}
+			shop.setServiceAvg(serviceAvg);
+			shop.setStarAvg(starAvg);
+			shop.setSuccessRate(successRate);
 		}
-		shop.setServiceAvg(serviceAvg);
-		shop.setStarAvg(starAvg);
-		shop.setSuccessRate(successRate);
+		catch (Exception e) {
+			throw new ShopOperationException("shop doesn't exist:" + e.getMessage());
+		}
 		return shop;
 		
 	}

@@ -121,14 +121,11 @@ public class SServiceImpl implements SService {
         		//图片存在，则删除图片
 					serviceExecution=deleteServiceImg(serviceImg);
         	  }
-        	  else
-        	  {
-        		  if (createTime==null) {
+        	  if (createTime==null) {
   					
   					return new ServiceExecution(ServiceStateEnum.NULL_SERVICEIMG_CREATETIME);
   				}
         		  serviceExecution=addServiceImg(serviceId, serviceImgHolder,createTime);
-        	  }
           }
 		}
 		catch (Exception e) {

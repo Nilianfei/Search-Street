@@ -151,25 +151,26 @@ public class OrderServiceImpl implements OrderService {
 		return se;
 	}
 	@Override
-	public OrderExecution getByUserIdAndServiceId(long userId,long serviceId, int pageIndex, int pageSize){
-		// 将页码转换成行码
-		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+	public OrderExecution getByUserIdAndServiceId(long userId,long serviceId){
 		// 依据查询条件，调用dao层返回相关的订单列表
 		//查询正在进行的服务订单
 		OrderInfo orderCondition = new OrderInfo();
 		orderCondition.setUserId(userId);
 		orderCondition.setServiceId(serviceId);
 		orderCondition.setOrderStatus(0);
-		List<OrderInfo> orderList = orderDao.queryOrderList(orderCondition, rowIndex, pageSize);
-		int count = orderDao.queryOrderCount(orderCondition);
 		OrderExecution se = new OrderExecution();
-		if (orderList!=null) {
-			se.setOrderList(orderList);
-			se.setOrder(orderList.get(0));
-			se.setCount(count);
-		} 
-		else {
-			se.setState(OrderStateEnum.INNER_ERROR.getState());
+		try
+		{
+			OrderInfo order= orderDao.queryOrderByUS(orderCondition);
+			if (order!=null) {
+				se.setOrder(order);
+				se.setState(OrderStateEnum.SUCCESS.getState());
+			} 
+			else {
+				se.setState(OrderStateEnum.INNER_ERROR.getState());
+			}
+		}catch (Exception e) {
+				throw new OrderOperationException("getByUserIdAndServiceId error:" + e.toString());
 		}
 		return se;
 	}

@@ -48,7 +48,7 @@ public interface OrderService {
 	 * @param userId serviceId
 	 * @return
 	 */
-	public OrderExecution getByUserIdAndServiceId(long userId, long serviceId,int pageIndex, int pageSize);
+	public OrderExecution getByUserIdAndServiceId(long userId, long serviceId);
 	/**
 	 * 通过订单Id获取订单信息
 	 * 

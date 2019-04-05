@@ -34,11 +34,16 @@ function formatDate(inputTime) {
   {
     minute = strlist[4].substr(0, strlist[4].length - 1);
   }
-  else
+  else if (strlist.length == 6)
   {
     minute = strlist[4];
     second = strlist[5].substr(0, strlist[5].length - 1);
   }   
+  else if (strlist.length == 7)
+  {
+    minute = strlist[4];
+    second = strlist[5];
+  }
   minute = minute < 10 ? ('0' + minute) : minute;
   second = second < 10 ? ('0' + second) : second;
   return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;

@@ -6,11 +6,13 @@ Page({
    * 页面的初始数据
    */
   data: {
+    f:false,                //判断要不要执行onShow()里的方法
     visible:false,
     service:null,
     bottonText:"立即预约",
     token:null,
     serviceId:null,
+    imgUrl: app.globalData.imgUrl ,
     order: {
       "createTime": "",
       "orderId": 0,
@@ -159,6 +161,10 @@ Page({
         }
       }
     })
+    that.setData({
+      f:true
+    })
+    console.log("onLoad")
   },
   handleChange1({ detail }) {
     this.setData({
@@ -209,7 +215,30 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    var that = this;
+     //查询用户是否预约过服务
+     wx.request({
+       url: app.globalData.serviceUrl + '/SearchStreet/order/getOrderlistbyus?serviceId=' + that.data.serviceId + "&userId=" + that.data.userId,
+       data: {},
+       method: "GET",
+       success: res => {
+         console.log(res);
+         if (res.data.isbook) {
+           that.setData({
+             bottonText: "已预约",
+             order: res.data.order,
+             flag: true
+           })
+         }
+         else {
+           that.setData({
+             bottonText: "立即预约",
+             flag: false
+           })
+         }
+       }
+     })
+     console.log("onShow")
   },
 
   /**

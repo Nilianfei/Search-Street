@@ -17,8 +17,8 @@ Page({
       "commentReply": ""
     },
     noteMaxLen: 300, // 最多放多少字
-    texts: "至少输入8个字",
-    noteMinLen: 8,
+    texts: "至少输入5个字",
+    noteMinLen: 5,
     info: "",
     noteNowLen: 0,//备注当前字数
     order: null
@@ -29,9 +29,9 @@ Page({
     var that = this;
     var bf=true;
     var value = e.detail.value;
-    var text = '至少输入8个字';
+    var text = '至少输入5个字';
     var len = parseInt(value.length);
-    var llen = 8 - len;
+    var llen = 5 - len;
     if (len > that.data.noteMaxLen)
       return;
     if (len < that.data.noteMinLen && len != 0)

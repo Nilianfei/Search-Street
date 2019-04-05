@@ -170,4 +170,23 @@
 				and order_status!=0
 		</where>
 	</select>
+	<select id="queryOrderByUS" resultType="com.graduation.ss.entity.OrderInfo">
+		SELECT
+		order_id,service_id,user_id,service_count,order_status,create_time,over_time,service_name,order_price
+		FROM
+		tb_order 
+	    <where>
+			<if
+				test="orderCondition.userId != null">
+				and user_id = #{orderCondition.userId}
+			</if> 
+			<if
+				test="orderCondition.serviceId != null">
+				and service_id = #{orderCondition.serviceId}
+			</if> 
+			<if test="orderCondition.orderStatus != null">
+				and order_status= #{orderCondition.orderStatus}
+			</if>
+		</where>
+	</select>
 </mapper>

@@ -3,7 +3,7 @@
   <view class='little-bottom'>
     <image
       class='image'
-      src="{{service.serviceImgAddr}}"
+      src="{{imgUrl+service.serviceImgAddr}}"
     ></image>
   </view>
   <view class='little-bottom'>

@@ -336,6 +336,9 @@ Page({
     var order = e.target.dataset.item;
     console.log(order)
     order.orderStatus = 3;
+    order.createTime = new Date(order.createTime);
+    if (order.overTime != '')
+      order.overTime = new Date(order.overTime);
     order = JSON.stringify(order);
     wx.request({
       url: app.globalData.serviceUrl + "/SearchStreet/order/changeorderstatus",
@@ -357,6 +360,9 @@ Page({
     var order = e.target.dataset.item;
     console.log(order)
     order.orderStatus = 1;
+    order.createTime = new Date(order.createTime);
+    if (order.overTime != '')
+      order.overTime = new Date(order.overTime);
     order = JSON.stringify(order);
     wx.request({
       url: app.globalData.serviceUrl + '/SearchStreet/order/changeorderstatus',
@@ -368,6 +374,11 @@ Page({
       success: res => {
         console.log(res);
         if (res.data.success) {
+          wx.showToast({
+            title: "订单已确认",
+            icon: '',
+            duration: 1500
+          });
           that.allShow();
         }
       }

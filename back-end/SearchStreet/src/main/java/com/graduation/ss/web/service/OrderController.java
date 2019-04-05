@@ -74,29 +74,20 @@ public class OrderController {
 				@ApiOperation(value = "根据userID serviceId获取正在进行的订单")
 				@ApiImplicitParams({
 					@ApiImplicitParam(paramType = "query", name = "userId", value = "用户ID", required = true, dataType = "Long", example = "1"),
-					@ApiImplicitParam(paramType = "query", name = "serviceId", value = "服务ID", required = true, dataType = "Long", example = "3"),
-						@ApiImplicitParam(paramType = "query", name = "pageIndex", value = "页码", required = false, dataType = "int"),
-						@ApiImplicitParam(paramType = "query", name = "pageSize", value = "一页的订单数目", required = false, dataType = "int") })
+					@ApiImplicitParam(paramType = "query", name = "serviceId", value = "服务ID", required = true, dataType = "Long", example = "3")})
 				private Map<String, Object> getOrderListByUserIdAndServiceId(HttpServletRequest request) {
 					Map<String, Object> modelMap = new HashMap<String, Object>();
 					Long userId = HttpServletRequestUtil.getLong(request, "userId");
 					Long serviceId= HttpServletRequestUtil.getLong(request, "serviceId");
-					int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
-					int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
-					if(pageSize==-1)
-					{
-						pageIndex=0;
-						pageSize=6;
-					}
 					try {
-						OrderExecution se = OrderService.getByUserIdAndServiceId(userId, serviceId,pageIndex, pageSize);
-						int pageNum = (int) (se.getCount() / pageSize);
-						if (pageNum * pageSize < se.getCount())
-							pageNum++;
-						modelMap.put("OrderList", se.getOrderList());
-						modelMap.put("order", se.getOrder());
-						if(se.getCount()!=0)
-						modelMap.put("isbook", true);
+						OrderExecution se = OrderService.getByUserIdAndServiceId(userId, serviceId);
+						if(se.getState()==OrderStateEnum.SUCCESS.getState())
+						{
+							modelMap.put("order", se.getOrder());
+							modelMap.put("isbook", true);
+						}
+						else
+						modelMap.put("isbook", false);
 						modelMap.put("success", true);
 					} catch (Exception e) {
 						modelMap.put("success", false);

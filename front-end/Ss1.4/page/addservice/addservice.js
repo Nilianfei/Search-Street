@@ -24,8 +24,8 @@ Page({
       "servicePriority": '',
       "shopId": null,
     },
-    imgUrl: app.globalData.serviceUrl,
-    serviceImg: [],
+    imgUrl: app.globalData.imgUrl,
+    serviceImg: null,
     addormodify: '更新',
     disabletodelete: true,
     //basePath :"D:\\projectdev\\image",
@@ -187,7 +187,7 @@ Page({
           serviceImg: res.tempFilePaths,
           flag: !flag
         });
-        console.log(that.data.serviceImg[0]);
+        console.log(that.data.serviceImg);
       }
     })
   },
@@ -253,7 +253,7 @@ Page({
       })
       ableToSubmit = false;
     } else if (that.data.service.servicePrice.length == 0) {
-      this.setData({
+      that.setData({
         errorMsgs: {
           price_error: '请输入服务价格'
         }
@@ -261,7 +261,7 @@ Page({
       ableToSubmit = false;
       error = 2;
     } else if (that.data.service.servicePriority.length == 0) {
-      this.setData({
+      that.setData({
         errorMsgs: {
           priority_error: '请输入优先级'
         }
@@ -293,16 +293,16 @@ Page({
         that.setData({
           [imgAddr]:  that.data.serviceImg[0],
         })
-        console.log(this.data.serviceImg[0]); //
-        console.log(this.data.service.serviceImgAddr);
+        console.log(that.data.serviceImg[0]); //
+        console.log(that.data.service.serviceImgAddr);
       }
       else{
         var imgAddr="service.serviceImgAddr" ;
         that.setData({
           [imgAddr]: null,
         })
-        console.log(this.data.serviceImg[0]);
-        console.log(this.data.service.serviceImgAddr);
+        console.log(that.data.serviceImg);
+        console.log(that.data.service.serviceImgAddr);
       }
       
 
@@ -344,7 +344,7 @@ Page({
             })
             if (that.data.service.serviceImgAddr != null) {
               var date = new Date();
-              var url = that.data.imgUrl + "/SearchStreet/service/uploadimg?serviceId=" + res.data.serviceId + "&createTime=" + app.timeStamp2String(date);
+              var url = app.globalData.serviceUrl + "/SearchStreet/service/uploadimg?serviceId=" + res.data.serviceId + "&createTime=" + app.timeStamp2String(date);
               console.log(url);
               console.log("uploadAImg:" +that.data.service.serviceImgAddr);
               app.uploadAImg({
@@ -491,15 +491,24 @@ Page({
         url: '../../page/service-list/service-list?shopId=' + that.data.shopId,
       })
     } else if (that.data.isadd == 0) {
-      var url = that.data.deleteUrl;
-      wx.request({
-        url: url + that.data.serviceId,
-        method: 'POST',
-        success: res => {
-          console.log(res);
-          if (res.data.success) {
-            wx.navigateBack({
-              url: '../../page/service-list/service-list' + that.data.shopId,
+      wx.showModal({
+        title: '提示',
+        content: "确认删除该服务？",
+        showCancel: true,
+        success(res) {
+          if (res.confirm) {
+            var url = that.data.deleteUrl;
+            wx.request({
+              url: url + that.data.serviceId,
+              method: 'POST',
+              success: res => {
+                console.log(res);
+                if (res.data.success) {
+                  wx.navigateBack({
+                    url: '../../page/service-list/service-list' + that.data.shopId,
+                  })
+                }
+              }
             })
           }
         }

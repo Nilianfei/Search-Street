@@ -7,14 +7,15 @@ Page({
    */
   data: {
     bf:true,
+    imgUrl:app.globalData.imgUrl,
     shopComment: {
       "shopId": 0,
       "orderId": 0,
       "userId": 0,
-    "commentContent": "",
+    "commentContent": null,
     "serviceRating": 0,
     "starRating": 0,
-      "commentReply": ""
+      "commentReply": null
     },
     shopname: '店名',
     userInfo : {},
@@ -23,8 +24,8 @@ Page({
     flag: [0, 0],
     stardata: [1, 2, 3, 4, 5],
     noteMaxLen: 300, // 最多放多少字
-    texts: "至少输入8个字",
-    noteMinLen: 8,
+    texts: "至少输入5个字",
+    noteMinLen: 5,
     info: "",
     noteNowLen: 0,//备注当前字数
     service:null,
@@ -35,9 +36,10 @@ Page({
   bindTextAreaChange: function (e) {
     var that = this;
     var value = e.detail.value;
-    var text= '至少输入8个字';
+    var bf = true;
+    var text= '至少输入5个字';
     var len = parseInt(value.length);
-    var llen=8-len;
+    var llen=5-len;
     if (len > that.data.noteMaxLen)
         return;
     if (len < that.data.noteMinLen&&len!=0)
@@ -45,11 +47,9 @@ Page({
     if (len >= that.data.noteMinLen)
     {
         text = String(len) + '/' + String(that.data.noteMaxLen);
-        that.setData({
-          bf:false
-        })
+          bf=false;
     }
-    that.setData({ info: value, texts:text })
+    that.setData({ info: value, bf: bf,texts:text })
 
   },
   formReset: function (e) 

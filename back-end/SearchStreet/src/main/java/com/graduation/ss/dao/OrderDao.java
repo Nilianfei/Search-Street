@@ -55,7 +55,10 @@ public interface OrderDao {
 	 * @return
 	 */
 	public List<OrderInfo> queryOrderList3(@Param("orderCondition")OrderInfo orderCondition);
-	
+	/*
+	 * 查询正在进行的订单
+	 */
+	public OrderInfo queryOrderByUS(@Param("orderCondition")OrderInfo orderCondition);
 	/**
 	 * 添加订单
 	 * @param orderInfo
