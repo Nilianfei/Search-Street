@@ -235,7 +235,7 @@ Page({
             };
             id[i] = order[i].orderId;
             if (service[i].serviceImgAddr != null)
-              img[i] = service[i].serviceImgAddr; //经过修改后可以正常显示订单图片信息,还需等addservice调整后加上服务器的ip
+              img[i] = app.globalData.imgUrl+service[i].serviceImgAddr; //经过修改后可以正常显示订单图片信息,还需等addservice调整后加上服务器的ip
             var time = JSON.stringify(order[i].createTime);
             order[i].createTime = util.formatDate(time);
             if (order[i].overTime != null) {

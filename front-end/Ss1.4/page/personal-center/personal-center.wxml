@@ -7,7 +7,7 @@
      <open-data type="userNickName"></open-data>
   </view>
   <view class="perinf-bd1">
-    <navigator class="perinf-item" url="../user-service-list/user-service-list?shopId=1">
+    <navigator class="perinf-item" url="../user-order-list/user-order-list">
      <image class="perinf-img" src="../../images/search.png"></image>
      <text class="perinf-text">搜搜记录</text>
     </navigator>
