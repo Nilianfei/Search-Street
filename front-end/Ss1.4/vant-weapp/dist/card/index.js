@@ -31,8 +31,9 @@ VantComponent({
         }
     },
     methods: {
+      /*
         onClickThumb() {
             this.jumpLink('thumbLink');
-        }
+        }*/
     }
 });

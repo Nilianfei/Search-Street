@@ -24,7 +24,7 @@
 <view class="scs {{0==TabCur?'':'nodisplay'}}">
   <block wx:for="{{list}}" wx:key="id">
     <view class="scsitem solid-bottom" bindtap='order' data-content='{{item}}'>
-      <van-card num="" price="{{item.servicePrice}}" desc="{{item.serviceContent}}" title="{{item.serviceName}}" thumb="{{ item.serviceImgAddr }}" />
+      <van-card num="" price="{{item.servicePrice}}" desc="{{item.serviceContent}}" title="{{item.serviceName}}" thumb="{{ imgUrl+item.serviceImgAddr }}" />
     </view>
   </block>
 </view>

@@ -115,7 +115,7 @@ Page({
         if (shop.shopImgList) {
           var length = shop.shopImgList.length;
           for (var i = 0; i < shop.shopImgList.length; i++) {
-            shop.shopImgList[i].imgAddr = imgUrl + shop.shopImgList[i].imgAddr;
+            shop.shopImgList[i].imgAddr = app.globalData.imgUrl + shop.shopImgList[i].imgAddr;
             tower[i].url = shop.shopImgList[i].imgAddr;
           }
         }
