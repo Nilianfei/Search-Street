@@ -72,10 +72,6 @@ public class ServiceController {
 			modelMap.put("pageSize", pageSize);
 			modelMap.put("pageNum", pageNum);
 			modelMap.put("success", true);
-			for(ServiceInfo service:serviceList)
-			{
-			System.out.println(service.toString());
-			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.getMessage());
@@ -326,13 +322,16 @@ public class ServiceController {
 					modelMap.put("serviceImgAddr", service.getServiceImgAddr());
 				} else {
 					modelMap.put("success", false);
+					System.out.println("uploadImg失败");
 					modelMap.put("errMsg", se.getStateInfo());
 					System.out.println(se.getStateInfo());
 				}
 			} catch (ServiceOperationException e) {
+				System.out.println("uploadImg失败:"+e.getMessage());
 				modelMap.put("success", false);
 				modelMap.put("errMsg",e.getMessage());
 			}
+			System.out.println("uploadImg成功");
 			return modelMap;
 		}
 

@@ -1,0 +1,20 @@
+<!--page/comment-reply/comment-reply.wxml-->
+<view class="container">
+ <form bindsubmit='formSubmit' bindreset='formReset'>
+  <view class="comment">
+  <view class="weui-cells_after-title">
+    <view class="weui-cell">
+      <view class="weui-cell__bd">
+        <textarea class="weui-textarea" bindinput="bindTextAreaChange" placeholder="回复内容..." style="height: 8em" value="{{info}}" maxlength="{{noteMaxLen}}" focus />
+        <view class="weui-textarea-counter">{{texts}}</view>
+      </view>
+    </view>
+  </view>
+    <view class='row'>
+    <button type="primary" form-type="submit" disabled='{{bf}}'>提交</button>
+    <button type="primary" form-type="reset">取消</button>
+   </view>
+
+ </view>
+</form>
+</view>

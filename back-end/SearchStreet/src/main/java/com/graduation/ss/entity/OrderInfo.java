@@ -29,7 +29,7 @@ public class OrderInfo {
 	 * 2已取消订单,3已删除
 	 * 
 	 */
-	@ApiModelProperty(value = "订单状态（0已下单，1未完成，2已取消,3待评价，4已完成）", required = true)
+	@ApiModelProperty(value = "订单状态（0已下单，1待评价，2已完成,3已取消，4已回复）", required = true)
 	private Integer orderStatus;
 	@ApiModelProperty(value = "订单创建时间")
 	private LocalDateTime createTime;

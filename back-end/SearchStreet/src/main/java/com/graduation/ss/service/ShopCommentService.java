@@ -48,6 +48,13 @@ public interface ShopCommentService {
 	 */
 	public ShopComment getByShopCommentId(long shopCommentId);
 	/**
+	 * 通过orderId获取评论信息 和评论id是一一对应
+	 * 
+	 * @param orderId
+	 * @return
+	 */
+	public ShopComment getByOrderId(long orderId);
+	/**
 	 * 更新服务信息
 	 * 
 	 * @param shopComment

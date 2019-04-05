@@ -1,0 +1,30 @@
+/* page/comment-reply/comment-reply.wxss */
+@import "../../weui.wxss";
+.container
+{
+  height: 100%;
+  width:100%;
+  padding-top: 40rpx;
+  
+  display: flex;
+  flex-direction: column;
+  }
+.comment
+{
+  padding-left: 10rpx;
+}
+.weui-cells_after-title{
+  width: 92%;
+  margin:0 auto;
+  border:1px solid #ddd;
+}
+.row{
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  margin-left: 40rpx;
+}
+.row button{
+  padding: 0 2rem;
+  margin:2rem 1rem;
+}

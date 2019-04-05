@@ -1,7 +1,7 @@
 $(function() {
 	initializePage();
 });
-
+var os=-1;
 function initializePage() {
 	// 加载表格数据
 	ajaxTable();
@@ -12,8 +12,8 @@ function initializePage() {
 }
 
 function searchOrderInfo() {
-	var orderStatus = $("#orderStatusHd").val();
 	var searchCondition = $("#searchConditionHd").val();
+	$('#enalbeStatusHd').val(os);
 	if (searchCondition == "byServiceName") {
 		listOrderByServiceName();
 	} else if (searchCondition == "byOrderId") {
@@ -36,6 +36,8 @@ function statusFormater(value, row, index) {
 		return '已完成';
 	else if (row.orderStatus == 3)
 		return '已取消';
+	else
+		return "全部";
 }
 
 function timeFormater(value, row, index) {
@@ -82,6 +84,9 @@ function timeChange(time) {
  */
 function formatDate(inputTime) {
   var time=JSON.stringify(inputTime);
+  if (time == null) {
+		return '';
+	}
   var strlist=time.split(",");
   var y = strlist[0].substr(1,4);
   var m = strlist[1];
@@ -304,8 +309,9 @@ function getDataByPageRows(pageNum, rowsLimit) {
 }
 
 function changeFilterStatus(status) {
-	$('#enalbeStatusHd').val(status);
+	os=status;
 	searchOrderInfo();
+	
 }
 
 function changeSearchCondition(condition) {

@@ -117,13 +117,18 @@ public class SServiceImpl implements SService {
 			ServiceImg serviceImg = serviceImgDao.getServiceImg(serviceId);
           if (serviceImgHolder != null && serviceImgHolder.getImage() != null && serviceImgHolder.getImageName() != null
 	        && !"".equals(serviceImgHolder.getImageName())) {
-				if (serviceImg!=null) {
-					//图片存在，则删除图片
+        	  if (serviceImg!=null){
+        		//图片存在，则删除图片
 					serviceExecution=deleteServiceImg(serviceImg);
-				} else {
-					return new ServiceExecution(ServiceStateEnum.NULL_SERVICEIMG_CREATETIME);
-				}
-				addServiceImg(serviceId, serviceImgHolder,createTime);
+        	  }
+        	  else
+        	  {
+        		  if (createTime==null) {
+  					
+  					return new ServiceExecution(ServiceStateEnum.NULL_SERVICEIMG_CREATETIME);
+  				}
+        		  serviceExecution=addServiceImg(serviceId, serviceImgHolder,createTime);
+        	  }
           }
 		}
 		catch (Exception e) {
@@ -182,7 +187,7 @@ public class SServiceImpl implements SService {
 		return new ServiceExecution(ServiceStateEnum.SUCCESS, service);
 	}
 
-	private void addServiceImg(long serviceId, ImageHolder serviceImgHolder,Date createTime) {
+	private ServiceExecution addServiceImg(long serviceId, ImageHolder serviceImgHolder,Date createTime) {
 		// 获取图片存储路径，这里直接存放到相应服务的文件夹底下
 		String dest = PathUtil.getServiceImgPath(serviceId);
 		String imgAddr = ImageUtil.generateNormalImg(serviceImgHolder, dest);
@@ -198,6 +203,7 @@ public class SServiceImpl implements SService {
 		} catch (Exception e) {
 			throw new ServiceOperationException("创建服务图片失败:" + e.toString());
 		}
+		return new ServiceExecution(ServiceStateEnum.SUCCESS, serviceImg);
 	}
 	@Override
 	public ServiceExecution getServiceImgList(ServiceImg serviceImg,int pageIndex, int pageSize) {

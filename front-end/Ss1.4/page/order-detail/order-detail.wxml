@@ -1,0 +1,34 @@
+<!--page/order-detail/order-detail.wxml-->
+<!--page/user-order-list/user-order-list.wxml-->
+<view class="container">
+        <view class="orderDetails">
+          <view class="orderListTitle flex ">
+            <view class="flex-treble">
+              <text class="text-lg padding-xs margin-left-sm">{{order.serviceName}}</text>
+            </view>
+            <view class="  flex-sub">
+              <view class="cu-tag line-{{state[order.orderStatus].color}}  margin-left-xl">{{state[order.orderStatus].state}}</view>
+            </view>
+          </view>
+          <view class="orderListDetails">
+            <view class="productImg">
+              <image src="{{service.serviceImgAddr}}" mode='aspectFit' background-size="cover"></image>
+            </view>
+            <view class="productInfo">
+              <view class="text-df padding-xs">下单时间: {{createTime}}</view>
+              <view class="text-df padding-xs">完成时间: {{overTime}}</view>
+              <view class="text-df padding-xs">服务数量: {{order.serviceCount}}</view>
+            </view>
+          </view>
+          <view class="productPrice">
+            
+            <button class="cu-btn round bg-green  margin-left-sm padding-xs {{order.orderStatus==0?'':'nodisplay'}}" bindtap='finishOrder' data-id="{{order.orderId}}" data-item="{{order}}">确认完成</button>
+            <button class="cu-btn round bg-gray  margin-left-sm padding-xs {{order.orderStatus==0?'':'nodisplay'}}" bindtap='cancelOrder' data-id="{{order.orderId}}" data-item="{{order}}">取消订单</button>
+            
+            <view class="price">
+              <text>合计：￥{{order.orderPrice}}</text>
+            </view>
+          </view>
+        </view>
+
+</view>

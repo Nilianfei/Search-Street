@@ -165,6 +165,7 @@ public class OrderServiceImpl implements OrderService {
 		OrderExecution se = new OrderExecution();
 		if (orderList!=null) {
 			se.setOrderList(orderList);
+			se.setOrder(orderList.get(0));
 			se.setCount(count);
 		} 
 		else {

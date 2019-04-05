@@ -32,8 +32,9 @@
     "page/myservice-detail/myservice-detail",
     "page/shop-settings/shop-settings",
     "page/modify-myhelp/modify-myhelp",
-    "page/orderdetail/orderdetail",
-    "page/temp/temp"
+    "page/temp/temp",
+    "page/order-detail/order-detail",
+    "page/comment-reply/comment-reply"
   ],
   "permission": {
     "scope.userLocation": {

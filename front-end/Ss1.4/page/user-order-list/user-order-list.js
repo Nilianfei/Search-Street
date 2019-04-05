@@ -225,7 +225,6 @@ Page({
           console.log(service);
           //利用一次遍历将每一单的照片和订单号记录下来(orderList与serviceList其实是一一对应的orderList[i]对应的服务是serviceList[i])
           for (var i = 0; i < order.length; i++) {
-            console.log(i);
             /*
              *跳过null 需要与后端沟通更好的解决办法
              */
@@ -248,7 +247,7 @@ Page({
           that.setData({
             orderlist: order,
             serviceImg: img,
-            imgId: id,
+            imgId: id,  //记录订单id
             service: service //此4全为数组变量，且index相同时的是同一个订单记录里不同的信息。
           })
         }
@@ -282,7 +281,7 @@ Page({
               order[i].overTime = '';
             for (var j = 0; j < img.length; j++) {
               if (id[j] == order[i].orderId) {
-                simgid[i] = id[j];
+                simgid[i] = j;//在全部订单列表的第j个
                 if (img[j] != null) {
                   simg[i] = img[j];
                 }
@@ -325,7 +324,7 @@ Page({
                 order[i].overTime = '';
               for (var j = 0; j < img.length; j++) {
                 if (id[j] == order[i].orderId) {
-                  cimgid[i] = id[j];
+                  cimgid[i] = j;
                   if (img[j] != null) {
                     cimg[i] = img[j];
                   }
@@ -382,18 +381,15 @@ Page({
     wx.showToast({
       title: '正在取消订单，请稍候...',
       icon: 'loading',
-      duration: 2000
+      duration: 1000
     })
     var that = this;
     var order = e.target.dataset.item;
     console.log(order)
     order.orderStatus = 3;
-    order.createTime = new Date(order.createTime);
-    if (order.overTime != '')
-      order.overTime = new Date(order.overTime);
     order = JSON.stringify(order);
     wx.request({
-      url: app.globalData.serviceUrl + "/SearchStreet/order/modifyOrder",
+      url: app.globalData.serviceUrl + "/SearchStreet/order/changeorderstatus",
       data: order,
       method: 'POST',
       header: {
@@ -412,12 +408,9 @@ Page({
     var order = e.target.dataset.item;
     console.log(order)
     order.orderStatus = 1;
-    order.createTime = new Date(order.createTime);
-    if (order.overTime != '')
-      order.overTime = new Date(order.overTime);
     order = JSON.stringify(order);
     wx.request({
-      url: app.globalData.serviceUrl + '/SearchStreet/order/modifyOrder',
+      url: app.globalData.serviceUrl + '/SearchStreet/order/changeorderstatus',
       data: order,
       method: 'POST',
       header: {

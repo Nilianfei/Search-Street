@@ -71,7 +71,7 @@ public class OrderController {
 		//通过userId获取订单列表 分页 
 				@RequestMapping(value = "/getOrderlistbyus", method = RequestMethod.GET)
 				@ResponseBody
-				@ApiOperation(value = "根据userID serviceId获取其所有订单信息（分页）")
+				@ApiOperation(value = "根据userID serviceId获取正在进行的订单")
 				@ApiImplicitParams({
 					@ApiImplicitParam(paramType = "query", name = "userId", value = "用户ID", required = true, dataType = "Long", example = "1"),
 					@ApiImplicitParam(paramType = "query", name = "serviceId", value = "服务ID", required = true, dataType = "Long", example = "3"),
@@ -94,6 +94,7 @@ public class OrderController {
 						if (pageNum * pageSize < se.getCount())
 							pageNum++;
 						modelMap.put("OrderList", se.getOrderList());
+						modelMap.put("order", se.getOrder());
 						if(se.getCount()!=0)
 						modelMap.put("isbook", true);
 						modelMap.put("success", true);
@@ -336,6 +337,39 @@ public class OrderController {
 			}
 			return modelMap;
 		}
+		//取消或确认订单
+				@RequestMapping(value = "/changeorderstatus", method = RequestMethod.POST)
+				@ResponseBody
+				@ApiOperation(value = "修改订单信息")
+				private Map<String, Object> changeorderstatus(
+						@RequestBody @ApiParam(name = "Order", value = "传入json格式,要传orderId", required = true)OrderInfo Order, HttpServletRequest request) {
+					Map<String, Object> modelMap = new HashMap<String, Object>();
+					System.out.println(Order.toString());
+					// 空值判断
+					if (Order != null && Order.getOrderId() != null) {
+						try {
+							Order.setOverTime(LocalDateTime.now());
+							//更新订单
+							OrderExecution ae = OrderService.modifyOrder(Order);
+							if (ae.getState() == OrderStateEnum.SUCCESS.getState()) {
+								modelMap.put("success", true);
+								modelMap.put("order", Order);
+							} else {
+								modelMap.put("success", false);
+								modelMap.put("errMsg", ae.getStateInfo());
+							}
+						} catch (Exception e) {
+							modelMap.put("success", false);
+							modelMap.put("errMsg", e.toString());
+							return modelMap;
+						}
+
+					} else {
+						modelMap.put("success", false);
+						modelMap.put("errMsg", "请输入订单信息");
+					}
+					return modelMap;
+				}
 
 		//删除订单
 		@RequestMapping(value = "/deleteOrder", method = RequestMethod.POST)

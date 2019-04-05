@@ -406,7 +406,58 @@ public class ShopCommentController {
 			}
 			return modelMap;
 		}
+		//更新评论
+				@RequestMapping(value = "/modifyshopCommentReply", method = RequestMethod.POST)
+				@ResponseBody
+				@ApiOperation(value = "修改服务评价信息")
+				@ApiImplicitParams({	
+					@ApiImplicitParam(paramType = "query", name = "orderId", value = "订单ID", required = true, dataType = "Long", example = "1"),
+					@ApiImplicitParam(paramType = "query", name = "commentReply", value = "商家回复", required = true, dataType = "String")})
+				private Map<String, Object> modifyShopCommentReply(HttpServletRequest request) {
+					Map<String, Object> modelMap = new HashMap<String, Object>();
+					String commentReply=HttpServletRequestUtil.getString(request, "commentReply");
+					long orderId=HttpServletRequestUtil.getLong(request, "orderId");
+					if(orderId>0) {
+						try {
+							//更新评论回复信息			
+							ShopComment shopComment=shopCommentService.getByOrderId(orderId);
+							shopComment.setCommentReply(commentReply);
+							ShopCommentExecution ae = shopCommentService.modifyShopComment(shopComment);
+							OrderInfo order=OrderService.getByOrderId(orderId);
+							order.setOrderStatus(4);
+							try {
+								//更新订单
+								OrderExecution a = OrderService.modifyOrder(order);
+								if (a.getState() == OrderStateEnum.SUCCESS.getState()) {
+									
+								} 
+								else {
+									modelMap.put("success", false);
+									modelMap.put("errMsg", a.getStateInfo());
+								}
+							} catch (Exception e) {
+								modelMap.put("success", false);
+								modelMap.put("errMsg", e.toString());
+								return modelMap;
+							}
+							if (ae.getState() == ShopCommentStateEnum.SUCCESS.getState()) {
+								modelMap.put("success", true);
+							} else {
+								modelMap.put("success", false);
+								modelMap.put("errMsg", ae.getStateInfo());
+							}
+						} catch (Exception e) {
+							modelMap.put("success", false);
+							modelMap.put("errMsg", e.toString());
+							return modelMap;
+						}
 
+					} else {
+						modelMap.put("success", false);
+						modelMap.put("errMsg", "请输入评论信息");
+					}
+					return modelMap;
+				}
 		//删除评论
 		@RequestMapping(value = "/deleteshopComment", method = RequestMethod.POST)
 		@ResponseBody

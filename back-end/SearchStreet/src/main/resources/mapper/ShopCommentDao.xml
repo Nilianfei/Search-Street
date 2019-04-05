@@ -146,7 +146,7 @@
 	</select>
 	<select id="queryByOrderId" resultType="com.graduation.ss.entity.ShopComment" parameterType="Long">
 		SELECT
-		shop_id,order_id,user_id,comment_content,service_rating,star_rating,comment_reply
+		shop_comment_id,shop_id,order_id,user_id,comment_content,service_rating,star_rating,comment_reply
 		FROM
 		tb_shop_comment
 		WHERE

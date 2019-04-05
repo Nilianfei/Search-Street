@@ -19,7 +19,7 @@
               <view class="cu-tag line-{{state[item.orderStatus].color}}  margin-left-xl">{{state[item.orderStatus].state}}</view>
             </view>
           </view>
-          <view class="orderListDetails" bindtap='serviceDetail' data-id="{{index}}">
+          <view class="orderListDetails"  data-id="{{index}}">
             <view class="productImg">
               <image src="{{serviceImg[index]}}" mode='aspectFit' background-size="cover"></image>
             </view>
@@ -33,6 +33,7 @@
 
             <button class="cu-btn round bg-green  margin-left-sm padding-xs {{item.orderStatus==0?'':'nodisplay'}}" bindtap='finishOrder' data-id="{{item.orderId}}" data-item="{{item}}">确认完成</button>
             <button class="cu-btn round bg-gray  margin-left-sm padding-xs {{item.orderStatus==0?'':'nodisplay'}}" bindtap='cancelOrder' data-id="{{item.orderId}}" data-item="{{item}}">取消订单</button>
+              <button class="cu-btn round bg-cyan  margin-left-sm padding-xs {{item.orderStatus==2?'':'nodisplay'}}" bindtap='addCommentReply' data-id="{{index}}" data-item="{{item}}">回复</button>
 
             <view class="price">
               <text>合计：￥{{item.orderPrice}}</text>
@@ -79,9 +80,9 @@
               <view class="cu-tag line-{{state[item.orderStatus].color}}  margin-left-xl">{{state[0].state}}</view>
             </view>
           </view>
-          <view class="orderListDetails" bindtap='serviceDetail' data-id="{{index}}">
+          <view class="orderListDetails"  data-id="{{wimgid[index]}}">
             <view class="productImg">
-              <image src="{{serviceImg[index]}}" mode='aspectFit' background-size="cover"></image>
+              <image src="{{wserviceImg[index]}}" mode='aspectFit' background-size="cover"></image>
             </view>
             <view class="productInfo">
               <view class="text-df padding-xs">下单时间: {{item.createTime}}</view>
@@ -139,9 +140,9 @@
               <view class="cu-tag line-{{state[item.orderStatus].color}}  margin-left-xl">{{state[3].state}}</view>
             </view>
           </view>
-          <view class="orderListDetails" bindtap='serviceDetail' data-id="{{index}}">
+          <view class="orderListDetails"  data-id="{{cimgid[index]}}">
             <view class="productImg">
-              <image src="{{serviceImg[index]}}" mode='aspectFit' background-size="cover"></image>
+              <image src="{{cserviceImg[index]}}" mode='aspectFit' background-size="cover"></image>
             </view>
             <view class="productInfo">
               <view class="text-df padding-xs">下单时间: {{item.createTime}}</view>
@@ -182,6 +183,40 @@
       -->
       </scroll-view>
     </swiper-item>
+    <!-- 待回复-->
+    <swiper-item>
+      <scroll-view class="hot-box" scroll-y='true' style='height:100%'>
 
+        <view class="orderDetails" wx:for="{{rorderlist}}" wx:key=" ">
+          <view class="orderListTitle flex ">
+            <view class="flex-treble">
+              <text class="text-lg padding-xs margin-left-sm">{{item.serviceName}}</text>
+            </view>
+            <view class="  flex-sub">
+              <view class="cu-tag line-{{state[item.orderStatus].color}}  margin-left-xl">{{state[2].state}}</view>
+            </view>
+          </view>
+          <view class="orderListDetails"  data-id="{{rimgid[index]}}">
+            <view class="productImg">
+              <image src="{{rserviceImg[index]}}" mode='aspectFit' background-size="cover"></image>
+            </view>
+            <view class="productInfo">
+              <view class="text-df padding-xs">下单时间: {{item.createTime}}</view>
+              <view class="text-df padding-xs">完成时间: {{item.overTime}}</view>
+              <view class="text-df padding-xs">服务数量: {{item.serviceCount}}</view>
+            </view>
+          </view>
+          <view class="productPrice">
+
+           <button class="cu-btn round bg-cyan  margin-left-sm padding-xs"
+           bindtap='addCommentReply' data-item="{{item}}">回复</button>
+
+            <view class="price">
+              <text>合计：￥{{item.orderPrice}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </swiper-item>
   </swiper>
 </view>

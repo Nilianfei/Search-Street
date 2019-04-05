@@ -116,8 +116,8 @@ Page({
       else {
         wx.request({
           url: app.globalData.serviceUrl + '/SearchStreet/wechat/getUserInfo',
-          data: {
-            token: token
+          header: {
+            token: token,
           },
           success: function (res) {
             // 拿到自己后台传过来的数据，自己作处理
@@ -153,7 +153,7 @@ Page({
         if(res.data.isbook){
           that.setData({
             bottonText:"已预约",
-            order:res.data.OrderList,
+            order:res.data.order,
             flag:true
           })
         }
@@ -171,9 +171,9 @@ Page({
       var that=this;
       var service =that.data.service;
       var order=that.data.order;
-      wx.redirectTo({
-        url: '../order/order?service=' + JSON.stringify(service) + '&order=' + JSON.stringify(order),
-     })
+      wx.navigateTo({
+        url: '../order-detail/order-detail?service=' + JSON.stringify(service) + '&order=' + JSON.stringify(order),
+      })
  },
   booking:function(e){
     var that = this;

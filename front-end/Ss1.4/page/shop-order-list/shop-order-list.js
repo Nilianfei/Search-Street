@@ -16,6 +16,9 @@ Page({
     wimgId: [],
     cserviceImg: [],
     cimgId: [],
+    rorderlist: [],
+    rserviceImg: [],
+    rimgId: [],
     state: [{
       "id": 0,
       "color": "green",
@@ -29,17 +32,22 @@ Page({
     {
       "id": 2,
       "color": "gray",
-      "state": "已完成"
+      "state": "待回复"
     },
     {
       "id": 3,
       "color": "grey",
       "state": "已取消"
-    }],
+    },
+      {
+        "id": 4,
+        "color": "grey",
+        "state": "已回复"
+      }],
     token: null,
     userId: null,
     currtab: 0,
-    swipertab: [{ name: '全部', index: 0 }, { name: '已下单', index: 1 }, { name: '已取消', index: 2 }],
+    swipertab: [{ name: '全部', index: 0 }, { name: '已下单', index: 1 }, { name: '已取消', index: 2 }, { name: '待回复', index: 3}],
   },
   onLoad: function (options) {
     var that = this
@@ -140,6 +148,9 @@ Page({
       case 2:
         that.cancelShow()
         break
+      case 3:
+        that.replyShow()
+        break  
     }
   },
   allShow: function () {
@@ -210,7 +221,7 @@ Page({
               order[i].overTime = '';
             for (var j = 0; j < img.length; j++) {
               if (id[j] == order[i].orderId) {
-                simgid[i] = id[j];
+                simgid[i] = j;
                 if (img[j] != null) {
                   simg[i] = img[j];
                 }
@@ -254,7 +265,7 @@ Page({
                 order[i].overTime = '';
               for (var j = 0; j < img.length; j++) {
                 if (id[j] == order[i].orderId) {
-                  cimgid[i] = id[j];
+                  cimgid[i] =j;
                   if (img[j] != null) {
                     cimg[i] = img[j];
                   }
@@ -271,23 +282,63 @@ Page({
       }
     })
   },
-
+  replyShow: function () {
+    var that = this;
+    //查询已取消的订单
+    wx.request({
+      url: app.globalData.serviceUrl + '/SearchStreet/order/getOrderlistbyshopId?shopId=' + that.data.shopId + '&orderStatus=2',
+      data: {},
+      method: "GET",
+      success: res => {
+        console.log(res);
+        if (res.data.success) {
+          {
+            var order = res.data.OrderList;
+            var img = that.data.serviceImg;
+            var cimg = [];
+            var id = that.data.imgId;
+            var cimgid = [];
+            for (var i = 0; i < order.length; i++) {
+              var time = JSON.stringify(order[i].createTime);
+              order[i].createTime = util.formatDate(time);
+              if (order[i].overTime != null) {
+                time = JSON.stringify(order[i].overTime);
+                order[i].overTime = util.formatDate(time);
+              }
+              else
+                order[i].overTime = '';
+              for (var j = 0; j < img.length; j++) {
+                if (id[j] == order[i].orderId) {
+                  cimgid[i] = j;
+                  if (img[j] != null) {
+                    cimg[i] = img[j];
+                  }
+                }
+              }
+            }
+            that.setData({
+              rorderlist: res.data.OrderList,
+              rserviceImg: cimg,
+              rimgId: cimgid
+            })
+          }
+        }
+      }
+    })
+  },
   cancelOrder: function (e) {
     wx.showToast({
       title: '正在取消订单，请稍候...',
       icon: 'loading',
-      duration: 2000
+      duration: 1000
     })
     var that = this;
     var order = e.target.dataset.item;
     console.log(order)
     order.orderStatus = 3;
-    order.createTime = new Date(order.createTime);
-    if (order.overTime != '')
-      order.overTime = new Date(order.overTime);
     order = JSON.stringify(order);
     wx.request({
-      url: app.globalData.serviceUrl + "/SearchStreet/order/modifyOrder",
+      url: app.globalData.serviceUrl + "/SearchStreet/order/changeorderstatus",
       data: order,
       method: 'POST',
       header: {
@@ -306,12 +357,9 @@ Page({
     var order = e.target.dataset.item;
     console.log(order)
     order.orderStatus = 1;
-    order.createTime = new Date(order.createTime);
-    if (order.overTime != '')
-      order.overTime = new Date(order.overTime);
     order = JSON.stringify(order);
     wx.request({
-      url: app.globalData.serviceUrl + '/SearchStreet/order/modifyOrder',
+      url: app.globalData.serviceUrl + '/SearchStreet/order/changeorderstatus',
       data: order,
       method: 'POST',
       header: {
@@ -325,11 +373,20 @@ Page({
       }
     })
   },
+  addCommentReply: function (e) {
+    var that = this;
+    var order = e.target.dataset.item;
+    wx.navigateTo({
+      url: '../comment-reply/comment-reply?order=' + JSON.stringify(order)+'&shopId='+that.data.shopId,
+    })
+    that.allShow()
+  },
+  /*
   serviceDetail: function (e) {
      var that=this;
     var service = that.data.service[e.currentTarget.dataset.id];
     wx.navigateTo({
       url: '../service/service?service=' + JSON.stringify(service),
     })
-  }
+  }*/
 })

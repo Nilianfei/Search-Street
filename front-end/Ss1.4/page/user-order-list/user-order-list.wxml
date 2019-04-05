@@ -54,7 +54,7 @@
               <view class="cu-tag line-{{state[1].color}}  margin-left-xl">{{state[1].state}}</view>
             </view>
           </view>
-          <view class="orderListDetails" bindtap="serviceDetail" data-id="{{index}}">
+          <view class="orderListDetails" bindtap="serviceDetail" data-id="{{ wimgId[index]}}">
             <view class="productImg">
               <image src="{{wserviceImg[index]}}" mode='aspectFit' background-size="cover"></image>
             </view>
@@ -65,7 +65,7 @@
             </view>
           </view>
           <view class="productPrice">
-            <button class="cu-btn round bg-cyan  margin-left-sm padding-xs" bindtap='addComment' data-id="{{index}}" data-item="{{item}}">添加评价</button>
+            <button class="cu-btn round bg-cyan  margin-left-sm padding-xs" bindtap='addComment' data-id="{{wimgId[index]}}" data-item="{{item}}">添加评价</button>
             <view class="price">
               <text>合计：￥{{item.orderPrice}}</text>
             </view>
@@ -85,7 +85,7 @@
               <view class="cu-tag line-{{state[3].color}}  margin-left-xl">{{state[3].state}}</view>
             </view>
           </view>
-          <view class="orderListDetails" bindtap="serviceDetail" data-id="{{index}}">
+          <view class="orderListDetails" bindtap="serviceDetail" data-id="{{ cimgId[index]}}">
             <view class="productImg">
               <image src="{{ cserviceImg[index] }}" mode='aspectFit' background-size="cover"></image>
             </view>

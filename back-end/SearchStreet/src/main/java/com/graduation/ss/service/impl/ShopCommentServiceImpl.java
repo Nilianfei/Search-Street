@@ -9,12 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.graduation.ss.dao.OrderDao;
-import com.graduation.ss.dao.ServiceDao;
 import com.graduation.ss.dao.ShopCommentDao;
 import com.graduation.ss.dao.ShopDao;
 import com.graduation.ss.dto.ShopCommentExecution;
 import com.graduation.ss.entity.OrderInfo;
-import com.graduation.ss.entity.ServiceInfo;
 import com.graduation.ss.entity.Shop;
 import com.graduation.ss.entity.ShopComment;
 import com.graduation.ss.enums.ShopCommentStateEnum;
@@ -28,8 +26,6 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	private ShopCommentDao shopCommentDao;
 	@Autowired
 	private ShopDao shopDao;
-	@Autowired
-	private ServiceDao serviceDao;
 	@Autowired
 	private OrderDao orderDao;
 
@@ -91,32 +87,37 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	@Override
 	public Shop getAvgByShopId(long shopId)
 	{
-		int serviceAvg = shopCommentDao.queryAvgServiceRating(shopId);
-		int starAvg=shopCommentDao.queryAvgStarRating(shopId);
+		int serviceAvg=0;
+		int starAvg=0;
+		int successRate=0;
 		Shop shop=shopDao.queryByShopId(shopId);
-		List<OrderInfo> orderlist=new ArrayList<OrderInfo>();
-		ServiceInfo service=new ServiceInfo();
-		service.setShopId(shopId);
-		List<ServiceInfo> servicelist=serviceDao.queryServiceList2(service);
-		List<OrderInfo> torderlist=new ArrayList<OrderInfo>();
-		for(int i=0;i<servicelist.size();i++)
+		ShopComment shopComment=new ShopComment();
+		shopComment.setShopId(shopId);
+		List<ShopComment> shopCommentList=shopCommentDao.queryShopCommentList2(shopComment);
+		if(shopCommentList!=null&&shopCommentList.size()!=0)
 		{
-			OrderInfo  orderCondition = new OrderInfo ();
-			orderCondition.setServiceId(servicelist.get(i).getServiceId());
-			torderlist.addAll(orderDao.queryOrderList3(orderCondition));
-			orderCondition.setOrderStatus(3);
-			orderlist.addAll(orderDao.queryOrderList2(orderCondition));
-		}
-		int torderNum=torderlist.size();
-		if(torderNum!=0)
-		{
-			int forderNum=torderNum-orderlist.size();
-			float s=((float)forderNum/torderNum)*100;
-			int successRate=(int)s;
-			shop.setSuccessRate(successRate);
+			serviceAvg = shopCommentDao.queryAvgServiceRating(shopId);
+			starAvg=shopCommentDao.queryAvgStarRating(shopId);
+			List<OrderInfo> orderlist=new ArrayList<OrderInfo>();
+			List<OrderInfo> torderlist=new ArrayList<OrderInfo>();
+			for(int i=0;i<shopCommentList.size();i++)
+			{
+				OrderInfo  orderCondition =orderDao.queryByOrderId(shopCommentList.get(i).getOrderId());
+				torderlist.add(orderCondition);
+				if(orderCondition.getOrderStatus()==3)
+				orderlist.add(orderCondition);
+			}
+			int torderNum=torderlist.size();
+			if(torderNum!=0)
+			{
+				int forderNum=torderNum-orderlist.size();
+				float s=((float)forderNum/torderNum)*100;
+				successRate=(int)s;
+			}
 		}
 		shop.setServiceAvg(serviceAvg);
 		shop.setStarAvg(starAvg);
+		shop.setSuccessRate(successRate);
 		return shop;
 		
 	}
@@ -163,6 +164,10 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	public ShopComment getByShopCommentId(long shopCommentId) {
 		return shopCommentDao.queryByShopCommentId(shopCommentId);
 	}
+	@Override
+	public ShopComment getByOrderId(long orderId) {
+		return shopCommentDao.queryByOrderId(orderId);
+	}
    
 	@Override
 	public ShopCommentExecution addShopComment(ShopComment shopComment) throws ShopCommentOperationException {
@@ -186,7 +191,7 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	@Override
 	public ShopCommentExecution modifyShopComment(ShopComment shopComment) throws ShopCommentOperationException{
 		// 空值判断
-		if (shopComment == null) {
+		if (shopComment == null||shopComment.getShopCommentId()<0) {
 			return new ShopCommentExecution(ShopCommentStateEnum.NULL_ShopComment);
 		}
 		try {

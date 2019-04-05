@@ -55,7 +55,7 @@ Page({
   formReset: function (e) 
   {
     wx.navigateBack({
-      url: '../order/order'
+      url: '../user-order-list/user-order-list'
     })
   },
   formSubmit: function (e) {
