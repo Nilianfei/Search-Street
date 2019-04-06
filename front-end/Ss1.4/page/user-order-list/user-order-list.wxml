@@ -136,10 +136,11 @@
               <text class="text-df padding-xs">评论内容: {{item.commentContent}}</text>
             </view>
           </view>
-          <view class="productPrice">
-            <view class="price">
-            </view>
+          <view class="productReply">
+          <view class="Reply">
+            <text class="commentReply">商家回复: {{item.commentReply}}</text>
           </view>
+        </view>
         </view>
       </scroll-view>
     </swiper-item>

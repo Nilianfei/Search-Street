@@ -380,7 +380,8 @@ Page({
           var service = res.data.serviceList;
           var img = [];
           for (var i = 0; i < shopComment.length; i++) {
-
+            if (shopComment[i].commentReply == null)
+              shopComment[i].commentReply = '无';
             /*服务不存在时候的措施*/
             if (service[i] == null) {
               continue;
@@ -388,6 +389,7 @@ Page({
             if (service[i].serviceImgAddr != null) {
               img[i] = service[i].serviceImgAddr;
             }
+            
           }
 
           that.setData({

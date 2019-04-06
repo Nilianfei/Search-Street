@@ -94,14 +94,14 @@ page {
   margin-bottom:10px;
 }
  
-.productPrice {
+.productReply {
   height: 80rpx;
   line-height: 80rpx;
   border-bottom: 1rpx solid #f3f3f3;
   flex-direction: row;
 }
  
-.price {
-  float: right;
-  margin-right: 30rpx;
+.Reply {
+  float: left;
+  margin-left: 30rpx;
 }

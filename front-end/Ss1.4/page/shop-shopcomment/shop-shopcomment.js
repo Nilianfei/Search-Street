@@ -48,6 +48,8 @@ Page({
             if (service[i].serviceImgAddr != null) {
               img[i] =service[i].serviceImgAddr;
             }
+            if(shopComment[i].commentReply==null)
+            shopComment[i].commentReply='无';
           }
 
           that.setData({

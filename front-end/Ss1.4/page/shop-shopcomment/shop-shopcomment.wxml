@@ -26,11 +26,12 @@
                 </i-rate>
               </i-cell>
             </view>
-            <text class="productCount">评论内容: {{item.commentContent}}</text>
+            <text class="productComment">评论内容: {{item.commentContent}}</text>
           </view>
         </view>
-        <view class="productPrice">
-          <view class="price">
+        <view class="productReply">
+          <view class="Reply">
+            <text class="commentReply">商家回复: {{item.commentReply}}</text>
           </view>
         </view>
       </view>
