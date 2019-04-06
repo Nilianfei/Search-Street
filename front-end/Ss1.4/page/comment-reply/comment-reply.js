@@ -44,6 +44,7 @@ Page({
 
   },
   formReset: function (e) {
+    var that=this;
     wx.navigateBack({
       url: '../shop-order-list/shop-order-list?shopId=' + that.data.shopComment.shopId
     })

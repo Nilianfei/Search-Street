@@ -3,8 +3,8 @@
  <form bindsubmit='formSubmit' bindreset='formReset'>
   <view class="comment">
     <view class="serviceinfo" >
-      <image class="serviceimg" src='{{imgUrl+service.serviceImgAddr}}' mode="cover"></image>
-      <text class="servicename">服务名称：{{service.serviceName}}</text>
+      <!--image class="serviceimg" src='{{imgUrl+service.serviceImgAddr}}' mode="cover"></image>-->
+      <text class="servicename">服务名称：{{order.serviceName}}</text>
     </view>
     <view class="star-pos">
      <block wx:for="{{evaluate_content}}" wx:key="id" wx:for-index="idx" wx:for-item="title">

@@ -161,7 +161,7 @@ function ajaxTable() {
 	searchConditionBuffer
 			.append('<option id="shopCommentManagementSearch_COMMENTCONTENT" value="byCommentContent">按评论内容查询</option>');
     searchConditionBuffer
-			.append('<option id="shopCommentManagementSearch_COMMENTREPLY" value="byCommentReply">按商家回复内容查询</option></select>');
+			.append('<option id="shopCommentManagementSearch_COMMENTREPLY" value="byCommentReply">按商家回复查询</option></select>');
 	var searchBoxBuffer = new StringBuffer();
 	searchBoxBuffer.append('<input type="text" ');
 	searchBoxBuffer

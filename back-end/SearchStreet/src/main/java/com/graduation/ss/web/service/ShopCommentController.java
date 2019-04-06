@@ -132,7 +132,13 @@ public class ShopCommentController {
 				 LocalDateTime t2=order.getCreateTime();
 				 if(t1.isBefore(t2))
 				 {
+					 //服务可能已被删除，所以获取的serviceInfo为null
 					 ServiceInfo serviceInfo=sService.getByServiceId(order.getServiceId());
+					 if(serviceInfo==null)
+					 {
+						 serviceInfo=new ServiceInfo();
+						 serviceInfo.setServiceName(order.getServiceName());
+					 }
 					 servicelist.add(serviceInfo);		
 					 i++;
 			     }		
@@ -199,7 +205,13 @@ public class ShopCommentController {
 					 LocalDateTime t2=order.getCreateTime();
 					 if(t1.isBefore(t2))
 					 {
+						 //服务可能已被删除，所以获取的serviceInfo为null
 						 ServiceInfo serviceInfo=sService.getByServiceId(order.getServiceId());
+						 if(serviceInfo==null)
+						 {
+							 serviceInfo=new ServiceInfo();
+							 serviceInfo.setServiceName(order.getServiceName());
+						 }
 						 servicelist.add(serviceInfo);		
 						 i++;
 				     }		

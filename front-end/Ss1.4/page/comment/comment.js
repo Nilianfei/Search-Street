@@ -88,7 +88,7 @@ Page({
         });
         if (result == true) {
           wx.navigateBack({
-            url: '../order/order'
+            url: '../user-order-list/user-order-list'
           })
         }
       }
@@ -102,6 +102,7 @@ Page({
     var service = JSON.parse(options.service);
     var order =JSON.parse(options.order);
     var shopComment=that.data.shopComment;
+    if(service!=null)
     shopComment.shopId=service.shopId;
     shopComment.userId=order.userId;
     shopComment.orderId=order.orderId;

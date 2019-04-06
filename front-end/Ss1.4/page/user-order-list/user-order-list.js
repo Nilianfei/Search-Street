@@ -225,17 +225,7 @@ Page({
           console.log(service);
           //利用一次遍历将每一单的照片和订单号记录下来(orderList与serviceList其实是一一对应的orderList[i]对应的服务是serviceList[i])
           for (var i = 0; i < order.length; i++) {
-            /*
-             *跳过null 需要与后端沟通更好的解决办法
-             */
-            if (service[i] == null) {
-              console.log("do this continue.");
-              order[i].orderStatus = 4;
-              continue;
-            };
             id[i] = order[i].orderId;
-            if (service[i].serviceImgAddr != null)
-              img[i] = app.globalData.imgUrl+service[i].serviceImgAddr; //经过修改后可以正常显示订单图片信息,还需等addservice调整后加上服务器的ip
             var time = JSON.stringify(order[i].createTime);
             order[i].createTime = util.formatDate(time);
             if (order[i].overTime != null) {
@@ -243,6 +233,19 @@ Page({
               order[i].overTime = util.formatDate(time);
             } else
               order[i].overTime = '';
+            /*
+             *跳过null 需要与后端沟通更好的解决办法  显示服务不存在的图片
+             */
+            if (service[i] == null) {
+              console.log("do this continue.");
+            //  order[i].orderStatus = 4;
+            //  continue;
+            }
+            else if (service[i] != null)
+            {  
+              if (service[i].serviceImgAddr != null)
+                img[i] = app.globalData.imgUrl + service[i].serviceImgAddr; //经过修改后可以正常显示订单图片信息,还需等addservice调整后加上服务器的ip  
+            }
           }
           that.setData({
             orderlist: order,
@@ -273,16 +276,6 @@ Page({
           var id = that.data.imgId;
           var service = res.data.serviceList;
           for (var i = 0; i < order.length; i++) {
-
-            /*
-             *跳过null 需要与后端沟通更好的解决办法
-             */
-            if (service[i] == null) {
-              console.log("do this continue.");
-              order[i].orderStatus = 4;
-              continue;
-            };
-
             var time = JSON.stringify(order[i].createTime);
             order[i].createTime = util.formatDate(time);
             if (order[i].overTime != null) {
@@ -290,14 +283,14 @@ Page({
               order[i].overTime = util.formatDate(time);
             } else
               order[i].overTime = '';
-            for (var j = 0; j < img.length; j++) {
-              if (id[j] == order[i].orderId) {
-                simgid[i] = j;//在全部订单列表的第j个
-                if (img[j] != null) {
-                  simg[i] = img[j];
+              for (var j = 0; j < img.length; j++) {
+                if (id[j] == order[i].orderId) {
+                  simgid[i] = j;//在全部订单列表的第j个
+                  if (img[j] != null) {
+                    simg[i] = img[j];
+                  }
                 }
               }
-            }
           }
           that.setData({
             worderlist: res.data.OrderList,
@@ -319,7 +312,6 @@ Page({
       success: res => {
         console.log(res);
         if (res.data.success) {
-          {
             var order = res.data.OrderList;
             var img = that.data.serviceImg;
             var cimg = [];
@@ -327,16 +319,6 @@ Page({
             var cimgid = [];
             var service = res.data.serviceList;
             for (var i = 0; i < order.length; i++) {
-
-              /*
-             *跳过null 需要与后端沟通更好的解决办法
-             */
-              if (service[i] == null) {
-                console.log("do this continue.");
-                order[i].orderStatus = 4;
-                continue;
-              };
-
               var time = JSON.stringify(order[i].createTime);
               order[i].createTime = util.formatDate(time);
               if (order[i].overTime != null) {
@@ -344,21 +326,20 @@ Page({
                 order[i].overTime = util.formatDate(time);
               } else
                 order[i].overTime = '';
-              for (var j = 0; j < img.length; j++) {
-                if (id[j] == order[i].orderId) {
-                  cimgid[i] = j;
-                  if (img[j] != null) {
-                    cimg[i] = img[j];
+                for (var j = 0; j < img.length; j++) {
+                  if (id[j] == order[i].orderId) {
+                    cimgid[i] = j;
+                    if (img[j] != null) {
+                      cimg[i] = img[j];
+                    }
                   }
                 }
-              }
-            }
+           }
             that.setData({
               corderlist: res.data.OrderList,
               cserviceImg: cimg,
               cimgId: cimgid
             })
-          }
         }
       }
     })
@@ -382,15 +363,18 @@ Page({
           for (var i = 0; i < shopComment.length; i++) {
             if (shopComment[i].commentReply == null)
               shopComment[i].commentReply = '无';
-            /*服务不存在时候的措施*/
+            /*服务不存在时候的措施*/   图片为服务不存在
             if (service[i] == null) {
-              continue;
+            //  continue;
             }
-            if (service[i].serviceImgAddr != null) {
-              img[i] = service[i].serviceImgAddr;
-            }
-            
+            else if(service[i]!=null)
+            {
+              if (service[i].serviceImgAddr != null) {
+                img[i] = app.globalData.imgUrl + service[i].serviceImgAddr;
+             }
           }
+            
+       }
 
           that.setData({
             shopComment: shopComment,
@@ -463,9 +447,9 @@ Page({
     var that = this;
     var service = that.data.service[e.target.dataset.id];
     var order = e.target.dataset.item;
-    wx.navigateTo({
-      url: '../comment/comment?service=' + JSON.stringify(service) + '&order=' + JSON.stringify(order),
-    })
+      wx.navigateTo({
+        url: '../comment/comment?service=' + JSON.stringify(service) + '&order=' + JSON.stringify(order),
+      })
     that.allShow()
   },
   serviceDetail: function(e) {

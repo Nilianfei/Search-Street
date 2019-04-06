@@ -8,7 +8,7 @@ Page({
     successRate: 0,
     service: [],
     shop: null,
-
+    serviceImg:[],
     imgUrl: "http://139.196.101.84:8080/image",
 
     shopId: 0,
@@ -161,11 +161,20 @@ Page({
           console.log(res);
           var service = res.data.serviceList;
           var shopCommentList = res.data.shopCommentList; //res.data就是从后台接收到的值
+          var img = [];
+          for (var i = 0; i < shopCommentList.length; i++) {
+            if (service[i] != null) {
+              if (service[i].serviceImgAddr != null) {
+                img[i] = app.globalData.imgUrl + service[i].serviceImgAddr;
+              }
+            }
+          }
           that.setData({
             list: shopCommentList,
             service: res.data.serviceList,
             loading: false,
-            pageNum: res.data.pageNum
+            pageNum: res.data.pageNum,
+            serviceImg:img
           })
         },
         fail: function(res) {

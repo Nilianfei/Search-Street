@@ -45,8 +45,11 @@ Page({
           var service = res.data.serviceList;
           var img = [];
           for (var i = 0; i < shopComment.length; i++) {
-            if (service[i].serviceImgAddr != null) {
-              img[i] =service[i].serviceImgAddr;
+            if(service[i]!=null)
+            {
+              if (service[i].serviceImgAddr != null) {
+                img[i] = app.globalData.imgUrl+service[i].serviceImgAddr;
+              }
             }
             if(shopComment[i].commentReply==null)
             shopComment[i].commentReply='无';

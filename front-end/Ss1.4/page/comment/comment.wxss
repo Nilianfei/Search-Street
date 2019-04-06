@@ -30,6 +30,7 @@
 }
 .servicename {
   color: #000;
+  margin-left: 40rpx;
 }
 .star-pos {
     margin: 20rpx;

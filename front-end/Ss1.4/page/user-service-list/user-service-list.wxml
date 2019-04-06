@@ -50,7 +50,7 @@
   </view>
   <block wx:for="{{list}}" wx:key="id">
     <view class="scsitem solid-bottom">
-      <van-card num="" price="" desc="{{item.commentContent}}" title="{{service[index].serviceName}}" thumb="{{ service[index].serviceImgAddr }}" />
+      <van-card num="" price="" desc="评论内容：{{item.commentContent}}" title="服务名称：{{service[index].serviceName}}" thumb="{{ serviceImg[index] }}" />
     </view>
   </block>
 </view>

@@ -45,7 +45,7 @@ Page({
       visible: false
     });
     wx.navigateBack({
-      url: '../home/home',//返回服务列表页面
+      url: '../user-service-list/user-service-list',//返回服务列表页面
     })
   },
   /* 点击减号 */
