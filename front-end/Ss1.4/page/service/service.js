@@ -33,6 +33,7 @@ Page({
     minusStatus: 'disabled' ,
     totalprice:0 ,
     flag:false,
+    serviceImgShow:"",
 
   },
   handleOpen() {
@@ -96,12 +97,25 @@ Page({
   onLoad: function (options) {
     var that= this;
     var service = JSON.parse(options.service);
+    console.log(options);
     that.setData({
       service:service,
       shopId: service.shopId,
       serviceId: service.serviceId,
       totalprice:service.servicePrice
     })
+
+    if(service.serviceImgAddr)
+    {
+      that.setData({
+        serviceImgShow:that.data.imgUrl+that.data.service.serviceImgAddr,
+      })
+    }
+    else{
+      that.setData({
+        serviceImgShow:"/images/nophoto.png",
+      })
+    }
     try {//同步获取与用户信息有关的缓存token
       const value = wx.getStorageSync('token');
       const userId=wx.getStorageSync('userId');
@@ -189,7 +203,8 @@ Page({
       that.data.order.serviceName=that.data.service.serviceName;
       that.data.order.orderPrice=that.data.totalprice;
       that.data.order.userId=that.data.userId;
-      that.data.order.orderCount=that.data.serviceCount;
+      that.data.order.serviceCount = that.data.serviceCount;
+      console.log(that.data.order.serviceCount);
       wx.request({
         url: app.globalData.serviceUrl + '/SearchStreet/order/addOrder',
         data: JSON.stringify(that.data.order),

@@ -3,7 +3,8 @@
   <view class='little-bottom'>
     <image
       class='image'
-      src="{{imgUrl+service.serviceImgAddr}}"
+      src="{{serviceImgShow}}"
+      mode="aspectFit"
     ></image>
   </view>
   <view class='little-bottom'>

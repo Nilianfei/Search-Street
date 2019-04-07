@@ -288,7 +288,10 @@ Page({
       }
       console.log(that.data.shop);
       wx.request({
-        url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/modifyshop?token=" + token,
+        url: app.globalData.serviceUrl + "/SearchStreet/shopadmin/modifyshop",
+        header: {
+          token: token,
+        },
         data: {
           shopId: this.data.shop.shopId,
           shopName: this.data.shop.shopName,
