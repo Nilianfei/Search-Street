@@ -53,9 +53,9 @@ public class Shop {
 	@ApiModelProperty(value = "用户ID，用token来获取", hidden = true)
 	private Long userId;
 	@ApiModelProperty(value = "服务评分平均分")
-	private int serviceAvg;
+	private float serviceAvg;
 	@ApiModelProperty(value = "星级评分平均分")
-	private int starAvg;
+	private float starAvg;
 	@ApiModelProperty(value = "搜街成功率，完成的订单数除以完成的订单数加取消的订单数")
 	private int successRate;
 	public Integer getPerCost() {
@@ -226,22 +226,22 @@ public class Shop {
 		this.userId = userId;
 	}
 
-	public int getServiceAvg() {
+
+	public float getServiceAvg() {
 		return serviceAvg;
 	}
 
-	public void setServiceAvg(int serviceAvg) {
+	public void setServiceAvg(float serviceAvg) {
 		this.serviceAvg = serviceAvg;
 	}
 
-	public int getStarAvg() {
+	public float getStarAvg() {
 		return starAvg;
 	}
 
-	public void setStarAvg(int starAvg) {
+	public void setStarAvg(float starAvg) {
 		this.starAvg = starAvg;
 	}
-
 
 	public int getSuccessRate() {
 		return successRate;

@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.graduation.ss.dao.OrderDao;
+import com.graduation.ss.dao.ServiceDao;
 import com.graduation.ss.dao.ShopCommentDao;
 import com.graduation.ss.dao.ShopDao;
 import com.graduation.ss.dto.ShopCommentExecution;
 import com.graduation.ss.entity.OrderInfo;
+import com.graduation.ss.entity.ServiceInfo;
 import com.graduation.ss.entity.Shop;
 import com.graduation.ss.entity.ShopComment;
 import com.graduation.ss.enums.ShopCommentStateEnum;
@@ -30,7 +32,8 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	private ShopDao shopDao;
 	@Autowired
 	private OrderDao orderDao;
-
+	@Autowired
+	private ServiceDao serviceDao;
 	@Override
 	public ShopCommentExecution getShopCommentList(ShopComment shopCommentCondition, int pageIndex, int pageSize) {
 		// 将页码转换成行码
@@ -89,8 +92,8 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	@Override
 	public Shop getAvgByShopId(long shopId)
 	{
-		int serviceAvg=0;
-		int starAvg=0;
+		float serviceAvg=0;
+		float starAvg=0;
 		int successRate=0;
 		Shop shop=new Shop();
 		try
@@ -103,24 +106,42 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 				List<ShopComment> shopCommentList=shopCommentDao.queryShopCommentList2(shopComment);
 				if(shopCommentList!=null&&shopCommentList.size()!=0)
 				{
+					//平均分
 					serviceAvg = shopCommentDao.queryAvgServiceRating(shopId);
 					starAvg=shopCommentDao.queryAvgStarRating(shopId);
+					List<ServiceInfo> servicelist=new ArrayList<ServiceInfo>();
 					List<OrderInfo> orderlist=new ArrayList<OrderInfo>();
 					List<OrderInfo> torderlist=new ArrayList<OrderInfo>();
 					try {
-						for(int i=0;i<shopCommentList.size();i++)
+						ServiceInfo serviceCondition=new ServiceInfo();
+						serviceCondition.setShopId(shopId);
+						//通过shopId取service
+						servicelist=serviceDao.queryServiceList2(serviceCondition);
+						//取全部订单前，应该获得服务列表，再查对应的订单
+						for(int i=0;i<servicelist.size();i++)
 						{
-							OrderInfo  orderCondition =orderDao.queryByOrderId(shopCommentList.get(i).getOrderId());
-							torderlist.add(orderCondition);
-							if(orderCondition.getOrderStatus()==3)
-							orderlist.add(orderCondition);
+							
+							OrderInfo  orderCondition =new OrderInfo();
+							orderCondition.setServiceId(servicelist.get(i).getServiceId());
+							torderlist.addAll(orderDao.queryOrderList2(orderCondition));
 						}
+						for(int i=0;i<torderlist.size();i++)
+						{					
+							//已取消的订单列表
+							if(torderlist.get(i).getOrderStatus()==3)
+							{
+								orderlist.add(torderlist.get(i));
+								System.out.println("已取消:"+torderlist.get(i).toString());
+							}
+						}
+					
 						int torderNum=torderlist.size();
 						if(torderNum!=0)
 						{
 							int forderNum=torderNum-orderlist.size();
 							float s=((float)forderNum/torderNum)*100;
 							successRate=(int)s;
+							System.out.println("取消的数量:"+orderlist.size());
 						}
 					}catch (Exception e) {
 						throw new OrderOperationException("get orderInfo error" + e.getMessage());

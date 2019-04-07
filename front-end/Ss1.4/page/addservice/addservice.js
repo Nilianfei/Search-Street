@@ -8,11 +8,12 @@ Page({
   data: {
     token:"",
     isadd: undefined,
-    flag: true,
+    flag: false,
     serviceId: undefined,
     addOrModify: "添加服务",
     cancelOrDelete: "取消",
     isDelete: "",
+    img:null,
     shopId: 0,
     service: {
       "serviceContent": "",
@@ -80,51 +81,55 @@ Page({
       })
       return; //serviceId==0即是添加服务的情况，原表单内指为空，不许要get
     }
-
-    wx.request({
-      url: app.globalData.serviceUrl + '/SearchStreet/service/searchservicebyid?serviceId=' + that.data.serviceId,
-      
-      data: {},
-      method: 'GET',
-      success: function(res) {
-        console.log(res);
-        var service = res.data.rows[0];
-        console.log(service);
-        if (service == undefined) {
-          var toastText = "获取数据失败";
-          wx.showModal({
-            title: '警告',
-            content: toastText,
-            showCancel: false,
-            success(res) {
-              if (res.confirm) {
-                //  console.log('用户点击确定')
-                wx.navigateBack({
-                  url: '../service-list/service-list?shopId=' + that.data.shopId
-                })
+    else{
+      wx.request({
+        url: app.globalData.serviceUrl + '/SearchStreet/service/searchservicebyid?serviceId=' + that.data.serviceId,
+        
+        data: {},
+        method: 'GET',
+        success: function(res) {
+          console.log(res);
+          var service = res.data.rows[0];
+          console.log(service);
+          if (service == undefined) {
+            var toastText = "获取数据失败";
+            wx.showModal({
+              title: '警告',
+              content: toastText,
+              showCancel: false,
+              success(res) {
+                if (res.confirm) {
+                  //  console.log('用户点击确定')
+                  wx.navigateBack({
+                    url: '../service-list/service-list?shopId=' + that.data.shopId
+                  })
+                }
               }
-            }
-          });
-        } else {
-          var flag = false; //确定该服务有无图片信息的flag，flag=true表示没有，反之则有。
-          if (service.serviceImgAddr == null) {
-            flag = true;
+            });
           } else {
-            //var p="serviceImg";
+            //var flag = false; //确定该服务有无图片信息的flag，flag=true表示没有，反之则有。
+            if (service.serviceImgAddr == null) {
+             // flag = true;
+            } else {
+              //var p="serviceImg";
+              var serviceImg=[];
+              serviceImg[0]=that.data.imgUrl+service.serviceImgAddr;
+              that.setData({
+                serviceImg: serviceImg,
+                img:service.serviceImgAddr
+              })
+              console.log(that.data.serviceImg)
+            }
             that.setData({
-              serviceImg: that.data.imgUrl + service.serviceImgAddr,
-            })
-            console.log(that.data.serviceImg)
+              //flag: flag,
+              service: service
+            });
           }
-          that.setData({
-            flag: flag,
-            service: service
-          });
+
+
         }
-
-
-      }
-    })
+      })
+    }
   },
 
   /**
@@ -177,7 +182,7 @@ Page({
   },
   uploadimg: function() {
     var that = this;
-    var flag = this.data.flag;
+   // var flag = this.data.flag;
     //var p="serviceImg";
     wx.chooseImage({
       sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有  
@@ -185,7 +190,7 @@ Page({
       success: function(res) {
         that.setData({
           serviceImg: res.tempFilePaths,
-          flag: !flag
+           flag: true
         });
         console.log(that.data.serviceImg);
       }
@@ -200,6 +205,7 @@ Page({
       success: function(res) {
         that.setData({
           serviceImg: res.tempFilePaths,
+          flag:true     //图片存在的情况下，有修改过图片
         })
       }
     })
@@ -290,9 +296,17 @@ Page({
       
       if (that.data.serviceImg != '../../images/add-photo.png') {
         var imgAddr = "service.serviceImgAddr";
-        that.setData({
-          [imgAddr]:  that.data.serviceImg[0],
-        })
+        var addr="";
+        if(that.data.flag)
+        {
+          //修改过图片或者上传过图片
+          addr=that.data.serviceImg[0];
+          that.setData({
+            [imgAddr]: addr,
+          })
+        }
+        else
+          addr=that.data.img;
         console.log(that.data.serviceImg[0]); //
         console.log(that.data.service.serviceImgAddr);
       }
@@ -342,7 +356,7 @@ Page({
               key: 'serviceId',
               data: res.data.serviceId
             })
-            if (that.data.service.serviceImgAddr != null) {
+            if (that.data.service.serviceImgAddr != null&&that.data.flag) {
               var date = new Date();
               var url = app.globalData.serviceUrl + "/SearchStreet/service/uploadimg?serviceId=" + res.data.serviceId + "&createTime=" + app.timeStamp2String(date);
               console.log(url);

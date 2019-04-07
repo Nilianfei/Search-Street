@@ -52,7 +52,7 @@ public class ShopCommentController {
 	private OrderService OrderService;
 	private static final Logger log = LogManager.getLogger(ShopCommentController.class);
 
-	//通过店铺id获取评论列表 分页 
+	//通过店铺id获取评论列表 分页 再获得订单，最后获得服务列表
 	@RequestMapping(value = "/getshopCommentlistbyshopid", method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value = "根据shopID获取其所有服务评论信息（分页）")
@@ -74,8 +74,15 @@ public class ShopCommentController {
 			List<ServiceInfo> servicelist=new ArrayList<ServiceInfo>();
 			for(int i=0;i<shopCommentList.size();i++)
 			{
+				//通过shopComment获得订单，再获得服务
 				 OrderInfo order=OrderService.getByOrderId(shopCommentList.get(i).getOrderId());
-				ServiceInfo serviceInfo=sService.getByServiceId(order.getServiceId());
+				 //服务可能已被删除，所以获取的serviceInfo为null
+				 ServiceInfo serviceInfo=sService.getByServiceId(order.getServiceId());
+				 if(serviceInfo==null)
+				 {
+					 serviceInfo=new ServiceInfo();
+					 serviceInfo.setServiceName(order.getServiceName());
+				 }
 				servicelist.add(serviceInfo);
 			}
 			modelMap.put("serviceList", servicelist);

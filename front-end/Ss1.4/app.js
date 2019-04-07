@@ -56,8 +56,8 @@ App({
        */
   globalData: {
     imgUrl: "http://139.196.101.84:8080/image",
-   // serviceUrl: "http://139.196.101.84:8080"
-    serviceUrl: "http://localhost:8080"
+   serviceUrl: "http://139.196.101.84:8080"
+   // serviceUrl: "http://localhost:8080"
   }
 
 })

@@ -77,14 +77,14 @@
 			</if> 
 		</where>
 	</select>
-	<select id="queryAvgStarRating" resultType="int">
+	<select id="queryAvgStarRating" resultType="float">
 		SELECT
 		AVG(star_rating) as star_avg
 		FROM
 		tb_shop_comment
 		where shop_id=#{shopId}
 	</select>
-		<select id="queryAvgServiceRating" resultType="int">
+		<select id="queryAvgServiceRating" resultType="float">
 		SELECT
 		AVG(service_rating) as service_avg
 		FROM

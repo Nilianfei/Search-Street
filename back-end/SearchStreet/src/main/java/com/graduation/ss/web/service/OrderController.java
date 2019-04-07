@@ -135,6 +135,12 @@ public class OrderController {
 						for(int i=0;i<orderlist.size();i++)
 						{
 							ServiceInfo service=sService.getByServiceId(orderlist.get(i).getServiceId());
+							/*
+							if(service==null)
+							 {
+								 service=new ServiceInfo();
+								 service.setServiceName(orderlist.get(i).getServiceName());
+							 }*/
 							servicelist.add(service);
 						}
 						modelMap.put("OrderList", se.getOrderList());

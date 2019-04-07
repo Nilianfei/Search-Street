@@ -285,7 +285,7 @@ public class ServiceController {
 		}
 		@RequestMapping(value = "/uploadimg", method = RequestMethod.POST)
 		@ResponseBody
-		@ApiOperation(value = "上传服务相关图片")
+		@ApiOperation(value = "上传服务相关图片，并更新服务图片地址")
 		@ApiImplicitParams({
 			@ApiImplicitParam(paramType = "query", name = "serviceId", value = "服务ID", required = true, dataType = "Long", example = "3"),
 			@ApiImplicitParam(paramType = "query", name = "createTime", value = "图片创建时间", required = true, dataType = "Date")

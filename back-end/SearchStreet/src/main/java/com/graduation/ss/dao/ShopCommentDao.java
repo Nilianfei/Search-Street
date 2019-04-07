@@ -33,14 +33,14 @@ public interface ShopCommentDao {
 	 * @param shopId
 	 * @return
 	 */
-	public int queryAvgStarRating(long shopId);
+	public float queryAvgStarRating(long shopId);
 	/**
 	 * 返回星级评分平均分
 	 * 
 	 * @param shopId
 	 * @return
 	 */
-	public int queryAvgServiceRating(long shopId);
+	public float queryAvgServiceRating(long shopId);
 	
 	/**
 	 * 通过shopCommentId查询评论

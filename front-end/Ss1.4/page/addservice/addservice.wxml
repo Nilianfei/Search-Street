@@ -28,9 +28,9 @@
 
     <view class="big-logos">
       
-      <image class="logoinfo" wx:if="{{ !isadd }}" src='{{ serviceImg }}' mode='aspectFill' bindtap="changeimg" ></image>
+      <image class="logoinfo" wx:if="{{isadd==0}}" src='{{serviceImg }}' mode='aspectFill' bindtap="changeimg" ></image>
       
-      <image wx:if="{{ isadd }}" class="logoinfo" src='{{ serviceImg }}'  mode='aspectFill' bindtap="uploadimg" ></image>
+      <image class="logoinfo" wx:if="{{isadd==1}}" src='{{ serviceImg }}'  mode='aspectFill' bindtap="uploadimg" ></image>
       
     </view>
   </view>
