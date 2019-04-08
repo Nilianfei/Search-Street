@@ -269,7 +269,7 @@ function doDel(serviceId) {
 // 设置弹出框的属性
 function setDialog_edit() {
 	$('#serviceManagementEdit').dialog({
-		title : '求助编辑',
+		title : '服务编辑',
 		modal : true, // 模式窗口：窗口背景不可操作
 		collapsible : true, // 可折叠，点击窗口右上角折叠图标将内容折叠起来
 		resizable : true

@@ -518,6 +518,7 @@ Page({
               success: res => {
                 console.log(res);
                 if (res.data.success) {
+                  console.log("删除服务成功")
                   wx.navigateBack({
                     url: '../../page/service-list/service-list' + that.data.shopId,
                   })

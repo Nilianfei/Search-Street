@@ -363,7 +363,7 @@ Page({
           for (var i = 0; i < shopComment.length; i++) {
             if (shopComment[i].commentReply == null)
               shopComment[i].commentReply = '无';
-            /*服务不存在时候的措施*/   图片为服务不存在
+            /*服务不存在时候的措施*/   //图片为服务不存在
             if (service[i] == null) {
             //  continue;
             }
