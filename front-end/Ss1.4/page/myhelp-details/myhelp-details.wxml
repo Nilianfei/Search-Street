@@ -98,6 +98,7 @@
 <!-- 此处显示这次帮助本人的人的信息 -->
 <!-- 此处显示对本人的求助提出帮助的人信息列表 -->
  <block wx:for="{{helperlist}}" wx:key='id'>
+  <block wx:if='{{item[1].helpStatus==2}}'>
   <view class="helpers-info">
  <!--此处要求后台提供提出帮助的人的头像，呢称，联系电话等-->
   <view class="helper">
@@ -133,6 +134,7 @@
     </view>
    </view>
   </view>
+  </block>
   </block> 
 </block>
 

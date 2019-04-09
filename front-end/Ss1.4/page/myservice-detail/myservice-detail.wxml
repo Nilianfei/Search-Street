@@ -13,9 +13,9 @@
       </view>
       </view>
       <view class="score">
-        <view class="text">态度分：<text class="score-text">{{help.attitude}}</text></view>
-        <view class="text">效率分：<text class="score-text">{{help.efficiency}}</text></view>
-        <view class="text">完成度：<text class="score-text">{{help.completion}}</text></view>
+        <view class="text">态度分：<text class="score-text">{{help.avgAttitude}}</text></view>
+        <view class="text">效率分：<text class="score-text">{{help.avgEfficiency}}</text></view>
+        <view class="text">完成度：<text class="score-text">{{help.avgCompletion}}</text></view>
       </view>
     </view>
   <view class="helpdetails-bd1">

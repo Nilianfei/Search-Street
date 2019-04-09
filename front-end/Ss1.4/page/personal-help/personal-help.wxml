@@ -122,7 +122,7 @@
                    <image class="toast-img img" src="../../images/soucoin1.png"></image>
                    </view>
                   <view>
-                    <text class="toast-text3">{{List1[index].additionalCoin}}</text>
+                    <text class="toast-text3">{{addCoin}}</text>
                   </view>
                   <view class="toast-text text4">
                    <text>搜币</text>

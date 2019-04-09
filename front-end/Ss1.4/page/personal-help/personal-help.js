@@ -55,6 +55,7 @@ Page({
     List1:[],
     soucoin:[],
     inactive_text:[],
+    addCoin:0,
     // 建议内容
     opinion: "",
 
@@ -683,8 +684,11 @@ confirm:function(e){
 /* 有追赏页面显示 */
   showSoucoin:function(e){
     console.log(e);
+   var addcoin=this.data.List1[e.currentTarget.dataset.id].additionalCoin;
+   console.log(addcoin);
     this.setData({
       ifadditioncoin:true,
+      addCoin:addcoin,
     })
     console.log(this.data.ifadditioncoin);
   },

@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "发布帮助",
+  "navigationBarTitleText": "发布求助",
   "usingComponents": {
     "i-input": "../../dist/input/index",
     "i-panel": "../../dist/panel/index",

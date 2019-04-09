@@ -218,7 +218,7 @@ Page({
       },
       complete: function (res) {
         console.log(res);
-        
+
       }
     })
     //console.log(this.data.markers)
@@ -276,20 +276,20 @@ Page({
           content: '您输入的手机号码或固定号码有误，请重新输入',
         })
       }
-    } 
+    }
     else if (e.detail.value.fullAddress.length == 0) {
       wx.showModal({
         title: '提示',
         content: '请您输入商店的完整地址',
       })
-    } 
-    else if(that.data.latitude==null||that.data.longitude==null){
+    }
+    else if (that.data.latitude == null || that.data.longitude == null) {
       wx.showModal({
         title: '提示',
         content: '您还没有开启定位哦',
       })
-      }
-      else {
+    }
+    else {
       //console.log('form发生了submit事件，携带数据为：', e.detail.value);
       //var that = this;
       var token = null;
@@ -338,7 +338,7 @@ Page({
               url: url,
               filePath: that.data.business_img[0],
               fileName: "businessLicenseImg",
-              token:token,
+              token: token,
             })
             app.uploadAImg({
               url: url,
@@ -355,7 +355,7 @@ Page({
               })
             }
             wx.navigateBack({
-              delta:1
+              delta: 1
             })
           } else {
             if (res.data.errMsg == "token为空" || res.data.errMsg == "token无效") {

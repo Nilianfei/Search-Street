@@ -3,7 +3,7 @@
 App({
   onLaunch: function () {
   },
-   
+
   onShow: function () {
     console.log('App Show')
   },
@@ -11,7 +11,7 @@ App({
     console.log('App Hide')
   },
   //处理后端传来的时间
-  timeStamp2String: function(time){
+  timeStamp2String: function (time) {
 
     var datetime = new Date();
     datetime.setTime(time);
@@ -19,7 +19,7 @@ App({
     var month = datetime.getMonth() + 1;
     var date = datetime.getDate();
     var hour = datetime.getHours();
-    if(hour<= 9){
+    if (hour <= 9) {
       hour = "0" + hour;
     }
     var minute = datetime.getMinutes();
@@ -32,10 +32,10 @@ App({
     }
     // var mseconds = datetime.getMilliseconds();
     return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;//+"."+mseconds;
-    },
+  },
 
-  uploadAImg:function(data){
-    var that= this;
+  uploadAImg: function (data) {
+    var that = this;
     wx.uploadFile({
       url: data.url,
       filePath: data.filePath,
@@ -45,9 +45,9 @@ App({
         'token': data.token
       },
       success: function (res) {
-        console.log("upload"+ data.fileName + res.data);
+        console.log("upload" + data.fileName + res.data);
       }, fail: function (error) {
-        console.error(error + "上传"+data.fileName+"失败");
+        console.error(error + "上传" + data.fileName + "失败");
       }
     })
   },

@@ -16,11 +16,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    errorMsg: showCheck,
+    errorMsg: "此为必填选项哦",
     region: ['广东省', '广州市', '海珠区'],
     customItem: '全部',
-    latitude: 23.099994,
-    longitude: 113.324520,
+    latitude: null,
+    longitude: null,
     flag: true,
     business_img: [],
     markers: [{
