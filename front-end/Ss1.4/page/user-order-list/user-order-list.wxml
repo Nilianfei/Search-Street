@@ -120,14 +120,13 @@
               <image src="{{sserviceImg[index]}}" mode='aspectFit' background-size="cover"></image>
             </view>
             <view class="productInfo">
-              <view class="text-df padding-xs">
-                服务评分:
+              <view class="text-df padding-xs">服务评分
                 <i-cell title="服务评分">
                   <i-rate disabled="{{true}}" value="{{item.serviceRating/20}}">
                   </i-rate>
                 </i-cell>
               </view>
-              <view class="text-df padding-xs">星级评分:
+              <view class="text-df padding-xs">星级评分
                 <i-cell title="星级评分">
                   <i-rate disabled="{{true}}" value="{{item.starRating}}">
                   </i-rate>
