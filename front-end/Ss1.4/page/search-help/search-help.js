@@ -302,15 +302,12 @@ previewImage:function (e){
           phone_error: errorMsg
         }
       })}
-    else if (!(/^1(3|4|5|7|8)\d{9}$/.test(e.detail.value.shelpPhone))) //验证11位手机号码
+    else if (!(/^1(3|4|5|7|8)\d{9}$/.test(e.detail.value.phone)) && !(/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/.test(e.detail.value.phone))) //验证11位手机号码，固定电话号码
     {
-      if (!/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(e.detail.value.shelpPhone)){
-       //验证固定电话号码
-        wx.showModal({
-          title: '提示',
-          content: '您输入的手机号码或固定号码有误，请重新输入',
-        })
-      }
+      wx.showModal({
+        title: '提示',
+        content: '您输入的手机号码或固定号码有误，请重新输入',
+      })
     } else if (that.data.latitude == null || that.data.longitude == null) {
       wx.showModal({
         title: '提示',

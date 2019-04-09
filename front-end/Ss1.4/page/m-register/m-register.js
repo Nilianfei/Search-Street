@@ -203,15 +203,12 @@ Page({
         }
       })
     }
-    else if (!(/^1(3|4|5|7|8)\d{9}$/.test(e.detail.value.phone))) //验证11位手机号码
+    else if (!(/^1(3|4|5|7|8)\d{9}$/.test(e.detail.value.phone)) && !(/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/.test(e.detail.value.phone))) //验证11位手机号码，固定电话号码
     {
-      if (!/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(e.detail.value.phone)) {
-        //验证固定电话号码
-        wx.showModal({
+      wx.showModal({
           title: '提示',
           content: '您输入的手机号码或固定号码有误，请重新输入',
         })
-      }
     } 
      else if (e.detail.value.fullAddress.length == 0) {
       wx.showModal({
@@ -225,7 +222,7 @@ Page({
         content: '您还没有开启定位哦',
       })
     }else {
-      //console.log('form发生了submit事件，携带数据为：', e.detail.value);
+      console.log('form发生了submit事件，携带数据为：', e.detail.value);
       //var that = this;
       var token = null;
       try {
