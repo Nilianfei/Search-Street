@@ -301,8 +301,9 @@ previewImage:function (e){
         errorMsgs: {
           phone_error: errorMsg
         }
-      })}
-    else if (!(/^1(3|4|5|7|8)\d{9}$/.test(e.detail.value.phone)) && !(/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/.test(e.detail.value.phone))) //验证11位手机号码，固定电话号码
+      })
+      }
+    else if (!(/^1(3|4|5|7|8)\d{9}$/.test(e.detail.value.shelpPhone)) && !(/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/.test(e.detail.value.shelpPhone))) //验证11位手机号码，固定电话号码
     {
       wx.showModal({
         title: '提示',

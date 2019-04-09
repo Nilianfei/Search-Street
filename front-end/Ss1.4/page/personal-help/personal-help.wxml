@@ -130,7 +130,7 @@
                   </view>
                   <view class='toast-button button6'>
                    <view class='button5_'>
-                    <button catchtap='addsouCoin'>放入钱包</button>
+                    <button catchtap='addsouCoin'>取消查看</button>
                   </view>
                   </view>
                  </view>

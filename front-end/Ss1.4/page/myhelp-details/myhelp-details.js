@@ -60,7 +60,7 @@ Page({
         console.log(res.data);
         if (res.data.success) {
           var appeal = res.data.appeal;
-          if (appeal.endTime - new Date().getTime() <= 0) that.data.clock = 0;      
+          if (appeal.endTime - new Date().getTime() <= 0||appeal.appealStatus==2) that.data.clock = 0;      
           else that.data.clock = Math.floor((appeal.endTime - new Date().getTime()) / 1000);
           var address = appeal.province + appeal.city + appeal.district + appeal.fullAddress;
           console.log(that.data.clock);

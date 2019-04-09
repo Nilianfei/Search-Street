@@ -721,24 +721,9 @@ confirm:function(e){
     })
   },
   addsouCoin:function(){
-      /* 根据token将本次帮助中被帮助人打赏的搜币存入本人账户 */
-     /* wx.request({
-        url: app.globalData.serviceUrl + "/SearchStreet/help/getappeallistbyuserid?token=" + this.data.token,   //此处url有误
-        data:{
-          additionCoin:helpList.additionCoin
-        },
-        method:'GET',
-        success(res){
-          console.log(res.data);
-        }
-      }) */
-      wx.showToast({
-        title: '已成功存入您的钱包',
-        icon:'none',
-      })
-      this.setData({
+     this.setData({
         ifadditioncoin:false,
-        showcoin:true,
+       // showcoin:true,
       })
   },
   /**
