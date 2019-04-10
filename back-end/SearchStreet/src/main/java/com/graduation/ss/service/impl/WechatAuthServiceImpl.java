@@ -50,6 +50,9 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 		if (!jedisKeys.exists(key)) {
 			// 若不存在，则从数据库里面取出相应数据
 			wechatAuth = wechatAuthDao.queryWechatByOpenId(openId);
+			if (wechatAuth == null) {
+				return null;
+			}
 			PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(wechatAuth.getUserId());
 			wechatAuthAndEnableStatus.setWechatAuth(wechatAuth);
 			wechatAuthAndEnableStatus.setEnableStatus(personInfo.getEnableStatus());
@@ -137,7 +140,7 @@ public class WechatAuthServiceImpl implements WechatAuthService {
 		try {
 			if (wechatAuth.getUserId() != null) {
 				try {
-					//该方法不能修改用户类型
+					// 该方法不能修改用户类型
 					personInfo.setUserType(null);
 					personInfo.setUserId(wechatAuth.getUserId());
 					personInfo.setLastEditTime(new Date());

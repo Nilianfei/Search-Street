@@ -20,6 +20,8 @@
 	src="../resources/js/superadmin/common/errorhandle.js"></script>
 <script type="text/javascript"
 	src="../resources/js/superadmin/appealmanage.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="../resources/css/superadmin/form-style.css">
 </head>
 
 <body>
@@ -56,89 +58,93 @@
 		style="padding: 5px; width: 600px; height: 350px;">
 		<h5 id="appealManagementEdit_message" style="color: red;"></h5>
 		<form id="form_appealManagementEdit" method="post">
-			<div style="margin: 5px; display: none;">
-				<label for="appealId">求助ID：</label> <input
-					class="easyui-validatebox" id="appealId" type="text"
-					name="appealId" readOnly />
-			</div>
-			<div style="margin: 5px;">
-				<label for="userId">用户ID：</label> <input class="easyui-validatebox"
-					required="true" id="userId" type="text" name="userId" />
-			</div>
-			<div style="margin: 5px">
-				<label for="appealTitle">求助标题：</label> <input
-					class="easyui-validatebox" type="text" name="appealTitle"
-					required="true" />
-			</div>
-			<div style="margin: 5px">
-				<label for="phone">电话号码：</label> <input class="easyui-validatebox"
-					required="true" type="text" name="phone" validType="number" />
-			</div>
-			<div style="margin: 5px">
-				<label for="appealContent">求助内容：</label> <input
-					class="easyui-textbox" data-options="multiline:true"
-					style="width: 200px; height: 50px" name="appealContent" required="true" />
-			</div>
-			<div style="margin: 5px">
-				<label for="province">省份：</label> <input class="easyui-validatebox"
-					type="text" name="province" required="true" />
-			</div>
-			<div style="margin: 5px">
-				<label for="city">城市：</label> <input class="easyui-validatebox"
-					type="text" name="city" required="true" />
-			</div>
-			<div style="margin: 5px">
-				<label for="district">地区：</label> <input class="easyui-validatebox"
-					type="text" name="district" required="true" />
-			</div>
-			<div style="margin: 5px">
-				<label for="fullAddress">详细地址：</label> <input
-					class="easyui-textbox" data-options="multiline:true"
-					style="width: 200px; height: 50px" name="fullAddress"
-					required="true" />
-			</div>
-			<div style="margin: 5px">
-				<label for="appealMoreInfo">补充地址：</label> <input
-					class="easyui-textbox" data-options="multiline:true"
-					style="width: 200px; height: 50px" name="appealMoreInfo" />
-			</div>
-			<div style="margin: 5px">
-				<label for="souCoin">搜币：</label> <input class="easyui-validatebox"
-					required="true" type="text" name="souCoin" />
-			</div>
-			<div style="margin: 5px">
-				<label for="appealStatus">求助状态：</label> <select id="appealStatus"
-					required="true" class="easyui-combobox" name="appealStatus"
-					style="width: 100px;">
-					<option id="appealManagementEdit_FIND" value="0">未确定帮助者</option>
-					<option id="appealManagementEdit_SELECED" value="1">已确定帮助者</option>
-					<option id="appealManagementEdit_FINISH" value="2">已完成</option>
-					<option id="appealManagementEdit_DISABLE" value="3">已失效</option>
-					<option id="appealManagementEdit_NO" value="4">禁止</option>
-				</select>
-			</div>
-			<div style="margin: 5px">
-				<label for="latitude">经度：</label> <input class="easyui-validatebox"
-					required="true" type="text" name="latitude" />
-			</div>
-			<div style="margin: 5px">
-				<label for="longitude">纬度：</label> <input class="easyui-validatebox"
-					required="true" type="text" name="longitude" />
-			</div>
-			<div style="margin: 5px">
-				<label for="startTime">开始时间：</label> <input
-					class="easyui-datetimebox" name="startTime" id="startTime"
-					required="true" data-options="showSeconds:true"
-					style="width: 150px">
-			</div>
-			<div style="margin: 5px">
-				<label for="endTime">失效时间：</label> <input class="easyui-datetimebox"
-					name="endTime" id="endTime" required="true"
-					data-options="showSeconds:true" style="width: 150px">
+			<div style="margin-left:20%">
+				<div style="margin: 5px; display: none;">
+					<label for="appealId">求助ID：</label> <input
+						class="easyui-validatebox" id="appealId" type="text"
+						name="appealId" readOnly />
+				</div>
+				<div style="margin: 5px;">
+					<label for="userId">用户ID：</label> <input class="easyui-validatebox"
+						required="true" id="userId" type="text" name="userId" />
+				</div>
+				<div style="margin: 5px">
+					<label for="appealTitle">求助标题：</label> <input
+						class="easyui-validatebox" type="text" name="appealTitle"
+						required="true" />
+				</div>
+				<div style="margin: 5px">
+					<label for="phone">电话号码：</label> <input class="easyui-validatebox"
+						required="true" type="text" name="phone" validType="number" />
+				</div>
+				<div style="margin: 5px">
+					<label for="appealContent">求助内容：</label> <input
+						class="easyui-textbox" data-options="multiline:true"
+						style="width: 200px; height: 50px" name="appealContent" required="true" />
+				</div>
+				<div style="margin: 5px">
+					<label for="province">省份：</label> <input class="easyui-validatebox"
+						type="text" name="province" required="true" />
+				</div>
+				<div style="margin: 5px">
+					<label for="city">城市：</label> <input class="easyui-validatebox"
+						type="text" name="city" required="true" />
+				</div>
+				<div style="margin: 5px">
+					<label for="district">地区：</label> <input class="easyui-validatebox"
+						type="text" name="district" required="true" />
+				</div>
+				<div style="margin: 5px">
+					<label for="fullAddress">详细地址：</label> <input
+						class="easyui-textbox" data-options="multiline:true"
+						style="width: 200px; height: 50px" name="fullAddress"
+						required="true" />
+				</div>
+				<div style="margin: 5px">
+					<label for="appealMoreInfo">补充地址：</label> <input
+						class="easyui-textbox" data-options="multiline:true"
+						style="width: 200px; height: 50px" name="appealMoreInfo" />
+				</div>
+				<div style="margin: 5px">
+					<label for="souCoin">搜币：</label> <input class="easyui-validatebox"
+						required="true" type="text" name="souCoin" />
+				</div>
+				<div style="margin: 5px">
+					<label for="appealStatus">求助状态：</label> <select id="appealStatus"
+						required="true" class="easyui-combobox" name="appealStatus"
+						style="width: 100px;">
+						<option id="appealManagementEdit_FIND" value="0">未确定帮助者</option>
+						<option id="appealManagementEdit_SELECED" value="1">已确定帮助者</option>
+						<option id="appealManagementEdit_FINISH" value="2">已完成</option>
+						<option id="appealManagementEdit_DISABLE" value="3">已失效</option>
+						<option id="appealManagementEdit_NO" value="4">禁止</option>
+					</select>
+				</div>
+				<div style="margin: 5px">
+					<label for="latitude">经度：</label> <input class="easyui-validatebox"
+						required="true" type="text" name="latitude" />
+				</div>
+				<div style="margin: 5px">
+					<label for="longitude">纬度：</label> <input class="easyui-validatebox"
+						required="true" type="text" name="longitude" />
+				</div>
+				<div style="margin: 5px">
+					<label for="startTime">开始时间：</label> <input
+						class="easyui-datetimebox" name="startTime" id="startTime"
+						required="true" data-options="showSeconds:true"
+						style="width: 150px">
+				</div>
+				<div style="margin: 5px">
+					<label for="endTime">失效时间：</label> <input class="easyui-datetimebox"
+						name="endTime" id="endTime" required="true"
+						data-options="showSeconds:true" style="width: 150px">
+				</div>
 			</div>
 		</form>
-		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
-			onclick="appealManagementEdit();">提交</a></li>
+		<div style="text-align: center">
+			<a href="#" class="easyui-linkbutton" icon="icon-ok"
+				onclick="appealManagementEdit();">提交</a>
+		</div>
 	</div>
 	<!-- Hidden value area -->
 	<input id="enalbeStatusHd" type="hidden" value="ALL" />

@@ -20,6 +20,8 @@
 	src="../resources/js/superadmin/common/errorhandle.js"></script>
 <script type="text/javascript"
 	src="../resources/js/superadmin/localauthmanage.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css"
+	href="../resources/css/superadmin/form-style.css">
 </head>
 
 <body>
@@ -30,12 +32,12 @@
 		singleSelect="false" showFooter="false" striped="true">
 		<thead>
 			<tr align="center">
-				<th field="localAuthId" width="15%">管理员帐号ID</th>
-				<th field="userId" width="15%">用户ID</th>
-				<th field="userName" width="15%">账号名</th>
-				<th field="password" width="15%">密码</th>
-				<th field="createTime" width="16%" formatter="timeFormater">创建时间</th>
-				<th field="lastEditTime" width="16%" formatter="timeFormater">最近修改时间</th>
+				<th field="localAuthId" width="70">管理员ID</th>
+				<th field="userId" width="50">用户ID</th>
+				<th field="userName" width="100">账号名</th>
+				<th field="password" width="300">密码</th>
+				<th field="createTime" width="150" formatter="timeFormater">创建时间</th>
+				<th field="lastEditTime" width="150" formatter="timeFormater">最近修改时间</th>
 				<th field="opt" formatter='optFormater' width="150">操作</th>
 			</tr>
 		</thead>
@@ -46,32 +48,36 @@
 		style="padding: 5px; width: 600px; height: 350px;">
 		<h5 id="localAuthManagementEdit_message" style="color: red;"></h5>
 		<form id="form_localAuthManagementEdit" method="post">
-			<div style="margin: 5px; display: none;">
-				<label for="localAuthId">管理员账号ID：</label> <input
-					class="easyui-validatebox" id="localAuthId" type="text"
-					name="localAuthId" readOnly />
-			</div>
-			<div style="margin: 5px;">
-				<label for="userId">用户ID：</label> <input class="easyui-validatebox"
-					id="userId" type="text" name="userId" readOnly />
-			</div>
-			<div style="margin: 5px">
-				<label for="userName">用户名：</label> <input class="easyui-validatebox"
-					type="text" name="userName" readOnly />
-			</div>
-			<div style="margin: 5px">
-				<label for="password">旧密码：</label> <input
-					class="easyui-passwordbox" name="password" required="true"
-					prompt="Password" iconWidth="28">
-			</div>
-			<div style="margin: 5px">
-				<label for="newPassword">新密码：</label> <input
-					class="easyui-passwordbox" name="newPassword" required="true"
-					prompt="Password" iconWidth="28">
+			<div style="margin-left: 20%">
+				<div style="margin: 5px; display: none;">
+					<label for="localAuthId">管理员账号ID：</label> <input
+						class="easyui-validatebox" id="localAuthId" type="text"
+						name="localAuthId" readOnly />
+				</div>
+				<div style="margin: 5px;">
+					<label for="userId">用户ID：</label> <input class="easyui-validatebox"
+						id="userId" type="text" name="userId" readOnly />
+				</div>
+				<div style="margin: 5px">
+					<label for="userName">用户名：</label> <input
+						class="easyui-validatebox" type="text" name="userName" readOnly />
+				</div>
+				<div style="margin: 5px">
+					<label for="password">旧密码：</label> <input
+						class="easyui-passwordbox" name="password" required="true"
+						prompt="Password" iconWidth="28">
+				</div>
+				<div style="margin: 5px">
+					<label for="newPassword">新密码：</label> <input
+						class="easyui-passwordbox" name="newPassword" required="true"
+						prompt="Password" iconWidth="28">
+				</div>
 			</div>
 		</form>
-		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
-			onclick="localAuthManagementEdit();">提交</a></li>
+		<div style="text-align: center">
+			<a href="#" class="easyui-linkbutton" icon="icon-ok"
+				onclick="localAuthManagementEdit();">提交</a>
+		</div>
 	</div>
 
 	<!-- 创建 -->
@@ -79,27 +85,31 @@
 		style="padding: 5px; width: 600px; height: 350px;">
 		<h5 id="localAuthManagementCreate_message" style="color: red;"></h5>
 		<form id="form_localAuthManagementCreate" method="post">
-			<div style="margin: 5px; display: none;">
-				<label for="localAuthId">管理员账号ID：</label> <input
-					class="easyui-validatebox" id="localAuthId" type="text"
-					name="localAuthId" readOnly />
-			</div>
-			<div style="margin: 5px;">
-				<label for="userId">用户ID：</label> <input class="easyui-validatebox"
-					id="userId" type="text" name="userId" required="true" />
-			</div>
-			<div style="margin: 5px">
-				<label for="userName">用户名：</label> <input class="easyui-validatebox"
-					type="text" name="userName" required="true" />
-			</div>
-			<div style="margin: 5px">
-				<label for="password">密码：</label> <input
-					class="easyui-passwordbox" name="password" required="true"
-					prompt="Password" iconWidth="28">
+			<div style="margin-left: 20%">
+				<div style="margin: 5px; display: none;">
+					<label for="localAuthId">管理员账号ID：</label> <input
+						class="easyui-validatebox" id="localAuthId" type="text"
+						name="localAuthId" readOnly />
+				</div>
+				<div style="margin: 5px;">
+					<label for="userId">用户ID：</label> <input class="easyui-validatebox"
+						id="userId" type="text" name="userId" required="true" />
+				</div>
+				<div style="margin: 5px">
+					<label for="userName">用户名：</label> <input
+						class="easyui-validatebox" type="text" name="userName"
+						required="true" />
+				</div>
+				<div style="margin: 5px">
+					<label for="password">密码：</label> <input class="easyui-passwordbox"
+						name="password" required="true" prompt="Password" iconWidth="28">
+				</div>
 			</div>
 		</form>
-		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
-			onclick="localAuthManagementCreate();">提交</a></li>
+		<div style="text-align: center">
+			<a href="#" class="easyui-linkbutton" icon="icon-ok"
+				onclick="localAuthManagementCreate();">提交</a>
+		</div>
 	</div>
 	<!-- Hidden value area -->
 	<input id="searchInfoHd" type="hidden" />

@@ -45,7 +45,7 @@ public class AppealServiceImpl implements AppealService {
 		// 将页码转换成行码
 		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
 		List<Appeal> appealList = appealDao.queryAppealListFY(appealCondition, rowIndex, pageSize);
-		// 依据相同的查询条件，返回帮助总数
+		// 依据相同的查询条件，返回求助总数
 		int count = appealDao.queryAppealCount(appealCondition);
 		AppealExecution ae = new AppealExecution();
 		if (appealList != null) {
@@ -85,18 +85,6 @@ public class AppealServiceImpl implements AppealService {
 		Appeal appeal = appealDao.queryByAppealId(appealId);
 		if (appeal == null) {
 			throw new AppealOperationException("getByAppealId error:" + "appealId无效");
-		}
-		Date today = new Date();
-		if (appeal.getEndTime().getTime() < today.getTime()) {// 当求助失效时，将求助改为已过时失效状态
-			appeal.setAppealStatus(3);
-			try {
-				int effectedNum = appealDao.updateAppeal(appeal);
-				if (effectedNum <= 0) {
-					throw new AppealOperationException("求助修改失败");
-				}
-			} catch (Exception e) {
-				throw new AppealOperationException("modifyAppeal error:" + e.toString());
-			}
 		}
 		return appeal;
 	}

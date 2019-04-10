@@ -20,6 +20,8 @@
 	src="../resources/js/superadmin/common/errorhandle.js"></script>
 <script type="text/javascript"
 	src="../resources/js/superadmin/appealimgmanage.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css"
+	href="../resources/css/superadmin/form-style.css">
 </head>
 
 <body>
@@ -44,22 +46,26 @@
 		style="padding: 5px; width: 600px; height: 350px;">
 		<h5 id="appealImgManagementAdd_message" style="color: red;"></h5>
 		<form id="form_appealImgManagementAdd" method="post" enctype="multipart/form-data">
-			<div style="margin: 5px; display: none;">
-				<label for="appealImgId">求助图片ID：</label> <input
-					class="easyui-validatebox" id="appealImgId" type="text"
-					name="appealImgId" readOnly />
-			</div>
-			<div style="margin: 5px;">
-				<label for="appealId">求助ID：</label> <input class="easyui-validatebox"
-					required="true" id="appealId" type="text" name="appealId" />
-			</div>
-			<div style="margin: 5px">
-				<label for="imgAddr">求助图片：</label><input class="easyui-filebox"
-					id="imgAddr" name="imgAddr" style="width: 200px;" required="true">
+			<div style="margin-left:20%">
+				<div style="margin: 5px; display: none;">
+					<label for="appealImgId">求助图片ID：</label> <input
+						class="easyui-validatebox" id="appealImgId" type="text"
+						name="appealImgId" readOnly />
+				</div>
+				<div style="margin: 5px;">
+					<label for="appealId">求助ID：</label> <input class="easyui-validatebox"
+						required="true" id="appealId" type="text" name="appealId" />
+				</div>
+				<div style="margin: 5px">
+					<label for="imgAddr">求助图片：</label><input class="easyui-filebox"
+						id="imgAddr" name="imgAddr" style="width: 200px;" required="true">
+				</div>
 			</div>
 		</form>
-		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
-			onclick="appealImgManagementAdd();">提交</a></li>
+		<div style="text-align: center">
+			<a href="#" class="easyui-linkbutton" icon="icon-ok"
+				onclick="appealImgManagementAdd();">提交</a>
+		</div>
 	</div>
 	<!-- Hidden value area -->
 	<input id="searchInfoHd" type="hidden" />

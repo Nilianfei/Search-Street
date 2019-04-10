@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+label {
+	text-align: right;
+	width: 80px;
+	float: left;
+	margin-right: 10px;
+}

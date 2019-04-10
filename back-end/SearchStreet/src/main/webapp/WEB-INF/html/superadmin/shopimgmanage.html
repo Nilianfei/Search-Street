@@ -20,6 +20,8 @@
 	src="../resources/js/superadmin/common/errorhandle.js"></script>
 <script type="text/javascript"
 	src="../resources/js/superadmin/shopimgmanage.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css"
+	href="../resources/css/superadmin/form-style.css">
 </head>
 
 <body>
@@ -43,23 +45,28 @@
 	<div id="shopImgManagementAdd" icon="icon-save"
 		style="padding: 5px; width: 600px; height: 350px;">
 		<h5 id="shopImgManagementAdd_message" style="color: red;"></h5>
-		<form id="form_shopImgManagementAdd" method="post" enctype="multipart/form-data">
-			<div style="margin: 5px; display: none;">
-				<label for="shopImgId">商铺图片ID：</label> <input
-					class="easyui-validatebox" id="shopImgId" type="text"
-					name="shopImgId" readOnly />
-			</div>
-			<div style="margin: 5px;">
-				<label for="shopId">商铺ID：</label> <input class="easyui-validatebox"
-					required="true" id="shopId" type="text" name="shopId" />
-			</div>
-			<div style="margin: 5px">
-				<label for="imgAddr">商铺图片：</label><input class="easyui-filebox"
-					id="imgAddr" name="imgAddr" style="width: 200px;" required="true">
+		<form id="form_shopImgManagementAdd" method="post"
+			enctype="multipart/form-data">
+			<div style="margin-left: 20%">
+				<div style="margin: 5px; display: none;">
+					<label for="shopImgId">商铺图片ID：</label> <input
+						class="easyui-validatebox" id="shopImgId" type="text"
+						name="shopImgId" readOnly />
+				</div>
+				<div style="margin: 5px;">
+					<label for="shopId">商铺ID：</label> <input class="easyui-validatebox"
+						required="true" id="shopId" type="text" name="shopId" />
+				</div>
+				<div style="margin: 5px">
+					<label for="imgAddr">商铺图片：</label><input class="easyui-filebox"
+						id="imgAddr" name="imgAddr" style="width: 200px;" required="true">
+				</div>
 			</div>
 		</form>
-		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
-			onclick="shopImgManagementAdd();">提交</a></li>
+		<div style="text-align: center">
+			<a href="#" class="easyui-linkbutton" icon="icon-ok"
+				onclick="shopImgManagementAdd();">提交</a>
+		</div>
 	</div>
 	<!-- Hidden value area -->
 	<input id="searchInfoHd" type="hidden" />
