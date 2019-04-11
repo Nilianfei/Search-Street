@@ -36,6 +36,8 @@ function statusFormater(value, row, index) {
 		return '已完成';
 	else if (row.orderStatus == 3)
 		return '已取消';
+	else if (row.orderStatus == 4)
+		return '已回复';
 	else
 		return "全部";
 }
@@ -102,10 +104,15 @@ function formatDate(inputTime) {
   {
     minute = strlist[4].substr(0, strlist[4].length - 1);
   }
-  else
+  else if(strlist.length==6)
   {
     minute = strlist[4];
     second = strlist[5].substr(0, strlist[5].length - 1);
+  }   
+  else if(strlist.length==7)
+  {
+    minute = strlist[4];
+    second = strlist[5];
   }   
   minute = minute < 10 ? ('0' + minute) : minute;
   second = second < 10 ? ('0' + second) : second;
@@ -234,6 +241,8 @@ function ajaxTable() {
 			.append('<option id="orderManagementEdit_FINISH" value="2">已完成</option>');
 	orderStatusBuffer
 			.append('<option id="orderManagementEdit_CANCEL" value="3">已取消</option>');
+	orderStatusBuffer
+			.append('<option id="orderManagementEdit_REPLIED" value="4">已回复</option>');
 	var searchConditionBuffer = new StringBuffer()
 	searchConditionBuffer
 			.append('<select id="orderManagementSearch_searchCondition" class="easyui-combobox" style="margin :2px; padding :4px;" ');
@@ -442,7 +451,7 @@ function orderManagementEdit() {
 				var isValid = $(this).form('validate');
 				if (!isValid) {
 					$.messager.progress('close'); // hide progress bar while
-													// the
+					alert("wrong params");							// the
 					// form is invalid
 				}
 				return isValid; // return false will stop the form submission

@@ -275,7 +275,7 @@ function optFormater(value, row, index) {
 	var starRating = row.starRating;
 	var commentContent = row.commentContent;
 	var commentReply = row.commentReply;
-	var params = shopCommentId + "," +shopId+"," +orderId+"," + userId +"," + serviceRating+"," +starRating+"," + commentContent + "," +commentReply ;
+	var params = shopCommentId + "," +shopId+"," +orderId+"," + userId +"," + serviceRating+"," +starRating+",'" + commentContent + "','" +commentReply+"'" ;
 	var edit = '<a href="javascript:openDialog_edit(' + params + ')">编辑</a>'+"    "+'<a href="javascript:doDel(' + shopCommentId+ ')">删除</a>';
 	return edit;
 };
@@ -319,10 +319,10 @@ function shopCommentManagementEditReset(shopCommentId, shopId,orderId,userId,ser
 		shopCommentId : shopCommentId,
 		shopId:shopId,
 		orderId:orderId,
-		userId : userId,
+		userId:userId,
 		serviceRating:serviceRating,
 		starRating:starRating,
-		commentContent : commentContent,
+		commentContent:commentContent,
 		commentReply:commentReply
 	});
 }

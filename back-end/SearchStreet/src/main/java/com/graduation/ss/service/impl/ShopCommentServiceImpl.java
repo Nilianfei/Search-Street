@@ -248,22 +248,22 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 
 	
 	@Override
-	public ShopCommentExecution deleteShopComment(ShopComment shopComment) throws ShopCommentOperationException
+	public ShopCommentExecution deleteShopComment(long shopCommentId) throws ShopCommentOperationException
 	{
 		// 空值判断
-				if (shopComment == null) {
-					return new ShopCommentExecution(ShopCommentStateEnum.NULL_ShopComment);
+				if (shopCommentId <0) {
+					return new ShopCommentExecution(ShopCommentStateEnum.NULL_SHOPCOMMENTID);
 				}
 				try {
 					// 删除评论信息
-					int effectedNum = shopCommentDao.deleteShopComment(shopComment);
+					int effectedNum = shopCommentDao.deleteShopComment(shopCommentId);
 					if (effectedNum <= 0) {
 						throw new ShopCommentOperationException("评论删除失败");
 					}
 				} catch (Exception e) {
 					throw new ShopCommentOperationException("deleteShopComment error:" + e.getMessage());
 				}
-				return new ShopCommentExecution(ShopCommentStateEnum.SUCCESS, shopComment);
+				return new ShopCommentExecution(ShopCommentStateEnum.SUCCESS);
 	}
 
 

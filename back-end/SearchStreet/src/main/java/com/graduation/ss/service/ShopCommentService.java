@@ -80,5 +80,5 @@ public interface ShopCommentService {
 	 * @return
 	 * @throws ShopCommentOperationException
 	 */
-	public ShopCommentExecution deleteShopComment(ShopComment shopComment) throws ShopCommentOperationException;
+	public ShopCommentExecution deleteShopComment(long shopCommentId) throws ShopCommentOperationException;
 }

@@ -19,6 +19,7 @@ import com.graduation.ss.dto.ConstantForSuperAdmin;
 import com.graduation.ss.dto.ImageHolder;
 import com.graduation.ss.dto.ServiceExecution;
 import com.graduation.ss.entity.ServiceImg;
+import com.graduation.ss.entity.ServiceInfo;
 import com.graduation.ss.enums.ServiceStateEnum;
 import com.graduation.ss.service.SService;
 import com.graduation.ss.util.HttpServletRequestUtil;
@@ -108,6 +109,10 @@ public class ServiceImgController {
 			ServiceImg serviceImg=new ServiceImg();
 			serviceImg.setServiceId(serviceId);
 			ServiceExecution serviceImgExecution = sService.deleteServiceImg(serviceImg);
+			//先删除服务图片，在清空服务
+			ServiceInfo service=sService.getByServiceId(serviceId);
+			service.setServiceImgAddr("");
+			sService.modifyService(service);
 			if (serviceImgExecution.getState() != ServiceStateEnum.SUCCESS.getState()) {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", serviceImgExecution.getStateInfo());
@@ -149,6 +154,7 @@ public class ServiceImgController {
 				modelMap.put("errMsg", serviceImgExecution.getStateInfo());
 				return modelMap;
 			}
+			
 		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.toString());

@@ -3,9 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css"
-	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css">
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css"></link>
+   <style>
+        .validatebox-invalid,.textbox-invalid{background-color:#fff}
+   </style>
 <link rel="stylesheet" type="text/css"
-	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css">
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css"></link>
 <script type="text/javascript"
 	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
 <script type="text/javascript"
@@ -14,6 +17,8 @@
 	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
 <link rel="stylesheet"
 	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
+	<link rel="stylesheet" type="text/css"
+	href="../resources/css/superadmin/form-style.css"></link>
 <script type="text/javascript"
 	src="../resources/js/superadmin/common/commonutil.js"></script>
 <script type="text/javascript"
@@ -30,7 +35,7 @@
 		singleSelect="false" showFooter="false" striped="true">
 		<thead>
 			<tr align="center">
-				<th field="shopCommentId" width="50">服务评论ID</th>
+				<th field="shopCommentId" width="150">评论ID</th>
 				<th field="shopId" width="50">店铺ID</th>
 				<th field="orderId" width="50">订单ID</th>
 				<th field="userId" width="50">用户ID</th>
@@ -45,34 +50,36 @@
 
 	<!-- 编辑 -->
 	<div id="shopCommentManagementEdit" icon="icon-save"
-		style="padding: 5px; width: 600px; height: 350px;">
-		<h5 id="shopCommentManagementEdit_message" style="color: red;"></h5>
+		style="padding: 5px; width: 450px; height: 400px;">
+		<h5 id="shopCommentManagementEdit_message"></h5>
 		<form id="form_shopCommentManagementEdit" method="post">
+		<div style="margin-left:5%">
 			<div style="margin: 5px;">
-				<label for="shopCommentId">服务评论ID：</label> <input
+				<label for="shopCommentId">评论ID：</label> <input
 					class="easyui-validatebox" id="shopCommentId" type="text"
 					name="shopCommentId" readOnly />
 			</div>
-						<div style="margin: 5px">
+			<div style="margin: 5px">
 				<label for="shopId">店铺ID：</label> <input
 					class="easyui-validatebox" type="text" name="shopId"
-					required="true" />
+					required="true"/>
 			</div>
 			<div style="margin: 5px">
-				<label for="orderId">订单ID：</label> <input class="easyui-validatebox"
-					required="true" type="text" name="orderId" />
+				<label for="orderId">订单ID：</label> <input 
+				class="easyui-validatebox" type="text" name="orderId" 
+				required="true"/>
+				</div>
 			<div style="margin: 5px;">
 				<label for="userId">用户ID：</label> <input class="easyui-validatebox"
 					required="true" id="userId" type="text" name="userId" />
 			</div>
             <div style="margin: 5px">
-				<label for="serviceRating">服务评分：</label> <input class="easyui-validatebox"
+				<label for="serviceRating">服务评分：</label><input class="easyui-validatebox"
 					type="text" name="serviceRating" required="true" />
 			</div>
 			<div style="margin: 5px">
 				<label for="starRating">星级评分：</label> <input class="easyui-validatebox"
 					type="text" name="starRating" required="true" />
-			</div>
 			</div>
 			<div style="margin: 5px">
 				<label for="commentContent">评论内容：</label> <input
@@ -84,10 +91,10 @@
 					class="easyui-textbox" data-options="multiline:true"
 					style="width: 200px; height: 50px" name="commentReply" />
 			</div>
-			
+			</div>
 		</form>
-		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
-			onclick="shopCommentManagementEdit();">提交</a></li>
+		<div style="margin-left:30%"><a href="#" class="easyui-linkbutton" icon="icon-ok"
+			onclick="shopCommentManagementEdit();">提交</a></div>
 	</div>
 	<!-- Hidden value area -->
 	<input id="searchConditionHd" type="hidden" value="ALL" />

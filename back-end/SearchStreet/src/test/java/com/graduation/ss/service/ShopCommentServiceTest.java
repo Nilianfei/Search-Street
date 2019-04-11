@@ -101,9 +101,7 @@ public class ShopCommentServiceTest {
 	@Test
 	@Ignore
 	public void testDeleteShopComment() throws ShopCommentOperationException {
-		ShopComment shopComment = new ShopComment();
-        shopComment.setShopCommentId(2L);
-		ShopCommentExecution se =  shopCommentService.deleteShopComment(shopComment);
+		ShopCommentExecution se =  shopCommentService.deleteShopComment(2L);
 		assertEquals(ShopCommentStateEnum.SUCCESS.getState(), se.getState());
 	}
 }

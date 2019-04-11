@@ -12,8 +12,8 @@ function initializePage() {
 }
 
 function searchServiceImgInfo() {
-	var serviceImgId = $("#searchInfoHd").val();
-	if (serviceImgId != '') {
+	var serviceId = $("#searchInfoHd").val();
+	if (serviceId != '') {
 		listServiceImgByServiceId();
 	} else {
 		listServiceImgs();
@@ -196,8 +196,8 @@ function searchInfo() {
  * 当前行的索引 从0 开始
  */
 function optFormater(value, row, index) {
-	var serviceImgId = row.serviceImgId;
-	var add = '<a href="javascript:delServiceImg(' + serviceImgId + ')">删除</a>';
+	var serviceId = row.serviceId;
+	var add = '<a href="javascript:delServiceImg(' + serviceId + ')">删除</a>';
 	return add;
 };
 
@@ -264,13 +264,13 @@ function serviceImgManagementAdd() {
  * @param url
  * @return
  */
-function delServiceImg(serviceImgId) {
+function delServiceImg(serviceId) {
 	$.ajax({
 		async : false,
 		cache : false,
 		type : 'post',
 		dataType : "json",
-		url : 'deleteserviceimg?serviceImgId=' + serviceImgId,// 请求的action路径
+		url : 'deleteserviceimg?serviceId=' + serviceId,// 请求的action路径
 		error : function() {// 请求失败处理函数
 			alert('请求失败');
 		},

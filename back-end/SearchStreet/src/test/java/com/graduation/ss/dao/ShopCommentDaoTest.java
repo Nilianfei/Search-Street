@@ -114,9 +114,7 @@ public class ShopCommentDaoTest {
 	@Test
 	@Ignore
 	public void testDeleteShopComment() {
-		ShopComment shopComment = new ShopComment();
-		shopComment.setShopCommentId(2L);
-		int effectedNum = shopCommentDao.deleteShopComment(shopComment);
+		int effectedNum = shopCommentDao.deleteShopComment(2L);
 		assertEquals(1, effectedNum);
 	}
 

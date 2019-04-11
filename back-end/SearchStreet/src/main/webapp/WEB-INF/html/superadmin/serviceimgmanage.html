@@ -3,9 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css"
-	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css">
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css"></link>
+   <style>
+        .validatebox-invalid,.textbox-invalid{background-color:#fff;}
+   </style>
 <link rel="stylesheet" type="text/css"
-	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css">
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css"></link>
 <script type="text/javascript"
 	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
 <script type="text/javascript"
@@ -14,6 +17,8 @@
 	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
 <link rel="stylesheet"
 	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
+<link rel="stylesheet" type="text/css"
+	href="../resources/css/superadmin/form-style.css"></link>
 <script type="text/javascript"
 	src="../resources/js/superadmin/common/commonutil.js"></script>
 <script type="text/javascript"
@@ -30,25 +35,21 @@
 		singleSelect="false" showFooter="false" striped="true">
 		<thead>
 			<tr align="center">
-				<th field="serviceImgId" width="15%">服务图片ID</th>
-				<th field="imgAddr" width="30%" formatter="imgFormater">服务图片</th>
-				<th field="serviceId" width="15%">服务ID</th>
-				<th field="createTime" width="20%" formatter="timeFormater">创建时间</th>
-				<th field="opt" formatter='optFormater' width="20%">操作</th>
+				<th field="serviceImgId" width="100">服务图片ID</th>
+				<th field="imgAddr" width="150" formatter="imgFormater">服务图片</th>
+				<th field="serviceId" width="100">服务ID</th>
+				<th field="createTime" width="200" formatter="timeFormater">创建时间</th>
+				<th field="opt" formatter='optFormater' width="120">操作</th>
 			</tr>
 		</thead>
 	</table>
 
-	<!-- 编辑 -->
+	<!-- 删除 -->
 	<div id="serviceImgManagementAdd" icon="icon-save"
-		style="padding: 5px; width: 600px; height: 350px;">
-		<h5 id="serviceImgManagementAdd_message" style="color: red;"></h5>
+		style="padding: 5px; width: 350px; height: 200px;">
+		<h5 id="serviceImgManagementAdd_message" ></h5>
 		<form id="form_serviceImgManagementAdd" method="post" enctype="multipart/form-data">
-			<div style="margin: 5px; ">
-				<label for="serviceImgId">服务图片ID：</label> <input
-					class="easyui-validatebox" id="serviceImgId" type="text"
-					name="serviceImgId" readOnly />
-			</div>
+		<div style="margin-left:5%">
 			<div style="margin: 5px;">
 				<label for="serviceId">服务ID：</label> <input class="easyui-validatebox"
 					required="true" id="serviceId" type="text" name="serviceId" />
@@ -57,9 +58,10 @@
 				<label for="imgAddr">服务图片：</label><input class="easyui-filebox"
 					id="imgAddr" name="imgAddr" style="width: 200px;" required="true">
 			</div>
+			</div>
 		</form>
-		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
-			onclick="serviceImgManagementAdd();">提交</a></li>
+		<div style="margin-left:30%"><a href="#" class="easyui-linkbutton" icon="icon-ok"
+			onclick="serviceImgManagementAdd();">提交</a></div>
 	</div>
 	<!-- Hidden value area -->
 	<input id="searchInfoHd" type="hidden" />

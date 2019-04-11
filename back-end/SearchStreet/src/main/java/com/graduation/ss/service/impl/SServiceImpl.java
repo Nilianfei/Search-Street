@@ -136,9 +136,33 @@ public class SServiceImpl implements SService {
 	@Override
 	public ServiceExecution createServiceImg(Long serviceId, ImageHolder serviceImgHolder)
 			throws ServiceOperationException {
-		if (serviceId != null) {
+		if (serviceId != null&&serviceId>0) {
 			try {
-				addServiceImg(serviceId, serviceImgHolder,new Date());
+				ServiceInfo service=new ServiceInfo();
+				service=serviceDao.queryByServiceId(serviceId);
+				if(service==null)
+				{
+					return new ServiceExecution(ServiceStateEnum.NULL_Service);
+				}
+				else
+				{
+					//图片存在，应更改图片，而非添加图片
+					String imgaddr=service.getServiceImgAddr();
+					if(imgaddr==null||imgaddr==""||imgaddr.equals(""))
+					{
+						addServiceImg(serviceId, serviceImgHolder,new Date());
+						service.setServiceImgAddr(serviceImgDao.getServiceImg(serviceId).getImgAddr());
+						int effectedNum = serviceDao.updateService(service);
+						if (effectedNum <= 0) {
+							throw new ServiceOperationException("服务修改失败");
+						}
+					}
+					else
+					{
+						return new ServiceExecution(ServiceStateEnum.NOT_NULL_ServiceImg);
+				
+					}
+				}
 			} catch (Exception e) {
 				throw new ServiceOperationException("createServiceImg error:" + e.toString());
 			}
@@ -209,9 +233,10 @@ public class SServiceImpl implements SService {
 		// 依据查询条件，调用dao层返回相关的服务图片列表
 		List<ServiceImg> serviceImgList = serviceImgDao.queryServiceImg(serviceImg, rowIndex, pageSize);
 		ServiceExecution aie = new ServiceExecution();
+		int count = serviceImgDao.queryServiceImgCount(serviceImg);
 		if (serviceImgList != null) {
 			aie.setServiceImgList(serviceImgList);
-			aie.setCount(serviceImgList.size());
+			aie.setCount(count);
 		} else {
 			aie.setState(ServiceStateEnum.INNER_ERROR.getState());
 		}

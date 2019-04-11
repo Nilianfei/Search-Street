@@ -37,4 +37,9 @@ public class ServiceImg {
 	public void setServiceId(Long serviceId) {
 		this.serviceId = serviceId;
 	}
+	@Override
+	public String toString() {
+		return "ServiceImg [serviceImgId=" + serviceImgId + ", imgAddr=" + imgAddr + ", createTime=" + createTime
+				+ ", serviceId=" + serviceId + "]";
+	}
 }

@@ -5,7 +5,7 @@ import com.graduation.ss.enums.ServiceStateEnum;
 public enum ServiceStateEnum {
 	 SUCCESS(3, "操作成功"), INNER_ERROR(-1001, "内部系统错误"),
 	NULL_SHOPID(-1002, "ShopId为空"),  NULL_SeriveId(-1003, "ServiceId信息为空"),NULL_Service(-1004, "service信息为空"),
-	NULL_ServiceImg(-1005, "service图片为空"),NULL_SERVICEIMG_CREATETIME(-1006, "Service图片创建时间信息为空");
+	NULL_ServiceImg(-1005, "service图片为空"),NULL_SERVICEIMG_CREATETIME(-1006, "Service图片创建时间信息为空"),NOT_NULL_ServiceImg(-1007, "service图片不为空");
 	private int state;
 	private String stateInfo;
 

@@ -3,9 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css"
-	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css">
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/default/easyui.css"></link>
+   <style>
+        .validatebox-invalid,.textbox-invalid{background-color:#fff}
+   </style>
 <link rel="stylesheet" type="text/css"
-	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css">
+	href="../resources/js/superadmin/common/jquery-easyui-1.7.0/themes/icon.css"></link>
 <script type="text/javascript"
 	src="../resources/js/superadmin/common/jquery-1.4.4.min.js"></script>
 <script type="text/javascript"
@@ -14,6 +17,8 @@
 	src="../resources/js/superadmin/common/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
 <link rel="stylesheet"
 	href="../resources/css/superadmin/common/tooltip-form-style.css"></link>
+	<link rel="stylesheet" type="text/css"
+	href="../resources/css/superadmin/form-style.css"></link>
 <script type="text/javascript"
 	src="../resources/js/superadmin/common/commonutil.js"></script>
 <script type="text/javascript"
@@ -44,9 +49,10 @@
 
 	<!-- 编辑 -->
 	<div id="serviceManagementEdit" icon="icon-save"
-		style="padding: 5px; width: 600px; height: 350px;">
-		<h5 id="serviceManagementEdit_message" style="color: red;"></h5>
+		style="padding: 5px; width: 450px; height: 350px;">
+		<h5 id="serviceManagementEdit_message" ></h5>
 		<form id="form_serviceManagementEdit" method="post">
+		<div style="margin-left:5%">
 			<div style="margin: 5px; ">
 				<label for="serviceId">服务ID：</label> <input
 					class="easyui-validatebox" id="serviceId" type="text"
@@ -81,9 +87,10 @@
 					class="easyui-textbox" data-options="multiline:true"
 					style="width: 200px; height: 50px" name="serviceContent"  />
 			</div>
+			</div>
 		</form>
-		<li><a href="#" class="easyui-linkbutton" icon="icon-ok"
-			onclick="serviceManagementEdit();">提交</a></li>
+		<div style="margin-left:30%"><a href="#" class="easyui-linkbutton" icon="icon-ok"
+			onclick="serviceManagementEdit();">提交</a></div>
 	</div>
 	<!-- Hidden value area -->
 	<input id="searchConditionHd" type="hidden" value="ALL" />

@@ -85,6 +85,6 @@ public interface ShopCommentDao {
 	 * @param shopCommentInfo
 	 * @return
 	 */
-	public int deleteShopComment(ShopComment shopCommentInfo);
+	public int deleteShopComment(long shopCommentId);
 
 }

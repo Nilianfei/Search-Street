@@ -16,6 +16,18 @@
 		</where>
 		LIMIT #{rowIndex},#{pageSize};
 	</select>
+	<select id="queryServiceImgCount" resultType="int">
+		SELECT
+		count(1)
+		FROM
+		tb_service_img
+		<where>
+			<if
+				test="serviceImgCondition.serviceId != null">
+				and service_id = #{serviceImgCondition.serviceId}
+			</if> 
+		</where>
+	</select>
 	<select id="getServiceImg"
 		resultType="com.graduation.ss.entity.ServiceImg">
 		SELECT

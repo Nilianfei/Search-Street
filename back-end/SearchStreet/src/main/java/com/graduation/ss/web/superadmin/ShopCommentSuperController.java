@@ -443,40 +443,26 @@ public class ShopCommentSuperController {
 	@ApiImplicitParam(paramType = "query", name = "shopCommentId", value = "服务评价ID", required = true, dataType = "Long", example = "3")
 	private Map<String, Object> deleteShopComment(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		ShopComment shopComment = null;
 		// 从请求中获取shopCommentId
 		long shopCommentId = HttpServletRequestUtil.getLong(request, "shopCommentId");
 		if (shopCommentId > 0) {
 			try {
-				// 根据Id获取评论实例
-				shopComment = shopCommentService.getByShopCommentId(shopCommentId);
+				//删除评论
+				ShopCommentExecution ae = shopCommentService.deleteShopComment(shopCommentId);
+				if (ae.getState() == ShopCommentStateEnum.SUCCESS.getState()) {
+					modelMap.put("success", true);
+				} else {
+					modelMap.put("success", false);
+					modelMap.put("errMsg", ae.getStateInfo());
+				}
 				
 			} catch (Exception e) {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", e.toString());
 				return modelMap;
 			}
-			// 空值判断
-			if (shopComment != null) {
-				try {
-					//删除评论
-					ShopCommentExecution ae = shopCommentService.deleteShopComment(shopComment);
-					if (ae.getState() == ShopCommentStateEnum.SUCCESS.getState()) {
-						modelMap.put("success", true);
-					} else {
-						modelMap.put("success", false);
-						modelMap.put("errMsg", ae.getStateInfo());
-					}
-				} catch (Exception e) {
-					modelMap.put("success", false);
-					modelMap.put("errMsg", e.toString());
-					return modelMap;
-				}
 
-			} else {
-				modelMap.put("success", false);
-				modelMap.put("errMsg", "请输入评论信息");
-			}
+			
 		}
 		else {
 			modelMap.put("success", false);

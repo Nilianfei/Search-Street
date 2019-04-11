@@ -43,7 +43,7 @@ public class ServiceExecution {
 	public ServiceExecution(ServiceStateEnum stateEnum, ServiceImg serviceImg) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
-		this.setServiceImg(serviceImg);
+		this.serviceImg=serviceImg;
 	}
 
 	// 查询服务操作成功的时候使用的构造器

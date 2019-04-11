@@ -9,6 +9,7 @@ import com.graduation.ss.entity.ServiceImg;
 public interface ServiceImgDao {
 	public List<ServiceImg> queryServiceImg(@Param("serviceImgCondition")ServiceImg serviceImgCondition, @Param("rowIndex") int rowIndex,
 			@Param("pageSize") int pageSize);
+	int queryServiceImgCount(@Param("serviceImgCondition") ServiceImg serviceImgCondition);
 	/**
 	 * 列出某个店铺的某服务图
 	 * 
