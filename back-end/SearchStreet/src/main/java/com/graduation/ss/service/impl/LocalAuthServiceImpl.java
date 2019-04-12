@@ -36,6 +36,8 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 	@Override
 	public LocalAuth getLocalAuthByUsernameAndPwd(String username, String password) {
 		LocalAuth localAuth = localAuthDao.queryLocalByUserNameAndPwd(username, MD5.getMd5(password));
+		if (localAuth == null)
+			return null;
 		PersonInfo personInfo = personInfoDao.queryPersonInfoByUserId(localAuth.getUserId());
 		localAuth.setPersonInfo(personInfo);
 		return localAuth;
@@ -75,13 +77,13 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 		}
 		try {
 			WechatAuth wechatAuth = wechatAuthDao.queryWechatByUserId(personInfo.getUserId());
-			if(wechatAuth!=null) {
+			if (wechatAuth != null) {
 				String openId = wechatAuth.getOpenId();
 				jedisKeys.del(openId);
 			}
-			//修改用户类型为管理员
+			// 修改用户类型为管理员
 			personInfo.setUserType(1);
-			int effectedNum =personInfoDao.updatePersonInfo(personInfo);
+			int effectedNum = personInfoDao.updatePersonInfo(personInfo);
 			if (effectedNum <= 0) {
 				throw new LocalAuthOperationException("用户类型修改失败");
 			}
