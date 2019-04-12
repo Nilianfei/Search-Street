@@ -100,6 +100,7 @@ Page({
   onLoad: function (options) {
    var that=this;
     var service = JSON.parse(options.service);
+    console.log(options.service)
     var order =JSON.parse(options.order);
     var shopComment=that.data.shopComment;
     if(service!=null)

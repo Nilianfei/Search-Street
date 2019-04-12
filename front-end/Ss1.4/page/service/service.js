@@ -48,6 +48,7 @@ Page({
     wx.navigateBack({
       url: '../user-service-list/user-service-list',//返回服务列表页面
     })
+    
   },
   /* 点击减号 */
   bindMinus: function () {
@@ -195,6 +196,17 @@ Page({
         url: '../order-detail/order-detail?service=' + JSON.stringify(service) + '&order=' + JSON.stringify(order),
       })
  },
+toShop: function (e)
+{
+  var that = this;
+  var service = that.data.service;
+  if(service!=null&&service.serviceId!=null)
+  {
+    wx.navigateTo({
+      url: '../shop/shop?shopId=' + service.shopId,
+    })
+  }
+},
   booking:function(e){
     var that = this;
     if(that.data.bottonText!="已预约"){

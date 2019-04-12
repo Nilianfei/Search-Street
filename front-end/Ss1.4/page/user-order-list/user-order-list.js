@@ -236,15 +236,14 @@ Page({
             /*
              *跳过null 需要与后端沟通更好的解决办法  显示服务不存在的图片
              */
-            if (service[i] == null) {
-              console.log("do this continue.");
-            //  order[i].orderStatus = 4;
-            //  continue;
-            }
-            else if (service[i] != null)
+            if (service[i] != null)
             {  
               if (service[i].serviceImgAddr != null)
                 img[i] = app.globalData.imgUrl + service[i].serviceImgAddr; //经过修改后可以正常显示订单图片信息,还需等addservice调整后加上服务器的ip  
+            }
+            if(img[i]==null)
+            {
+              img[i] = "/images/nophoto.png";
             }
           }
           that.setData({
@@ -387,7 +386,7 @@ Page({
   },
   cancelOrder: function(e) {
     wx.showToast({
-      title: '正在取消订单，请稍候...',
+      title: '正在取消订单',
       icon: 'loading',
       duration: 1000
     })
@@ -450,7 +449,7 @@ Page({
       wx.navigateTo({
         url: '../comment/comment?service=' + JSON.stringify(service) + '&order=' + JSON.stringify(order),
       })
-    that.allShow()
+   // that.allShow()
   },
   serviceDetail: function(e) {
     var that = this;

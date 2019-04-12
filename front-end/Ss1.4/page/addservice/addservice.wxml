@@ -3,7 +3,7 @@
 <view class="container">
   <i-panel>
     <i-input value="{{ service.serviceName }}" type="textarea" title="服务名称" maxlength="30" bind:change="inputServiceName" />
-    <i-input value="{{ service.servicePrice }}" type="number" title="服务价格" maxlength="10" bind:change="inputServicePrice" />
+    <i-input value="{{ service.servicePrice }}" type="digit" title="服务价格" maxlength="10" bind:change="inputServicePrice" />
     <i-input value="{{ service.servicePriority }}" type="number" title="优先级" maxlength="2" placeholder="请输入1~99的数字" bind:change="inputServicePriority" />
   </i-panel>
 
@@ -42,3 +42,6 @@
     <i-button type="{{isDelete}}" bind:click="cancelOrDeleteService">{{cancelOrDelete}}</i-button>
   </view>
 </view>
+<i-modal visible="{{ visible }}" bind:ok="handleClose" show-cancel="{{!visible }}">
+    <view>{{notice}}</view>
+</i-modal>

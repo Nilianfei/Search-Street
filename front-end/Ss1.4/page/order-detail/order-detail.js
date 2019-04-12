@@ -7,6 +7,7 @@ Page({
     current: 0,
     service: null,
     order:null,
+    serviceImg:null,
     createTime:"",
     overTime:"",
     imgUrl: app.globalData.imgUrl ,
@@ -41,12 +42,20 @@ Page({
     userId: null,
   },
   onLoad: function (options) {
-    var that = this
+    var that = this;
     var service = JSON.parse(options.service);
     var order = JSON.parse(options.order);
+    var serviceImg=null;
+    if(service.serviceImgAddr==null||service.serviceImgAddr=="")
+    {
+      serviceImg = "/images/nophoto.png";
+    }
+    else
+      serviceImg = that.data.imgUrl + service.serviceImgAddr;
     that.setData({
       service: service,
-      order: order
+      order: order,
+      serviceImg:serviceImg
     })
     try { //同步获取与用户信息有关的缓存token
       const value = wx.getStorageSync('token');
@@ -155,7 +164,7 @@ Page({
   },
   cancelOrder: function (e) {
     wx.showToast({
-      title: '正在取消订单，请稍候...',
+      title: '正在取消订单',
       icon: 'loading',
       duration: 1000
     })

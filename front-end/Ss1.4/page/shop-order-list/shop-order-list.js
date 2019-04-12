@@ -170,11 +170,16 @@ Page({
           for (var i = 0; i < order.length; i++) {
             id[i] = order[i].orderId;
             for (var j = 0; j < service.length; j++)
-            if(order[i].serviceId==service[j].serviceId)
-            {
-              if (service[j].serviceImgAddr != null)
-                img[i] = app.globalData.imgUrl + service[j].serviceImgAddr;
-            }
+           {
+              if (order[i].serviceId == service[j].serviceId) {
+                if (service[j].serviceImgAddr != null)
+                  img[i] = app.globalData.imgUrl + service[j].serviceImgAddr;
+              }
+           }
+           if(img[i]==null)
+           {
+             img[i] = "/images/nophoto.png";
+           }
             var time = JSON.stringify(order[i].createTime);
             order[i].createTime = util.formatDate(time);
             if (order[i].overTime != null) {
@@ -328,7 +333,7 @@ Page({
   },
   cancelOrder: function (e) {
     wx.showToast({
-      title: '正在取消订单，请稍候...',
+      title: '正在取消订单',
       icon: 'loading',
       duration: 1000
     })
@@ -350,7 +355,7 @@ Page({
       success: res => {
         console.log(res);
         if (res.data.success) {
-          that.allShow();
+          that.orderShow();
         }
       }
     })
@@ -379,7 +384,7 @@ Page({
             icon: '',
             duration: 1500
           });
-          that.allShow();
+          that.orderShow()
         }
       }
     })
@@ -390,7 +395,7 @@ Page({
     wx.navigateTo({
       url: '../comment-reply/comment-reply?order=' + JSON.stringify(order)+'&shopId='+that.data.shopId,
     })
-    that.allShow()
+   // that.allShow()
   },
   /*
   serviceDetail: function (e) {

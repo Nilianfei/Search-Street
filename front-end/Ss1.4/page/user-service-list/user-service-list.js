@@ -10,7 +10,6 @@ Page({
     shop: null,
     serviceImg:[],
     imgUrl: "http://139.196.101.84:8080/image",
-
     shopId: 0,
     profileImgUrl: '',
     //全局变量
@@ -20,7 +19,7 @@ Page({
     loading: true,
     current: 1,
     pageNum: 0,
-    pageSize: 6,
+    pageSize: 3,
     cardCur: 0,
     shopImgList: null,
     //businessLicenseImg: null,
@@ -139,10 +138,21 @@ Page({
         method: 'GET',
         success: function(res) {
           var serviceList = res.data.serviceList; //res.data就是从后台接收到的值
+          var serviceImg=[];
+          for (var i = 0; i < serviceList.length; i++) 
+          {
+            if (serviceList[i].serviceImgAddr) {
+              serviceImg[i] = that.data.imgUrl + serviceList[i].serviceImgAddr;
+            }
+            else {
+                serviceImg[i] = "/images/nophoto.png";
+            }
+          }
           that.setData({
             list: serviceList,
             loading: false,
-            pageNum: res.data.pageNum
+            pageNum: res.data.pageNum,
+            serviceImg:serviceImg
           })
         },
         fail: function(res) {
@@ -166,7 +176,10 @@ Page({
             if (service[i] != null) {
               if (service[i].serviceImgAddr != null) {
                 img[i] = app.globalData.imgUrl + service[i].serviceImgAddr;
-              }
+              }     
+            }
+            else {
+              img[i] = "/images/nophoto.png";
             }
           }
           that.setData({

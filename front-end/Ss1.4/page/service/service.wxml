@@ -5,6 +5,7 @@
       class='image'
       src="{{serviceImgShow}}"
       mode="aspectFit"
+      bindtap="toShop"
     ></image>
   </view>
   <view class='little-bottom'>

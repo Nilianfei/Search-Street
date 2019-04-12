@@ -15,6 +15,7 @@ Page({
     isDelete: "",
     img:null,
     shopId: 0,
+    visible:false,
     service: {
       "serviceContent": "",
       "serviceDesc": "",
@@ -28,6 +29,7 @@ Page({
     imgUrl: app.globalData.imgUrl,
     serviceImg: null,
     addormodify: '更新',
+    notice:"添加成功",
     disabletodelete: true,
     //basePath :"D:\\projectdev\\image",
     //basePath :"\\home\\SearchStreet\\image",
@@ -321,11 +323,15 @@ Page({
       
 
       var url = '';
+      var notice="更新成功";
       if (parseInt(that.data.isadd) == 1) {
         url = that.data.addUrl;
       } else {
         url = that.data.modifyUrl;
         that.data.service.serviceId = that.data.serviceId;
+        that.setData({
+          notice:notice
+        })
       }
       console.log(that.data.service);
       wx.request({
@@ -369,13 +375,26 @@ Page({
               })
               console.log(that.data.token);
             }
-            wx.navigateBack({
-              url: '../service-list/service-list?shopId=' + that.data.shopId
-            })
+            that.handleOpen()
+          
           }
         }
       })
     }
+  },
+  handleOpen() {
+    this.setData({
+      visible: true
+    });
+  },
+  handleClose() {
+    this.setData({
+      visible: false
+    });
+    wx.navigateBack({
+      url: '../service-list/service-list?shopId=' + this.data.shopId,//返回服务列表页面
+    })
+
   },
   /*
   formSubmit: function(e) {
