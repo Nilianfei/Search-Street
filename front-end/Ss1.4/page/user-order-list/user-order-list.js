@@ -363,15 +363,15 @@ Page({
             if (shopComment[i].commentReply == null)
               shopComment[i].commentReply = '无';
             /*服务不存在时候的措施*/   //图片为服务不存在
-            if (service[i] == null) {
-            //  continue;
-            }
-            else if(service[i]!=null)
+            if(service[i]!=null)
             {
               if (service[i].serviceImgAddr != null) {
                 img[i] = app.globalData.imgUrl + service[i].serviceImgAddr;
              }
           }
+            if (img[i] == null) {
+              img[i] = "/images/nophoto.png";
+            }
             
        }
 

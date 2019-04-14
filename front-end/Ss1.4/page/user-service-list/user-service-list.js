@@ -105,7 +105,7 @@ Page({
           tower: tower,
           tower2: tower,
           //businessLicenseImg: businessLicenseImg,
-          serviceRating: res.data.serviceAvg,
+          serviceRating: res.data.serviceAvg.toFixed(1),
           starRating: res.data.starAvg.toFixed(1),
           successRate: res.data.successRate
         })

@@ -65,7 +65,7 @@ Page({
       success: res => {
         console.log(res);
         that.setData({
-          score: res.data.serviceAvg,
+          score: res.data.serviceAvg.toFixed(1),
           score_rank: res.data.starAvg.toFixed(1),
           score_rate: res.data.successRate
         })

@@ -63,7 +63,7 @@ public class OrderSuperController {
 				}
 			}
 			try {
-				// 根据查询条件分页返回评论列表
+				// 根据查询条件分页返回订单列表
 				ae = orderService.getOrderList(orderCondition, pageIndex, pageSize);
 			} catch (Exception e) {
 				modelMap.put("success", false);
@@ -323,7 +323,7 @@ public class OrderSuperController {
 
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "请输入求助信息");
+			modelMap.put("errMsg", "请输入订单信息");
 		}
 		return modelMap;
 	}

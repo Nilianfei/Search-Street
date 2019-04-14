@@ -55,7 +55,7 @@ public interface ShopCommentService {
 	 */
 	public ShopComment getByOrderId(long orderId);
 	/**
-	 * 更新服务信息
+	 * 更新服务评论信息
 	 * 
 	 * @param shopComment
 	 * 
@@ -65,7 +65,7 @@ public interface ShopCommentService {
 	public ShopCommentExecution modifyShopComment(ShopComment shopComment) throws ShopCommentOperationException;
 
 	/**
-	 * 添加服务信息
+	 * 添加服务评论信息
 	 * 
 	 * @param shopComment
 	 * @param shopCommentImgInputStream
@@ -74,7 +74,7 @@ public interface ShopCommentService {
 	 */
 	public ShopCommentExecution addShopComment(ShopComment shopComment) throws ShopCommentOperationException;
 	/**
-	 * 删除服务信息
+	 * 删除服务评论信息
 	 * 
 	 * @param shopComment
 	 * @return
