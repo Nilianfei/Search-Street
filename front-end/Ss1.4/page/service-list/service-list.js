@@ -56,7 +56,7 @@ Page({
       shopId: options.shopId,
     });
     wx.request({
-      url: app.globalData.serviceUrl + '/SearchStreet/service/getservicelistbyshopid?shopId=' + that.data.shopId + '&pageIndex=0' + '&pageSize=' + that.data.pageSize,
+      url: app.globalData.serviceUrl + '/SearchStreet/service/getservicelistbyshopid?shopId=' + that.data.shopId + '&pageIndex=1' + '&pageSize=' + that.data.pageSize,
       method: 'GET',
       success: function (res) {
         var serviceList = res.data.serviceList;//res.data就是从后台接收到的值
@@ -88,7 +88,7 @@ Page({
   onShow: function () {
     var that = this       //很重要，一定要写
     wx.request({
-      url: app.globalData.serviceUrl + '/SearchStreet/service/getservicelistbyshopid?shopId=' + that.data.shopId + '&pageIndex=0' + '&pageSize=' + that.data.pageSize,
+      url: app.globalData.serviceUrl + '/SearchStreet/service/getservicelistbyshopid?shopId=' + that.data.shopId + '&pageIndex=1' + '&pageSize=' + that.data.pageSize,
       method: 'GET',
       success: function (res) {
         var serviceList = res.data.serviceList;//res.data就是从后台接收到的值

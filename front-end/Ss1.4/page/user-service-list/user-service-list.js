@@ -125,12 +125,13 @@ Page({
         
       }
     })
-    that.tabchange(0)
+    that.tabchange(1)
 
   },
   tabchange: function(options) {
     var that = this;
     var pageIndex = options;
+    //console.log("pageIndex="+pageIndex+" current="+that.data.current);
     if (that.data.TabCur == 0) {
       wx.request({
         //点击服务时 获得服务列表 
@@ -152,7 +153,7 @@ Page({
             list: serviceList,
             loading: false,
             pageNum: res.data.pageNum,
-            serviceImg:serviceImg
+            serviceImg:serviceImg,
           })
         },
         fail: function(res) {
@@ -187,7 +188,7 @@ Page({
             service: res.data.serviceList,
             loading: false,
             pageNum: res.data.pageNum,
-            serviceImg:img
+            serviceImg:img   
           })
         },
         fail: function(res) {
@@ -204,9 +205,10 @@ Page({
   tabSelect(e) {
     this.setData({
       TabCur: e.currentTarget.dataset.id,
-      scrollLeft: (e.currentTarget.dataset.id - 1) * 60
+      scrollLeft: (e.currentTarget.dataset.id - 1) * 60,
+      current:1
     })
-    this.tabchange(this.data.current)
+    this.tabchange(1)
   },
   DotStyle(e) {
     this.setData({

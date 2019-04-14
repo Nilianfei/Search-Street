@@ -42,6 +42,3 @@
     <i-button type="{{isDelete}}" bind:click="cancelOrDeleteService">{{cancelOrDelete}}</i-button>
   </view>
 </view>
-<i-modal visible="{{ visible }}" bind:ok="handleClose" show-cancel="{{!visible }}">
-    <view>{{notice}}</view>
-</i-modal>

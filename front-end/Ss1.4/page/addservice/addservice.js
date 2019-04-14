@@ -375,7 +375,18 @@ Page({
               })
               console.log(that.data.token);
             }
-            that.handleOpen()
+            wx.showModal({
+              title: '提示',
+              content: that.data.notice,
+              showCancel: false,
+              success(res) {
+                if (res.confirm) {
+                  wx.navigateBack({
+                    url: '../service-list/service-list?shopId=' + that.data.shopId,//返回服务列表页面
+                  })
+                }
+              }
+            })
           
           }
         }
