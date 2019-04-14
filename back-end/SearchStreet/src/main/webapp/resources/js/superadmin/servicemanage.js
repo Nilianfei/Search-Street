@@ -281,7 +281,7 @@ function openDialog_edit(serviceId,shopId,serviceName,servicePrice,servicePriori
 	$('#serviceManagementEdit').dialog('open');
 }
 function openDialog() {
-	serviceManagementEditReset(null, null, null, null, null, null, null, null);
+	serviceManagementEditReset(null, null, null, null, null, null, "", "");
 	$('#serviceManagementEdit').dialog('open');
 }
 // 关闭对话框

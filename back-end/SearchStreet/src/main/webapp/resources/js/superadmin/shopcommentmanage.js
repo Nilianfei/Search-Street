@@ -305,7 +305,7 @@ function openDialog_edit(shopCommentId, shopId,orderId,userId,serviceRating,star
 	$('#shopCommentManagementEdit').dialog('open');
 }
 function openDialog() {
-	shopCommentManagementEditReset(null, null, null, null, null, null, null, null);
+	shopCommentManagementEditReset(null, null, null, null, null, null, "", "");
 	$('#shopCommentManagementEdit').dialog('open');
 }
 // 关闭对话框
