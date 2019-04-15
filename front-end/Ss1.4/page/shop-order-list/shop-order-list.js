@@ -172,11 +172,11 @@ Page({
             for (var j = 0; j < service.length; j++)
            {
               if (order[i].serviceId == service[j].serviceId) {
-                if (service[j].serviceImgAddr != null)
+                if (service[j].serviceImgAddr != null && service[j].serviceImgAddr !="")
                   img[i] = app.globalData.imgUrl + service[j].serviceImgAddr;
               }
            }
-           if(img[i]==null)
+            if (img[i] == null || img[i] == "")
            {
              img[i] = "/images/nophoto.png";
            }

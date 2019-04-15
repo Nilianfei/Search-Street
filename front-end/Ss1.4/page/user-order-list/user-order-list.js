@@ -238,10 +238,10 @@ Page({
              */
             if (service[i] != null)
             {  
-              if (service[i].serviceImgAddr != null)
+              if (service[i].serviceImgAddr != null && service[i].serviceImgAddr != "")
                 img[i] = app.globalData.imgUrl + service[i].serviceImgAddr; //经过修改后可以正常显示订单图片信息,还需等addservice调整后加上服务器的ip  
             }
-            if(img[i]==null)
+            if(img[i]==null||img[i]=="")
             {
               img[i] = "/images/nophoto.png";
             }
@@ -365,11 +365,11 @@ Page({
             /*服务不存在时候的措施*/   //图片为服务不存在
             if(service[i]!=null)
             {
-              if (service[i].serviceImgAddr != null) {
+              if (service[i].serviceImgAddr != null && service[i].serviceImgAddr != "") {
                 img[i] = app.globalData.imgUrl + service[i].serviceImgAddr;
              }
           }
-            if (img[i] == null) {
+            if (img[i] == null || img[i] == "") {
               img[i] = "/images/nophoto.png";
             }
             
