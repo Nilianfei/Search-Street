@@ -61,6 +61,7 @@
 				and user_id = #{shopCondition.userId}
 			</if>
 		</where>
+		ORDER BY create_time desc
 		LIMIT #{rowIndex},#{pageSize};
 	</select>
 	<select id="queryShopCount" resultType="int">
