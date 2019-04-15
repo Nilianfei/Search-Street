@@ -262,9 +262,4 @@ public class Shop {
 				+ createTime + ", lastEditTime=" + lastEditTime + ", userId=" + userId + ", serviceAvg=" + serviceAvg
 				+ ", starAvg=" + starAvg + ", successRate=" + successRate + "]";
 	}
-
-
-
-	
-
 }
