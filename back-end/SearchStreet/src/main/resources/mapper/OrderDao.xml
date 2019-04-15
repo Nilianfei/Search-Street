@@ -30,7 +30,7 @@
 			    and DATE_FORMAT(over_time,'%Y %m %d') &gt;=  DATE_FORMAT(#{orderCondition.overTime},'%Y %m %d')
 		</if>
 		</where>
-		ORDER BY over_time desc
+		ORDER BY create_time desc
 		LIMIT #{rowIndex},#{pageSize};
 	</select>
 	<select id="queryOrderCount" resultType="int">

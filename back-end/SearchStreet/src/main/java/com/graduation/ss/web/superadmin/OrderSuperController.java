@@ -240,12 +240,24 @@ public class OrderSuperController {
 		Long serviceCount=HttpServletRequestUtil.getLong(request, "serviceCount");
 		int orderStatus=HttpServletRequestUtil.getInt(request, "orderStatus");
 		String s1=HttpServletRequestUtil.getString(request, "createTime");
+		if(s1==null||s1=="")
+		{
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "创建日期传参失败");
+			return modelMap;
+		}
 		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime createTime = LocalDateTime.parse(s1,df);
+		String s2=HttpServletRequestUtil.getString(request, "overTime");
+		OrderInfo order = new OrderInfo();
+		if(s2!=null&&s2!="")
+		{
+			LocalDateTime overTime = LocalDateTime.parse(s2,df);
+			order.setOverTime(overTime);
+		}
 		//LocalDateTime createTime=HttpServletRequestUtil.getDate(request, "createTime").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 		String serviceName = HttpServletRequestUtil.getString(request, "serviceName");
 		double orderPrice=HttpServletRequestUtil.getDouble(request, "orderPrice");
-		OrderInfo order = new OrderInfo();
 		order.setServiceId(serviceId);
 		order.setUserId(userId);
 		order.setServiceCount(serviceCount);

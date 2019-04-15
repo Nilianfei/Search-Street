@@ -447,6 +447,10 @@ public class ShopCommentSuperController {
 		long shopCommentId = HttpServletRequestUtil.getLong(request, "shopCommentId");
 		if (shopCommentId > 0) {
 			try {
+				ShopComment shopComment=shopCommentService.getByShopCommentId(shopCommentId);
+				OrderInfo order=orderService.getByOrderId(shopComment.getOrderId());
+				order.setOrderStatus(1);
+				orderService.modifyOrder(order);
 				//删除评论
 				ShopCommentExecution ae = shopCommentService.deleteShopComment(shopCommentId);
 				if (ae.getState() == ShopCommentStateEnum.SUCCESS.getState()) {
