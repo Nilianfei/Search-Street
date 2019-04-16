@@ -468,9 +468,10 @@ Page({
     var point=this.data.polyline[0].points[1];
     var shopname=this.data.shopInfoName;
     console.log(point.latitude);
+    console.log(point.longitude);
     wx.openLocation({
-      latitude:parseInt(point.latitude),
-      longitude:parseInt(point.longitude),
+      latitude:parseFloat(point.latitude),
+      longitude:parseFloat(point.longitude),
       scale:18,
       name:shopname
     })
